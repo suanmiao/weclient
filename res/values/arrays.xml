@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+     
+      <string-array name="tab_weclient_titles">
+      	<item >@string/tab_wechat_profile</item>
+        <item>@string/tab_wechat_message</item>
+      	<item>@string/tab_wechat_mass</item>
+        </string-array>
+</resources>

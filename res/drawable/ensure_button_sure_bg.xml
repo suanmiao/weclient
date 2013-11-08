@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:state_pressed="false" android:drawable="@drawable/ensure_button_sure_state"></item>
+	
+	<item android:state_pressed="true" android:drawable="@drawable/ensure_button_sure_pressed_state"></item>
+	<item android:drawable="@drawable/ensure_button_sure_state"></item>
+</selector>

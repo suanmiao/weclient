@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#dbdbdb" >
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_marginLeft="15dip"
+		android:layout_marginRight="15dip"
+		android:orientation="vertical" >
+		<RelativeLayout
+			android:id="@+id/profile_layout_first"
+			android:layout_width="fill_parent"
+			android:layout_height="130dip"
+			android:layout_marginTop="10dip"
+			android:background="@drawable/profile_button_first_bg"
+			android:clickable="true" >
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="100dip"
+				android:layout_centerInParent="true"
+				android:orientation="vertical" >
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="60dip"
+					android:orientation="horizontal" >
+					<ImageButton
+						android:layout_width="70dip"
+						android:layout_height="50dip"
+						android:layout_marginTop="10dip"
+						android:background="@drawable/profile_first"
+						android:scaleType="centerInside" />
+					<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent" >
+						<TextView
+							android:id="@+id/profile_text_first"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="10dip"
+							android:layout_marginTop="17dip"
+							android:gravity="center"
+							android:lines="1"
+							android:text="0"
+							android:textColor="#ffffff"
+							android:textSize="40dip" />
+					</RelativeLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="30dip"
+					android:layout_marginTop="10dip"
+					android:orientation="horizontal" >
+					<TextView
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:lines="1"
+						android:text="总用户数"
+						android:textColor="#ffffff"
+						android:textSize="20dip" />
+				</LinearLayout>
+			</LinearLayout>
+		</RelativeLayout>
+		<RelativeLayout
+			android:id="@+id/profile_layout_second"
+			android:layout_width="fill_parent"
+			android:layout_height="130dip"
+			android:layout_marginTop="10dip"
+			android:background="@drawable/profile_button_second_bg"
+			android:clickable="true" >
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="100dip"
+				android:layout_centerInParent="true"
+				android:orientation="vertical" >
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="60dip"
+					android:orientation="horizontal" >
+					<ImageButton
+						android:layout_width="50dip"
+						android:layout_height="50dip"
+						android:layout_marginTop="10dip"
+						android:background="@drawable/profile_second"
+						android:scaleType="centerInside" />
+					<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent" >
+						<TextView
+							android:id="@+id/profile_text_second"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginLeft="10dip"
+							android:layout_marginTop="17dip"
+							android:gravity="center"
+							android:lines="1"
+							android:text="0"
+							android:textColor="#ffffff"
+							android:textSize="40dip" />
+					</RelativeLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="30dip"
+					android:layout_marginTop="10dip"
+					android:orientation="horizontal" >
+					<TextView
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:lines="1"
+						android:text="新增人数"
+						android:textColor="#ffffff"
+						android:textSize="20dip" />
+				</LinearLayout>
+			</LinearLayout>
+		</RelativeLayout>
+		<RelativeLayout
+			android:id="@+id/profile_layout_third"
+			android:layout_width="fill_parent"
+			android:layout_height="130dip"
+			android:layout_marginTop="10dip"
+			android:background="@drawable/profile_button_third_bg"
+			android:clickable="true" >
+			<LinearLayout
+				android:layout_width="wrap_content"
+				android:layout_height="100dip"
+				android:layout_centerInParent="true"
+				android:orientation="vertical" >
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="60dip"
+					android:orientation="horizontal" >
+					<ImageButton
+						android:layout_width="50dip"
+						android:layout_height="50dip"
+						android:layout_marginTop="10dip"
+						android:background="@drawable/profile_third"
+						android:scaleType="centerInside" />
+					<RelativeLayout
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent" >
+						<TextView
+							android:id="@+id/profile_text_third"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_centerVertical="true"
+							android:layout_marginLeft="10dip"
+							android:gravity="center"
+							android:lines="1"
+							android:text="0"
+							android:textColor="#ffffff"
+							android:textSize="40dip" />
+					</RelativeLayout>
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="30dip"
+					android:layout_marginTop="10dip"
+					android:orientation="horizontal" >
+					<TextView
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center"
+						android:lines="1"
+						android:text="新消息"
+						android:textColor="#ffffff"
+						android:textSize="20dip" />
+				</LinearLayout>
+			</LinearLayout>
+		</RelativeLayout>
+	</LinearLayout>
+</RelativeLayout>

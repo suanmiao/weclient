@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!-- Drop Shadow Stack -->
+	<item>
+		<shape>
+			<padding
+				android:bottom="1px"
+				android:left="1px"
+				android:right="2px"
+				android:top="2px" />
+			<solid android:color="#00000000" />
+			<corners android:radius="11dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding
+				android:bottom="1px"
+				android:left="1px"
+				android:right="1px"
+				android:top="1px" />
+			<solid android:color="#10000000" />
+			<corners android:radius="10dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding
+				android:bottom="1px"
+				android:left="1px"
+				android:right="1px"
+				android:top="1px" />
+			<solid android:color="#20000000" />
+			<corners android:radius="9dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding
+				android:bottom="1px"
+				android:left="1px"
+				android:right="1px"
+				android:top="1px" />
+			<solid android:color="#30000000" />
+			<corners android:radius="8dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding
+				android:bottom="1px"
+				android:left="1px"
+				android:right="1px"
+				android:top="1px" />
+			<solid android:color="#50000000" />
+			<corners android:radius="7dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding android:bottom="1px" />
+			<solid android:color="#70000000" />
+			<corners android:radius="6dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			
+			<padding android:bottom="1px" />
+			<solid android:color="#90000000" />
+			<corners android:radius="6dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding android:bottom="1px" />
+			<solid android:color="#A0000000" />
+			<corners android:radius="6dip"/>
+		</shape>
+	</item>
+	<item>
+		<shape>
+			<padding android:bottom="1px" />
+			<solid android:color="#D0000000" />
+			<corners android:radius="6dip"/>
+		</shape>
+	</item>
+		<!-- Background -->
+	<item>
+		<shape>
+			<solid android:color="#ffdfdfdf" />
+			<corners android:radius="5dip" />
+		</shape>
+	</item>
+</layer-list>

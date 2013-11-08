@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.suan.weclient"
+	android:versionCode="1"
+	android:versionName="1.0" >
+	<uses-sdk
+		android:minSdkVersion="8"
+		android:targetSdkVersion="8" />
+	<application
+		android:name="com.suan.weclient.util.GlobalContext"
+		android:allowBackup="true"
+		android:icon="@drawable/icon"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme" >
+		<activity
+			android:name="com.suan.weclient.activity.SplashActivity"
+			android:label="@string/app_name" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".activity.LoginActivity"
+			android:windowSoftInputMode="adjustResize" >
+		</activity>
+		<activity
+			android:name=".activity.AboutActivity"
+			android:windowSoftInputMode="adjustResize" >
+		</activity>
+		<activity android:name=".activity.MainActivity" >
+		</activity>
+		<activity android:name=".activity.ShowImgActivity" android:theme="@style/Theme.Transparent">
+		</activity>
+		<!-- Caution! Do not change this app key. It is only for demo usage. -->
+		<meta-data
+			android:name="UMENG_APPKEY"
+			android:value="526cc84556240b8eda11fcd5" >
+		</meta-data>
+		<meta-data
+			android:name="UMENG_CHANNEL"
+			android:value="own" />
+		<service
+			android:name="com.umeng.common.net.DownloadingService"
+			android:process=":DownloadingService" >
+		</service>
+	</application>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+	</uses-permission>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+	</uses-permission>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+	</uses-permission>
+</manifest>

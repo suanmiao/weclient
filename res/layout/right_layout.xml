@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/right"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+		android:background="#353535"
+ >
+	<LinearLayout
+		android:layout_width="180dp"
+		android:layout_height="fill_parent"
+		android:background="#353535"
+		android:orientation="vertical" >
+		<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="50dip"
+			android:background="#424242" >
+			<TextView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+				android:layout_marginLeft="15dip"
+				android:text="@string/about_and_feedback"
+				android:textColor="#c7c7c7"
+				android:textSize="17dip" />
+		</RelativeLayout>
+		
+		<RelativeLayout
+			android:id="@+id/right_button_about"
+			android:layout_width="fill_parent"
+			android:layout_height="50dip"
+			android:background="#353535" >
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:gravity="center"
+				android:text="关于"
+				android:textColor="#c7c7c7"
+				android:textSize="15dip" />
+			<include
+				android:layout_width="fill_parent"
+				android:layout_alignParentTop="true"
+				android:layout_marginTop="2dip"
+				layout="@layout/divider_bwb" />
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_marginBottom="3dip"
+				android:orientation="vertical" >
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#303030"
+					android:orientation="vertical" >
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#c7c7c7"
+					android:orientation="vertical" >
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#303030"
+					android:orientation="vertical" >
+				</LinearLayout>
+			</LinearLayout>
+		</RelativeLayout>
+		<RelativeLayout
+			android:id="@+id/right_button_feedback"
+			android:layout_width="fill_parent"
+			android:layout_height="50dip"
+			android:background="#353535" >
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:gravity="center"
+				android:text="反馈"
+				android:textColor="#c7c7c7"
+				android:textSize="15dip" />
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_marginBottom="3dip"
+				android:orientation="vertical" >
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#303030"
+					android:orientation="vertical" >
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#c7c7c7"
+					android:orientation="vertical" >
+				</LinearLayout>
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="1px"
+					android:background="#303030"
+					android:orientation="vertical" >
+				</LinearLayout>
+			</LinearLayout>
+		</RelativeLayout>
+			</LinearLayout>
+</RelativeLayout>

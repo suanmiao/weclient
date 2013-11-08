@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#dbdbdb" >
+	<RelativeLayout
+		android:id="@+id/mass_layout_mass"
+		android:layout_width="fill_parent"
+		android:layout_height="180dip" >
+		<EditText
+			android:id="@+id/mass_edit_mass"
+			android:layout_width="fill_parent"
+			android:layout_height="180dip"
+			android:layout_marginBottom="10dip"
+			android:layout_marginLeft="15dip"
+			android:layout_marginRight="15dip"
+			android:layout_marginTop="20dip"
+			android:background="@drawable/shape_radius_mass_bg"
+			android:capitalize="sentences"
+			android:gravity="top|left"
+			android:imeOptions="actionDone"
+			android:isScrollContainer="true"
+			android:minLines="8"
+			android:singleLine="false"
+			android:textColor="#000000" />
+		<TextView
+			android:id="@+id/mass_text_num"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true"
+			android:layout_marginBottom="15dip"
+			android:layout_marginRight="25dip"
+			android:background="@drawable/shape_radius_gray_bg"
+			android:text="0 x" />
+	</RelativeLayout>
+	<TextView
+		android:id="@+id/mass_text_left_num"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/mass_layout_mass"
+		android:layout_marginLeft="30dip"
+		android:textColor="#9c584f"
+		android:textSize="13dip" />
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dip"
+		android:layout_below="@+id/mass_text_left_num"
+		android:layout_marginLeft="30dip"
+		android:text="@string/mass_declare"
+		android:textColor="#9c584f"
+		android:textSize="13dip" />
+	<ImageButton
+		android:id="@+id/mass_button_send"
+		android:layout_width="100dip"
+		android:layout_height="40dip"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/mass_layout_mass"
+		android:layout_marginRight="15dip"
+		android:background="@drawable/mass_button_send_bg" />
+</RelativeLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#dbdbdb"
+	android:orientation="vertical" >
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="10dip"
+		android:layout_marginLeft="15dip"
+		android:layout_marginRight="5dip"
+		android:layout_marginTop="18dip"
+		android:orientation="horizontal" >
+		<RelativeLayout
+			android:layout_width="70dip"
+			android:layout_height="fill_parent"
+			android:layout_marginRight="10dip" >
+			<ImageView
+				android:id="@+id/message_item_img_img_profile"
+				android:layout_width="70dip"
+				android:layout_height="70dip"
+				android:layout_centerInParent="true"
+				android:background="#000000" />
+		</RelativeLayout>
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+			<RelativeLayout
+				android:layout_width="fill_parent"
+				android:layout_height="25dip" >
+				<TextView
+					android:id="@+id/message_item_img_text_profile"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
+					android:textColor="#080808"
+					android:textSize="18dip" />
+				<TextView
+					android:id="@+id/message_item_img_text_time"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:textColor="#494949"
+					android:textSize="12dip" />
+			</RelativeLayout>
+			<ImageView
+				android:id="@+id/message_item_img_img_content"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dip"
+				android:layout_marginTop="15dip"
+				android:scaleType="centerInside"
+				android:src="@drawable/img_loading" />
+			<RelativeLayout
+				android:id="@+id/message_item_img_layout_star"
+				android:layout_width="fill_parent"
+				android:layout_height="30dip" >
+				<ImageButton
+					android:id="@+id/message_item_img_button_star"
+					android:layout_width="25dip"
+					android:layout_height="20dip"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="10dip"
+					android:background="@drawable/msg_star_button_bg" />
+			</RelativeLayout>
+		</LinearLayout>
+	</LinearLayout>
+	<include
+		android:layout_width="fill_parent"
+		android:layout_marginTop="3dip"
+		layout="@layout/divider_wbw" />
+</LinearLayout>
