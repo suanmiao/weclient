@@ -34,6 +34,7 @@
 				android:layout_height="160dip"
 				android:background="#c5c5c5"
 				android:cursorVisible="true"
+				android:hint="@string/feedback_hint"
 				android:gravity="left|top"
 				android:textColor="#333333"
 				android:textSize="15dip" />

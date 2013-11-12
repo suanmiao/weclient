@@ -104,7 +104,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList
 						.add(new BasicNameValuePair("Referer",
@@ -137,12 +137,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * @author onerain
-	 * 
-	 */
 
 	public interface WechatMessageListCallBack {
 		public void onBack(HttpResponse response, String referer);
@@ -169,7 +163,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -199,12 +193,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * @author onerain
-	 * 
-	 */
 
 	public interface WechatMessagePageCallBack {
 		public void onBack(HttpResponse response, String referer);
@@ -231,7 +219,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ messageHolder.getUserBean().getSlaveSid() + "; "
@@ -266,11 +254,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * 
-	 */
 
 	public interface WechatMessageReplyCallBack {
 		public void onBack(HttpResponse response);
@@ -297,7 +280,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -342,11 +325,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * 
-	 */
 
 	public interface WechatMessageStarCallBack {
 		public void onBack(HttpResponse response);
@@ -373,7 +351,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -413,11 +391,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * 
-	 */
 
 	public interface WechatMassCallBack {
 		public void onBack(HttpResponse response);
@@ -443,7 +416,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -451,27 +424,29 @@ public class WeChatLoader {
 				headerList.add(new BasicNameValuePair("Content-Type",
 						"text/html; charset=utf-8"));
 				headerList.add(new BasicNameValuePair("Referer",
-						"https://mp.weixin.qq.com/cgi-bin/masssendpage?t=wxm-send&token="
+						"https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token="
 								+ userBean.getToken() + "&lang=zh_CN"));
 
 				ArrayList<NameValuePair> paramArrayList = new ArrayList<NameValuePair>();
 				paramArrayList.add(new BasicNameValuePair("type", "1"));
 				paramArrayList.add(new BasicNameValuePair("content", content));
-				paramArrayList.add(new BasicNameValuePair("error", "false"));
-				paramArrayList.add(new BasicNameValuePair("imgcode", ""));
-				paramArrayList.add(new BasicNameValuePair("needcomment", "0"));
-				paramArrayList.add(new BasicNameValuePair("groupid", "-1"));
 				paramArrayList.add(new BasicNameValuePair("sex", "0"));
-				paramArrayList.add(new BasicNameValuePair("country", ""));
-				paramArrayList.add(new BasicNameValuePair("city", ""));
-				paramArrayList.add(new BasicNameValuePair("province", ""));
+				paramArrayList.add(new BasicNameValuePair("groupid", "-1"));
 				paramArrayList.add(new BasicNameValuePair("synctxweibo", "0"));
 				paramArrayList.add(new BasicNameValuePair("synctxnews", "0"));
+				paramArrayList.add(new BasicNameValuePair("country", ""));
+				paramArrayList.add(new BasicNameValuePair("province", ""));
+				paramArrayList.add(new BasicNameValuePair("city", ""));
+				paramArrayList.add(new BasicNameValuePair("imgcode", ""));
 				paramArrayList.add(new BasicNameValuePair("token", userBean
 						.getToken()));
+				paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
+				paramArrayList.add(new BasicNameValuePair("random", "0.7117042664902147"));
+				paramArrayList.add(new BasicNameValuePair("f", "json"));
 				paramArrayList.add(new BasicNameValuePair("ajax", "1"));
+				paramArrayList.add(new BasicNameValuePair("t", "ajax-response"));
 				String targetUrl = WECHAT_MESSAGE_MASS_URL;
-				HttpResponse response = httpGet(targetUrl, headerList);
+				HttpResponse response = httpPost(targetUrl, headerList,paramArrayList);
 
 				if (response != null) {
 
@@ -516,7 +491,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -578,7 +553,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ slaveSid + "; " + "slave_user="
@@ -617,7 +592,6 @@ public class WeChatLoader {
 		 */
 
 		try {
-			Log.e("msg img", "start");
 			/* 发出HTTP request */
 			httpRequest.setEntity(new UrlEncodedFormEntity(paramsArrayList,
 					HTTP.UTF_8));
@@ -628,12 +602,12 @@ public class WeChatLoader {
 						headerArrayList.get(i).getValue());
 
 			}
+			
 
 			/* 取得HTTP response */
 			HttpResponse httpResponse = new DefaultHttpClient()
 					.execute(httpRequest);
 
-			Log.e("msg img", "end"+httpResponse.getStatusLine().getStatusCode()+"");
 			/* 若状态码为200 ok */
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				/* 取出响应字符串 */
@@ -653,12 +627,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * 回调接口
-	 * 
-	 * @author onerain
-	 * 
-	 */
 
 	public interface WechatGetUserProfleCallBack {
 		public void onBack(HttpResponse response, String referer);
@@ -684,7 +652,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -738,7 +706,7 @@ public class WeChatLoader {
 		};
 
 		new Thread() {
-			public void run() {
+			public void run() { Looper.prepare();
 				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
 						+ userBean.getSlaveSid() + "; " + "slave_user="
@@ -750,6 +718,9 @@ public class WeChatLoader {
 						WECHAT_GET_USER_PROFILE_URL + userBean.getToken()));
 				String targetUrl = WECHAT_GET_MASS_DATA_URL_1
 						+ userBean.getToken() + WECHAT_GET_MASS_DATA_URL_2;
+				
+				
+				
 				HttpResponse response = httpGet(targetUrl, headerList);
 
 				if (response != null) {
@@ -814,9 +785,6 @@ public class WeChatLoader {
 
 	}
 
-	/**
-	 * MD5 加密
-	 */
 	public static String getMD5Str(String str) {
 		MessageDigest messageDigest = null;
 

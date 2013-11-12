@@ -15,8 +15,7 @@
  */
 package com.suan.weclient.fragment;
 
-import java.util.List;
-
+import android.R.integer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,10 +40,9 @@ import android.widget.TextView;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
 import com.suan.weclient.util.DataManager;
+import com.suan.weclient.util.DataManager.AutoLoginListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.UserBean;
-import com.suan.weclient.util.WeChatLoader;
 import com.suan.weclient.util.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -62,8 +60,6 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 	private DataManager mDataManager;
 	private ImageView profileImageView;
 
-	private static final String WECHAT_GET_USER_PROFILE_URL = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
-
 	public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
 		mFragmentManager = fragmentManager;
 		mDataManager = dataManager;
@@ -80,13 +76,42 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 	}
 
 	private void initListener() {
+		mDataManager.addAutoLoginListener(new AutoLoginListener() {
+			
+			@Override
+			public void onAutoLoginEnd() {
+				// TODO Auto-generated method stub
+				for(int i = 0;i<mListView.getChildCount();i++){
+					mListView.setItemChecked(i, false);
+				}
+				mListView.setItemChecked(mDataManager.getCurrentPosition(), true);
+				
+			}
+			
+			@Override
+			public void autoLogin() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		mDataManager.addUserGroupListener(new UserGroupListener() {
 
 			@Override
-			public void onGroupChange() {
+			public void onGroupChangeEnd() {
 				// TODO Auto-generated method stub
-				Log.e("user group change", "");
+
 				updateList();
+			}
+
+			@Override
+			public void onAddUser() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void deleteUser(int index) {
+				// TODO Auto-generated method stub
 
 			}
 		});
@@ -121,7 +146,6 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 	}
 
 	public void updateList() {
-		mDataManager.updateUserGroup();
 		myAdapter.notifyDataSetChanged();
 
 	}
@@ -231,7 +255,7 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 												.getWechatManager()
 												.getUserImgWithReferer(
 														position,
-														false,
+														true,
 														profileImageView,
 														new OnActionFinishListener() {
 
@@ -246,6 +270,7 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 																		.getWechatManager()
 																		.getMassData(
 																				position,
+																				true,
 																				new OnActionFinishListener() {
 
 																					@Override
@@ -303,6 +328,7 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 						SharedPreferenceManager.deleteUser(getActivity(),
 								mDataManager.getUserGroup().get(position)
 										.getUserName());
+						mDataManager.updateUserGroup();
 						updateList();
 					}
 				})

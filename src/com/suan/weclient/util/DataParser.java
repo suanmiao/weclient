@@ -89,21 +89,50 @@ public class DataParser {
 
 		return GET_USER_PROFILE_FAILED;
 	}
+	
+	public interface ParseMassDataCallBack{
+		public void onBack(UserBean userBean);
+	}
 
-	public static int getMassData(String source, UserBean userBean) {
+	public static void getMassData(final String source,final UserBean userBean,final ParseMassDataCallBack parseMassDataCallBack) {
 
-		String result = "";
-		Pattern pattern = Pattern
-				.compile("can_verify_apply\\s\\?\\s\\'(\\d*)\\'\\*");
+		final Handler loadHandler = new Handler() {
 
-		Matcher matcher = pattern.matcher(source);
-		while (matcher.find()) {
-			result = matcher.group(1);
-			userBean.setMassLeft(Integer.parseInt(result));
-			return GET_MASS_DATA_SUCCESS;
-		}
+			// 子类必须重写此方法,接受数据
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
 
-		return GET_MASS_DATA_FAILED;
+				super.handleMessage(msg);
+				// 此处可以更新UI
+				UserBean getBean = (UserBean) msg.obj;
+				parseMassDataCallBack.onBack(getBean);
+
+			}
+		};
+
+		new Thread() {
+			public void run() {
+				String result = "";
+				Pattern pattern = Pattern
+						.compile("can_verify_apply\\s\\?\\s\\'(\\d*)\\'\\*");
+
+				Matcher matcher = pattern.matcher(source);
+				while (matcher.find()) {
+					result = matcher.group(1);
+					userBean.setMassLeft(Integer.parseInt(result));
+					Message message = new Message();
+					message.obj =userBean;
+
+					loadHandler.sendMessage(message);
+					
+				}
+
+				
+			}
+			
+		}.start();
+
 	}
 
 	private static String getProfileFakeId(String source) {
@@ -206,6 +235,8 @@ public class DataParser {
 				Elements scriptElements = document.getElementsByTag("script");
 				for (Element nowElement : scriptElements) {
 					if (nowElement.html().contains("wx.cgiData ")) {
+						Log.e("next parse", "find wx.cgiData");
+						Log.e("next parse", "content"+nowElement.html());
 						JSONArray getArray = getMessageArray(nowElement.html());
 						ArrayList<MessageItem> getMessageList = getMessageItems(
 								getArray, userBean, referer);
@@ -218,6 +249,7 @@ public class DataParser {
 						messageResultHolder.lastMsgId = latestMsgId;
 						messageResultHolder.messageHolder = messageHolder;
 						messageResultHolder.messageItems = getMessageList;
+						Log.e("next parse", "parse end"+getMessageList.size()+"|"+messageHolder.getMessageList().size());
 						message.obj = messageResultHolder;
 
 						loadHandler.sendMessage(message);
@@ -361,7 +393,7 @@ public class DataParser {
 				MessageItem nowItem = (MessageItem) gson.fromJson(
 						nowJsonObject.toString(), MessageItem.class);
 				if (filter) {
-					if (nowItem.getType() == MessageItem.MESSAGE_TYPE_TEXT) {
+					if (nowItem.getType() == MessageItem.MESSAGE_TYPE_TEXT||nowItem.getType() == MessageItem.MESSAGE_TYPE_IMG) {
 
 						messageItems.add(nowItem);
 					}

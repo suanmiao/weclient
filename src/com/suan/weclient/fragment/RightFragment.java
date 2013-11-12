@@ -37,15 +37,20 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.AboutActivity;
+import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.util.DataManager;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;
 import com.umeng.fb.model.Reply;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
 
 public class RightFragment extends Fragment {
 	private RelativeLayout aboutLayout;
 	private RelativeLayout feedbackLayout;
+	private RelativeLayout checkUpdateLayout;
 	View view;
 	
 	private Dialog popDialog;
@@ -108,6 +113,44 @@ public class RightFragment extends Fragment {
 			}
 		});
 
+
+		checkUpdateLayout = (RelativeLayout)view.findViewById(R.id.right_button_check_update);
+		checkUpdateLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				checkUpdate();
+				
+			}
+		});
+	}
+	
+	private void checkUpdate(){
+		
+
+		UmengUpdateAgent.setUpdateAutoPopup(true);
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+			@Override
+			public void onUpdateReturned(int updateStatus,
+					UpdateResponse updateInfo) {
+				switch (updateStatus) {
+				case 0: // has update
+					
+					break;
+				case 1: // has no update
+					Toast.makeText(getActivity(), "没有新版本", Toast.LENGTH_LONG).show();
+					break;
+				case 2: // none wifi
+					break;
+				case 3: // time out
+					Toast.makeText(getActivity(), "网络超时", Toast.LENGTH_LONG).show();
+					break;
+				}
+			}
+		});
+		UmengUpdateAgent.update(getActivity());
 	}
 	
 	

@@ -32,20 +32,20 @@ public class SplashActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_layout);
-		ImageView planeImageView = (ImageView)findViewById(R.id.id_plane);
-		ImageView shadowImageView = (ImageView)findViewById(R.id.id_shadow);
-		TextView splashTextView = (TextView)findViewById(R.id.id_splash_text);
-		Animation planeAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_plane);
-		Animation shadowAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_shadow);
-		Animation splashtextAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_text);
-		planeImageView.startAnimation(planeAnimation);
-		shadowImageView.startAnimation(shadowAnimation);
-		splashTextView.startAnimation(splashtextAnimation);
+//		ImageView planeImageView = (ImageView)findViewById(R.id.id_plane);
+//		ImageView shadowImageView = (ImageView)findViewById(R.id.id_shadow);
+//		TextView splashTextView = (TextView)findViewById(R.id.id_splash_text);
+//		Animation planeAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_plane);
+//		Animation shadowAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_shadow);
+//		Animation splashtextAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_splash_text);
+//		planeImageView.startAnimation(planeAnimation);
+//		shadowImageView.startAnimation(shadowAnimation);
+//		splashTextView.startAnimation(splashtextAnimation);
 
 
 		Handler handler = new Handler();
 
-		handler.postDelayed(new SplashHandler(), 2000);
+		handler.postDelayed(new SplashHandler(), 0);
 
 	}
 
@@ -62,24 +62,18 @@ public class SplashActivity extends Activity {
 		public void run() {
 
 			Intent jumbIntent = new Intent();
-			int enterState = SharedPreferenceManager
-					.getEnterState(getApplicationContext());
-			switch (enterState) {
-
-			case SharedPreferenceManager.ENTER_STATE_FIRST_TIME:
-
+			
+			int userGroupSize = SharedPreferenceManager.getUserGroup(getApplicationContext()).size();
+			if(userGroupSize == 0){
 				Bundle nowBundle = new Bundle();
 				nowBundle.putInt(JUMB_KEY_ENTER_STATE,
 						JUMB_VALUE_INTENT_TO_LOGIN);
 				jumbIntent.putExtras(nowBundle);
 				jumbIntent.setClass(SplashActivity.this, LoginActivity.class);
-
-				break;
-
-			case SharedPreferenceManager.ENTER_STATE_OTHER_TIME:
-
+				
+			}else{
 				jumbIntent.setClass(SplashActivity.this, MainActivity.class);
-				break;
+				
 			}
 
 			startActivity(jumbIntent);

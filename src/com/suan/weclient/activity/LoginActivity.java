@@ -130,6 +130,7 @@ public class LoginActivity extends Activity {
 	}
 
 	private void login() {
+		loginDialog = Util.createLoadingDialog(this, "登录", false);
 		loginDialog.show();
 
 		WeChatLoader.wechatLogin(new WechatExceptionListener() {
@@ -200,11 +201,6 @@ public class LoginActivity extends Activity {
 																getApplicationContext(),
 																nowBean);
 												loginDialog.dismiss();
-
-												SharedPreferenceManager
-														.putEnterState(
-																getApplicationContext(),
-																SharedPreferenceManager.ENTER_STATE_OTHER_TIME);
 												switch (jumbState) {
 												case SplashActivity.JUMB_VALUE_INTENT_TO_LOGIN:
 													Intent jumbIntent = new Intent();
@@ -241,6 +237,19 @@ public class LoginActivity extends Activity {
 
 					case DataParser.LOGIN_FAILED:
 
+				loginDialog.dismiss();
+
+				loginDialog = Util.createEnsureDialog(
+						new DataManager.DialogSureClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								loginDialog.dismiss();
+
+							}
+						}, false, LoginActivity.this, "登录失败，请检查账户名和密码", true);
+				loginDialog.show();
 						break;
 					}
 

@@ -15,9 +15,6 @@
  */
 package com.suan.weclient.fragment;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -39,11 +36,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataManager.LoginListener;
-import com.suan.weclient.util.DataParser;
 import com.suan.weclient.util.UserBean;
-import com.suan.weclient.util.WeChatLoader;
-import com.suan.weclient.util.WeChatLoader.WechatExceptionListener;
-import com.suan.weclient.util.WeChatLoader.WechatMassCallBack;
 import com.suan.weclient.util.WechatManager.OnActionFinishListener;
 
 public class MassFragment extends Fragment {
@@ -81,10 +74,18 @@ public class MassFragment extends Fragment {
 			public void onLogin(final UserBean userBean) {
 				// TODO Auto-generated method stub
 				Log.e("start get mass data", "");
-				if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-					sendButton.setBackgroundResource(R.drawable.send_selected_state);
+				if (mDataManager.getUserGroup().size() == 0) {
+					sendButton
+							.setBackgroundResource(R.drawable.send_selected_state);
+
 				} else {
-					sendButton.setSelected(false);
+					if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+						sendButton
+								.setBackgroundResource(R.drawable.send_selected_state);
+					} else {
+						sendButton.setSelected(false);
+					}
+
 				}
 
 			}
@@ -97,8 +98,14 @@ public class MassFragment extends Fragment {
 
 		massLeftNumTextView = (TextView) view
 				.findViewById(R.id.mass_text_left_num);
-		massLeftNumTextView.setText("你今天还能群发 "
-				+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
+		if (mDataManager.getUserGroup().size() == 0) {
+			massLeftNumTextView.setText("你今天还能群发 " + 0 + " 条消息");
+
+		} else {
+			massLeftNumTextView.setText("你今天还能群发 "
+					+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
+
+		}
 		textAmountTextView = (TextView) view.findViewById(R.id.mass_text_num);
 		textAmountTextView.setOnClickListener(new OnClickListener() {
 
@@ -137,9 +144,16 @@ public class MassFragment extends Fragment {
 
 		sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
 
-		if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+		if (mDataManager.getUserGroup().size() == 0) {
 			sendButton.setBackgroundResource(R.drawable.send_selected_state);
+
 		} else {
+			if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+				sendButton
+						.setBackgroundResource(R.drawable.send_selected_state);
+			} else {
+
+			}
 
 		}
 		sendButton.setOnClickListener(new OnClickListener() {
@@ -148,12 +162,19 @@ public class MassFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+				if (mDataManager.getUserGroup().size() == 0) {
 					sendButton
 							.setBackgroundResource(R.drawable.send_selected_state);
-				} else {
 
-					dialogSure();
+				} else {
+					if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+						sendButton
+								.setBackgroundResource(R.drawable.send_selected_state);
+					} else {
+
+						dialogSure();
+					}
+
 				}
 
 			};
@@ -237,30 +258,38 @@ public class MassFragment extends Fragment {
 
 									}
 								});
-						mDataManager.getWechatManager().getMassData(
-								mDataManager.getCurrentPosition(),
-								new OnActionFinishListener() {
-
-									@Override
-									public void onFinish(Object object) {
-										// TODO Auto-generated method stub
-										try {
-											massLeftNumTextView
-													.setText(mDataManager
-															.getCurrentUser()
-															.getMassLeft()
-															+ "");
-
-										} catch (Exception exception) {
-
-										}
-
-									}
-								});
+						
+						mDataManager.getCurrentUser().setMassLeft(mDataManager.getCurrentUser().getMassLeft()-1);
+						refreshMassLeft();
 
 					}
 				});
 	}
+	
+	public void refreshMassLeft(){
+		
+		if (mDataManager.getUserGroup().size() == 0) {
+			massLeftNumTextView.setText("你今天还能群发 " + 0 + " 条消息");
+
+		} else {
+			massLeftNumTextView.setText("你今天还能群发 "
+					+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
+
+		}
+		if (mDataManager.getUserGroup().size() == 0) {
+			sendButton.setBackgroundResource(R.drawable.send_selected_state);
+
+		} else {
+			if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+				sendButton
+						.setBackgroundResource(R.drawable.send_selected_state);
+			} else {
+
+			}
+
+		}
+	}
+	
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

@@ -15,8 +15,6 @@
  */
 package com.suan.weclient.fragment;
 
-import java.util.ArrayList;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,11 +31,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.MessageListAdapter;
-import com.suan.weclient.fragment.ContentFragment.MyAdapter;
 import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.MessageChangeListener;
+import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.MessageItem;
 import com.suan.weclient.util.WechatManager.OnActionFinishListener;
 
 public class MessageFragment extends Fragment implements
@@ -46,7 +43,6 @@ public class MessageFragment extends Fragment implements
 	private DataManager mDataManager;
 	private PullToRefreshListView pullToRefreshListView;
 	private MessageListAdapter messageListAdapter;
-	private int listLastScrollY = 0;
 
 	public MessageFragment(DataManager dataManager) {
 
@@ -58,7 +54,7 @@ public class MessageFragment extends Fragment implements
 		view = inflater.inflate(R.layout.message_fragment, null);
 
 		initWidgets();
-		initMessageChangeListener();
+		initListener();
 		initData();
 
 		return view;
@@ -98,8 +94,32 @@ public class MessageFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	private void initMessageChangeListener() {
+	private void initListener() {
 
+		mDataManager.addUserGroupListener(new UserGroupListener() {
+			
+			@Override
+			public void onGroupChangeEnd() {
+				// TODO Auto-generated method stub
+				if(mDataManager.getUserGroup().size()==0){
+					messageListAdapter.notifyDataSetChanged();
+					
+				}
+				
+			}
+			
+			@Override
+			public void onAddUser() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void deleteUser(int index) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		mDataManager.addMessageChangeListener(new MessageChangeListener() {
 
 			@Override
@@ -132,6 +152,10 @@ public class MessageFragment extends Fragment implements
 		public GetDataTask(PullToRefreshBase<?> refreshedView) {
 			mRefreshedView = refreshedView;
 			end = false;
+			if(mDataManager.getCurrentMessageHolder()==null){
+				end = true;
+				return;
+			}
 
 			try {
 				if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_END) {

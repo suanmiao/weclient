@@ -19,9 +19,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
@@ -32,8 +32,10 @@ import com.suan.weclient.fragment.ContentFragment.MyPageChangeListener;
 import com.suan.weclient.fragment.LeftFragment;
 import com.suan.weclient.fragment.RightFragment;
 import com.suan.weclient.util.DataManager;
+import com.suan.weclient.util.DataManager.AutoLoginListener;
 import com.suan.weclient.util.DataManager.DialogListener;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
+import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.SlidingMenu;
@@ -52,7 +54,6 @@ public class MainActivity extends FragmentActivity {
 	private DataManager mDataManager;
 	private Dialog popDialog;
 
-
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
@@ -62,8 +63,17 @@ public class MainActivity extends FragmentActivity {
 		initCache();
 		initWidgets();
 		initListener(contentFragment);
-		initMessage();
-		initUmeng();
+		autoLogin();
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				initUmeng();
+
+			}
+		}, 2000);
 
 	}
 
@@ -76,8 +86,7 @@ public class MainActivity extends FragmentActivity {
 					UpdateResponse updateInfo) {
 				switch (updateStatus) {
 				case 0: // has update
-					UmengUpdateAgent.showUpdateDialog(MainActivity.this,
-							updateInfo);
+					
 					break;
 				case 1: // has no update
 					break;
@@ -88,7 +97,7 @@ public class MainActivity extends FragmentActivity {
 				}
 			}
 		});
-		 UmengUpdateAgent.update(this);
+		UmengUpdateAgent.update(this);
 	}
 
 	@Override
@@ -108,7 +117,41 @@ public class MainActivity extends FragmentActivity {
 
 	private void initDataChangeListener() {
 		mDataManager = new DataManager(getApplicationContext());
-		mDataManager.addLoadingListener(new DialogListener() {
+		mDataManager.addAutoLoginListener(new AutoLoginListener() {
+			
+			@Override
+			public void autoLogin() {
+				// TODO Auto-generated method stub
+				MainActivity.this.autoLogin();
+				
+				
+			}
+			
+			public void onAutoLoginEnd(){
+				
+			}
+		});
+		mDataManager.addUserGroupListener(new UserGroupListener() {
+			
+			@Override
+			public void onGroupChangeEnd() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void deleteUser(int index) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAddUser() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+				mDataManager.addLoadingListener(new DialogListener() {
 
 			@Override
 			public void onLoad(String loaingText) {
@@ -116,6 +159,9 @@ public class MainActivity extends FragmentActivity {
 
 				if (popDialog != null) {
 					popDialog.dismiss();
+
+					popDialog = Util.createLoadingDialog(MainActivity.this,
+							loaingText, false);
 				} else {
 
 					popDialog = Util.createLoadingDialog(MainActivity.this,
@@ -142,7 +188,7 @@ public class MainActivity extends FragmentActivity {
 					DialogSureClickListener dialogSureClickListener) {
 				// TODO Auto-generated method stub
 
-				try{
+				try {
 					if (popDialog != null) {
 						popDialog.dismiss();
 					} else {
@@ -152,9 +198,9 @@ public class MainActivity extends FragmentActivity {
 
 					}
 					popDialog.show();
-					
-				}catch (Exception exception){
-					
+
+				} catch (Exception exception) {
+
 				}
 
 			}
@@ -170,7 +216,7 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 	}
-	
+
 	private long lastBackKeyTouchTime = 0;
 
 	@SuppressLint("ShowToast")
@@ -189,7 +235,6 @@ public class MainActivity extends FragmentActivity {
 			return super.onKeyDown(keyCode, event);
 		}
 	}
-
 
 	private void initCache() {
 		mDataManager.createImageCache(getApplicationContext());
@@ -224,62 +269,91 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	private void initMessage() {
+	private void autoLogin() {
 
 		if (mDataManager.getUserGroup().size() <= 0) {
 			return;
 		}
-		
-		
-		mDataManager.getWechatManager().login(mDataManager.getCurrentPosition(),true,new OnActionFinishListener() {
-			
-			@Override
-			public void onFinish(Object object) {
-				// TODO Auto-generated method stub
-				mDataManager.getWechatManager().getUserProfile(true,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
-					
+		mDataManager.setCurrentPosition(0);
+
+		mDataManager.getWechatManager().login(
+				mDataManager.getCurrentPosition(), true,
+				new OnActionFinishListener() {
+
 					@Override
 					public void onFinish(Object object) {
 						// TODO Auto-generated method stub
-						String referer = (String)object;
-						
-						mDataManager.getWechatManager().getUserImgWithReferer(mDataManager.getCurrentPosition(),true,null,new OnActionFinishListener() {
-							
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-								
-							}
-						},referer);
-						mDataManager.getWechatManager().getMassData(mDataManager.getCurrentPosition(),new OnActionFinishListener() {
-							
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-								
-						mDataManager.getWechatManager().getNewMessageList(true,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
-							
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-							}
-						});
-						
+						mDataManager.getWechatManager().getUserProfile(true,
+								mDataManager.getCurrentPosition(),
+								new OnActionFinishListener() {
+
+									@Override
+									public void onFinish(Object object) {
+										// TODO Auto-generated method stub
+										String referer = (String) object;
+
+										mDataManager
+												.getWechatManager()
+												.getUserImgWithReferer(
+														mDataManager
+																.getCurrentPosition(),
+														false,
+														null,
+														new OnActionFinishListener() {
+
+															@Override
+															public void onFinish(
+																	Object object) {
+																// TODO
+																// Auto-generated
+																// method stub
+
+															}
+														}, referer);
+										mDataManager
+												.getWechatManager()
+												.getMassData(
+														mDataManager
+																.getCurrentPosition(),
+														true,
+														new OnActionFinishListener() {
+
+															@Override
+															public void onFinish(
+																	Object object) {
+																// TODO
+																// Auto-generated
+																// method stub
+
+																mDataManager
+																		.getWechatManager()
+																		.getNewMessageList(
+																				true,
+																				mDataManager
+																						.getCurrentPosition(),
+																				new OnActionFinishListener() {
+
+																					@Override
+																					public void onFinish(
+																							Object object) {
+																						// TODO
+																						// Auto-generated
+																						// method
+																						// stub
+																						mDataManager.doAutoLoginEnd();
+
+																					}
+																				});
+															}
+														});
+
+									}
+								});
+
 					}
 				});
-				
-				
-			}
-		});
 
 	}
-	
-	
-	
-	
 
 	private void initListener(final ContentFragment fragment) {
 		fragment.setMyPageChangeListener(new MyPageChangeListener() {
@@ -295,17 +369,20 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 	}
-	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
-	    if (requestCode == LeftFragment.START_ACTIVITY_LOGIN) { 
-	        if (resultCode == RESULT_OK) { 
-	        	mDataManager.doGroupChange();
 
-	        }else if (resultCode == RESULT_CANCELED) { 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == LeftFragment.START_ACTIVITY_LOGIN) {
+			if (resultCode == RESULT_OK) {
 
-	        } 
-	    } 
-	} 
+				mDataManager.updateUserGroup();
+				mDataManager.doAddUser();
+				mDataManager.doGroupChangeEnd();
+				
+			} else if (resultCode == RESULT_CANCELED) {
+
+			}
+		}
+	}
 
 	public void showLeft() {
 		mSlidingMenu.showLeftView();

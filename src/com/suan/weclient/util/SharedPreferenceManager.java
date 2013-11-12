@@ -17,28 +17,25 @@ public class SharedPreferenceManager {
 
 	private static final String USER_GROUP_CONTENT = "content";
 
-	private static final String ENTER_STATE_SHAREDPREF = "enterState";
-
-	private static final String ENTER_STATE_CONTENT = "content";
 
 	public static final int ENTER_STATE_FIRST_TIME = -1;
 	public static final int ENTER_STATE_OTHER_TIME = 1;
 	
 
-	public static int getEnterState(Context context) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				ENTER_STATE_SHAREDPREF, 0);
-		return sharedPreferences.getInt(ENTER_STATE_CONTENT, -1);
-	}
-
-	public static boolean putEnterState(Context context, int state) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				ENTER_STATE_SHAREDPREF, 0);
-		Editor editor = sharedPreferences.edit();
-		editor.putInt(ENTER_STATE_CONTENT, state);
-
-		return editor.commit();
-	}
+//	public static int getEnterState(Context context) {
+//		SharedPreferences sharedPreferences = context.getSharedPreferences(
+//				ENTER_STATE_SHAREDPREF, 0);
+//		return sharedPreferences.getInt(ENTER_STATE_CONTENT, -1);
+//	}
+//
+//	public static boolean putEnterState(Context context, int state) {
+//		SharedPreferences sharedPreferences = context.getSharedPreferences(
+//				ENTER_STATE_SHAREDPREF, 0);
+//		Editor editor = sharedPreferences.edit();
+//		editor.putInt(ENTER_STATE_CONTENT, state);
+//
+//		return editor.commit();
+//	}
 
 	private static String getUserGroupString(Context context) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(

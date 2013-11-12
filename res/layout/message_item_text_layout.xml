@@ -19,6 +19,7 @@
 			<ImageView
 				android:id="@+id/message_item_text_img_profile"
 				android:layout_width="fill_parent"
+				android:src="@drawable/head_default"
 				android:layout_height="fill_parent"
 				android:layout_centerInParent="true"
 				android:background="#000000" />

@@ -2,6 +2,8 @@ package com.suan.weclient.util;
 
 import java.util.ArrayList;
 
+import android.R.array;
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.view.View.OnClickListener;
@@ -12,12 +14,14 @@ public class DataManager {
 
 	private ArrayList<MessageHolder> messageHolders;
 	private ArrayList<UserBean> userBeans;
+	
+	ArrayList<AutoLoginListener> autoLoginListeners;
 	ArrayList<MessageChangeListener > messageChangeListeners ;
 	ArrayList<ProfileGetListener> profileGetListeners;
 	ArrayList<LoginListener> loginListeners;
-	private ContentFragmentChangeListener contentFragmentChangeListener;
 	ArrayList<DialogListener> dialogListeners ;
 	ArrayList<UserGroupListener> userGroupListeners;
+	private ContentFragmentChangeListener contentFragmentChangeListener;
 	private int currentPosition = 0;
 	
 	
@@ -49,6 +53,7 @@ public class DataManager {
 	}
 
 	public DataManager(Context context) {
+		autoLoginListeners = new ArrayList<DataManager.AutoLoginListener>();
 		messageChangeListeners = new ArrayList<DataManager.MessageChangeListener>();
 		profileGetListeners = new ArrayList<DataManager.ProfileGetListener>();
 		loginListeners = new ArrayList<DataManager.LoginListener>();
@@ -64,17 +69,63 @@ public class DataManager {
 		}
 	}
 	
+	
 	public void updateUserGroup(){
+		//if add ,set it the first,and autologin
+		//if delete ,if delete the first ,autologin
 		
-		userBeans = SharedPreferenceManager.getUserGroup(mContext);
+		ArrayList<UserBean> newGroupArrayList = SharedPreferenceManager.getUserGroup(mContext);
+		if(newGroupArrayList.size()>userBeans.size()){
+			//when add user
+			for(int i = 0;i<newGroupArrayList.size();i++){
+				boolean exist = false;
+				for(int j = 0;j<userBeans.size();j++){
+					if(userBeans.get(j).getUserName().equals(newGroupArrayList.get(i).getUserName())){
+						exist = true;
+					}
+				}
+				if(!exist){
+					UserBean newBean = newGroupArrayList.get(i);
+					//add the user to the head
+					messageHolders.add(0,new MessageHolder(newBean));
+					userBeans.add(0, newBean);
+					doAutoLogin();
+				}
+				
+			}
+			
+			
+		}else{
+			for(int i = 0;i<userBeans.size();i++){
+				boolean exist = false;
+				for(int j = 0;j<newGroupArrayList.size();j++){
+					if(newGroupArrayList.get(j).getUserName().equals(userBeans.get(i).getUserName())){
+						exist = true;
+					}
+				}
+				if(!exist ){
+					int deleteIndex = i;
+					userBeans.remove(deleteIndex);
+					messageHolders.remove(deleteIndex);
+					if(deleteIndex == currentPosition){
+						//should relogin
+						this.doAutoLogin();
+						
+					}
+				}
+			}
+			
+		}
+		
+		doGroupChangeEnd();
+		
+		
 	}
 	
 	public WechatManager getWechatManager(){
 		return mWechatManager;
 	}
 	
-	
-
 	
 	public int getCurrentPosition(){
 		return currentPosition;
@@ -130,6 +181,11 @@ public class DataManager {
 		currentPosition = position;
 	}
 
+
+	public void addAutoLoginListener(
+			AutoLoginListener autoLoginListener) {
+		this.autoLoginListeners.add(autoLoginListener);
+	}
 	public void addMessageChangeListener(
 			MessageChangeListener messageChangeListener) {
 		this.messageChangeListeners.add(messageChangeListener);
@@ -159,6 +215,17 @@ public class DataManager {
 		this.dialogListeners.add(dialogListener);
 	}
 
+
+	public void doAutoLogin() {
+		for(int i = 0;i<autoLoginListeners.size();i++){
+			autoLoginListeners.get(i).autoLogin();
+		}
+	}
+	public void doAutoLoginEnd() {
+		for(int i = 0;i<autoLoginListeners.size();i++){
+			autoLoginListeners.get(i).onAutoLoginEnd();
+		}
+	}
 	public void doProfileGet(UserBean userBean) {
 		for(int i = 0;i<profileGetListeners.size();i++){
 			profileGetListeners.get(i).onGet(userBean);
@@ -177,12 +244,24 @@ public class DataManager {
 		}
 	}
 	
-	public void doGroupChange(){
-		for(int i =0;i<userGroupListeners.size();i++){
-			userGroupListeners.get(i).onGroupChange();
+	public void deleteUser(int index){
+		for(int i = 0;i<userGroupListeners.size();i++){
+			userGroupListeners.get(i).deleteUser(index);
 		}
 	}
 	
+	public void doAddUser( ){
+		for(int i = 0;i<userGroupListeners.size();i++){
+			userGroupListeners.get(i).onAddUser();
+		}
+	}
+		
+
+	public void doGroupChangeEnd(){
+		for(int i =0;i<userGroupListeners.size();i++){
+			userGroupListeners.get(i).onGroupChangeEnd();
+		}
+	}
 	
 	public void doChangeContentFragment(int index){
 		contentFragmentChangeListener.onChange(index);
@@ -215,6 +294,11 @@ public class DataManager {
 		}
 	}
 	
+	public interface AutoLoginListener{
+		public void autoLogin();
+		public void onAutoLoginEnd();
+	}
+		
 	public interface MessageChangeListener {
 		public void onChange(MessageHolder nowHolder);
 	}
@@ -228,7 +312,11 @@ public class DataManager {
 	}
 	
 	public interface UserGroupListener{
-		public void onGroupChange();
+		public void onGroupChangeEnd();
+		
+		public void deleteUser(int index);
+		
+		public void onAddUser();
 	}
 	
 	

@@ -61,6 +61,10 @@ public class MessageListAdapter extends BaseAdapter {
 	}
 
 	private ArrayList<MessageItem> getMessageItems() {
+		if(mDataManager.getUserGroup().size()==0){
+			ArrayList<MessageItem> blankArrayList = new ArrayList<MessageItem>();
+			return blankArrayList;
+		}
 		return mDataManager.getCurrentMessageHolder().getMessageList();
 	}
 
@@ -90,7 +94,7 @@ public class MessageListAdapter extends BaseAdapter {
 
 		switch (getMessageItems().get(position).getType()) {
 		case MessageItem.MESSAGE_TYPE_TEXT:
-
+			
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
 					null);
 			viewHolder.contentTextView = (TextView) convertView
@@ -212,6 +216,7 @@ public class MessageListAdapter extends BaseAdapter {
 			viewHolder.profileTextView = (TextView) convertView
 					.findViewById(R.id.message_item_text_text_profile);
 			viewHolder.timeTextView = (TextView)convertView.findViewById(R.id.message_item_text_text_time);
+			viewHolder.contentTextView.setText("[目前暂不支持该类型消息]");
 			break;
 
 		}
@@ -222,7 +227,13 @@ public class MessageListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				popReply(position);
+				if(mDataManager.getUserGroup().size()==0){
+					
+				}else{
+
+					popReply(position);
+					
+				}
 
 			}
 		});
@@ -230,7 +241,7 @@ public class MessageListAdapter extends BaseAdapter {
 
 		long time = Long.parseLong(getMessageItems().get(position).getDateTime());
 		Date date = new Date(time*1000);
-	    SimpleDateFormat format = new SimpleDateFormat("MMM dd HH:mm ");
+	    SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
 //	    format.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String timeString = ""+format.format(date);
 		
@@ -373,6 +384,7 @@ public class MessageListAdapter extends BaseAdapter {
 
 			}
 		});
+		
 
 		popTitleTextView.setText("Re:"
 				+ mDataManager.getCurrentMessageHolder().getMessageList()

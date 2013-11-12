@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +41,7 @@ import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.ContentFragmentChangeListener;
 import com.suan.weclient.util.DataManager.LoginListener;
 import com.suan.weclient.util.DataManager.ProfileGetListener;
+import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.UserBean;
 import com.suan.weclient.view.ScrollableTabView;
 
@@ -73,6 +73,30 @@ public class ContentFragment extends Fragment implements
 	private void initListener(DataManager dataManager){
 		
 		mDataChangeListener = dataManager;
+		mDataChangeListener.addUserGroupListener(new UserGroupListener() {
+			
+			@Override
+			public void onGroupChangeEnd() {
+				// TODO Auto-generated method stub
+				if(mDataChangeListener.getUserGroup().size()==0){
+					nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
+					
+				}
+				
+			}
+			
+			@Override
+			public void onAddUser() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void deleteUser(int index) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		mDataChangeListener.addLoginListener(new LoginListener() {
 			
 			@Override
@@ -132,7 +156,7 @@ public class ContentFragment extends Fragment implements
 
 		nowUserTextView = (TextView) mView
 				.findViewById(R.id.head_layout_text_now_user);
-		nowUserTextView.setText("微信助手");
+		nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
 
 		mPager = (ViewPager) mView.findViewById(R.id.vp_list);
 

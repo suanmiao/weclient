@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataParser.MessageListParseCallBack;
 import com.suan.weclient.util.DataParser.MessageResultHolder;
+import com.suan.weclient.util.DataParser.ParseMassDataCallBack;
 import com.suan.weclient.util.WeChatLoader.WechatExceptionListener;
 import com.suan.weclient.util.WeChatLoader.WechatGetHeadImgCallBack;
 import com.suan.weclient.util.WeChatLoader.WechatGetUserProfleCallBack;
@@ -45,12 +46,13 @@ public class WechatManager {
 
 	}
 
-	public void login(final int userIndex,final boolean popDialog,
+	public void login(final int userIndex, final boolean popDialog,
 			final OnActionFinishListener onActionFinishListener) {
 
-		if(popDialog){
+		if (popDialog) {
+			mDataManager.doDismissAllDialog();
 			mDataManager.doLoadingStart("登录...");
-			
+
 		}
 
 		WeChatLoader
@@ -69,7 +71,7 @@ public class WechatManager {
 											public void onClick(View v) {
 												// TODO Auto-generated method
 												// stub
-												login(userIndex,popDialog,
+												login(userIndex, popDialog,
 														onActionFinishListener);
 
 											}
@@ -97,6 +99,19 @@ public class WechatManager {
 
 									case DataParser.LOGIN_FAILED:
 
+
+								mDataManager.doPopEnsureDialog(true, false,
+										"登录失败 请检查账户名和密码",
+										new DialogSureClickListener() {
+
+											@Override
+											public void onClick(View v) {
+												// TODO Auto-generated method
+												// stub
+												mDataManager.doDismissAllDialog();
+
+											}
+										});
 										break;
 									}
 								} catch (Exception exception) {
@@ -112,9 +127,9 @@ public class WechatManager {
 
 	public void getUserProfile(final boolean popDialog, final int userIndex,
 			final OnActionFinishListener onActionFinishListener) {
-		if(popDialog){
+		if (popDialog) {
 			mDataManager.doLoadingStart("获取用户数据...");
-			
+
 		}
 		WeChatLoader.wechatGetUserProfile(new WechatExceptionListener() {
 
@@ -147,7 +162,6 @@ public class WechatManager {
 					String strResult = EntityUtils.toString(response
 							.getEntity());
 					if (popDialog) {
-						mDataManager.doDismissAllDialog();
 
 						mDataManager.doLoadingStart("解析用户数据...");
 
@@ -216,11 +230,10 @@ public class WechatManager {
 
 					switch (getUserProfileState) {
 					case DataParser.GET_USER_PROFILE_SUCCESS:
-						mDataManager.doProfileGet(mDataManager.getUserGroup()
-								.get(userIndex));
 
-						getUserImgWithReferer(userIndex,popDialog, userProfileImageView,
-								onActionFinishListener, referer);
+						getUserImgWithReferer(userIndex, popDialog,
+								userProfileImageView, onActionFinishListener,
+								referer);
 
 						break;
 
@@ -236,13 +249,13 @@ public class WechatManager {
 
 	}
 
-	public void getUserImgWithReferer(final int userIndex,final boolean popDialog,
-			final ImageView imageView,
+	public void getUserImgWithReferer(final int userIndex,
+			final boolean popDialog, final ImageView imageView,
 			final OnActionFinishListener onActionFinishListener,
 			final String referer) {
-		if(popDialog){
+		if (popDialog) {
 			mDataManager.doLoadingStart("获取用户头像...");
-			
+
 		}
 
 		WeChatLoader.wechatGetHeadImg(new WechatExceptionListener() {
@@ -261,8 +274,9 @@ public class WechatManager {
 							@Override
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
-								getUserImgWithReferer(userIndex,popDialog, imageView,
-										onActionFinishListener, referer);
+								getUserImgWithReferer(userIndex, popDialog,
+										imageView, onActionFinishListener,
+										referer);
 
 							}
 						});
@@ -277,12 +291,14 @@ public class WechatManager {
 				// TODO
 
 				try {
-					mDataManager.doLoadingStart("设置用户头像...");
+					if (popDialog) {
+
+						mDataManager.doLoadingStart("设置用户头像...");
+					}
 
 					Bitmap bitmap = BitmapFactory
 							.decodeStream((InputStream) response.getEntity()
 									.getContent());
-					Log.e(" get user img", "" + bitmap);
 					mDataManager.getCacheManager().putDiskBitmap(
 							ImageCacheManager.CACHE_USER_PROFILE
 									+ mDataManager.getUserGroup()
@@ -293,8 +309,6 @@ public class WechatManager {
 					}
 					onActionFinishListener.onFinish(bitmap);
 
-					mDataManager.doLoadingEnd();
-
 				} catch (Exception exception) {
 
 				}
@@ -304,9 +318,12 @@ public class WechatManager {
 
 	}
 
-	public void getMassData(final int userIndex,
+	public void getMassData(final int userIndex, final boolean popDialog,
 			final OnActionFinishListener onActionFinishListener) {
-		mDataManager.doLoadingStart("获取用户群发数据...");
+		if (popDialog) {
+			mDataManager.doLoadingStart("获取用户群发数据...");
+
+		}
 
 		WeChatLoader.wechatGetMassData(new WechatExceptionListener() {
 
@@ -319,7 +336,8 @@ public class WechatManager {
 							@Override
 							public void onClick(View v) {
 								// TODO Auto-generated method stub
-								getMassData(userIndex, onActionFinishListener);
+								getMassData(userIndex, popDialog,
+										onActionFinishListener);
 
 							}
 						});
@@ -332,23 +350,28 @@ public class WechatManager {
 				// TODO Auto-generated method stub
 
 				try {
-					mDataManager.doLoadingStart("解析用户群发数据...");
+					if (popDialog) {
+
+						mDataManager.doLoadingStart("解析用户群发数据...");
+
+
+					}
 
 					String strResult = EntityUtils.toString(response
 							.getEntity());
-					int massDataGetResult = DataParser.getMassData(strResult,
-							mDataManager.getUserGroup().get(userIndex));
-					mDataManager.doProfileGet(mDataManager.getUserGroup().get(
-							userIndex));
-					switch (massDataGetResult) {
-					case DataParser.GET_MASS_DATA_SUCCESS:
-						onActionFinishListener.onFinish(null);
+					DataParser.getMassData(strResult, mDataManager
+							.getUserGroup().get(userIndex),
+							new ParseMassDataCallBack() {
 
-						break;
-					case DataParser.GET_MASS_DATA_FAILED:
+								@Override
+								public void onBack(UserBean userBean) {
+									// TODO Auto-generated method stub
+									mDataManager.doProfileGet(mDataManager
+											.getUserGroup().get(userIndex));
+									onActionFinishListener.onFinish(null);
 
-						break;
-					}
+								}
+							});
 
 				} catch (Exception exception) {
 					Log.e("mass parse error", "" + exception);
@@ -361,8 +384,11 @@ public class WechatManager {
 	public void getNewMessageList(final boolean popLoadingDialog,
 			final int userIndex,
 			final OnActionFinishListener onActionFinishListener) {
+		if (popLoadingDialog) {
 
-		mDataManager.doLoadingStart("获取消息数据...");
+			mDataManager.doLoadingStart("获取消息数据...");
+
+		}
 
 		WeChatLoader.wechatGetMessageList(new WechatExceptionListener() {
 
@@ -391,7 +417,12 @@ public class WechatManager {
 				// stub
 
 				try {
-					mDataManager.doLoadingStart("解析消息数据...");
+					if (popLoadingDialog) {
+
+						mDataManager.doDismissAllDialog();
+						mDataManager.doLoadingStart("解析消息数据...");
+
+					}
 
 					String strResult = EntityUtils.toString(response
 							.getEntity());
@@ -466,6 +497,8 @@ public class WechatManager {
 							// Auto-generated
 							// method
 							// stub
+							// Log.e("get next message",
+							// "message size"+messageResultHolder.messageItems.size());
 							mDataManager.doMessageGet(mDataManager
 									.getMessageHolders().get(userIndex));
 
@@ -604,7 +637,7 @@ public class WechatManager {
 
 					String strResult = EntityUtils.toString(response
 							.getEntity());
-					Log.e("mass result", strResult);
+					Log.e("mass result", response.getStatusLine().getStatusCode()+"|"+strResult);
 
 					JSONObject resultJsonObject = new JSONObject(strResult);
 

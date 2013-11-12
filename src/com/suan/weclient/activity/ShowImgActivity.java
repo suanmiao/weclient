@@ -36,13 +36,13 @@ public class ShowImgActivity extends Activity {
 	private ImageView contentImageView;
 	private String slaveSid, slaveUser, token, referer, msgId;
 
-
 	private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 10;
 	private static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
 	private static int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so
 														// quality is ignored
 														// but must be provided
 	private ImageCacheManager mImageCacheManager;
+
 	/*
 	 * 
 	 * 12:too much time
@@ -59,11 +59,11 @@ public class ShowImgActivity extends Activity {
 		initImgCache();
 		initWidget();
 		initIntent();
-		
+
 	}
-	
-	public void initImgCache(){
-		
+
+	public void initImgCache() {
+
 		mImageCacheManager = ImageCacheManager.getInstance();
 		mImageCacheManager.init(this, this.getPackageCodePath(),
 				DISK_IMAGECACHE_SIZE, DISK_IMAGECACHE_COMPRESS_FORMAT,
@@ -97,7 +97,6 @@ public class ShowImgActivity extends Activity {
 
 					loadImg();
 
-
 				} catch (Exception exception) {
 					Log.e("message parse error", "" + exception);
 
@@ -109,9 +108,10 @@ public class ShowImgActivity extends Activity {
 	}
 
 	private void loadImg() {
-		loadingDialog.show();
-		Bitmap imgBitmap = mImageCacheManager.getDiskBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT+msgId);
-		if(imgBitmap == null){
+		Bitmap imgBitmap = mImageCacheManager
+				.getDiskBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT + msgId);
+		if (imgBitmap == null) {
+			loadingDialog.show();
 			WeChatLoader.wechatGetMessageImg(
 					new WechatExceptionListener() {
 
@@ -132,7 +132,9 @@ public class ShowImgActivity extends Activity {
 								Bitmap bitmap = BitmapFactory
 										.decodeStream((InputStream) response
 												.getEntity().getContent());
-								mImageCacheManager.putDiskBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT+msgId, bitmap);
+								mImageCacheManager.putDiskBitmap(
+										ImageCacheManager.CACHE_MESSAGE_CONTENT
+												+ msgId, bitmap);
 								imageView.setImageBitmap(bitmap);
 								loadingDialog.dismiss();
 
@@ -144,30 +146,30 @@ public class ShowImgActivity extends Activity {
 					}, msgId, slaveSid, slaveUser, token, referer,
 					contentImageView,
 					WeChatLoader.WECHAT_MESSAGE_IMG_LARGE);
-			
-		}else{
-			
+
+		} else {
+
 			contentImageView.setImageBitmap(imgBitmap);
-			
+
 		}
 
 	}
 
 	private void initWidget() {
 		loadingDialog = Util.createLoadingDialog(this, "图片加载中", false);
-		mainLayout = (LinearLayout)findViewById(R.id.show_img_layout);
+		mainLayout = (LinearLayout) findViewById(R.id.show_img_layout);
 		mainLayout.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();
-				
+
 			}
 		});
-		bgLayout = (RelativeLayout)findViewById(R.id.show_img_bg_layout);
+		bgLayout = (RelativeLayout) findViewById(R.id.show_img_bg_layout);
 		bgLayout.setBackgroundColor(Color.argb(220, 0, 0, 0));
-	
+
 		contentImageView = (ImageView) findViewById(R.id.show_img_img_content);
 
 	}

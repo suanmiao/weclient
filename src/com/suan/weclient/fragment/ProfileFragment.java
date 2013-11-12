@@ -15,7 +15,6 @@
  */
 package com.suan.weclient.fragment;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,8 +26,8 @@ import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.Util;
 import com.suan.weclient.util.DataManager.ProfileGetListener;
+import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.UserBean;
 
 
@@ -94,6 +93,31 @@ public class ProfileFragment extends Fragment {
 	}
 	
 	private void initListener(){
+		mDataManager.addUserGroupListener(new UserGroupListener() {
+			
+			@Override
+			public void onGroupChangeEnd() {
+				// TODO Auto-generated method stub
+				if(mDataManager.getUserGroup().size() == 0){
+					newPeopleTextView.setText("");
+					newMessageTextView.setText("");
+					totalPeopleTextView.setText("");
+				}
+				
+			}
+			
+			@Override
+			public void onAddUser() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void deleteUser(int index) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		mDataManager.addProfileGetListener(new ProfileGetListener() {
 			
 			@Override
