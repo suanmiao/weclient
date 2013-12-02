@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +36,7 @@ import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataManager.LoginListener;
 import com.suan.weclient.util.UserBean;
-import com.suan.weclient.util.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MassFragment extends Fragment {
 
@@ -63,6 +62,7 @@ public class MassFragment extends Fragment {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.mass_layout, null);
 		initWidgets();
+		initWidgetsEvent();
 		initListener();
 		return view;
 	}
@@ -73,7 +73,6 @@ public class MassFragment extends Fragment {
 			@Override
 			public void onLogin(final UserBean userBean) {
 				// TODO Auto-generated method stub
-				Log.e("start get mass data", "");
 				if (mDataManager.getUserGroup().size() == 0) {
 					sendButton
 							.setBackgroundResource(R.drawable.send_selected_state);
@@ -98,15 +97,16 @@ public class MassFragment extends Fragment {
 
 		massLeftNumTextView = (TextView) view
 				.findViewById(R.id.mass_text_left_num);
-		if (mDataManager.getUserGroup().size() == 0) {
-			massLeftNumTextView.setText("你今天还能群发 " + 0 + " 条消息");
-
-		} else {
-			massLeftNumTextView.setText("你今天还能群发 "
-					+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
-
-		}
 		textAmountTextView = (TextView) view.findViewById(R.id.mass_text_num);
+
+
+		sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
+
+	}
+		
+	private void initWidgetsEvent(){
+		
+		setMassLeft();
 		textAmountTextView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -116,7 +116,6 @@ public class MassFragment extends Fragment {
 
 			}
 		});
-
 		contentEditText.addTextChangedListener(new TextWatcher() {
 
 			@Override
@@ -141,21 +140,6 @@ public class MassFragment extends Fragment {
 
 			}
 		});
-
-		sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
-
-		if (mDataManager.getUserGroup().size() == 0) {
-			sendButton.setBackgroundResource(R.drawable.send_selected_state);
-
-		} else {
-			if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-				sendButton
-						.setBackgroundResource(R.drawable.send_selected_state);
-			} else {
-
-			}
-
-		}
 		sendButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -260,19 +244,32 @@ public class MassFragment extends Fragment {
 								});
 						
 						mDataManager.getCurrentUser().setMassLeft(mDataManager.getCurrentUser().getMassLeft()-1);
-						refreshMassLeft();
+						setMassLeft();
 
 					}
 				});
 	}
 	
-	public void refreshMassLeft(){
+	public void setMassLeft(){
+		String typeString = "";
+		switch(mDataManager.getCurrentUser().getUserType()){
+		case UserBean.USER_TYPE_SUBSTRICTION:
+			typeString = "今天";
+			
+			break;
+			
+		case UserBean.USER_TYPE_SERVICE:
+			
+			typeString = "本月";
+			break;
+		}
 		
 		if (mDataManager.getUserGroup().size() == 0) {
-			massLeftNumTextView.setText("你今天还能群发 " + 0 + " 条消息");
+			
+			massLeftNumTextView.setText("你"+typeString+"还能群发 " + 0 + " 条消息");
 
 		} else {
-			massLeftNumTextView.setText("你今天还能群发 "
+			massLeftNumTextView.setText("你"+typeString+"还能群发 "
 					+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
 
 		}

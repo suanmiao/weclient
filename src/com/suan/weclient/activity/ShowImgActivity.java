@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.Util;
-import com.suan.weclient.util.WeChatLoader;
-import com.suan.weclient.util.WeChatLoader.WechatExceptionListener;
-import com.suan.weclient.util.WeChatLoader.WechatGetMessageImgCallBack;
+import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -145,7 +145,7 @@ public class ShowImgActivity extends Activity {
 						}
 					}, msgId, slaveSid, slaveUser, token, referer,
 					contentImageView,
-					WeChatLoader.WECHAT_MESSAGE_IMG_LARGE);
+					WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE);
 
 		} else {
 

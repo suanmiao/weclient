@@ -18,15 +18,15 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataParser;
 import com.suan.weclient.util.NetworkUtil;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.UserBean;
 import com.suan.weclient.util.Util;
-import com.suan.weclient.util.WeChatLoader;
-import com.suan.weclient.util.WeChatLoader.WechatExceptionListener;
-import com.suan.weclient.util.WeChatLoader.WechatGetUserProfleCallBack;
-import com.suan.weclient.util.WeChatLoader.WechatLoginCallBack;
+import com.suan.weclient.util.net.DataParser;
+import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetUserProfleCallBack;
+import com.suan.weclient.util.net.WeChatLoader.WechatLoginCallBack;
 import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends Activity {

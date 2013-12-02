@@ -37,7 +37,7 @@ import com.suan.weclient.util.DataManager.DialogListener;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.Util;
-import com.suan.weclient.util.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;

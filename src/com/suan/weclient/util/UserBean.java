@@ -9,6 +9,10 @@ public class UserBean {
 
 	private JSONObject contentObject;
 
+	public static final int USER_TYPE_SUBSTRICTION = 1;
+	public static final int USER_TYPE_SERVICE = 2;
+
+	private int userType = 0;
 	private String nickNameString = "";
 	private int massLeft = 0;
 	private String userNameString = "";
@@ -31,8 +35,16 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "nickname"+exception);
-			
+			Log.e("user bean parse error", "nickname" + exception);
+
+		}
+
+		try {
+
+			userType = contentJsonObject.getInt("userType");
+
+		} catch (Exception exception) {
+			Log.e("user bean parse error", "userType" + exception);
 
 		}
 		try {
@@ -42,7 +54,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "new message"+exception);
+			Log.e("user bean parse error", "new message" + exception);
 
 		}
 
@@ -53,7 +65,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "fake id"+exception);
+			Log.e("user bean parse error", "fake id" + exception);
 
 		}
 		try {
@@ -63,7 +75,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "new people"+exception);
+			Log.e("user bean parse error", "new people" + exception);
 
 		}
 
@@ -74,7 +86,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "total people"+exception);
+			Log.e("user bean parse error", "total people" + exception);
 
 		}
 		try {
@@ -84,7 +96,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "user name"+exception);
+			Log.e("user bean parse error", "user name" + exception);
 
 		}
 
@@ -95,7 +107,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "pwd"+exception);
+			Log.e("user bean parse error", "pwd" + exception);
 
 		}
 		try {
@@ -105,7 +117,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "token"+exception);
+			Log.e("user bean parse error", "token" + exception);
 
 		}
 		try {
@@ -115,7 +127,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "slave sid"+exception);
+			Log.e("user bean parse error", "slave sid" + exception);
 
 		}
 		try {
@@ -125,7 +137,7 @@ public class UserBean {
 			}
 
 		} catch (Exception exception) {
-			Log.e("user bean parse error", "slave user"+exception);
+			Log.e("user bean parse error", "slave user" + exception);
 
 		}
 	}
@@ -144,6 +156,21 @@ public class UserBean {
 
 		}
 
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+
+		try {
+			contentObject.put("userType", userType);
+			this.userType = userType;
+		} catch (Exception exception) {
+
+			Log.e("put error", "usertype " + exception);
+		}
 	}
 
 	public int getMassLeft() {
@@ -165,7 +192,7 @@ public class UserBean {
 		try {
 			contentObject.put("nickname", nickname);
 		} catch (Exception exception) {
-			Log.e("put error", "nickname"+exception);
+			Log.e("put error", "nickname" + exception);
 
 		}
 	}
@@ -195,7 +222,7 @@ public class UserBean {
 			contentObject.put("new_people", newPeople);
 		} catch (Exception exception) {
 
-			Log.e("put error", "new people "+exception);
+			Log.e("put error", "new people " + exception);
 		}
 	}
 
@@ -209,8 +236,8 @@ public class UserBean {
 		try {
 			contentObject.put("new_message", newMessage);
 		} catch (Exception exception) {
-			
-			Log.e("put error", "new message "+exception);
+
+			Log.e("put error", "new message " + exception);
 		}
 	}
 

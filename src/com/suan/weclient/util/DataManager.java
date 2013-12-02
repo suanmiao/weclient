@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.view.View.OnClickListener;
 
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class DataManager {

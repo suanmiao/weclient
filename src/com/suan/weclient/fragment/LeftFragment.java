@@ -43,7 +43,7 @@ import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.AutoLoginListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class LeftFragment extends Fragment implements OnItemClickListener,
@@ -195,7 +195,6 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 				nowUserImg.setImageBitmap(imgBitmap);
 
 			} else {
-				Log.e("start get user bitmap ", "position" + position);
 				mDataManager.getWechatManager().getUserImgDirectly(false,
 						position, nowUserImg, new OnActionFinishListener() {
 
@@ -203,7 +202,6 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 							public void onFinish(Object object) {
 								// TODO Auto-generated method stub
 								Bitmap nowUserBitmap = (Bitmap) object;
-								Log.e("get user bitmap ", "position" + position);
 								mDataManager.getCacheManager().putDiskBitmap(
 										ImageCacheManager.CACHE_USER_PROFILE
 												+ mDataManager.getUserGroup()

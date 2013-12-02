@@ -34,11 +34,11 @@ import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.MessageItem;
 import com.suan.weclient.util.Util;
-import com.suan.weclient.util.WeChatLoader;
-import com.suan.weclient.util.WeChatLoader.WechatExceptionListener;
-import com.suan.weclient.util.WeChatLoader.WechatGetHeadImgCallBack;
-import com.suan.weclient.util.WeChatLoader.WechatGetMessageImgCallBack;
-import com.suan.weclient.util.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
+import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class MessageListAdapter extends BaseAdapter {
@@ -196,7 +196,7 @@ public class MessageListAdapter extends BaseAdapter {
 						mDataManager.getCurrentUser().getToken(),
 						getMessageItems().get(position).getReferer(),
 						viewHolder.contentImageView,
-						WeChatLoader.WECHAT_MESSAGE_IMG_SMALL);
+						WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL);
 
 			} else {
 				viewHolder.contentImageView.setImageBitmap(contentBitmap);

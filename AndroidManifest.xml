@@ -14,8 +14,9 @@
 		android:theme="@style/AppTheme" >
 		<activity
 			android:name="com.suan.weclient.activity.SplashActivity"
+			android:label="@string/app_name"
 			android:screenOrientation="portrait"
-			android:label="@string/app_name" >
+			android:theme="@style/Theme.Transparent" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -31,13 +32,14 @@
 			android:screenOrientation="portrait"
 			android:windowSoftInputMode="adjustResize" >
 		</activity>
-		<activity android:name=".activity.MainActivity"
-			android:screenOrientation="portrait"
-			 >
+		<activity
+			android:name=".activity.MainActivity"
+			android:screenOrientation="portrait" >
 		</activity>
-		<activity android:name=".activity.ShowImgActivity" 
+		<activity
+			android:name=".activity.ShowImgActivity"
 			android:screenOrientation="portrait"
-			android:theme="@style/Theme.Transparent">
+			android:theme="@style/Theme.Transparent" >
 		</activity>
 		<!-- Caution! Do not change this app key. It is only for demo usage. -->
 		<meta-data

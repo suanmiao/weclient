@@ -35,7 +35,7 @@ import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.MessageChangeListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MessageFragment extends Fragment implements
 		OnRefreshListener<ListView> {
@@ -97,27 +97,27 @@ public class MessageFragment extends Fragment implements
 	private void initListener() {
 
 		mDataManager.addUserGroupListener(new UserGroupListener() {
-			
+
 			@Override
 			public void onGroupChangeEnd() {
 				// TODO Auto-generated method stub
-				if(mDataManager.getUserGroup().size()==0){
+				if (mDataManager.getUserGroup().size() == 0) {
 					messageListAdapter.notifyDataSetChanged();
-					
+
 				}
-				
+
 			}
-			
+
 			@Override
 			public void onAddUser() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void deleteUser(int index) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		mDataManager.addMessageChangeListener(new MessageChangeListener() {
@@ -125,10 +125,9 @@ public class MessageFragment extends Fragment implements
 			@Override
 			public void onChange(MessageHolder nowHolder) {
 				// TODO Auto-generated method stub
-			
+
 				messageListAdapter.notifyDataSetChanged();
-				
-				
+
 			}
 		});
 
@@ -152,7 +151,7 @@ public class MessageFragment extends Fragment implements
 		public GetDataTask(PullToRefreshBase<?> refreshedView) {
 			mRefreshedView = refreshedView;
 			end = false;
-			if(mDataManager.getCurrentMessageHolder()==null){
+			if (mDataManager.getCurrentMessageHolder() == null) {
 				end = true;
 				return;
 			}
@@ -162,19 +161,25 @@ public class MessageFragment extends Fragment implements
 
 					int size = mDataManager.getCurrentMessageHolder()
 							.getMessageList().size();
-					int page = size / 20
-							+ ((size / 20 == 0) ? size % 20 / 10 : 0) + 1;
-					mDataManager.getWechatManager().getNextMessageList(page,
-							mDataManager.getCurrentPosition(),
-							new OnActionFinishListener() {
+					if (size >= 20) {
+						int page = size / 20
+								+ ((size / 20 == 0) ? size % 20 / 10 : 0) + 1;
 
-								@Override
-								public void onFinish(Object object) {
-									// TODO Auto-generated method stub
-									end = true;
+						mDataManager.getWechatManager().getNextMessageList(
+								page, mDataManager.getCurrentPosition(),
+								new OnActionFinishListener() {
 
-								}
-							});
+									@Override
+									public void onFinish(Object object) {
+										// TODO Auto-generated method stub
+										end = true;
+
+									}
+								});
+
+					}else{
+						end = true;
+					}
 
 				} else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
 
@@ -211,7 +216,7 @@ public class MessageFragment extends Fragment implements
 
 				}
 			} catch (Exception e) {
-				
+
 			}
 		}
 
