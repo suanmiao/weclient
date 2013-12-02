@@ -26,6 +26,8 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.suan.weclient.R;
 import com.suan.weclient.fragment.ContentFragment;
 import com.suan.weclient.fragment.ContentFragment.MyPageChangeListener;
@@ -38,15 +40,13 @@ import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
-import com.suan.weclient.view.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends SlidingFragmentActivity {
 
-	SlidingMenu mSlidingMenu;
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
 	ContentFragment contentFragment;
@@ -55,30 +55,85 @@ public class MainActivity extends FragmentActivity {
 	private Dialog popDialog;
 
 	@Override
-	protected void onCreate(Bundle arg0) {
+	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main);
 		initDataChangeListener();
 		initCache();
+		initSlidingMenu();
 		initWidgets();
 		initListener(contentFragment);
 		autoLogin();
+		initUmeng();
+
+	}
+	
+	private void initSlidingMenu(){
+		
+		// set the Behind View
+		setBehindContentView(R.layout.left_frame);
+		
+		
+		// Test
+		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
+		getSlidingMenu().setShadowWidthRes(R.dimen.shadow_width);
+		getSlidingMenu().setShadowDrawable(R.drawable.shadow);
+		getSlidingMenu().setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		getSlidingMenu().setFadeDegree(0.35f);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
+
+
+		setContentView(R.layout.main);
+		setBehindContentView(R.layout.left_frame);
+		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
+		
+		FragmentTransaction t = this.getSupportFragmentManager()
+				.beginTransaction();
+
+		leftFragment = new LeftFragment(this.getSupportFragmentManager(),
+				mDataManager);
+		t.replace(R.id.left_frame, leftFragment);
+		
+		rightFragment = new RightFragment(mDataManager);
+		t.replace(R.id.right_frame, rightFragment);
+		
+		contentFragment = new ContentFragment(mDataManager);
+		contentFragment.setShowMenuListener(new ShowMenuListener() {
+			
+			@Override
+			public void showLeftMenu() {
+				// TODO Auto-generated method stub
+				getSlidingMenu().showMenu();
+				
+			}
+			
+			public void showRightMenu(){
+				getSlidingMenu().showSecondaryMenu();
+				
+			}
+		});
+		t.replace(R.id.content_layout, contentFragment);
+		
+		t.commit();
+		
+	}
+	
+	
+
+	private void initWidgets() {
+
+
+	}
+
+	private void initUmeng() {
+
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				initUmeng();
-
-			}
-		}, 2000);
-
-	}
-
-	private void initUmeng() {
-
 		UmengUpdateAgent.setUpdateAutoPopup(true);
 		UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
 			@Override
@@ -97,7 +152,10 @@ public class MainActivity extends FragmentActivity {
 				}
 			}
 		});
-		UmengUpdateAgent.update(this);
+		UmengUpdateAgent.update(MainActivity.this);
+
+			}
+		}, 2000);
 	}
 
 	@Override
@@ -241,34 +299,6 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	private void initWidgets() {
-
-		mSlidingMenu = (SlidingMenu) findViewById(R.id.slidingMenu);
-
-		mSlidingMenu.setLeftView(getLayoutInflater().inflate(
-				R.layout.left_frame, null));
-		mSlidingMenu.setRightView(getLayoutInflater().inflate(
-				R.layout.right_frame, null));
-		mSlidingMenu.setCenterView(getLayoutInflater().inflate(
-				R.layout.center_frame, null));
-
-		FragmentTransaction t = this.getSupportFragmentManager()
-				.beginTransaction();
-
-		leftFragment = new LeftFragment(this.getSupportFragmentManager(),
-				mDataManager);
-
-		t.replace(R.id.left_frame, leftFragment);
-		rightFragment = new RightFragment(mDataManager);
-
-		t.replace(R.id.right_frame, rightFragment);
-		contentFragment = new ContentFragment(mDataManager);
-
-		t.replace(R.id.center_frame, contentFragment);
-		t.commit();
-
-	}
-
 	private void autoLogin() {
 
 		if (mDataManager.getUserGroup().size() <= 0) {
@@ -360,11 +390,11 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onPageSelected(int position) {
 				if (fragment.isFirst()) {
-					mSlidingMenu.setCanSliding(true, false);
+//					mSlidingMenu.setCanSliding(true, false);
 				} else if (fragment.isEnd()) {
-					mSlidingMenu.setCanSliding(false, true);
+//					mSlidingMenu.setCanSliding(false, true);
 				} else {
-					mSlidingMenu.setCanSliding(false, false);
+//					mSlidingMenu.setCanSliding(false, false);
 				}
 			}
 		});
@@ -384,12 +414,12 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public void showLeft() {
-		mSlidingMenu.showLeftView();
-	}
-
-	public void showRight() {
-		mSlidingMenu.showRightView();
+	public interface ShowMenuListener{
+		public void showLeftMenu();
+		
+		public void showRightMenu();
+		
+		
 	}
 
 }

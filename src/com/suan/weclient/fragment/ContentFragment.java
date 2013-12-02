@@ -36,6 +36,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity;
+import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.adapter.ScrollingTabsAdapter;
 import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.DataManager.ContentFragmentChangeListener;
@@ -48,6 +49,7 @@ import com.suan.weclient.view.ScrollableTabView;
 public class ContentFragment extends Fragment implements
 		OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
 
+	private ShowMenuListener showMenuListener;
 	private RelativeLayout showLeftLayout;
 	private RelativeLayout showRightLayout;
 	private ImageButton showLeftButton, showRightButton;
@@ -66,7 +68,6 @@ public class ContentFragment extends Fragment implements
 	private DataManager mDataChangeListener;
 
 	public ContentFragment(DataManager dataManager) {
-		// Log.e("state", "init");
 		initListener(dataManager);
 	}
 	
@@ -131,18 +132,15 @@ public class ContentFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Log.e("state", "onCreate");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		// Log.e("state", "onDestroy");
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// Log.e("state", "onCreateView");
 		View mView = inflater.inflate(R.layout.content_layout, null);
 
 		showLeftLayout = (RelativeLayout) mView
@@ -187,6 +185,10 @@ public class ContentFragment extends Fragment implements
 	public ViewPager getViewPage() {
 		return mPager;
 	}
+	
+	public void setShowMenuListener(ShowMenuListener showMenuListener){
+		this.showMenuListener = showMenuListener;
+	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 
@@ -196,7 +198,7 @@ public class ContentFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showLeft();
+				showMenuListener.showLeftMenu();
 			}
 		});
 
@@ -204,7 +206,7 @@ public class ContentFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				((MainActivity) getActivity()).showRight();
+				showMenuListener.showRightMenu();
 			}
 		});
 	}
