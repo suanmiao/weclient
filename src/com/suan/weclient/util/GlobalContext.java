@@ -4,11 +4,7 @@ import java.io.File;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap.CompressFormat;
 import android.os.Environment;
-import android.view.Display;
-
-import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class GlobalContext extends Application {
 

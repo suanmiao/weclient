@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.suan.weclient.R;
-import com.suan.weclient.view.TabAdapter;
-
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+
+import com.suan.weclient.R;
+import com.suan.weclient.view.TabAdapter;
 
 public class ScrollingTabsAdapter implements TabAdapter {
 

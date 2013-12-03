@@ -2,7 +2,6 @@ package com.suan.weclient.util;
 
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 

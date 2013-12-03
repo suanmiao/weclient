@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
@@ -67,6 +66,7 @@ public class Util {
 	 * @param msg
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static Dialog createLoadingDialog(Context context,
 			String loadingText, boolean cancelable) {
 
@@ -107,6 +107,7 @@ public class Util {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Dialog createEnsureDialog(
 			OnClickListener sureOnClickListener, boolean cancelVisible,
 			Context context, String titleText, boolean cancelable) {

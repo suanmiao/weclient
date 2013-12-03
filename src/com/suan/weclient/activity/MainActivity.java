@@ -1,29 +1,26 @@
-/*
- * Copyright (C) 2012 yueyueniao
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.suan.weclient.activity;
+
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.slidingmenu.lib.SlidingMenu;
@@ -41,6 +38,12 @@ import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.fb.FeedbackAgent;
+import com.umeng.fb.model.Conversation;
+import com.umeng.fb.model.Conversation.SyncListener;
+import com.umeng.fb.model.DevReply;
+import com.umeng.fb.model.Reply;
+import com.umeng.update.UmengDialogButtonListener;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -50,9 +53,24 @@ public class MainActivity extends SlidingFragmentActivity {
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
 	ContentFragment contentFragment;
+	
 
+	/*
+	 *about pop dialog 
+	 */
+	private TextView popContentTextView;
+	private TextView popTitleTextView;
+	private EditText popContentEditText;
+	private TextView popTextAmountTextView;
+	private ImageButton popCancelButton, popSureButton;
+	
+
+	private FeedbackAgent agent;
+	private Conversation defaultConversation;
+	
 	private DataManager mDataManager;
 	private Dialog popDialog;
+	private Dialog replyDialog;
 
 	@Override
 	public void onCreate(Bundle arg0) {
@@ -67,13 +85,12 @@ public class MainActivity extends SlidingFragmentActivity {
 		initUmeng();
 
 	}
-	
-	private void initSlidingMenu(){
-		
+
+	private void initSlidingMenu() {
+
 		// set the Behind View
 		setBehindContentView(R.layout.left_frame);
-		
-		
+
 		// Test
 		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
 		getSlidingMenu().setShadowWidthRes(R.dimen.shadow_width);
@@ -83,50 +100,49 @@ public class MainActivity extends SlidingFragmentActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 
-
 		setContentView(R.layout.main);
 		setBehindContentView(R.layout.left_frame);
 		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
-		
+
 		FragmentTransaction t = this.getSupportFragmentManager()
 				.beginTransaction();
 
 		leftFragment = new LeftFragment(this.getSupportFragmentManager(),
 				mDataManager);
 		t.replace(R.id.left_frame, leftFragment);
-		
+
 		rightFragment = new RightFragment(mDataManager);
 		t.replace(R.id.right_frame, rightFragment);
-		
+
 		contentFragment = new ContentFragment(mDataManager);
 		contentFragment.setShowMenuListener(new ShowMenuListener() {
-			
+
 			@Override
 			public void showLeftMenu() {
 				// TODO Auto-generated method stub
 				getSlidingMenu().showMenu();
-				
+
 			}
-			
-			public void showRightMenu(){
+
+			public void showRightMenu() {
 				getSlidingMenu().showSecondaryMenu();
-				
+
 			}
 		});
 		t.replace(R.id.content_layout, contentFragment);
-		
+
 		t.commit();
-		
+
 	}
-	
-	
 
 	private void initWidgets() {
-
 
 	}
 
 	private void initUmeng() {
+
+		agent = new FeedbackAgent(this);
+		defaultConversation = agent.getDefaultConversation();
 
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
@@ -134,29 +150,227 @@ public class MainActivity extends SlidingFragmentActivity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-		UmengUpdateAgent.setUpdateAutoPopup(true);
-		UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-			@Override
-			public void onUpdateReturned(int updateStatus,
-					UpdateResponse updateInfo) {
-				switch (updateStatus) {
-				case 0: // has update
+				UmengUpdateAgent.setUpdateAutoPopup(true);
+				UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
 					
-					break;
-				case 1: // has no update
-					break;
-				case 2: // none wifi
-					break;
-				case 3: // time out
-					break;
-				}
-			}
-		});
-		UmengUpdateAgent.update(MainActivity.this);
+					@Override
+					public void onClick(int arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+					@Override
+					public void onUpdateReturned(int updateStatus,
+							UpdateResponse updateInfo) {
+						switch (updateStatus) {
+						case 0: // has update
+
+							break;
+						case 1: // has no update
+							break;
+						case 2: // none wifi
+							break;
+						case 3: // time out
+							break;
+						}
+					}
+				});
+				UmengUpdateAgent.update(MainActivity.this);
 
 			}
-		}, 2000);
+
+		}, 1000);
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+		defaultConversation.sync(new SyncListener() {
+
+			@Override
+			public void onSendUserReply(List<Reply> arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onReceiveDevReply(List<DevReply> arg0) {
+				// TODO Auto-generated method stub
+				String replyString = "";
+				for (int i = 0; i < arg0.size(); i++) {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
+					replyString+=dateFormat.format( arg0.get(i).getDatetime());
+					replyString+=":  ";
+					replyString+=arg0.get(i).getContent();
+					replyString+="\n";
+
+				}
+				if(arg0.size()>0){
+					dialogShowDevReply(replyString);
+				}
+
+			}
+		});
+				
+			}
+		}, 1000);
+
 	}
+	
+	public void dialogShowDevReply(String content){
+		
+		LayoutInflater inflater = (LayoutInflater)this 
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View dialogView = inflater
+				.inflate(R.layout.dialog_dev_reply_layout, null);
+		popTitleTextView = (TextView) dialogView
+				.findViewById(R.id.dialog_dev_reply_text_title);
+
+		popSureButton = (ImageButton) dialogView
+				.findViewById(R.id.dialog_dev_reply_button_reply);
+		popCancelButton = (ImageButton) dialogView
+				.findViewById(R.id.dialog_dev_reply_button_o);
+
+
+		popContentTextView = (TextView) dialogView
+				.findViewById(R.id.dialog_dev_reply_text_content);
+		popContentTextView.setText(content);
+
+		popTitleTextView.setText("开发者回复:"
+				);
+		popSureButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				replyDialog.dismiss();
+				popFeedback();
+			}
+		});
+		popCancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				replyDialog.dismiss();
+
+			}
+		});
+
+		replyDialog = new Dialog(this, R.style.dialog);
+
+		replyDialog.setContentView(dialogView);
+		replyDialog.show();
+	}
+	
+
+	private void popFeedback() {
+
+		LayoutInflater inflater = (LayoutInflater) 
+				this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
+		popTitleTextView = (TextView) dialogView
+				.findViewById(R.id.pop_feedback_text_title);
+
+		popContentEditText = (EditText) dialogView
+				.findViewById(R.id.pop_feedback_edit_text);
+		popSureButton = (ImageButton) dialogView
+				.findViewById(R.id.pop_feedback_button_sure);
+		popCancelButton = (ImageButton) dialogView
+				.findViewById(R.id.pop_feedback_button_cancel);
+
+		popTextAmountTextView = (TextView) dialogView
+				.findViewById(R.id.pop_feedback_text_num);
+		popTextAmountTextView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popContentEditText.setText("");
+
+			}
+		});
+
+		popContentEditText.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+					popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
+				popTextAmountTextView.setText(popContentEditText.getText().length() + " x");
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		popTitleTextView.setText("反馈");
+		popSureButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+                String content = popContentEditText.getEditableText()
+                        .toString();
+                defaultConversation.addUserReply(content);                
+                replyDialog.dismiss();
+                
+                mDataManager.doLoadingStart("反馈发送中...");
+                
+                sync();
+			}
+		});
+		popCancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				replyDialog.cancel();
+
+			}
+		});
+
+		replyDialog = new Dialog(this, R.style.dialog);
+
+		replyDialog.setContentView(dialogView);
+		replyDialog.show();
+
+	}
+	
+
+	void sync() {
+        Conversation.SyncListener listener = new Conversation.SyncListener() {
+
+                @Override
+                public void onSendUserReply(List<Reply> replyList) {
+                	popContentEditText.setText("");
+                	mDataManager.doLoadingEnd();
+                	
+                	Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onReceiveDevReply(List<DevReply> replyList) {
+                }
+        };
+        defaultConversation.sync(listener);
+	}
+	
 
 	@Override
 	protected void onStop() {
@@ -176,40 +390,39 @@ public class MainActivity extends SlidingFragmentActivity {
 	private void initDataChangeListener() {
 		mDataManager = new DataManager(getApplicationContext());
 		mDataManager.addAutoLoginListener(new AutoLoginListener() {
-			
+
 			@Override
 			public void autoLogin() {
 				// TODO Auto-generated method stub
 				MainActivity.this.autoLogin();
-				
-				
+
 			}
-			
-			public void onAutoLoginEnd(){
-				
+
+			public void onAutoLoginEnd() {
+
 			}
 		});
 		mDataManager.addUserGroupListener(new UserGroupListener() {
-			
+
 			@Override
 			public void onGroupChangeEnd() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void deleteUser(int index) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAddUser() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-				mDataManager.addLoadingListener(new DialogListener() {
+		mDataManager.addLoadingListener(new DialogListener() {
 
 			@Override
 			public void onLoad(String loaingText) {
@@ -370,7 +583,8 @@ public class MainActivity extends SlidingFragmentActivity {
 																						// Auto-generated
 																						// method
 																						// stub
-																						mDataManager.doAutoLoginEnd();
+																						mDataManager
+																								.doAutoLoginEnd();
 
 																					}
 																				});
@@ -390,11 +604,11 @@ public class MainActivity extends SlidingFragmentActivity {
 			@Override
 			public void onPageSelected(int position) {
 				if (fragment.isFirst()) {
-//					mSlidingMenu.setCanSliding(true, false);
+					// mSlidingMenu.setCanSliding(true, false);
 				} else if (fragment.isEnd()) {
-//					mSlidingMenu.setCanSliding(false, true);
+					// mSlidingMenu.setCanSliding(false, true);
 				} else {
-//					mSlidingMenu.setCanSliding(false, false);
+					// mSlidingMenu.setCanSliding(false, false);
 				}
 			}
 		});
@@ -407,19 +621,18 @@ public class MainActivity extends SlidingFragmentActivity {
 				mDataManager.updateUserGroup();
 				mDataManager.doAddUser();
 				mDataManager.doGroupChangeEnd();
-				
+
 			} else if (resultCode == RESULT_CANCELED) {
 
 			}
 		}
 	}
 
-	public interface ShowMenuListener{
+	public interface ShowMenuListener {
 		public void showLeftMenu();
-		
+
 		public void showRightMenu();
-		
-		
+
 	}
 
 }

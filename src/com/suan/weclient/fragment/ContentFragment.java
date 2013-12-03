@@ -29,13 +29,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.suan.weclient.R;
-import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.adapter.ScrollingTabsAdapter;
 import com.suan.weclient.util.DataManager;
@@ -50,8 +48,6 @@ public class ContentFragment extends Fragment implements
 		OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
 
 	private ShowMenuListener showMenuListener;
-	private RelativeLayout showLeftLayout;
-	private RelativeLayout showRightLayout;
 	private ImageButton showLeftButton, showRightButton;
 	private TextView nowUserTextView;
 
@@ -143,10 +139,6 @@ public class ContentFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View mView = inflater.inflate(R.layout.content_layout, null);
 
-		showLeftLayout = (RelativeLayout) mView
-				.findViewById(R.id.head_layout_showLeft);
-		showRightLayout = (RelativeLayout) mView
-				.findViewById(R.id.head_layout_showRight);
 		showLeftButton = (ImageButton) mView
 				.findViewById(R.id.head_button_show_left);
 		showRightButton = (ImageButton) mView

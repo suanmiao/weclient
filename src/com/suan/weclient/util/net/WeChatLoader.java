@@ -6,7 +6,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -20,18 +19,16 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
-import com.suan.weclient.R.id;
-import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.MessageItem;
-import com.suan.weclient.util.UserBean;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.suan.weclient.util.MessageHolder;
+import com.suan.weclient.util.MessageItem;
+import com.suan.weclient.util.UserBean;
 
 public class WeChatLoader {
 

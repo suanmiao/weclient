@@ -541,8 +541,8 @@ public class WechatManager {
 
 						try {
 
-							String strResult = EntityUtils.toString(response
-									.getEntity());
+//							String strResult = EntityUtils.toString(response
+//									.getEntity());
 							Toast.makeText(mContext, "回复成功", Toast.LENGTH_SHORT)
 									.show();
 							onActionFinishListener.onFinish(null);

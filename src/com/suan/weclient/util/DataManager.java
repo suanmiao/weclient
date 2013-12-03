@@ -2,8 +2,6 @@ package com.suan.weclient.util;
 
 import java.util.ArrayList;
 
-import android.R.array;
-import android.R.integer;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.view.View.OnClickListener;

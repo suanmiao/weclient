@@ -2,7 +2,6 @@ package com.suan.weclient.util;
 
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 public class UserBean {
@@ -11,8 +10,10 @@ public class UserBean {
 
 	public static final int USER_TYPE_SUBSTRICTION = 1;
 	public static final int USER_TYPE_SERVICE = 2;
+	public static final int USER_TYPE_NOT_INITED = -1;
+	public static final int USER_TYPE_NONE = 0;
 
-	private int userType = 0;
+	private int userType = -1;
 	private String nickNameString = "";
 	private int massLeft = 0;
 	private String userNameString = "";
@@ -47,6 +48,21 @@ public class UserBean {
 			Log.e("user bean parse error", "userType" + exception);
 
 		}
+
+		/*
+		 * for the version transition
+		 */
+		if (userType == USER_TYPE_NOT_INITED) {
+			try {
+
+				contentJsonObject.put("userType", USER_TYPE_NONE);
+
+			} catch (Exception exception) {
+
+			}
+
+		}
+
 		try {
 			String valueString = contentJsonObject.getString("new_message");
 			if (valueString != null) {
@@ -163,6 +179,7 @@ public class UserBean {
 	}
 
 	public void setUserType(int userType) {
+		Log.e("put usertype", "" + userType);
 
 		try {
 			contentObject.put("userType", userType);

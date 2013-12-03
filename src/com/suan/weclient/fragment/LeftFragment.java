@@ -15,7 +15,6 @@
  */
 package com.suan.weclient.fragment;
 
-import android.R.integer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,12 +54,10 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 	private RelativeLayout addUserButton;
 
 	private MyAdapter myAdapter;
-	private FragmentManager mFragmentManager;
 	private DataManager mDataManager;
 	private ImageView profileImageView;
 
 	public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
-		mFragmentManager = fragmentManager;
 		mDataManager = dataManager;
 	}
 

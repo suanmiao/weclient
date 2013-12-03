@@ -3,13 +3,12 @@ package com.suan.weclient.view;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.support.v4.view.ViewPager;
 
 public class ScrollableTabView extends HorizontalScrollView {
 
@@ -113,6 +112,7 @@ public class ScrollableTabView extends HorizontalScrollView {
 	private void init(){
 		
 		
+		@SuppressWarnings("deprecation")
 		RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
 				this.getWidth(),
 				android.view.ViewGroup.LayoutParams.FILL_PARENT);

@@ -8,8 +8,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Debug;
-import android.util.Log;
 
 public class SharedPreferenceManager {
 
