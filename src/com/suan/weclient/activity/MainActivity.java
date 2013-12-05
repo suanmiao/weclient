@@ -53,21 +53,20 @@ public class MainActivity extends SlidingFragmentActivity {
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
 	ContentFragment contentFragment;
-	
+	SlidingMenu mSlidingMenu;
 
 	/*
-	 *about pop dialog 
+	 * about pop dialog
 	 */
 	private TextView popContentTextView;
 	private TextView popTitleTextView;
 	private EditText popContentEditText;
 	private TextView popTextAmountTextView;
 	private ImageButton popCancelButton, popSureButton;
-	
 
 	private FeedbackAgent agent;
 	private Conversation defaultConversation;
-	
+
 	private DataManager mDataManager;
 	private Dialog popDialog;
 	private Dialog replyDialog;
@@ -90,19 +89,19 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		// set the Behind View
 		setBehindContentView(R.layout.left_frame);
-
-		// Test
-		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
-		getSlidingMenu().setShadowWidthRes(R.dimen.shadow_width);
-		getSlidingMenu().setShadowDrawable(R.drawable.shadow);
-		getSlidingMenu().setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		getSlidingMenu().setFadeDegree(0.35f);
-		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
-
 		setContentView(R.layout.main);
 		setBehindContentView(R.layout.left_frame);
-		getSlidingMenu().setSecondaryMenu(R.layout.right_frame);
+
+		mSlidingMenu = getSlidingMenu();
+		mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
+		mSlidingMenu.setShadowDrawable(R.drawable.shadow);
+		mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		mSlidingMenu.setFadeDegree(0.35f);
+		mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		// mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+
+		mSlidingMenu.setSecondaryMenu(R.layout.right_frame);
 
 		FragmentTransaction t = this.getSupportFragmentManager()
 				.beginTransaction();
@@ -151,14 +150,15 @@ public class MainActivity extends SlidingFragmentActivity {
 			public void run() {
 				// TODO Auto-generated method stub
 				UmengUpdateAgent.setUpdateAutoPopup(true);
-				UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
-					
-					@Override
-					public void onClick(int arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+				UmengUpdateAgent
+						.setDialogListener(new UmengDialogButtonListener() {
+
+							@Override
+							public void onClick(int arg0) {
+								// TODO Auto-generated method stub
+
+							}
+						});
 				UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
 					@Override
 					public void onUpdateReturned(int updateStatus,
@@ -182,48 +182,59 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		}, 1000);
 		handler.postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-		defaultConversation.sync(new SyncListener() {
+				defaultConversation.sync(new SyncListener() {
 
-			@Override
-			public void onSendUserReply(List<Reply> arg0) {
-				// TODO Auto-generated method stub
+					@Override
+					public void onSendUserReply(List<Reply> arg0) {
+						// TODO Auto-generated method stub
 
-			}
+					}
 
-			@Override
-			public void onReceiveDevReply(List<DevReply> arg0) {
-				// TODO Auto-generated method stub
-				String replyString = "";
-				for (int i = 0; i < arg0.size(); i++) {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm");
-					replyString+=dateFormat.format( arg0.get(i).getDatetime());
-					replyString+=":  ";
-					replyString+=arg0.get(i).getContent();
-					replyString+="\n";
+					@Override
+					public void onReceiveDevReply(List<DevReply> arg0) {
+						// TODO Auto-generated method stub
+						String replyString = "";
+						/*
+						 * fuck umeng
+						 * the arg0 might be null
+						 */
+						try{
+							for (int i = 0; i < arg0.size(); i++) {
+								SimpleDateFormat dateFormat = new SimpleDateFormat(
+										"MM-dd HH:mm");
+								replyString += dateFormat.format(arg0.get(i)
+										.getDatetime());
+								replyString += ":  ";
+								replyString += arg0.get(i).getContent();
+								replyString += "\n";
 
-				}
-				if(arg0.size()>0){
-					dialogShowDevReply(replyString);
-				}
+							}
+							if (arg0.size() > 0) {
+								dialogShowDevReply(replyString);
+							}
+							
+						}catch (Exception exception){
+							
+						}
 
-			}
-		});
-				
+					}
+				});
+
 			}
 		}, 1000);
 
 	}
-	
-	public void dialogShowDevReply(String content){
-		
-		LayoutInflater inflater = (LayoutInflater)this 
+
+	public void dialogShowDevReply(String content) {
+
+		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater
-				.inflate(R.layout.dialog_dev_reply_layout, null);
+		View dialogView = inflater.inflate(R.layout.dialog_dev_reply_layout,
+				null);
 		popTitleTextView = (TextView) dialogView
 				.findViewById(R.id.dialog_dev_reply_text_title);
 
@@ -232,13 +243,11 @@ public class MainActivity extends SlidingFragmentActivity {
 		popCancelButton = (ImageButton) dialogView
 				.findViewById(R.id.dialog_dev_reply_button_o);
 
-
 		popContentTextView = (TextView) dialogView
 				.findViewById(R.id.dialog_dev_reply_text_content);
 		popContentTextView.setText(content);
 
-		popTitleTextView.setText("开发者回复:"
-				);
+		popTitleTextView.setText("开发者回复:");
 		popSureButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -263,12 +272,11 @@ public class MainActivity extends SlidingFragmentActivity {
 		replyDialog.setContentView(dialogView);
 		replyDialog.show();
 	}
-	
 
 	private void popFeedback() {
 
-		LayoutInflater inflater = (LayoutInflater) 
-				this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
 		popTitleTextView = (TextView) dialogView
 				.findViewById(R.id.pop_feedback_text_title);
@@ -298,8 +306,9 @@ public class MainActivity extends SlidingFragmentActivity {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-					popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-				popTextAmountTextView.setText(popContentEditText.getText().length() + " x");
+				popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
+				popTextAmountTextView.setText(popContentEditText.getText()
+						.length() + " x");
 
 			}
 
@@ -324,14 +333,14 @@ public class MainActivity extends SlidingFragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-                String content = popContentEditText.getEditableText()
-                        .toString();
-                defaultConversation.addUserReply(content);                
-                replyDialog.dismiss();
-                
-                mDataManager.doLoadingStart("反馈发送中...");
-                
-                sync();
+				String content = popContentEditText.getEditableText()
+						.toString();
+				defaultConversation.addUserReply(content);
+				replyDialog.dismiss();
+
+				mDataManager.doLoadingStart("反馈发送中...");
+
+				sync();
 			}
 		});
 		popCancelButton.setOnClickListener(new OnClickListener() {
@@ -350,27 +359,26 @@ public class MainActivity extends SlidingFragmentActivity {
 		replyDialog.show();
 
 	}
-	
 
 	void sync() {
-        Conversation.SyncListener listener = new Conversation.SyncListener() {
+		Conversation.SyncListener listener = new Conversation.SyncListener() {
 
-                @Override
-                public void onSendUserReply(List<Reply> replyList) {
-                	popContentEditText.setText("");
-                	mDataManager.doLoadingEnd();
-                	
-                	Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT).show();
+			@Override
+			public void onSendUserReply(List<Reply> replyList) {
+				popContentEditText.setText("");
+				mDataManager.doLoadingEnd();
 
-                }
+				Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT)
+						.show();
 
-                @Override
-                public void onReceiveDevReply(List<DevReply> replyList) {
-                }
-        };
-        defaultConversation.sync(listener);
+			}
+
+			@Override
+			public void onReceiveDevReply(List<DevReply> replyList) {
+			}
+		};
+		defaultConversation.sync(listener);
 	}
-	
 
 	@Override
 	protected void onStop() {

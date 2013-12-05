@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -288,13 +286,11 @@ public class DataParser {
 
 	}
 
-	public static int analyseLogin(UserBean nowBean, HttpResponse response,
+	public static int analyseLogin(UserBean nowBean, String strResult,String slaveSid,String slaveUser,
 			Context context) {
 
 		try {
-			int hitAmount = 0;
 
-			String strResult = EntityUtils.toString(response.getEntity());
 
 			JSONObject resultJsonObject = new JSONObject(strResult);
 			int ret = (Integer) resultJsonObject.get("Ret");
@@ -326,32 +322,6 @@ public class DataParser {
 			if (index != -1) {
 				String tokenString = getToken(resultJsonObject);
 				nowBean.setToken(tokenString);
-				hitAmount++;
-			}
-			for (int i = 0; i < response.getAllHeaders().length; i++) {
-				if (response.getAllHeaders()[i].getName()
-						.contains("Set-Cookie")) {
-					String nowCookie = response.getAllHeaders()[i].getValue();
-					if (nowCookie.contains("slave_user")) {
-						String slaveUser = nowCookie.substring(
-								nowCookie.indexOf("slave_user") + 11,
-								nowCookie.indexOf(";"));
-						nowBean.setSlaveUser(slaveUser);
-						hitAmount++;
-					}
-					if (nowCookie.contains("slave_sid")) {
-
-						String slaveSid = nowCookie.substring(
-								nowCookie.indexOf("slave_sid") + 10,
-								nowCookie.indexOf(";"));
-						nowBean.setSlaveSid(slaveSid);
-						hitAmount++;
-					}
-
-				}
-
-			}
-			if (hitAmount == 3) {
 				SharedPreferenceManager.updateUser(context, nowBean);
 			}
 		} catch (Exception exception) {

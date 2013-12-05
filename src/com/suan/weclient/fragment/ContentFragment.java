@@ -47,6 +47,7 @@ import com.suan.weclient.view.ScrollableTabView;
 public class ContentFragment extends Fragment implements
 		OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
 
+	private View mView;
 	private ShowMenuListener showMenuListener;
 	private ImageButton showLeftButton, showRightButton;
 	private TextView nowUserTextView;
@@ -137,12 +138,33 @@ public class ContentFragment extends Fragment implements
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View mView = inflater.inflate(R.layout.content_layout, null);
+        mView = inflater.inflate(R.layout.content_layout, null);
+        initWidgets();
 
+		return mView;
+	}
+	
+	private void initWidgets(){
+		
 		showLeftButton = (ImageButton) mView
 				.findViewById(R.id.head_button_show_left);
 		showRightButton = (ImageButton) mView
 				.findViewById(R.id.head_button_show_right);
+		showLeftButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showMenuListener.showLeftMenu();
+			}
+		});
+
+		showRightButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showMenuListener.showRightMenu();
+			}
+		});
 
 		nowUserTextView = (TextView) mView
 				.findViewById(R.id.head_layout_text_now_user);
@@ -162,7 +184,6 @@ public class ContentFragment extends Fragment implements
 
 		mPager.setOnPageChangeListener(this);
 		initScrollableTabs(mView, mPager);
-		return mView;
 	}
 	
 
@@ -186,21 +207,6 @@ public class ContentFragment extends Fragment implements
 
 		super.onActivityCreated(savedInstanceState);
 
-		showLeftButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showMenuListener.showLeftMenu();
-			}
-		});
-
-		showRightButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showMenuListener.showRightMenu();
-			}
-		});
 	}
 
 	public boolean isFirst() {

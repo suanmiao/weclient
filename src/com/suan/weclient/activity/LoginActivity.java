@@ -1,12 +1,10 @@
 package com.suan.weclient.activity;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -115,13 +113,15 @@ public class LoginActivity extends Activity {
 					return;
 
 				}
-				if(SharedPreferenceManager.containUser(getApplicationContext(), userNameEditText.getText().toString())){
-					Toast.makeText(LoginActivity.this, "此账户已经添加，若想要重新添加请先删除该账户", Toast.LENGTH_LONG).show();
-				}else{
+				if (SharedPreferenceManager.containUser(
+						getApplicationContext(), userNameEditText.getText()
+								.toString())) {
+					Toast.makeText(LoginActivity.this,
+							"此账户已经添加，若想要重新添加请先删除该账户", Toast.LENGTH_LONG).show();
+				} else {
 					login();
-					
+
 				}
-					
 
 			}
 		}
@@ -154,17 +154,22 @@ public class LoginActivity extends Activity {
 		}, new WechatLoginCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response) {
+			public void onBack(String strResult, String slaveSid,
+					String slaveUser) {
 				// TODO Auto-generated method stub
 				try {
 
 					nowBean = new UserBean(userNameEditText.getText()
 							.toString(), WeChatLoader
 							.getMD5Str(passWordEditText.getText().toString()));
+					nowBean.setSlaveSid(slaveSid);
+					nowBean.setSlaveUser(slaveUser);
 					int loginResult = DataParser.analyseLogin(nowBean,
-							response, getApplicationContext());
+							strResult, slaveSid, slaveUser,
+							getApplicationContext());
 					switch (loginResult) {
 					case DataParser.LOGIN_SUCCESS:
+						
 
 						WeChatLoader.wechatGetUserProfile(
 								new WechatExceptionListener() {
@@ -177,23 +182,23 @@ public class LoginActivity extends Activity {
 								}, new WechatGetUserProfleCallBack() {
 
 									@Override
-									public void onBack(HttpResponse response,
+									public void onBack(String strResult,
 											String referer) {
 										// TODO Auto-generated method stub
 
 										try {
-											String strResult = EntityUtils
-													.toString(response
-															.getEntity());
+
 											int getUserProfileState = DataParser
 													.getUserProfile(strResult,
 															nowBean);
 
 											switch (getUserProfileState) {
 											case DataParser.GET_USER_PROFILE_SUCCESS:
-//												Log.e("fuck userbean", nowBean.getNickname()+"|"+nowBean.getNewMessage()+"|"+nowBean.getNewPeople());
-//												Log.e("userbean conternt", nowBean.toString());
-												
+												// Log.e("fuck userbean",
+												// nowBean.getNickname()+"|"+nowBean.getNewMessage()+"|"+nowBean.getNewPeople());
+												// Log.e("userbean conternt",
+												// nowBean.toString());
+
 												SharedPreferenceManager
 														.insertUser(
 																getApplicationContext(),
@@ -220,12 +225,36 @@ public class LoginActivity extends Activity {
 												break;
 
 											case DataParser.GET_USER_PROFILE_FAILED:
+												loginDialog.dismiss();
+
+												loginDialog = Util
+														.createEnsureDialog(
+																new DataManager.DialogSureClickListener() {
+
+																	@Override
+																	public void onClick(
+																			View v) {
+																		// TODO
+																		// Auto-generated
+																		// method
+																		// stub
+																		login();
+
+																	}
+																},
+																false,
+																LoginActivity.this,
+																"登录失败，重试？",
+																true);
+												loginDialog.show();
 
 												break;
 											}
 
 										} catch (Exception exception) {
 
+											Log.e("get user profile result error",
+													"" + exception);
 										}
 
 									}
@@ -235,19 +264,20 @@ public class LoginActivity extends Activity {
 
 					case DataParser.LOGIN_FAILED:
 
-				loginDialog.dismiss();
+						loginDialog.dismiss();
 
-				loginDialog = Util.createEnsureDialog(
-						new DataManager.DialogSureClickListener() {
+						loginDialog = Util.createEnsureDialog(
+								new DataManager.DialogSureClickListener() {
 
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								loginDialog.dismiss();
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										loginDialog.dismiss();
 
-							}
-						}, false, LoginActivity.this, "登录失败，请检查账户名和密码", true);
-				loginDialog.show();
+									}
+								}, false, LoginActivity.this, "登录失败，请检查账户名和密码",
+								true);
+						loginDialog.show();
 						break;
 					}
 

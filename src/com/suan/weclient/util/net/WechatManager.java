@@ -1,14 +1,9 @@
 package com.suan.weclient.util.net;
 
-import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.UserBean;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
+import com.suan.weclient.util.UserBean;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.net.DataParser.MessageListParseCallBack;
 import com.suan.weclient.util.net.DataParser.MessageResultHolder;
 import com.suan.weclient.util.net.DataParser.ParseMassDataCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetMassData;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetUserProfleCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatLoginCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMassCallBack;
@@ -85,13 +83,17 @@ public class WechatManager {
 						new WechatLoginCallBack() {
 
 							@Override
-							public void onBack(HttpResponse response) {
+							public void onBack(String strResult,
+									String slaveSid, String slaveUser) {
 								// TODO Auto-generated method stub
 								try {
 									UserBean nowBean = mDataManager
 											.getUserGroup().get(userIndex);
 									int loginResult = DataParser.analyseLogin(
-											nowBean, response, mContext);
+											nowBean, strResult, slaveSid,
+											slaveUser, mContext);
+									nowBean.setSlaveSid(slaveSid);
+									nowBean.setSlaveUser(slaveUser);
 									switch (loginResult) {
 									case DataParser.LOGIN_SUCCESS:
 										mDataManager.doLoginSuccess(nowBean);
@@ -101,19 +103,20 @@ public class WechatManager {
 
 									case DataParser.LOGIN_FAILED:
 
+										mDataManager.doPopEnsureDialog(true,
+												false, "登录失败 请检查账户名和密码",
+												new DialogSureClickListener() {
 
-								mDataManager.doPopEnsureDialog(true, false,
-										"登录失败 请检查账户名和密码",
-										new DialogSureClickListener() {
+													@Override
+													public void onClick(View v) {
+														// TODO Auto-generated
+														// method
+														// stub
+														mDataManager
+																.doDismissAllDialog();
 
-											@Override
-											public void onClick(View v) {
-												// TODO Auto-generated method
-												// stub
-												mDataManager.doDismissAllDialog();
-
-											}
-										});
+													}
+												});
 										break;
 									}
 								} catch (Exception exception) {
@@ -156,13 +159,11 @@ public class WechatManager {
 		new WechatGetUserProfleCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response, String referer) {
+			public void onBack(String strResult, String referer) {
 				// TODO Auto-generated method
 				// stub
 
 				try {
-					String strResult = EntityUtils.toString(response
-							.getEntity());
 					if (popDialog) {
 
 						mDataManager.doLoadingStart("解析用户数据...");
@@ -219,13 +220,11 @@ public class WechatManager {
 		new WechatGetUserProfleCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response, String referer) {
+			public void onBack(String strResult, String referer) {
 				// TODO Auto-generated method
 				// stub
 
 				try {
-					String strResult = EntityUtils.toString(response
-							.getEntity());
 					int getUserProfileState = DataParser.getUserProfile(
 							strResult,
 							mDataManager.getUserGroup().get(userIndex));
@@ -248,6 +247,83 @@ public class WechatManager {
 				}
 			}
 		}, mDataManager.getUserGroup().get(userIndex));
+
+	}
+
+	public void getMessageHeadImg(final int userIndex, final String fakeId,
+			final String referer, final ImageView imageView,
+			final OnActionFinishListener onActionFinishListener) {
+
+		WeChatLoader.wechatGetHeadImg(
+				new WechatExceptionListener() {
+
+					@Override
+					public void onError() {
+						// TODO Auto-generated method stub
+
+					}
+				},
+
+				new WechatGetHeadImgCallBack() {
+
+					@Override
+					public void onBack(Bitmap bitmap,
+							String referer, ImageView imageView) {
+						// TODO Auto-generated method stub
+
+						try {
+							Bitmap roundBitmap = Util.roundCorner(
+									bitmap, 10);
+
+							imageView.setImageBitmap(roundBitmap);
+							onActionFinishListener.onFinish(roundBitmap);
+							
+						} catch (Exception exception) {
+
+						}
+
+					}
+				}, mDataManager.getUserGroup().get(userIndex),
+				fakeId,
+				referer,
+				imageView);
+
+		
+		
+	}
+
+	public void getMessageImg(final int userIndex, final String msgId,
+			final String slaveSid, final String slaveUser, final String token,
+			final String referer, final ImageView imageView,
+			final String imgType,
+			final OnActionFinishListener onActionFinishListener) {
+
+		WeChatLoader.wechatGetMessageImg(
+				new WechatExceptionListener() {
+
+					@Override
+					public void onError() {
+						// TODO Auto-generated method stub
+
+					}
+				},
+				new WechatGetMessageImgCallBack() {
+
+					@Override
+					public void onBack(Bitmap bitmap,
+							ImageView imageView) {
+						// TODO Auto-generated method stub
+						try {
+							imageView.setImageBitmap(bitmap);
+							onActionFinishListener.onFinish(bitmap);
+
+						} catch (Exception exception) {
+
+						}
+
+					}
+				}, msgId, slaveSid, slaveUser, token, referer, imageView,
+				WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE);
 
 	}
 
@@ -288,7 +364,7 @@ public class WechatManager {
 		new WechatGetHeadImgCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response, String referer,
+			public void onBack(Bitmap bitmap, String referer,
 					ImageView imageView) {
 				// TODO
 
@@ -297,10 +373,6 @@ public class WechatManager {
 
 						mDataManager.doLoadingStart("设置用户头像...");
 					}
-
-					Bitmap bitmap = BitmapFactory
-							.decodeStream((InputStream) response.getEntity()
-									.getContent());
 					mDataManager.getCacheManager().putDiskBitmap(
 							ImageCacheManager.CACHE_USER_PROFILE
 									+ mDataManager.getUserGroup()
@@ -345,10 +417,10 @@ public class WechatManager {
 						});
 
 			}
-		}, new WechatMassCallBack() {
+		}, new WechatGetMassData() {
 
 			@Override
-			public void onBack(HttpResponse response) {
+			public void onBack(String strResult) {
 				// TODO Auto-generated method stub
 
 				try {
@@ -356,11 +428,7 @@ public class WechatManager {
 
 						mDataManager.doLoadingStart("解析用户群发数据...");
 
-
 					}
-
-					String strResult = EntityUtils.toString(response
-							.getEntity());
 					DataParser.getMassData(strResult, mDataManager
 							.getUserGroup().get(userIndex),
 							new ParseMassDataCallBack() {
@@ -414,7 +482,7 @@ public class WechatManager {
 
 		new WechatMessageListCallBack() {
 			@Override
-			public void onBack(HttpResponse response, String referer) {
+			public void onBack(String strResult, String referer) {
 				// TODO Auto-generated method
 				// stub
 
@@ -425,9 +493,6 @@ public class WechatManager {
 						mDataManager.doLoadingStart("解析消息数据...");
 
 					}
-
-					String strResult = EntityUtils.toString(response
-							.getEntity());
 
 					DataParser.getNewMessage(new MessageListParseCallBack() {
 
@@ -483,12 +548,9 @@ public class WechatManager {
 		new WechatMessagePageCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response, String referer) {
+			public void onBack(String strResult, String referer) {
 				// TODO Auto-generated method stub
 				try {
-
-					String strResult = EntityUtils.toString(response
-							.getEntity());
 
 					DataParser.getNextMessage(new MessageListParseCallBack() {
 
@@ -536,13 +598,13 @@ public class WechatManager {
 				new WechatMessageReplyCallBack() {
 
 					@Override
-					public void onBack(HttpResponse response) {
+					public void onBack(String strResult) {
 						// TODO Auto-generated method stub
 
 						try {
 
-//							String strResult = EntityUtils.toString(response
-//									.getEntity());
+							// String strResult = EntityUtils.toString(response
+							// .getEntity());
 							Toast.makeText(mContext, "回复成功", Toast.LENGTH_SHORT)
 									.show();
 							onActionFinishListener.onFinish(null);
@@ -550,9 +612,9 @@ public class WechatManager {
 
 						}
 					}
-				}, mDataManager.getUserGroup().get(userIndex),
-				mDataManager.getMessageHolders().get(userIndex)
-						.getMessageList().get(position), replyContent);
+				}, mDataManager.getUserGroup().get(userIndex), mDataManager
+						.getMessageHolders().get(userIndex).getMessageList()
+						.get(position), replyContent);
 
 	}
 
@@ -574,13 +636,10 @@ public class WechatManager {
 				new WechatMessageStarCallBack() {
 
 					@Override
-					public void onBack(HttpResponse response) {
+					public void onBack(String strResult) {
 						// TODO Auto-generated method
 						// stub
 						try {
-
-							String strResult = EntityUtils.toString(response
-									.getEntity());
 
 							JSONObject resultJsonObject = new JSONObject(
 									strResult);
@@ -611,9 +670,9 @@ public class WechatManager {
 						}
 
 					}
-				}, mDataManager.getUserGroup().get(userIndex),
-				mDataManager.getMessageHolders().get(userIndex)
-						.getMessageList().get(position), star);
+				}, mDataManager.getUserGroup().get(userIndex), mDataManager
+						.getMessageHolders().get(userIndex).getMessageList()
+						.get(position), star);
 	}
 
 	public void mass(final int userIndex, final String massContent,
@@ -632,14 +691,10 @@ public class WechatManager {
 		new WechatMassCallBack() {
 
 			@Override
-			public void onBack(HttpResponse response) {
+			public void onBack(String strResult) {
 				// TODO Auto-generated method stub
 				try {
 					mDataManager.doLoadingEnd();
-
-					String strResult = EntityUtils.toString(response
-							.getEntity());
-					Log.e("mass result", response.getStatusLine().getStatusCode()+"|"+strResult);
 
 					JSONObject resultJsonObject = new JSONObject(strResult);
 

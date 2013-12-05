@@ -1,15 +1,10 @@
 package com.suan.weclient.activity;
 
-import java.io.InputStream;
-
-import org.apache.http.HttpResponse;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -112,39 +107,33 @@ public class ShowImgActivity extends Activity {
 				.getDiskBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT + msgId);
 		if (imgBitmap == null) {
 			loadingDialog.show();
-			WeChatLoader.wechatGetMessageImg(
-					new WechatExceptionListener() {
+			WeChatLoader.wechatGetMessageImg(new WechatExceptionListener() {
 
-						@Override
-						public void onError() {
-							// TODO Auto-generated method stub
-							loadingDialog.dismiss();
+				@Override
+				public void onError() {
+					// TODO Auto-generated method stub
+					loadingDialog.dismiss();
 
-						}
-					},
-					new WechatGetMessageImgCallBack() {
+				}
+			}, new WechatGetMessageImgCallBack() {
 
-						@Override
-						public void onBack(HttpResponse response,
-								ImageView imageView) {
-							// TODO Auto-generated method stub
-							try {
-								Bitmap bitmap = BitmapFactory
-										.decodeStream((InputStream) response
-												.getEntity().getContent());
-								mImageCacheManager.putDiskBitmap(
+				@Override
+				public void onBack(Bitmap bitmap, ImageView imageView) {
+					// TODO Auto-generated method stub
+					try {
+						mImageCacheManager
+								.putDiskBitmap(
 										ImageCacheManager.CACHE_MESSAGE_CONTENT
 												+ msgId, bitmap);
-								imageView.setImageBitmap(bitmap);
-								loadingDialog.dismiss();
+						imageView.setImageBitmap(bitmap);
+						loadingDialog.dismiss();
 
-							} catch (Exception exception) {
+					} catch (Exception exception) {
 
-							}
+					}
 
-						}
-					}, msgId, slaveSid, slaveUser, token, referer,
-					contentImageView,
+				}
+			}, msgId, slaveSid, slaveUser, token, referer, contentImageView,
 					WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE);
 
 		} else {

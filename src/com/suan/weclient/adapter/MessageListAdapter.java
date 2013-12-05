@@ -1,17 +1,13 @@
 package com.suan.weclient.adapter;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import org.apache.http.HttpResponse;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,11 +27,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.MessageItem;
-import com.suan.weclient.util.Util;
 import com.suan.weclient.util.net.WeChatLoader;
-import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
-import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
-import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -59,7 +51,7 @@ public class MessageListAdapter extends BaseAdapter {
 	}
 
 	private ArrayList<MessageItem> getMessageItems() {
-		if(mDataManager.getUserGroup().size()==0){
+		if (mDataManager.getUserGroup().size() == 0) {
 			ArrayList<MessageItem> blankArrayList = new ArrayList<MessageItem>();
 			return blankArrayList;
 		}
@@ -86,13 +78,13 @@ public class MessageListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		
+
 		ItemViewHolder viewHolder = null;
 		viewHolder = new ItemViewHolder();
 
 		switch (getMessageItems().get(position).getType()) {
 		case MessageItem.MESSAGE_TYPE_TEXT:
-			
+
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
 					null);
 			viewHolder.contentTextView = (TextView) convertView
@@ -103,7 +95,8 @@ public class MessageListAdapter extends BaseAdapter {
 					.findViewById(R.id.message_item_text_img_profile);
 			viewHolder.profileTextView = (TextView) convertView
 					.findViewById(R.id.message_item_text_text_profile);
-			viewHolder.timeTextView = (TextView)convertView.findViewById(R.id.message_item_text_text_time);
+			viewHolder.timeTextView = (TextView) convertView
+					.findViewById(R.id.message_item_text_text_time);
 			viewHolder.contentTextView.setText(getMessageItems().get(position)
 					.getContent());
 			break;
@@ -120,7 +113,8 @@ public class MessageListAdapter extends BaseAdapter {
 					.findViewById(R.id.message_item_img_img_profile);
 			viewHolder.profileTextView = (TextView) convertView
 					.findViewById(R.id.message_item_img_text_profile);
-			viewHolder.timeTextView = (TextView)convertView.findViewById(R.id.message_item_img_text_time);
+			viewHolder.timeTextView = (TextView) convertView
+					.findViewById(R.id.message_item_img_text_time);
 
 			viewHolder.contentImageView
 					.setOnClickListener(new OnClickListener() {
@@ -153,27 +147,18 @@ public class MessageListAdapter extends BaseAdapter {
 					ImageCacheManager.CACHE_MESSAGE_CONTENT
 							+ getMessageItems().get(position).getId());
 			if (contentBitmap == null) {
-				WeChatLoader.wechatGetMessageImg(
-						new WechatExceptionListener() {
-
+				mDataManager.getWechatManager().getMessageImg(mDataManager.getCurrentPosition(), getMessageItems().get(position).getId(),
+						mDataManager.getCurrentUser().getSlaveSid(),
+						mDataManager.getCurrentUser().getSlaveUser(),
+						mDataManager.getCurrentUser().getToken(),
+						getMessageItems().get(position).getReferer(),
+						viewHolder.contentImageView,
+						WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,new OnActionFinishListener() {
+							
 							@Override
-							public void onError() {
+							public void onFinish(Object object) {
 								// TODO Auto-generated method stub
-
-							}
-						},
-						new WechatGetMessageImgCallBack() {
-
-							@Override
-							public void onBack(HttpResponse response,
-									ImageView imageView) {
-								// TODO Auto-generated method stub
-								try {
-									Bitmap bitmap = BitmapFactory
-											.decodeStream((InputStream) response
-													.getEntity().getContent());
-
-									imageView.setImageBitmap(bitmap);
+								Bitmap bitmap = (Bitmap)object;
 									mDataManager
 											.getCacheManager()
 											.putRomBitmap(
@@ -182,19 +167,9 @@ public class MessageListAdapter extends BaseAdapter {
 																	.get(position)
 																	.getId(),
 													bitmap);
-
-								} catch (Exception exception) {
-
-								}
-
+								
 							}
-						}, getMessageItems().get(position).getId(),
-						mDataManager.getCurrentUser().getSlaveSid(),
-						mDataManager.getCurrentUser().getSlaveUser(),
-						mDataManager.getCurrentUser().getToken(),
-						getMessageItems().get(position).getReferer(),
-						viewHolder.contentImageView,
-						WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL);
+						});
 
 			} else {
 				viewHolder.contentImageView.setImageBitmap(contentBitmap);
@@ -213,7 +188,8 @@ public class MessageListAdapter extends BaseAdapter {
 					.findViewById(R.id.message_item_text_img_profile);
 			viewHolder.profileTextView = (TextView) convertView
 					.findViewById(R.id.message_item_text_text_profile);
-			viewHolder.timeTextView = (TextView)convertView.findViewById(R.id.message_item_text_text_time);
+			viewHolder.timeTextView = (TextView) convertView
+					.findViewById(R.id.message_item_text_text_time);
 			viewHolder.contentTextView.setText("[目前暂不支持该类型消息]");
 			break;
 
@@ -225,38 +201,39 @@ public class MessageListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(mDataManager.getUserGroup().size()==0){
-					
-				}else{
+				if (mDataManager.getUserGroup().size() == 0) {
+
+				} else {
 
 					popReply(position);
-					
+
 				}
 
 			}
 		});
 		setStarBackground(viewHolder.starImageButton, position);
 
-		long time = Long.parseLong(getMessageItems().get(position).getDateTime());
-		Date date = new Date(time*1000);
-	    SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
-//	    format.setTimeZone(TimeZone.getTimeZone("GMT"));
-		String timeString = ""+format.format(date);
-		
+		long time = Long.parseLong(getMessageItems().get(position)
+				.getDateTime());
+		Date date = new Date(time * 1000);
+		SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
+		// format.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String timeString = "" + format.format(date);
+
 		viewHolder.timeTextView.setText(timeString);
 		viewHolder.profileImageView
 				.setBackgroundResource(R.drawable.ic_launcher);
 		viewHolder.profileTextView.setText(""
-				+getMessageItems() 
-						.get(position).getNickName());
+				+ getMessageItems().get(position).getNickName());
 		viewHolder.starImageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
 				boolean stared = mDataManager.getCurrentMessageHolder()
 						.getMessageList().get(position).getStarred();
-				mDataManager.getWechatManager().star(mDataManager.getCurrentPosition(),position, (ImageButton) v,
-						!stared, new OnActionFinishListener() {
+				mDataManager.getWechatManager().star(
+						mDataManager.getCurrentPosition(), position,
+						(ImageButton) v, !stared, new OnActionFinishListener() {
 
 							@Override
 							public void onFinish(Object object) {
@@ -276,47 +253,24 @@ public class MessageListAdapter extends BaseAdapter {
 			viewHolder.profileImageView.setImageBitmap(headBitmap);
 
 		} else {
-
-			WeChatLoader.wechatGetHeadImg(
-					new WechatExceptionListener() {
-
-						@Override
-						public void onError() {
-							// TODO Auto-generated method stub
-
-						}
-					},
-
-					new WechatGetHeadImgCallBack() {
-
-						@Override
-						public void onBack(HttpResponse response,
-								String referer, ImageView imageView) {
-							// TODO Auto-generated method stub
-
-							try {
-								Bitmap bitmap = BitmapFactory
-										.decodeStream((InputStream) response
-												.getEntity().getContent());
-								Bitmap roundBitmap = Util.roundCorner(
-										bitmap, 10);
-								mDataManager.getCacheManager().putDiskBitmap(
-										ImageCacheManager.CACHE_MESSAGE_PROFILE
-												+ getMessageItems().get(
-														position).getFakeId(),
-										roundBitmap);
-
-								imageView.setImageBitmap(roundBitmap);
-
-							} catch (Exception exception) {
-
-							}
-
-						}
-					}, mDataManager.getCurrentUser(),
+			mDataManager.getWechatManager().getMessageHeadImg(
+					mDataManager.getCurrentPosition(),
 					getMessageItems().get(position).getFakeId(),
 					getMessageItems().get(position).getReferer(),
-					viewHolder.profileImageView);
+					viewHolder.profileImageView, new OnActionFinishListener() {
+
+						@Override
+						public void onFinish(Object object) {
+							// TODO Auto-generated method stub
+							Bitmap bitmap = (Bitmap) object;
+
+							mDataManager.getCacheManager().putDiskBitmap(
+									ImageCacheManager.CACHE_MESSAGE_PROFILE
+											+ getMessageItems().get(position)
+													.getFakeId(), bitmap);
+						}
+					});
+
 		}
 
 		return convertView;
@@ -348,8 +302,8 @@ public class MessageListAdapter extends BaseAdapter {
 
 			}
 		});
-		
-		if(lastReplyCanceled){
+
+		if (lastReplyCanceled) {
 			popContentEditText.setText(canceledReplyContent);
 		}
 
@@ -382,7 +336,6 @@ public class MessageListAdapter extends BaseAdapter {
 
 			}
 		});
-		
 
 		popTitleTextView.setText("Re:"
 				+ mDataManager.getCurrentMessageHolder().getMessageList()
@@ -393,7 +346,7 @@ public class MessageListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				lastReplyCanceled = false;
-				
+
 				reply(position);
 
 			}
