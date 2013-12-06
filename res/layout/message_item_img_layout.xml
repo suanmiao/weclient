@@ -52,6 +52,7 @@
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dip"
 				android:layout_marginTop="15dip"
+				android:layout_marginRight="50dip"
 				android:scaleType="centerInside"
 				android:src="@drawable/img_loading" />
 			<RelativeLayout

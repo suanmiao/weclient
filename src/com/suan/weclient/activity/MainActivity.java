@@ -35,6 +35,7 @@ import com.suan.weclient.util.DataManager.AutoLoginListener;
 import com.suan.weclient.util.DataManager.DialogListener;
 import com.suan.weclient.util.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
+import com.suan.weclient.util.MessageHolder;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.umeng.analytics.MobclickAgent;
@@ -199,10 +200,9 @@ public class MainActivity extends SlidingFragmentActivity {
 						// TODO Auto-generated method stub
 						String replyString = "";
 						/*
-						 * fuck umeng
-						 * the arg0 might be null
+						 * fuck umeng the arg0 might be null
 						 */
-						try{
+						try {
 							for (int i = 0; i < arg0.size(); i++) {
 								SimpleDateFormat dateFormat = new SimpleDateFormat(
 										"MM-dd HH:mm");
@@ -216,9 +216,9 @@ public class MainActivity extends SlidingFragmentActivity {
 							if (arg0.size() > 0) {
 								dialogShowDevReply(replyString);
 							}
-							
-						}catch (Exception exception){
-							
+
+						} catch (Exception exception) {
+
 						}
 
 					}
@@ -591,6 +591,9 @@ public class MainActivity extends SlidingFragmentActivity {
 																						// Auto-generated
 																						// method
 																						// stub
+																						MessageHolder messageHolder = (MessageHolder) object;
+																						mDataManager
+																								.doMessageGet(messageHolder);
 																						mDataManager
 																								.doAutoLoginEnd();
 

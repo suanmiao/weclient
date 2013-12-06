@@ -38,6 +38,7 @@ import android.widget.TextView;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
 import com.suan.weclient.util.DataManager;
+import com.suan.weclient.util.MessageHolder;
 import com.suan.weclient.util.DataManager.AutoLoginListener;
 import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.SharedPreferenceManager;
@@ -289,6 +290,8 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 																												// Auto-generated
 																												// method
 																												// stub
+																												MessageHolder messageHolder = (MessageHolder)object;
+																												mDataManager.doMessageGet(messageHolder);
 
 																											}
 																										});

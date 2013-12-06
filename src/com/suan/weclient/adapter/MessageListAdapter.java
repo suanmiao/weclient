@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,13 +28,15 @@ import android.widget.Toast;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.DataManager;
+import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.MessageItem;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
-public class MessageListAdapter extends BaseAdapter {
+public class MessageListAdapter extends BaseAdapter implements OnScrollListener {
 	private LayoutInflater mInflater;
+	private ListCacheManager mListCacheManager;
 	private DataManager mDataManager;
 	private Context mContext;
 	private EditText popContentEditText;
@@ -42,12 +46,20 @@ public class MessageListAdapter extends BaseAdapter {
 	private Dialog dialog;
 	private static final int MAX_TEXT_LENGTH = 140;
 	private String canceledReplyContent = "";
+	/*
+	 * whether the scroll is busy
+	 */
+	private boolean mBusy = false;
+	/*
+	 * whether the user cancel the last reply if so ,we will save it
+	 */
 	private boolean lastReplyCanceled = false;
 
 	public MessageListAdapter(Context context, DataManager dataManager) {
 		this.mInflater = LayoutInflater.from(context);
 		this.mDataManager = dataManager;
 		this.mContext = context;
+		this.mListCacheManager = new ListCacheManager();
 	}
 
 	private ArrayList<MessageItem> getMessageItems() {
@@ -64,6 +76,10 @@ public class MessageListAdapter extends BaseAdapter {
 		return getMessageItems().size();
 	}
 
+	public int getViewTypeCount() {
+		return 2;
+	}
+
 	@Override
 	public Object getItem(int arg0) {
 		// TODO Auto-generated method stub
@@ -73,128 +89,34 @@ public class MessageListAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
-		return 0;
+		return arg0;
 	}
 
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public void updateCache() {
+		mListCacheManager.clearData();
+	}
 
-		ItemViewHolder viewHolder = null;
-		viewHolder = new ItemViewHolder();
+	public View newView(final int position) {
 
+		View convertView = null;
 		switch (getMessageItems().get(position).getType()) {
 		case MessageItem.MESSAGE_TYPE_TEXT:
-
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
 					null);
-			viewHolder.contentTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_content);
-			viewHolder.starImageButton = (ImageButton) convertView
-					.findViewById(R.id.message_item_text_button_star);
-			viewHolder.profileImageView = (ImageView) convertView
-					.findViewById(R.id.message_item_text_img_profile);
-			viewHolder.profileTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_profile);
-			viewHolder.timeTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_time);
-			viewHolder.contentTextView.setText(getMessageItems().get(position)
-					.getContent());
 			break;
 
 		case MessageItem.MESSAGE_TYPE_IMG:
-
 			convertView = mInflater.inflate(R.layout.message_item_img_layout,
 					null);
-			viewHolder.contentImageView = (ImageView) convertView
-					.findViewById(R.id.message_item_img_img_content);
-			viewHolder.starImageButton = (ImageButton) convertView
-					.findViewById(R.id.message_item_img_button_star);
-			viewHolder.profileImageView = (ImageView) convertView
-					.findViewById(R.id.message_item_img_img_profile);
-			viewHolder.profileTextView = (TextView) convertView
-					.findViewById(R.id.message_item_img_text_profile);
-			viewHolder.timeTextView = (TextView) convertView
-					.findViewById(R.id.message_item_img_text_time);
-
-			viewHolder.contentImageView
-					.setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							Intent jumbIntent = new Intent();
-							jumbIntent
-									.setClass(mContext, ShowImgActivity.class);
-							Bundle bundle = new Bundle();
-							bundle.putString("slaveSid", mDataManager
-									.getCurrentUser().getSlaveSid());
-							bundle.putString("slaveUser", mDataManager
-									.getCurrentUser().getSlaveUser());
-							bundle.putString("msgId",
-									getMessageItems().get(position).getId());
-							bundle.putString("token", mDataManager
-									.getCurrentUser().getToken());
-							bundle.putString("referer",
-									getMessageItems().get(position)
-											.getReferer());
-							jumbIntent.putExtras(bundle);
-							mContext.startActivity(jumbIntent);
-
-						}
-					});
-
-			Bitmap contentBitmap = mDataManager.getCacheManager().getRomBitmap(
-					ImageCacheManager.CACHE_MESSAGE_CONTENT
-							+ getMessageItems().get(position).getId());
-			if (contentBitmap == null) {
-				mDataManager.getWechatManager().getMessageImg(mDataManager.getCurrentPosition(), getMessageItems().get(position).getId(),
-						mDataManager.getCurrentUser().getSlaveSid(),
-						mDataManager.getCurrentUser().getSlaveUser(),
-						mDataManager.getCurrentUser().getToken(),
-						getMessageItems().get(position).getReferer(),
-						viewHolder.contentImageView,
-						WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,new OnActionFinishListener() {
-							
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-								Bitmap bitmap = (Bitmap)object;
-									mDataManager
-											.getCacheManager()
-											.putRomBitmap(
-													ImageCacheManager.CACHE_MESSAGE_CONTENT
-															+ getMessageItems()
-																	.get(position)
-																	.getId(),
-													bitmap);
-								
-							}
-						});
-
-			} else {
-				viewHolder.contentImageView.setImageBitmap(contentBitmap);
-			}
 			break;
 
 		default:
 
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
 					null);
-			viewHolder.contentTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_content);
-			viewHolder.starImageButton = (ImageButton) convertView
-					.findViewById(R.id.message_item_text_button_star);
-			viewHolder.profileImageView = (ImageView) convertView
-					.findViewById(R.id.message_item_text_img_profile);
-			viewHolder.profileTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_profile);
-			viewHolder.timeTextView = (TextView) convertView
-					.findViewById(R.id.message_item_text_text_time);
-			viewHolder.contentTextView.setText("[目前暂不支持该类型消息]");
 			break;
 
 		}
-		convertView.setTag(viewHolder);
 
 		convertView.setOnClickListener(new OnClickListener() {
 
@@ -211,21 +133,118 @@ public class MessageListAdapter extends BaseAdapter {
 
 			}
 		});
-		setStarBackground(viewHolder.starImageButton, position);
+
+		return convertView;
+
+	}
+
+	private ItemViewHolder getHolder(final View view, int position) {
+
+		ItemViewHolder holder = (ItemViewHolder) view.getTag();
+		if (holder == null) {
+			holder = new ItemViewHolder(view, position);
+			view.setTag(holder);
+		}
+		return holder;
+	}
+
+	public class ItemViewHolder {
+
+		private ImageView contentImageView;
+		private TextView contentTextView;
+		private ImageButton starImageButton;
+		private ImageView profileImageView;
+		private TextView profileTextView;
+		private TextView timeTextView;
+
+		public ItemViewHolder(View parentView, final int position) {
+
+			switch (getMessageItems().get(position).getType()) {
+			case MessageItem.MESSAGE_TYPE_TEXT:
+
+				contentTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_content);
+				starImageButton = (ImageButton) parentView
+						.findViewById(R.id.message_item_text_button_star);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_text_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_time);
+				contentTextView.setText(getMessageItems().get(position)
+						.getContent());
+				break;
+
+			case MessageItem.MESSAGE_TYPE_IMG:
+
+				contentImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_img_img_content);
+				starImageButton = (ImageButton) parentView
+						.findViewById(R.id.message_item_img_button_star);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_img_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.message_item_img_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.message_item_img_text_time);
+
+				break;
+
+			default:
+
+				contentTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_content);
+				starImageButton = (ImageButton) parentView
+						.findViewById(R.id.message_item_text_button_star);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_text_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.message_item_text_text_time);
+				contentTextView.setText("[目前暂不支持该类型消息]");
+				break;
+
+			}
+		}
+
+	}
+
+	public void bindView(View view, final int position) {
+
+		ItemViewHolder holder = getHolder(view, position);
+
+		switch (getMessageItems().get(position).getType()) {
+		case MessageItem.MESSAGE_TYPE_TEXT:
+
+			break;
+
+		case MessageItem.MESSAGE_TYPE_IMG:
+
+			setContentImg(holder, position);
+
+			break;
+
+		default:
+
+			break;
+
+		}
+
+		setStarBackground(holder.starImageButton, position);
 
 		long time = Long.parseLong(getMessageItems().get(position)
 				.getDateTime());
 		Date date = new Date(time * 1000);
 		SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
-		// format.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String timeString = "" + format.format(date);
 
-		viewHolder.timeTextView.setText(timeString);
-		viewHolder.profileImageView
-				.setBackgroundResource(R.drawable.ic_launcher);
-		viewHolder.profileTextView.setText(""
+		holder.timeTextView.setText(timeString);
+		holder.profileImageView.setBackgroundResource(R.drawable.ic_launcher);
+		holder.profileTextView.setText(""
 				+ getMessageItems().get(position).getNickName());
-		viewHolder.starImageButton.setOnClickListener(new OnClickListener() {
+		holder.starImageButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
@@ -246,34 +265,137 @@ public class MessageListAdapter extends BaseAdapter {
 			}
 		});
 
-		Bitmap headBitmap = mDataManager.getCacheManager().getDiskBitmap(
-				ImageCacheManager.CACHE_MESSAGE_PROFILE
-						+ getMessageItems().get(position).getFakeId());
-		if (headBitmap != null) {
-			viewHolder.profileImageView.setImageBitmap(headBitmap);
+		setHeadImg(holder, position);
 
-		} else {
-			mDataManager.getWechatManager().getMessageHeadImg(
-					mDataManager.getCurrentPosition(),
-					getMessageItems().get(position).getFakeId(),
-					getMessageItems().get(position).getReferer(),
-					viewHolder.profileImageView, new OnActionFinishListener() {
+	}
 
-						@Override
-						public void onFinish(Object object) {
-							// TODO Auto-generated method stub
-							Bitmap bitmap = (Bitmap) object;
+	private void setContentImg(final ItemViewHolder holder, final int position) {
 
-							mDataManager.getCacheManager().putDiskBitmap(
-									ImageCacheManager.CACHE_MESSAGE_PROFILE
-											+ getMessageItems().get(position)
-													.getFakeId(), bitmap);
-						}
-					});
+		holder.contentImageView.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent jumbIntent = new Intent();
+				jumbIntent.setClass(mContext, ShowImgActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("slaveSid", mDataManager.getCurrentUser()
+						.getSlaveSid());
+				bundle.putString("slaveUser", mDataManager.getCurrentUser()
+						.getSlaveUser());
+				bundle.putString("msgId", getMessageItems().get(position)
+						.getId());
+				bundle.putString("token", mDataManager.getCurrentUser()
+						.getToken());
+				bundle.putString("referer", getMessageItems().get(position)
+						.getReferer());
+				jumbIntent.putExtras(bundle);
+				mContext.startActivity(jumbIntent);
+
+			}
+		});
+		boolean imgLoaded = false;
+		if (holder.contentImageView.getTag() != null) {
+			imgLoaded = (Boolean) holder.contentImageView.getTag();
 		}
 
-		return convertView;
+		if (!mBusy || !imgLoaded) {
+
+			Bitmap contentBitmap = mDataManager.getCacheManager().getRomBitmap(
+					ImageCacheManager.CACHE_MESSAGE_CONTENT
+							+ getMessageItems().get(position).getId());
+			if (contentBitmap == null) {
+				mDataManager.getWechatManager().getMessageImg(
+						mDataManager.getCurrentPosition(),
+						getMessageItems().get(position).getId(),
+						mDataManager.getCurrentUser().getSlaveSid(),
+						mDataManager.getCurrentUser().getSlaveUser(),
+						mDataManager.getCurrentUser().getToken(),
+						getMessageItems().get(position).getReferer(),
+						holder.contentImageView,
+						WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,
+						new OnActionFinishListener() {
+
+							@Override
+							public void onFinish(Object object) {
+								// TODO Auto-generated method stub
+								holder.contentImageView.setTag(true);
+								Bitmap bitmap = (Bitmap) object;
+								mDataManager.getCacheManager().putRomBitmap(
+										ImageCacheManager.CACHE_MESSAGE_CONTENT
+												+ getMessageItems().get(
+														position).getId(),
+										bitmap);
+
+							}
+						});
+
+			} else {
+				holder.contentImageView.setImageBitmap(contentBitmap);
+			}
+		}
+	}
+
+	private void setHeadImg(final ItemViewHolder holder, final int position) {
+
+		boolean imgLoaded = false;
+		if (holder.profileImageView.getTag() != null) {
+			imgLoaded = (Boolean) holder.profileImageView.getTag();
+		}
+
+		if (!mBusy || !imgLoaded) {
+
+			Bitmap headBitmap = mDataManager.getCacheManager().getDiskBitmap(
+					ImageCacheManager.CACHE_MESSAGE_PROFILE
+							+ getMessageItems().get(position).getFakeId());
+			if (headBitmap != null) {
+				holder.profileImageView.setImageBitmap(headBitmap);
+
+			} else {
+				mDataManager.getWechatManager().getMessageHeadImg(
+						mDataManager.getCurrentPosition(),
+						getMessageItems().get(position).getFakeId(),
+						getMessageItems().get(position).getReferer(),
+						holder.profileImageView, new OnActionFinishListener() {
+
+							@Override
+							public void onFinish(Object object) {
+								// TODO Auto-generated method stub
+								holder.profileImageView.setTag(true);
+								Bitmap bitmap = (Bitmap) object;
+
+								mDataManager.getCacheManager().putDiskBitmap(
+										ImageCacheManager.CACHE_MESSAGE_PROFILE
+												+ getMessageItems().get(
+														position).getFakeId(),
+										bitmap);
+							}
+						});
+
+			}
+		}
+	}
+	
+	private String getMessageId(int position){
+		return getMessageItems().get(position).getId();
+	}
+	
+
+	@Override
+	public View getView(final int position, View convertView, ViewGroup parent) {
+
+		View v;
+		if (!mListCacheManager.containView(getMessageId(position))) {
+			v = newView(position);
+			mListCacheManager.putView(v, getMessageId(position));
+		} else {
+
+			v = mListCacheManager.getView(getMessageId(position));
+
+		}
+		bindView(v, position);
+
+		return v;
 	}
 
 	public void popReply(final int position) {
@@ -410,13 +532,24 @@ public class MessageListAdapter extends BaseAdapter {
 				});
 	}
 
-	public class ItemViewHolder {
-		private ImageView contentImageView;
-		private TextView contentTextView;
-		private ImageButton starImageButton;
-		private ImageView profileImageView;
-		private TextView profileTextView;
-		private TextView timeTextView;
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) { // 滑动停止
+			mBusy = false;
+
+		} else if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {// 滑动手未松开
+			mBusy = true;
+		} else if (scrollState == OnScrollListener.SCROLL_STATE_FLING) {// 滑动中手已松开
+			mBusy = true;
+		}
+	}
+
 }

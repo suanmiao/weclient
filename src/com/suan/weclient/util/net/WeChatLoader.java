@@ -96,7 +96,6 @@ public class WeChatLoader {
 			final String pwd, final String imgcode, final String f) {
 		final Handler loadHandler = new Handler() {
 
-			// 子类必须重写此方法,接受数据
 			@Override
 			public void handleMessage(Message msg) {
 				// TODO Auto-generated method stub

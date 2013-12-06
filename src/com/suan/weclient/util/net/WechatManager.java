@@ -254,42 +254,36 @@ public class WechatManager {
 			final String referer, final ImageView imageView,
 			final OnActionFinishListener onActionFinishListener) {
 
-		WeChatLoader.wechatGetHeadImg(
-				new WechatExceptionListener() {
+		WeChatLoader.wechatGetHeadImg(new WechatExceptionListener() {
 
-					@Override
-					public void onError() {
-						// TODO Auto-generated method stub
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
 
-					}
-				},
+			}
+		},
 
-				new WechatGetHeadImgCallBack() {
+		new WechatGetHeadImgCallBack() {
 
-					@Override
-					public void onBack(Bitmap bitmap,
-							String referer, ImageView imageView) {
-						// TODO Auto-generated method stub
+			@Override
+			public void onBack(Bitmap bitmap, String referer,
+					ImageView imageView) {
+				// TODO Auto-generated method stub
 
-						try {
-							Bitmap roundBitmap = Util.roundCorner(
-									bitmap, 10);
+				try {
+					Bitmap roundBitmap = Util.roundCorner(bitmap, 10);
 
-							imageView.setImageBitmap(roundBitmap);
-							onActionFinishListener.onFinish(roundBitmap);
-							
-						} catch (Exception exception) {
+					imageView.setImageBitmap(roundBitmap);
+					onActionFinishListener.onFinish(roundBitmap);
 
-						}
+				} catch (Exception exception) {
 
-					}
-				}, mDataManager.getUserGroup().get(userIndex),
-				fakeId,
-				referer,
+				}
+
+			}
+		}, mDataManager.getUserGroup().get(userIndex), fakeId, referer,
 				imageView);
 
-		
-		
 	}
 
 	public void getMessageImg(final int userIndex, final String msgId,
@@ -298,31 +292,28 @@ public class WechatManager {
 			final String imgType,
 			final OnActionFinishListener onActionFinishListener) {
 
-		WeChatLoader.wechatGetMessageImg(
-				new WechatExceptionListener() {
+		WeChatLoader.wechatGetMessageImg(new WechatExceptionListener() {
 
-					@Override
-					public void onError() {
-						// TODO Auto-generated method stub
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
 
-					}
-				},
-				new WechatGetMessageImgCallBack() {
+			}
+		}, new WechatGetMessageImgCallBack() {
 
-					@Override
-					public void onBack(Bitmap bitmap,
-							ImageView imageView) {
-						// TODO Auto-generated method stub
-						try {
-							imageView.setImageBitmap(bitmap);
-							onActionFinishListener.onFinish(bitmap);
+			@Override
+			public void onBack(Bitmap bitmap, ImageView imageView) {
+				// TODO Auto-generated method stub
+				try {
+					imageView.setImageBitmap(bitmap);
+					onActionFinishListener.onFinish(bitmap);
 
-						} catch (Exception exception) {
+				} catch (Exception exception) {
 
-						}
+				}
 
-					}
-				}, msgId, slaveSid, slaveUser, token, referer, imageView,
+			}
+		}, msgId, slaveSid, slaveUser, token, referer, imageView,
 				WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE);
 
 	}
@@ -503,7 +494,7 @@ public class WechatManager {
 							// Auto-generated
 							// method
 							// stub
-							mDataManager.doMessageGet(mDataManager
+							onActionFinishListener.onFinish(mDataManager
 									.getMessageHolders().get(userIndex));
 							mDataManager.doLoadingEnd();
 
@@ -512,7 +503,6 @@ public class WechatManager {
 							mDataManager.getMessageHolders().get(userIndex),
 							referer);
 					mDataManager.doDismissAllDialog();
-					onActionFinishListener.onFinish(null);
 
 				} catch (Exception exception) {
 
@@ -560,10 +550,8 @@ public class WechatManager {
 							// TODO
 							// Auto-generated
 							// method
-							// stub
-							// Log.e("get next message",
-							// "message size"+messageResultHolder.messageItems.size());
-							mDataManager.doMessageGet(mDataManager
+
+							onActionFinishListener.onFinish(mDataManager
 									.getMessageHolders().get(userIndex));
 
 						}
@@ -574,8 +562,6 @@ public class WechatManager {
 				} catch (Exception exception) {
 
 				}
-
-				onActionFinishListener.onFinish(null);
 
 			}
 		}, mDataManager.getMessageHolders().get(userIndex), page);
