@@ -67,7 +67,6 @@ public class WeChatLoader {
 	private static final String WECHAT_URL_GET_USER_PROFILE = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
 
 	private static final String WECHAT_URL_GET_MASS_DATA_1 = "https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token=";
-
 	private static final String WECHAT_URL_GET_MASS_DATA_2 = "&lang=zh_CN";
 
 	private static final String WECHAT_URL_GET_MESSAGE_IMG_1 = "https://mp.weixin.qq.com/cgi-bin/getimgdata?token=";
@@ -77,6 +76,13 @@ public class WeChatLoader {
 
 	public static final String WECHAT_URL_MESSAGE_IMG_LARGE = "large";
 	public static final String WECHAT_URL_MESSAGE_IMG_SMALL = "small";
+
+	private static final String WECHAT_URL_GET_VOICE_MESSAGE_1 = "https://mp.weixin.qq.com/cgi-bin/getvoicedata?msgid=";
+
+	private static final String WECHAT_URL_GET_VOICE_MESSAGE_2 = "&fileid=&token=";
+	private static final String WECHAT_URL_GET_VOICE_MESSAGE_3 = "&lang=zh_CN";
+
+	private static final String WECHAT_URL_GET_VOICE_MESSAGE_REFERER = "https://mp.weixin.qq.com/mpres/zh_CN/htmledition/plprecorder/soundmanager2.swf";
 
 	public interface WechatExceptionListener {
 		public void onError();
@@ -245,6 +251,7 @@ public class WeChatLoader {
 		}.start();
 
 	}
+
 	public interface WechatMessageListCallBack {
 		public void onBack(String strResult, String referer);
 	}
@@ -764,6 +771,78 @@ public class WeChatLoader {
 
 	}
 
+	public interface WechatGetVoiceMsgCallBack {
+		public void onBack(byte[] bytes);
+	}
+
+	public static void wechatGetVoiceMsg(
+			final WechatExceptionListener wechatExceptionListener,
+			final WechatGetVoiceMsgCallBack getVoiceMsgCallBack,
+			final UserBean userBean, final String msgId,final int length
+			) {
+		final Handler loadHandler = new Handler() {
+
+			// 子类必须重写此方法,接受数据
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+
+				super.handleMessage(msg);
+				// 此处可以更新UI
+				ContentHolder contentHolder = (ContentHolder) msg.obj;
+				getVoiceMsgCallBack.onBack((byte[]) contentHolder
+						.getExtra("result"));
+
+			}
+		};
+
+		new Thread() {
+			public void run() {
+				Looper.prepare();
+				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+						+ userBean.getSlaveSid() + "; " + "slave_user="
+						+ userBean.getSlaveUser()));
+				headerList.add(new BasicNameValuePair("Content-Type",
+						"text/html; charset=utf-8"));
+
+				headerList.add(new BasicNameValuePair("Referer",
+						WECHAT_URL_GET_VOICE_MESSAGE_REFERER));
+
+				String targetUrl = WECHAT_URL_GET_VOICE_MESSAGE_1 + msgId
+						+ WECHAT_URL_GET_VOICE_MESSAGE_2 + userBean.getToken()
+						+ WECHAT_URL_GET_VOICE_MESSAGE_3;
+				HttpResponse response = httpGet(targetUrl, headerList);
+				if (response != null) {
+
+					try {
+
+						
+						
+						Message message = new Message();
+						ContentHolder contentHolder = new ContentHolder();
+						InputStream inputStream = (InputStream) response
+										.getEntity().getContent();
+						byte[] bytes = new byte[length];
+						inputStream.read(bytes);
+						
+						contentHolder.putExtra("result", bytes);
+						message.obj = contentHolder;
+
+						loadHandler.sendMessage(message);
+					} catch (Exception exception) {
+
+					}
+
+				} else {
+					wechatExceptionListener.onError();
+				}
+
+			}
+
+		}.start();
+
+	}
 
 	public interface WechatGetMassData {
 		public void onBack(String strResult);
@@ -781,7 +860,7 @@ public class WeChatLoader {
 
 				super.handleMessage(msg);
 				// 此处可以更新UI
-				ContentHolder contentHolder = (ContentHolder)msg.obj;
+				ContentHolder contentHolder = (ContentHolder) msg.obj;
 				wechatGetMassData.onBack(contentHolder.get("result"));
 
 			}
@@ -805,7 +884,6 @@ public class WeChatLoader {
 				HttpResponse response = httpGet(targetUrl, headerList);
 
 				if (response != null) {
-
 
 					try {
 
@@ -953,7 +1031,6 @@ public class WeChatLoader {
 
 		return md5StrBuff.toString();
 	}
-
 
 	public static class ContentHolder {
 		private Map<String, String> content = new HashMap<String, String>();

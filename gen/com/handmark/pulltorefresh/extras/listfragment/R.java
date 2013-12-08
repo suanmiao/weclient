@@ -9,19 +9,19 @@ package com.handmark.pulltorefresh.extras.listfragment;
 public final class R {
 	public static final class id {
 		public static final int pullFromStart = 0x7f050016;
-		public static final int pull_to_refresh_progress = 0x7f05008e;
+		public static final int pull_to_refresh_progress = 0x7f050094;
 		public static final int rotate = 0x7f05001c;
 		public static final int both = 0x7f050018;
 		public static final int webview = 0x7f05001f;
-		public static final int pull_to_refresh_text = 0x7f05008f;
+		public static final int pull_to_refresh_text = 0x7f050095;
 		public static final int pullDownFromTop = 0x7f05001a;
 		public static final int gridview = 0x7f05001e;
 		public static final int pullUpFromBottom = 0x7f05001b;
 		public static final int scrollview = 0x7f050020;
 		public static final int pullFromEnd = 0x7f050017;
-		public static final int pull_to_refresh_image = 0x7f05008d;
-		public static final int pull_to_refresh_sub_text = 0x7f050090;
-		public static final int fl_inner = 0x7f05008c;
+		public static final int pull_to_refresh_image = 0x7f050093;
+		public static final int pull_to_refresh_sub_text = 0x7f050096;
+		public static final int fl_inner = 0x7f050092;
 		public static final int viewpager = 0x7f050021;
 		public static final int flip = 0x7f05001d;
 		public static final int disabled = 0x7f050015;
@@ -42,9 +42,9 @@ public final class R {
 		public static final int pull_to_refresh_from_bottom_release_label = 0x7f0a0013;
 	}
 	public static final class layout {
-		public static final int pull_to_refresh_header_horizontal = 0x7f03002d;
-		public static final int pull_to_refresh_header_vertical = 0x7f03002e;
-		public static final int need_this_for_maven = 0x7f03002a;
+		public static final int pull_to_refresh_header_horizontal = 0x7f03002e;
+		public static final int pull_to_refresh_header_vertical = 0x7f03002f;
+		public static final int need_this_for_maven = 0x7f03002b;
 	}
 	public static final class styleable {
 		public static final int PullToRefresh_ptrDrawableStart = 7;

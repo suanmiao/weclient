@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.util.voice.VoiceManager;
 
 public class DataManager {
 
@@ -25,6 +26,7 @@ public class DataManager {
 	
 	
 	private WechatManager mWechatManager;
+	private VoiceManager mVoiceManager;
 	private Context mContext;
 	
 	
@@ -60,6 +62,7 @@ public class DataManager {
 		userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
 		mContext = context;
 		mWechatManager = new WechatManager(this, context);
+		mVoiceManager = new VoiceManager(context);
 
 		userBeans = SharedPreferenceManager.getUserGroup(context);
 		messageHolders = new ArrayList<MessageHolder>();
@@ -123,6 +126,10 @@ public class DataManager {
 	
 	public WechatManager getWechatManager(){
 		return mWechatManager;
+	}
+	
+	public VoiceManager getVoiceManager(){
+		return mVoiceManager;
 	}
 	
 	

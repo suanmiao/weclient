@@ -22,6 +22,7 @@ import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetMassData;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetUserProfleCallBack;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetVoiceMsgCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatLoginCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMassCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMessageListCallBack;
@@ -284,6 +285,30 @@ public class WechatManager {
 		}, mDataManager.getUserGroup().get(userIndex), fakeId, referer,
 				imageView);
 
+	}
+
+	public void getMessageVoice(final int userIndex, final String msgId,final int length,
+			final UserBean userBean,
+			final OnActionFinishListener onActionFinishListener) {
+		
+		WeChatLoader.wechatGetVoiceMsg(new WechatExceptionListener() {
+			
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
+				
+			}
+		}, new WechatGetVoiceMsgCallBack() {
+			
+			@Override
+			public void onBack(byte[]bytes) {
+				// TODO Auto-generated method stub
+				onActionFinishListener.onFinish(bytes);
+				
+				
+			}
+		}, userBean, msgId,length);
+		
 	}
 
 	public void getMessageImg(final int userIndex, final String msgId,

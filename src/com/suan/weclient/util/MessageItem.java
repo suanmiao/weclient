@@ -21,6 +21,12 @@ public class MessageItem {
 	private String has_reply = "";
 	private String refuse_reason = "";
 	private String is_starred_msg = "0";
+	
+	/*
+	 * about audio
+	 */
+	private String play_length = "0";
+	private String length = "0";
 /********************************************************************/	
 	private String token = "";
 	private String slave_sid = "";
@@ -124,6 +130,24 @@ public class MessageItem {
 	}
 
 	
+
+	public String getPlayLength(){
+		return play_length;
+	}
+	
+	public void setPlayLength(String playLength){
+		this.play_length = playLength;
+	}
+
+
+	public String getLength(){
+		return length;
+	}
+	
+	public void setLength(String length){
+		this.length =  length;
+	}
+
 
 	public String getFileId(){
 		return fileid;

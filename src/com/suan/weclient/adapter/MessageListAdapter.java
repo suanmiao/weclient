@@ -1,5 +1,7 @@
 package com.suan.weclient.adapter;
 
+import java.io.InputStream;
+import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +14,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +36,7 @@ import com.suan.weclient.util.MessageItem;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.util.voice.VoiceHolder;
 
 public class MessageListAdapter extends BaseAdapter implements OnScrollListener {
 	private LayoutInflater mInflater;
@@ -76,10 +80,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		return getMessageItems().size();
 	}
 
-	public int getViewTypeCount() {
-		return 2;
-	}
-
 	@Override
 	public Object getItem(int arg0) {
 		// TODO Auto-generated method stub
@@ -108,6 +108,12 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		case MessageItem.MESSAGE_TYPE_IMG:
 			convertView = mInflater.inflate(R.layout.message_item_img_layout,
 					null);
+			break;
+		case MessageItem.MESSAGE_TYPE_VOICE:
+
+			convertView = mInflater.inflate(R.layout.message_item_voice_layout,
+					null);
+
 			break;
 
 		default:
@@ -191,6 +197,20 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 				break;
 
+			case MessageItem.MESSAGE_TYPE_VOICE:
+
+				contentImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_voice_img_content);
+				starImageButton = (ImageButton) parentView
+						.findViewById(R.id.message_item_voice_button_star);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.message_item_voice_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.message_item_voice_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.message_item_voice_text_time);
+				break;
+
 			default:
 
 				contentTextView = (TextView) parentView
@@ -222,7 +242,13 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 		case MessageItem.MESSAGE_TYPE_IMG:
 
-			setContentImg(holder, position);
+			setImgMessageContent(holder, position);
+
+			break;
+
+		case MessageItem.MESSAGE_TYPE_VOICE:
+
+			setVoiceMessageContent(holder, position);
 
 			break;
 
@@ -269,7 +295,70 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 	}
 
-	private void setContentImg(final ItemViewHolder holder, final int position) {
+	private void setVoiceMessageContent(final ItemViewHolder holder,
+			final int position) {
+
+		boolean voiceLoaded = false;
+		if (holder.contentImageView.getTag() != null) {
+			voiceLoaded = true;
+		}
+
+		if (!mBusy || !voiceLoaded) {
+			mDataManager.getWechatManager().getMessageVoice(
+					mDataManager.getCurrentPosition(),
+					getMessageItems().get(position).getId(),
+					Integer.parseInt(getMessageItems().get(position)
+							.getLength()), mDataManager.getCurrentUser(),
+					new OnActionFinishListener() {
+
+						@Override
+						public void onFinish(Object object) {
+							// TODO Auto-generated method stub
+							try {
+
+								byte[] bytes = (byte[]) object;
+								VoiceHolder voiceHolder = new VoiceHolder(
+										bytes, getMessageItems().get(position)
+												.getPlayLength(),
+										getMessageItems().get(position)
+												.getLength());
+								holder.contentImageView.setTag(voiceHolder);
+
+								Log.e("get voice data", "" + bytes);
+							} catch (Exception exception) {
+
+							}
+
+						}
+					});
+
+		}
+		holder.contentImageView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				if (holder.contentImageView.getTag() != null) {
+
+					VoiceHolder voiceHolder = (VoiceHolder) holder.contentImageView
+							.getTag();
+					Log.e("voice start play", "");
+					mDataManager.getVoiceManager().playVoice(
+							voiceHolder.getBytes(),
+							voiceHolder.getPlayLength(),
+							voiceHolder.getLength());
+
+				} else {
+					Log.e("voice null", "");
+				}
+
+			}
+		});
+	}
+
+	private void setImgMessageContent(final ItemViewHolder holder,
+			final int position) {
 
 		holder.contentImageView.setOnClickListener(new OnClickListener() {
 
@@ -375,11 +464,10 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 			}
 		}
 	}
-	
-	private String getMessageId(int position){
+
+	private String getMessageId(int position) {
 		return getMessageItems().get(position).getId();
 	}
-	
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
