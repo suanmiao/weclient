@@ -1,7 +1,5 @@
 package com.suan.weclient.adapter;
 
-import java.io.InputStream;
-import java.nio.Buffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +12,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +34,7 @@ import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceHolder;
+import com.suan.weclient.util.voice.VoiceManager.AudioPlayListener;
 
 public class MessageListAdapter extends BaseAdapter implements OnScrollListener {
 	private LayoutInflater mInflater;
@@ -303,7 +301,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 			voiceLoaded = true;
 		}
 
-		if (!mBusy || !voiceLoaded) {
+		if (!mBusy && !voiceLoaded) {
 			mDataManager.getWechatManager().getMessageVoice(
 					mDataManager.getCurrentPosition(),
 					getMessageItems().get(position).getId(),
@@ -324,7 +322,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 												.getLength());
 								holder.contentImageView.setTag(voiceHolder);
 
-								Log.e("get voice data", "" + bytes);
 							} catch (Exception exception) {
 
 							}
@@ -341,16 +338,49 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 				if (holder.contentImageView.getTag() != null) {
 
-					VoiceHolder voiceHolder = (VoiceHolder) holder.contentImageView
+					final VoiceHolder voiceHolder = (VoiceHolder) holder.contentImageView
 							.getTag();
-					Log.e("voice start play", "");
-					mDataManager.getVoiceManager().playVoice(
-							voiceHolder.getBytes(),
-							voiceHolder.getPlayLength(),
-							voiceHolder.getLength());
+					if (voiceHolder.getPlaying()) {
+						mDataManager.getVoiceManager().stopMusic();
+
+					} else {
+
+						mDataManager.getVoiceManager().playVoice(
+								voiceHolder.getBytes(),
+								voiceHolder.getPlayLength(),
+								voiceHolder.getLength(),
+								new AudioPlayListener() {
+
+									@Override
+									public void onAudioStop() {
+										// TODO Auto-generated method stub
+
+										voiceHolder.setPlaying(false);
+
+										holder.contentImageView
+												.setBackgroundResource(R.drawable.ic_launcher);
+
+									}
+
+									@Override
+									public void onAudioStart() {
+										// TODO Auto-generated method stub
+										voiceHolder.setPlaying(true);
+										holder.contentImageView
+												.setBackgroundColor(Color.RED);
+
+									}
+
+									@Override
+									public void onAudioError() {
+										// TODO Auto-generated method stub
+
+									}
+								});
+					}
 
 				} else {
-					Log.e("voice null", "");
+
 				}
 
 			}
