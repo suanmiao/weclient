@@ -14,4 +14,5 @@
 	<string name="feedback">反馈</string>
 	<string name="feedback_hint">如果需要得到回复请留下您的邮箱</string>
 	<string name="check_for_update">检查更新</string>
+	<string name="fans_list">用户列表</string>
 </resources>

@@ -13,11 +13,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.NetworkUtil;
 import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.UserBean;
 import com.suan.weclient.util.Util;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.DataParser;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
@@ -164,7 +164,7 @@ public class LoginActivity extends Activity {
 							.getMD5Str(passWordEditText.getText().toString()));
 					nowBean.setSlaveSid(slaveSid);
 					nowBean.setSlaveUser(slaveUser);
-					int loginResult = DataParser.analyseLogin(nowBean,
+					int loginResult = DataParser.parseLogin(nowBean,
 							strResult, slaveSid, slaveUser,
 							getApplicationContext());
 					switch (loginResult) {
@@ -189,7 +189,7 @@ public class LoginActivity extends Activity {
 										try {
 
 											int getUserProfileState = DataParser
-													.getUserProfile(strResult,
+													.parseUserProfile(strResult,
 															nowBean);
 
 											switch (getUserProfileState) {

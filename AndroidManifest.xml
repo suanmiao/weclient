@@ -37,6 +37,10 @@
 			android:screenOrientation="portrait" >
 		</activity>
 		<activity
+			android:name=".activity.FansListActivity"
+			android:screenOrientation="portrait" >
+		</activity>
+		<activity
 			android:name=".activity.ShowImgActivity"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Transparent" >

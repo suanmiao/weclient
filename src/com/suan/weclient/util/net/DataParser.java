@@ -19,10 +19,13 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.MessageItem;
 import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.UserBean;
+import com.suan.weclient.util.data.FansBean;
+import com.suan.weclient.util.data.FansGroupBean;
+import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.MessageBean;
+import com.suan.weclient.util.data.MessageHolder;
+import com.suan.weclient.util.data.UserBean;
 
 public class DataParser {
 
@@ -37,10 +40,10 @@ public class DataParser {
 	public static final int GET_MASS_DATA_SUCCESS = 1;
 
 	public static final int GET_MASS_DATA_FAILED = 0;
-	
+
 	public static final String today = "今天";
 
-	public static int getUserProfile(String source, UserBean userBean) {
+	public static int parseUserProfile(String source, UserBean userBean) {
 
 		Document document = Jsoup.parse(source);
 		Elements numElements = document.getElementsByClass("number");
@@ -98,7 +101,7 @@ public class DataParser {
 		public void onBack(UserBean userBean);
 	}
 
-	public static void getMassData(final String source,
+	public static void parseMassData(final String source,
 			final UserBean userBean,
 			final ParseMassDataCallBack parseMassDataCallBack) {
 
@@ -133,11 +136,11 @@ public class DataParser {
 				if (typeElements.size() > 0) {
 
 					String userType = typeElements.get(0).html();
-					if(userType.contains(today)){
+					if (userType.contains(today)) {
 						userBean.setUserType(UserBean.USER_TYPE_SUBSTRICTION);
-					}else{
+					} else {
 						userBean.setUserType(UserBean.USER_TYPE_SERVICE);
-						
+
 					}
 				}
 			}
@@ -178,16 +181,16 @@ public class DataParser {
 
 	public static class MessageResultHolder {
 		public MessageHolder messageHolder;
-		public ArrayList<MessageItem> messageItems;
+		public ArrayList<MessageBean> messageBeans;
 		public String lastMsgId = "";
 
 	}
 
 	public interface MessageListParseCallBack {
-		public void onBack(MessageResultHolder messageResultHolder);
+		public void onBack(MessageResultHolder messageResultHolder,boolean dataChanged);
 	}
 
-	public static void getNewMessage(
+	public static void parseNewMessage(
 			final MessageListParseCallBack messageListParseCallBack,
 			final String source, final UserBean userBean,
 			final MessageHolder messageHolder, final String referer) {
@@ -202,7 +205,11 @@ public class DataParser {
 				super.handleMessage(msg);
 				// 此处可以更新UI
 				MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
-				messageListParseCallBack.onBack(messageResultHolder);
+				boolean dataChanged = false;
+				if(msg.arg1==1){
+					dataChanged = true;
+				}
+				messageListParseCallBack.onBack(messageResultHolder,dataChanged);
 
 			}
 		};
@@ -214,30 +221,51 @@ public class DataParser {
 				for (Element nowElement : scriptElements) {
 					if (nowElement.html().contains("wx.cgiData ")) {
 						JSONArray getArray = getMessageArray(nowElement.html());
-						ArrayList<MessageItem> getMessageList = getMessageItems(
+						ArrayList<MessageBean> getMessageList = getMessageItems(
 								getArray, userBean, referer);
 						String latestMsgId = getLatestMsgId(nowElement.html());
+						boolean dataChanged = false;
+						if (listChanged(messageHolder.getMessageList(),
+								getMessageList)) {
+							// when the message is list changed
+							dataChanged = true;
 
-						messageHolder.setMessage(getMessageList);
-						messageHolder.setLatestMsgId(latestMsgId);
+							messageHolder.setMessage(getMessageList);
+							messageHolder.setLatestMsgId(latestMsgId);
+						}
 
 						Message message = new Message();
 						MessageResultHolder messageResultHolder = new MessageResultHolder();
 						messageResultHolder.lastMsgId = latestMsgId;
 						messageResultHolder.messageHolder = messageHolder;
-						messageResultHolder.messageItems = getMessageList;
+						messageResultHolder.messageBeans = getMessageList;
 						message.obj = messageResultHolder;
+						message.arg1 = dataChanged?1:0;
 
 						loadHandler.sendMessage(message);
 
 					}
 				}
 			}
+
+			private boolean listChanged(ArrayList<MessageBean> oldArrayList,
+					ArrayList<MessageBean> nowArrayList) {
+				if (oldArrayList.size() == 0 || nowArrayList.size() == 0) {
+					return true;
+				}
+				if (oldArrayList.get(0).getId()
+						.equals(nowArrayList.get(0).getId())) {
+					return false;
+				}
+
+				return true;
+
+			}
 		}.start();
 
 	}
 
-	public static void getNextMessage(
+	public static void parseNextMessage(
 			final MessageListParseCallBack messageListParseCallBack,
 			final String source, final UserBean userBean,
 			final MessageHolder messageHolder, final String referer) {
@@ -252,7 +280,7 @@ public class DataParser {
 				super.handleMessage(msg);
 				// 此处可以更新UI
 				MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
-				messageListParseCallBack.onBack(messageResultHolder);
+				messageListParseCallBack.onBack(messageResultHolder,true);
 
 			}
 		};
@@ -264,7 +292,7 @@ public class DataParser {
 				for (Element nowElement : scriptElements) {
 					if (nowElement.html().contains("wx.cgiData ")) {
 						JSONArray getArray = getMessageArray(nowElement.html());
-						ArrayList<MessageItem> getMessageList = getMessageItems(
+						ArrayList<MessageBean> getMessageList = getMessageItems(
 								getArray, userBean, referer);
 						String latestMsgId = getLatestMsgId(nowElement.html());
 						messageHolder.addMessage(getMessageList);
@@ -274,7 +302,7 @@ public class DataParser {
 						MessageResultHolder messageResultHolder = new MessageResultHolder();
 						messageResultHolder.lastMsgId = latestMsgId;
 						messageResultHolder.messageHolder = messageHolder;
-						messageResultHolder.messageItems = getMessageList;
+						messageResultHolder.messageBeans = getMessageList;
 						message.obj = messageResultHolder;
 
 						loadHandler.sendMessage(message);
@@ -286,11 +314,10 @@ public class DataParser {
 
 	}
 
-	public static int analyseLogin(UserBean nowBean, String strResult,String slaveSid,String slaveUser,
-			Context context) {
+	public static int parseLogin(UserBean nowBean, String strResult,
+			String slaveSid, String slaveUser, Context context) {
 
 		try {
-
 
 			JSONObject resultJsonObject = new JSONObject(strResult);
 			int ret = (Integer) resultJsonObject.get("Ret");
@@ -373,11 +400,9 @@ public class DataParser {
 		return result;
 	}
 
-	private static boolean filter = false;
-
-	private static ArrayList<MessageItem> getMessageItems(JSONArray jsonArray,
+	private static ArrayList<MessageBean> getMessageItems(JSONArray jsonArray,
 			UserBean userBean, String referer) {
-		ArrayList<MessageItem> messageItems = new ArrayList<MessageItem>();
+		ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
 		Gson gson = new Gson();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			try {
@@ -387,23 +412,122 @@ public class DataParser {
 				nowJsonObject.put("slave_user", userBean.getSlaveUser());
 				nowJsonObject.put("referer", referer);
 
-				MessageItem nowItem = (MessageItem) gson.fromJson(
-						nowJsonObject.toString(), MessageItem.class);
-				if (filter) {
-					if (nowItem.getType() == MessageItem.MESSAGE_TYPE_TEXT
-							|| nowItem.getType() == MessageItem.MESSAGE_TYPE_IMG) {
+				MessageBean nowItem = (MessageBean) gson.fromJson(
+						nowJsonObject.toString(), MessageBean.class);
 
-						messageItems.add(nowItem);
-					}
-				} else {
-
-					messageItems.add(nowItem);
-				}
+				messageBeans.add(nowItem);
 			} catch (Exception exception) {
 				Log.e("parse errror", exception + "");
 			}
 		}
 
-		return messageItems;
+		return messageBeans;
 	}
+
+	public interface FansListParseCallback {
+		public void onBack(FansHolder fansHolder,boolean dataChanged);
+	}
+
+	public static void parseFansList(final String source, final String referer,
+			final FansHolder fansHolder, final UserBean userBean,
+			final boolean refresh,
+			final FansListParseCallback fansListParseCallback) {
+
+		final Handler loadHandler = new Handler() {
+
+			// 子类必须重写此方法,接受数据
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+
+				super.handleMessage(msg);
+				// 此处可以更新UI
+				boolean dataChanged = false;
+				if(msg.arg1==1){
+					dataChanged = true;
+				}
+				fansListParseCallback.onBack(fansHolder,dataChanged);
+
+			}
+		};
+
+		new Thread() {
+			public void run() {
+
+				String contentBodyString = source.substring(
+						source.indexOf("wx.cgiData={"),
+						source.indexOf("seajs.use(\"user/index\")"));
+				String fansTypeString = contentBodyString.substring(
+						contentBodyString.indexOf("\"groups\":[") + 9,
+						contentBodyString.indexOf("}).groups"));
+				String fansContentString = contentBodyString.substring(
+						contentBodyString.indexOf("\"contacts\":") + 11,
+						contentBodyString.indexOf("}).contacts"));
+				try {
+
+					Gson gson = new Gson();
+					JSONArray fansTypeArray = new JSONArray(fansTypeString);
+					ArrayList<FansGroupBean> fansGroupBeans = new ArrayList<FansGroupBean>();
+					for (int i = 0; i < fansTypeArray.length(); i++) {
+						JSONObject nowJsonObject = fansTypeArray
+								.getJSONObject(i);
+						FansGroupBean nowGroupBean = (FansGroupBean) gson
+								.fromJson(nowJsonObject.toString(),
+										FansGroupBean.class);
+						fansGroupBeans.add(nowGroupBean);
+					}
+					fansHolder.setFansGroup(fansGroupBeans);
+
+					JSONArray fansArray = new JSONArray(fansContentString);
+
+					ArrayList<FansBean> fansBeans = new ArrayList<FansBean>();
+					for (int i = 0; i < fansArray.length(); i++) {
+						JSONObject nowJsonObject = fansArray.getJSONObject(i);
+						FansBean nowFansBean = (FansBean) gson.fromJson(
+								nowJsonObject.toString(), FansBean.class);
+						nowFansBean.setReferer(referer);
+						fansBeans.add(nowFansBean);
+					}
+
+					boolean dataChanged = false;
+					if (refresh) {
+						if (listChange(fansHolder.getFansBeans(), fansBeans)) {
+							// when the fans list changed
+
+							dataChanged = true;
+							fansHolder.setFans(fansBeans);
+						}
+
+					} else {
+						dataChanged = true;
+						fansHolder.addFans(fansBeans);
+					}
+
+					Message nowMessage = new Message();
+					nowMessage.arg1 = dataChanged?1:0;
+					
+					loadHandler.sendMessage(nowMessage);
+
+				} catch (Exception exception) {
+					Log.e("fans parse errror", "" + exception);
+				}
+
+			}
+
+			private boolean listChange(ArrayList<FansBean> oldArrayList,
+					ArrayList<FansBean> nowArrayList) {
+				if (oldArrayList.size() == 0 || nowArrayList.size() == 0) {
+					return true;
+				}
+				if (oldArrayList.get(0).getFansId()
+						.equals(nowArrayList.get(0).getFansId())) {
+					return false;
+				}
+
+				return true;
+			}
+		}.start();
+
+	}
+
 }

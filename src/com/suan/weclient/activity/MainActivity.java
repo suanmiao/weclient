@@ -30,13 +30,13 @@ import com.suan.weclient.fragment.ContentFragment;
 import com.suan.weclient.fragment.ContentFragment.MyPageChangeListener;
 import com.suan.weclient.fragment.LeftFragment;
 import com.suan.weclient.fragment.RightFragment;
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataManager.AutoLoginListener;
-import com.suan.weclient.util.DataManager.DialogListener;
-import com.suan.weclient.util.DataManager.DialogSureClickListener;
-import com.suan.weclient.util.DataManager.UserGroupListener;
-import com.suan.weclient.util.MessageHolder;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.DataManager.AutoLoginListener;
+import com.suan.weclient.util.data.DataManager.DialogListener;
+import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
+import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -51,6 +51,7 @@ import com.umeng.update.UpdateResponse;
 
 public class MainActivity extends SlidingFragmentActivity {
 
+	private GlobalContext mGlobalContext;
 	LeftFragment leftFragment;
 	RightFragment rightFragment;
 	ContentFragment contentFragment;
@@ -82,6 +83,7 @@ public class MainActivity extends SlidingFragmentActivity {
 		initWidgets();
 		initListener(contentFragment);
 		autoLogin();
+
 		initUmeng();
 
 	}
@@ -396,7 +398,10 @@ public class MainActivity extends SlidingFragmentActivity {
 	}
 
 	private void initDataChangeListener() {
-		mDataManager = new DataManager(getApplicationContext());
+
+		mGlobalContext = ((GlobalContext) getApplicationContext());
+		mDataManager = mGlobalContext.getDataManager();
+
 		mDataManager.addAutoLoginListener(new AutoLoginListener() {
 
 			@Override
@@ -591,9 +596,9 @@ public class MainActivity extends SlidingFragmentActivity {
 																						// Auto-generated
 																						// method
 																						// stub
-																						MessageHolder messageHolder = (MessageHolder) object;
+																						Boolean changed = (Boolean) object;
 																						mDataManager
-																								.doMessageGet(messageHolder);
+																								.doMessageGet(changed);
 																						mDataManager
 																								.doAutoLoginEnd();
 

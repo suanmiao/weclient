@@ -27,9 +27,9 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ShowImgActivity;
-import com.suan.weclient.util.DataManager;
 import com.suan.weclient.util.ListCacheManager;
-import com.suan.weclient.util.MessageItem;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
@@ -64,9 +64,9 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		this.mListCacheManager = new ListCacheManager();
 	}
 
-	private ArrayList<MessageItem> getMessageItems() {
+	private ArrayList<MessageBean> getMessageItems() {
 		if (mDataManager.getUserGroup().size() == 0) {
-			ArrayList<MessageItem> blankArrayList = new ArrayList<MessageItem>();
+			ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
 			return blankArrayList;
 		}
 		return mDataManager.getCurrentMessageHolder().getMessageList();
@@ -98,16 +98,16 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 		View convertView = null;
 		switch (getMessageItems().get(position).getType()) {
-		case MessageItem.MESSAGE_TYPE_TEXT:
+		case MessageBean.MESSAGE_TYPE_TEXT:
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
 					null);
 			break;
 
-		case MessageItem.MESSAGE_TYPE_IMG:
+		case MessageBean.MESSAGE_TYPE_IMG:
 			convertView = mInflater.inflate(R.layout.message_item_img_layout,
 					null);
 			break;
-		case MessageItem.MESSAGE_TYPE_VOICE:
+		case MessageBean.MESSAGE_TYPE_VOICE:
 
 			convertView = mInflater.inflate(R.layout.message_item_voice_layout,
 					null);
@@ -164,7 +164,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		public ItemViewHolder(View parentView, final int position) {
 
 			switch (getMessageItems().get(position).getType()) {
-			case MessageItem.MESSAGE_TYPE_TEXT:
+			case MessageBean.MESSAGE_TYPE_TEXT:
 
 				contentTextView = (TextView) parentView
 						.findViewById(R.id.message_item_text_text_content);
@@ -180,7 +180,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 						.getContent());
 				break;
 
-			case MessageItem.MESSAGE_TYPE_IMG:
+			case MessageBean.MESSAGE_TYPE_IMG:
 
 				contentImageView = (ImageView) parentView
 						.findViewById(R.id.message_item_img_img_content);
@@ -195,7 +195,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 				break;
 
-			case MessageItem.MESSAGE_TYPE_VOICE:
+			case MessageBean.MESSAGE_TYPE_VOICE:
 
 				contentImageView = (ImageView) parentView
 						.findViewById(R.id.message_item_voice_img_content);
@@ -234,17 +234,17 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		ItemViewHolder holder = getHolder(view, position);
 
 		switch (getMessageItems().get(position).getType()) {
-		case MessageItem.MESSAGE_TYPE_TEXT:
+		case MessageBean.MESSAGE_TYPE_TEXT:
 
 			break;
 
-		case MessageItem.MESSAGE_TYPE_IMG:
+		case MessageBean.MESSAGE_TYPE_IMG:
 
 			setImgMessageContent(holder, position);
 
 			break;
 
-		case MessageItem.MESSAGE_TYPE_VOICE:
+		case MessageBean.MESSAGE_TYPE_VOICE:
 
 			setVoiceMessageContent(holder, position);
 

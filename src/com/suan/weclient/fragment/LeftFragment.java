@@ -37,11 +37,10 @@ import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.DataManager.AutoLoginListener;
-import com.suan.weclient.util.DataManager.UserGroupListener;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.DataManager.AutoLoginListener;
+import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -290,8 +289,8 @@ public class LeftFragment extends Fragment implements OnItemClickListener,
 																												// Auto-generated
 																												// method
 																												// stub
-																												MessageHolder messageHolder = (MessageHolder)object;
-																												mDataManager.doMessageGet(messageHolder);
+																												Boolean changed = (Boolean)object;
+																												mDataManager.doMessageGet(changed);
 
 																											}
 																										});

@@ -37,7 +37,7 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.AboutActivity;
-import com.suan.weclient.util.DataManager;
+import com.suan.weclient.util.data.DataManager;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;

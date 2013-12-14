@@ -32,10 +32,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataManager.DialogSureClickListener;
-import com.suan.weclient.util.DataManager.LoginListener;
-import com.suan.weclient.util.UserBean;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
+import com.suan.weclient.util.data.DataManager.LoginListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MassFragment extends Fragment {

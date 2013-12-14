@@ -10,14 +10,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataManager.DialogSureClickListener;
-import com.suan.weclient.util.UserBean;
 import com.suan.weclient.util.Util;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
+import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.net.DataParser.FansListParseCallback;
 import com.suan.weclient.util.net.DataParser.MessageListParseCallBack;
 import com.suan.weclient.util.net.DataParser.MessageResultHolder;
 import com.suan.weclient.util.net.DataParser.ParseMassDataCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
+import com.suan.weclient.util.net.WeChatLoader.WechatGetFansList;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetMassData;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
@@ -90,7 +93,7 @@ public class WechatManager {
 								try {
 									UserBean nowBean = mDataManager
 											.getUserGroup().get(userIndex);
-									int loginResult = DataParser.analyseLogin(
+									int loginResult = DataParser.parseLogin(
 											nowBean, strResult, slaveSid,
 											slaveUser, mContext);
 									nowBean.setSlaveSid(slaveSid);
@@ -170,7 +173,7 @@ public class WechatManager {
 						mDataManager.doLoadingStart("解析用户数据...");
 
 					}
-					int getUserProfileState = DataParser.getUserProfile(
+					int getUserProfileState = DataParser.parseUserProfile(
 							strResult,
 							mDataManager.getUserGroup().get(userIndex));
 
@@ -226,7 +229,7 @@ public class WechatManager {
 				// stub
 
 				try {
-					int getUserProfileState = DataParser.getUserProfile(
+					int getUserProfileState = DataParser.parseUserProfile(
 							strResult,
 							mDataManager.getUserGroup().get(userIndex));
 
@@ -287,28 +290,27 @@ public class WechatManager {
 
 	}
 
-	public void getMessageVoice(final int userIndex, final String msgId,final int length,
-			final UserBean userBean,
+	public void getMessageVoice(final int userIndex, final String msgId,
+			final int length, final UserBean userBean,
 			final OnActionFinishListener onActionFinishListener) {
-		
+
 		WeChatLoader.wechatGetVoiceMsg(new WechatExceptionListener() {
-			
+
 			@Override
 			public void onError() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		}, new WechatGetVoiceMsgCallBack() {
-			
+
 			@Override
-			public void onBack(byte[]bytes) {
+			public void onBack(byte[] bytes) {
 				// TODO Auto-generated method stub
 				onActionFinishListener.onFinish(bytes);
-				
-				
+
 			}
-		}, userBean, msgId,length);
-		
+		}, userBean, msgId, length);
+
 	}
 
 	public void getMessageImg(final int userIndex, final String msgId,
@@ -445,7 +447,7 @@ public class WechatManager {
 						mDataManager.doLoadingStart("解析用户群发数据...");
 
 					}
-					DataParser.getMassData(strResult, mDataManager
+					DataParser.parseMassData(strResult, mDataManager
 							.getUserGroup().get(userIndex),
 							new ParseMassDataCallBack() {
 
@@ -510,17 +512,16 @@ public class WechatManager {
 
 					}
 
-					DataParser.getNewMessage(new MessageListParseCallBack() {
+					DataParser.parseNewMessage(new MessageListParseCallBack() {
 
 						@Override
 						public void onBack(
-								MessageResultHolder messageResultHolder) {
+								MessageResultHolder messageResultHolder,boolean dataChanged) {
 							// TODO
 							// Auto-generated
 							// method
 							// stub
-							onActionFinishListener.onFinish(mDataManager
-									.getMessageHolders().get(userIndex));
+							onActionFinishListener.onFinish(dataChanged);
 							mDataManager.doLoadingEnd();
 
 						}
@@ -534,6 +535,47 @@ public class WechatManager {
 				}
 			}
 		}, mDataManager.getUserGroup().get(userIndex));
+	}
+
+	public void getFansList(final int page, final int userIndex,
+			final int groupId,
+			final OnActionFinishListener onActionFinishListener) {
+
+		WeChatLoader.wechatGetFansList(new WechatExceptionListener() {
+
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
+
+			}
+		}, new WechatGetFansList() {
+
+			@Override
+			public void onBack(String strResult,String referer) {
+				// TODO Auto-generated method stub
+				boolean refresh = false;
+				if(page==0){
+					
+					refresh = true;
+					
+				}
+				DataParser.parseFansList(strResult,referer, mDataManager
+						.getFansHolders().get(userIndex), mDataManager
+						.getUserGroup().get(userIndex), refresh,
+						new FansListParseCallback() {
+
+							@Override
+							public void onBack(FansHolder fansHolder,boolean dataChanged) {
+								// TODO Auto-generated method stub
+								
+								onActionFinishListener.onFinish(dataChanged);
+
+							}
+						});
+
+			}
+		}, mDataManager.getUserGroup().get(userIndex), groupId, page);
+
 	}
 
 	public void getNextMessageList(final int page, final int userIndex,
@@ -567,17 +609,16 @@ public class WechatManager {
 				// TODO Auto-generated method stub
 				try {
 
-					DataParser.getNextMessage(new MessageListParseCallBack() {
+					DataParser.parseNextMessage(new MessageListParseCallBack() {
 
 						@Override
 						public void onBack(
-								MessageResultHolder messageResultHolder) {
+								MessageResultHolder messageResultHolder,boolean dataChanged) {
 							// TODO
 							// Auto-generated
 							// method
 
-							onActionFinishListener.onFinish(mDataManager
-									.getMessageHolders().get(userIndex));
+							onActionFinishListener.onFinish(dataChanged);
 
 						}
 					}, strResult, mDataManager.getUserGroup().get(userIndex),

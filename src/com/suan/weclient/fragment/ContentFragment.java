@@ -36,12 +36,12 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.adapter.ScrollingTabsAdapter;
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataManager.ContentFragmentChangeListener;
-import com.suan.weclient.util.DataManager.LoginListener;
-import com.suan.weclient.util.DataManager.ProfileGetListener;
-import com.suan.weclient.util.DataManager.UserGroupListener;
-import com.suan.weclient.util.UserBean;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.DataManager.ContentFragmentChangeListener;
+import com.suan.weclient.util.data.DataManager.LoginListener;
+import com.suan.weclient.util.data.DataManager.ProfileGetListener;
+import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.view.ScrollableTabView;
 
 public class ContentFragment extends Fragment implements

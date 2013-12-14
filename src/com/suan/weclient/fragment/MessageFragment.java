@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -18,10 +19,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.MessageListAdapter;
-import com.suan.weclient.util.DataManager;
-import com.suan.weclient.util.DataManager.MessageChangeListener;
-import com.suan.weclient.util.DataManager.UserGroupListener;
-import com.suan.weclient.util.MessageHolder;
+import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.DataManager.MessageChangeListener;
+import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MessageFragment extends Fragment implements
@@ -113,11 +113,16 @@ public class MessageFragment extends Fragment implements
 		mDataManager.addMessageChangeListener(new MessageChangeListener() {
 
 			@Override
-			public void onChange(MessageHolder nowHolder) {
+			public void onMessageGet(boolean changed) {
 				// TODO Auto-generated method stub
-				messageListAdapter.updateCache();
+				if (changed) {
 
-				messageListAdapter.notifyDataSetChanged();
+					messageListAdapter.updateCache();
+
+					messageListAdapter.notifyDataSetChanged();
+				}else{
+					Toast.makeText(getActivity(), "没有新消息", Toast.LENGTH_SHORT).show();
+				}
 
 			}
 		});
@@ -141,8 +146,9 @@ public class MessageFragment extends Fragment implements
 			// TODO Auto-generated method stub
 
 			super.handleMessage(msg);
-			MessageHolder messageHolder = (MessageHolder)msg.obj;
-			mDataManager.doMessageGet(messageHolder);
+			Boolean changed = (Boolean) msg.obj;
+
+			mDataManager.doMessageGet(changed);
 
 		}
 	}

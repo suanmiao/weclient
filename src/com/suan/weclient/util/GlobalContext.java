@@ -3,17 +3,38 @@ package com.suan.weclient.util;
 import java.io.File;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.Environment;
+
+import com.suan.weclient.util.data.DataManager;
 
 public class GlobalContext extends Application {
 
-	private static Context mContext;
 
 	private final static String APP_FILE_NAME = "/.WeClient/";
 
 	private final static String APP_NAME = "WeClient";
 
+	private DataManager mDataManager;
+	
+
+	public void onCreate() {
+		super.onCreate();
+		
+		initData();
+
+	}
+	
+	private void initData(){
+		
+		mDataManager = new DataManager(getApplicationContext());
+		
+	}
+	
+	public DataManager getDataManager(){
+		
+		return mDataManager;
+		
+	}
 	
 
 	public static String getSDPath() {
@@ -37,18 +58,7 @@ public class GlobalContext extends Application {
 		return APP_NAME;
 	}
 
-	public static Context getContext() {
-		return mContext;
-	}
-
-	public static void setContext(Context context) {
-		mContext = context;
-	}
-
-	public void onCreate() {
-		super.onCreate();
-
-	}
+	
 
 
 

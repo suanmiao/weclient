@@ -32,9 +32,9 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.suan.weclient.util.MessageHolder;
-import com.suan.weclient.util.MessageItem;
-import com.suan.weclient.util.UserBean;
+import com.suan.weclient.util.data.MessageHolder;
+import com.suan.weclient.util.data.MessageBean;
+import com.suan.weclient.util.data.UserBean;
 
 public class WeChatLoader {
 
@@ -83,6 +83,16 @@ public class WeChatLoader {
 	private static final String WECHAT_URL_GET_VOICE_MESSAGE_3 = "&lang=zh_CN";
 
 	private static final String WECHAT_URL_GET_VOICE_MESSAGE_REFERER = "https://mp.weixin.qq.com/mpres/zh_CN/htmledition/plprecorder/soundmanager2.swf";
+
+	private static final String WECHAT_URL_GET_FANS_LIST_1 = "https://mp.weixin.qq.com/cgi-bin/contactmanage?t=user/index&pagesize=10&pageidx=";
+	/*
+	 * if want all the user,use 2,without groupId if want group user ,use 3,with
+	 * groupId
+	 */
+	private static final String WECHAT_URL_GET_FANS_LIST_2 = "&type=0";
+	private static final String WECHAT_URL_GET_FANS_LIST_3 = "&type=0&groupid=";
+	private static final String WECHAT_URL_GET_FANS_LIST_4 = "&token=";
+	private static final String WECHAT_URL_GET_FANS_LIST_5 = "&lang=zh_CN";
 
 	public interface WechatExceptionListener {
 		public void onError();
@@ -395,7 +405,7 @@ public class WeChatLoader {
 	public static void wechatMessageReply(
 			final WechatExceptionListener wechatExceptionListener,
 			final WechatMessageReplyCallBack messagReplyCallBack,
-			final UserBean userBean, final MessageItem messageItem,
+			final UserBean userBean, final MessageBean messageBean,
 			final String replyContent) {
 		final Handler loadHandler = new Handler() {
 
@@ -422,19 +432,19 @@ public class WeChatLoader {
 						+ userBean.getSlaveUser()));
 				headerList.add(new BasicNameValuePair("Content-Type",
 						"text/html; charset=utf-8"));
-				headerList.add(new BasicNameValuePair("Referer", messageItem
+				headerList.add(new BasicNameValuePair("Referer", messageBean
 						.getReferer()));
 
 				ArrayList<NameValuePair> paramArrayList = new ArrayList<NameValuePair>();
 				paramArrayList.add(new BasicNameValuePair("mask", "false"));
 				paramArrayList.add(new BasicNameValuePair("tofakeid",
-						messageItem.getFakeId()));
+						messageBean.getFakeId()));
 				paramArrayList.add(new BasicNameValuePair("imgcode", ""));
 				paramArrayList.add(new BasicNameValuePair("type", "1"));
 				paramArrayList.add(new BasicNameValuePair("content",
 						replyContent));
 				paramArrayList.add(new BasicNameValuePair("quickreplyid",
-						messageItem.getId()));
+						messageBean.getId()));
 				paramArrayList
 						.add(new BasicNameValuePair("t", "ajax-response"));
 				paramArrayList.add(new BasicNameValuePair("token", userBean
@@ -477,7 +487,7 @@ public class WeChatLoader {
 	public static void wechatMessageStar(
 			final WechatExceptionListener wechatExceptionListener,
 			final WechatMessageStarCallBack messagStarCallBack,
-			final UserBean userBean, final MessageItem messageItem,
+			final UserBean userBean, final MessageBean messageBean,
 			final boolean star) {
 		final Handler loadHandler = new Handler() {
 
@@ -503,11 +513,11 @@ public class WeChatLoader {
 						+ userBean.getSlaveUser()));
 				headerList.add(new BasicNameValuePair("Content-Type",
 						"text/html; charset=utf-8"));
-				headerList.add(new BasicNameValuePair("Referer", messageItem
+				headerList.add(new BasicNameValuePair("Referer", messageBean
 						.getReferer()));
 
 				ArrayList<NameValuePair> paramArrayList = new ArrayList<NameValuePair>();
-				paramArrayList.add(new BasicNameValuePair("msgid", messageItem
+				paramArrayList.add(new BasicNameValuePair("msgid", messageBean
 						.getId()));
 				paramArrayList.add(new BasicNameValuePair("value", star ? "1"
 						: "0"));
@@ -778,8 +788,7 @@ public class WeChatLoader {
 	public static void wechatGetVoiceMsg(
 			final WechatExceptionListener wechatExceptionListener,
 			final WechatGetVoiceMsgCallBack getVoiceMsgCallBack,
-			final UserBean userBean, final String msgId,final int length
-			) {
+			final UserBean userBean, final String msgId, final int length) {
 		final Handler loadHandler = new Handler() {
 
 			// 子类必须重写此方法,接受数据
@@ -817,15 +826,13 @@ public class WeChatLoader {
 
 					try {
 
-						
-						
 						Message message = new Message();
 						ContentHolder contentHolder = new ContentHolder();
 						InputStream inputStream = (InputStream) response
-										.getEntity().getContent();
+								.getEntity().getContent();
 						byte[] bytes = new byte[length];
 						inputStream.read(bytes);
-						
+
 						contentHolder.putExtra("result", bytes);
 						message.obj = contentHolder;
 
@@ -893,6 +900,100 @@ public class WeChatLoader {
 						String strResult = EntityUtils.toString(response
 								.getEntity());
 						contentHolder.put("result", strResult);
+
+						message.obj = contentHolder;
+
+						loadHandler.sendMessage(message);
+					} catch (Exception exception) {
+
+					}
+
+				} else {
+					wechatExceptionListener.onError();
+				}
+
+			}
+
+		}.start();
+
+	}
+
+	public interface WechatGetFansList {
+		public void onBack(String strResult, String referer);
+	}
+
+	public static void wechatGetFansList(
+			final WechatExceptionListener wechatExceptionListener,
+			final WechatGetFansList wechatGetFansList, final UserBean userBean,
+			final int groupId, final int page) {
+		final Handler loadHandler = new Handler() {
+
+			// 子类必须重写此方法,接受数据
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+
+				super.handleMessage(msg);
+				// 此处可以更新UI
+				ContentHolder contentHolder = (ContentHolder) msg.obj;
+				wechatGetFansList.onBack(contentHolder.get("result"),
+						contentHolder.get("referer"));
+
+			}
+		};
+
+		new Thread() {
+			public void run() {
+				Looper.prepare();
+				ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+				headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+						+ userBean.getSlaveSid() + "; " + "slave_user="
+						+ userBean.getSlaveUser()));
+				headerList.add(new BasicNameValuePair("Content-Type",
+						"text/html; charset=utf-8"));
+
+				String referer = "";
+				if (page == 0) {
+					referer = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token="
+							+ userBean.getToken();
+				} else {
+
+					referer = WECHAT_URL_GET_FANS_LIST_1 + (page - 1)
+							+ WECHAT_URL_GET_FANS_LIST_2 + groupId
+							+ WECHAT_URL_GET_FANS_LIST_3 + userBean.getToken()
+							+ WECHAT_URL_GET_FANS_LIST_4;
+
+				}
+
+				headerList.add(new BasicNameValuePair("Referer", referer));
+				String targetUrl = "";
+				if (groupId == -1) {
+					// all user
+					targetUrl = WECHAT_URL_GET_FANS_LIST_1 + page
+							+ WECHAT_URL_GET_FANS_LIST_2
+							+ WECHAT_URL_GET_FANS_LIST_4 + userBean.getToken()
+							+ WECHAT_URL_GET_FANS_LIST_5;
+				} else {
+
+					targetUrl = WECHAT_URL_GET_FANS_LIST_1 + page
+							+ WECHAT_URL_GET_FANS_LIST_3 + groupId
+							+ WECHAT_URL_GET_FANS_LIST_4 + userBean.getToken()
+							+ WECHAT_URL_GET_FANS_LIST_5;
+				}
+
+				HttpResponse response = httpGet(targetUrl, headerList);
+
+				if (response != null) {
+
+					try {
+
+						Message message = new Message();
+						ContentHolder contentHolder = new ContentHolder();
+
+						String strResult = EntityUtils.toString(response
+								.getEntity());
+						contentHolder.put("result", strResult);
+						contentHolder.put("referer", targetUrl);
 
 						message.obj = contentHolder;
 
