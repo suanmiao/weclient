@@ -121,7 +121,7 @@ public class MessageFragment extends Fragment implements
 
 					messageListAdapter.notifyDataSetChanged();
 				}else{
-					Toast.makeText(getActivity(), "没有新消息", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(getActivity(), "没有新消息", Toast.LENGTH_SHORT).show();
 				}
 
 			}

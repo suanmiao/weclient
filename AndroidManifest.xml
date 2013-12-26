@@ -34,6 +34,7 @@
 		</activity>
 		<activity
 			android:name=".activity.MainActivity"
+			android:theme="@style/Theme.Sherlock.Light"
 			android:screenOrientation="portrait" >
 		</activity>
 		<activity

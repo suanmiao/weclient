@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2012 yueyueniao
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.suan.weclient.fragment;
 
 import java.util.ArrayList;
@@ -37,11 +22,12 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.adapter.ScrollingTabsAdapter;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.DataManager.ContentFragmentChangeListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
+import com.suan.weclient.util.data.DataManager.TabListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.view.ScrollableTabView;
 
 public class ContentFragment extends Fragment implements
@@ -49,6 +35,7 @@ public class ContentFragment extends Fragment implements
 
 	private View mView;
 	private ShowMenuListener showMenuListener;
+	
 	private ImageButton showLeftButton, showRightButton;
 	private TextView nowUserTextView;
 
@@ -71,6 +58,17 @@ public class ContentFragment extends Fragment implements
 	private void initListener(DataManager dataManager){
 		
 		mDataChangeListener = dataManager;
+		
+		mDataChangeListener.setTabListener(new TabListener() {
+			
+			@Override
+			public void onClickTab(int page) {
+				// TODO Auto-generated method stub
+				mPager.setCurrentItem(page);
+				
+				
+			}
+		});
 		mDataChangeListener.addUserGroupListener(new UserGroupListener() {
 			
 			@Override
@@ -181,6 +179,7 @@ public class ContentFragment extends Fragment implements
 		pagerItemList.add(massFragment);
 		mAdapter = new MyAdapter(getFragmentManager());
 		mPager.setAdapter(mAdapter);
+		
 
 		mPager.setOnPageChangeListener(this);
 		initScrollableTabs(mView, mPager);
@@ -296,6 +295,15 @@ public class ContentFragment extends Fragment implements
 
 	@Override
 	public void onPageScrolled(int position, float arg1, int arg2) {
+		
+		/*
+		 * arg1:percent
+		 * arg2:px
+		 */
+		
+//		Log.e("page scroll", "position"+position+"|"+arg1+"|"+(int)arg2);
+		mDataChangeListener.getPagerListener().onScroll(position,arg1);
+		
 
 	}
 
@@ -307,6 +315,7 @@ public class ContentFragment extends Fragment implements
 		if (mScrollableTabView != null) {
 			mScrollableTabView.selectTab(position);
 		}
+		mDataChangeListener.getPagerListener().onPage(position);
 
 	}
 

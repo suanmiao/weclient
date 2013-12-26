@@ -11,6 +11,7 @@
 	</style>
 	<!-- Application theme. -->
 	<style name="AppTheme" parent="AppBaseTheme">
+		<item name="android:actionBarSize">45dip</item>
 		<item name="android:windowFrame">@null</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="android:background">@android:color/transparent</item>

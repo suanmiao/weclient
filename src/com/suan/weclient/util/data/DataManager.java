@@ -10,6 +10,7 @@ import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceManager;
+import com.suan.weclient.view.CustomActionView;
 
 public class DataManager {
 
@@ -31,6 +32,12 @@ public class DataManager {
 	private WechatManager mWechatManager;
 	private VoiceManager mVoiceManager;
 	private Context mContext;
+	
+	//test
+	public CustomActionView customActionView; 
+	
+	private PagerListener pagerListener;
+	private TabListener tabListener;
 	
 	
 	private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 10;
@@ -383,4 +390,37 @@ public class DataManager {
 	public interface DialogSureClickListener extends OnClickListener{
 		
 	}
+	
+	
+	/*
+	 * interface about ui
+	 */
+	
+	public interface PagerListener{
+		public void onScroll(int page,double pagePercent);
+		
+		public void onPage(int page);
+		
+	}
+	
+	public interface TabListener{
+		public void onClickTab(int page);
+	}
+	
+	public void setPagerListener(PagerListener pagerListener){
+		this.pagerListener = pagerListener;
+	}
+	
+	public void setTabListener(TabListener tabListener){
+		this.tabListener = tabListener;
+	}
+	
+	public PagerListener getPagerListener(){
+		return pagerListener;
+	}
+	
+	public TabListener getTabListener(){
+		return tabListener;
+	}
+	
 }

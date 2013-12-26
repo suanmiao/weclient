@@ -13,16 +13,18 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.LayoutParams;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.suan.weclient.R;
@@ -38,6 +40,7 @@ import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
+import com.suan.weclient.view.CustomActionView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
@@ -56,6 +59,7 @@ public class MainActivity extends SlidingFragmentActivity {
 	RightFragment rightFragment;
 	ContentFragment contentFragment;
 	SlidingMenu mSlidingMenu;
+	private ActionBar actionBar;
 
 	/*
 	 * about pop dialog
@@ -76,11 +80,14 @@ public class MainActivity extends SlidingFragmentActivity {
 	@Override
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		initDataChangeListener();
 		initCache();
 		initSlidingMenu();
 		initWidgets();
+
+		initActionBar();
+
 		initListener(contentFragment);
 		autoLogin();
 
@@ -138,6 +145,23 @@ public class MainActivity extends SlidingFragmentActivity {
 	}
 
 	private void initWidgets() {
+
+	}
+
+	private void initActionBar() {
+		actionBar = getSupportActionBar();
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayUseLogoEnabled(false);
+
+		CustomActionView customActionView = new CustomActionView(this);
+		customActionView.init(mDataManager);
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		actionBar.setCustomView(customActionView, layoutParams);
+
+		Log.e("action bar", actionBar + "");
 
 	}
 
@@ -441,17 +465,22 @@ public class MainActivity extends SlidingFragmentActivity {
 			public void onLoad(String loaingText) {
 				// TODO Auto-generated method stub
 
-				if (popDialog != null) {
-					popDialog.dismiss();
+				if (MainActivity.this != null
+						&& !MainActivity.this.isFinishing()) {
 
-					popDialog = Util.createLoadingDialog(MainActivity.this,
-							loaingText, false);
-				} else {
+					if (popDialog != null) {
+						popDialog.dismiss();
 
-					popDialog = Util.createLoadingDialog(MainActivity.this,
-							loaingText, false);
+						popDialog = Util.createLoadingDialog(MainActivity.this,
+								loaingText, false);
+					} else {
+
+						popDialog = Util.createLoadingDialog(MainActivity.this,
+								loaingText, false);
+					}
+					popDialog.show();
+
 				}
-				popDialog.show();
 
 			}
 
