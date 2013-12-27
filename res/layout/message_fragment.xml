@@ -8,7 +8,8 @@
 		android:id="@+id/reply_list"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:background="#dbdbdb"
-		ptr:ptrHeaderBackground="#dbdbdb"
+		android:divider="@null"
+		android:background="#ffffff"
+		ptr:ptrHeaderBackground="#ffffff"
 		ptr:ptrMode="both" />
 </LinearLayout>

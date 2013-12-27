@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.activity.ChatActivity;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.data.DataManager;
@@ -38,28 +37,17 @@ import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceHolder;
 import com.suan.weclient.util.voice.VoiceManager.AudioPlayListener;
 
-public class MessageListAdapter extends BaseAdapter implements OnScrollListener {
+public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 	private LayoutInflater mInflater;
 	private ListCacheManager mListCacheManager;
 	private DataManager mDataManager;
 	private Context mContext;
-	private EditText popContentEditText;
-	private TextView popTitleTextView;
-	private TextView textAmountTextView;
-	private Button popCancelButton, popSureButton;
-	private Dialog dialog;
-	private static final int MAX_TEXT_LENGTH = 140;
-	private String canceledReplyContent = "";
 	/*
 	 * whether the scroll is busy
 	 */
 	private boolean mBusy = false;
-	/*
-	 * whether the user cancel the last reply if so ,we will save it
-	 */
-	private boolean lastReplyCanceled = false;
 
-	public MessageListAdapter(Context context, DataManager dataManager) {
+	public ChatListAdapter(Context context, DataManager dataManager) {
 		this.mInflater = LayoutInflater.from(context);
 		this.mDataManager = dataManager;
 		this.mContext = context;
@@ -67,11 +55,11 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 	}
 
 	private ArrayList<MessageBean> getMessageItems() {
-		if (mDataManager.getUserGroup().size() == 0) {
+		if (mDataManager.getChatHolder() == null) {
 			ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
 			return blankArrayList;
 		}
-		return mDataManager.getCurrentMessageHolder().getMessageList();
+		return mDataManager.getChatHolder().getMessageList();
 	}
 
 	@Override
@@ -99,23 +87,40 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 	public View newView(final int position) {
 
 		View convertView = null;
-		switch (getMessageItems().get(position).getType()) {
-		case MessageBean.MESSAGE_TYPE_TEXT:
-			convertView = mInflater.inflate(R.layout.message_item_text_layout,
+		switch (getMessageItems().get(position).getType()
+				+ getMessageItems().get(position).getOwner() * 10) {
+		case MessageBean.MESSAGE_OWNER_HER * 10 + MessageBean.MESSAGE_TYPE_TEXT:
+			convertView = mInflater.inflate(R.layout.chat_item_her_text_layout,
 					null);
 			break;
 
-		case MessageBean.MESSAGE_TYPE_IMG:
-			convertView = mInflater.inflate(R.layout.message_item_img_layout,
+		case MessageBean.MESSAGE_OWNER_HER * 10 + MessageBean.MESSAGE_TYPE_IMG:
+			convertView = mInflater.inflate(R.layout.chat_item_her_img_layout,
 					null);
 			break;
-		case MessageBean.MESSAGE_TYPE_VOICE:
+		case MessageBean.MESSAGE_OWNER_HER * 10
+				+ MessageBean.MESSAGE_TYPE_VOICE:
 
-			convertView = mInflater.inflate(R.layout.message_item_voice_layout,
-					null);
+			convertView = mInflater.inflate(
+					R.layout.chat_item_her_voice_layout, null);
 
 			break;
 
+		case MessageBean.MESSAGE_OWNER_ME * 10 + MessageBean.MESSAGE_TYPE_TEXT:
+			convertView = mInflater.inflate(R.layout.chat_item_me_text_layout,
+					null);
+			break;
+
+		case MessageBean.MESSAGE_OWNER_ME * 10 + MessageBean.MESSAGE_TYPE_IMG:
+			convertView = mInflater.inflate(R.layout.chat_item_me_img_layout,
+					null);
+			break;
+		case MessageBean.MESSAGE_OWNER_ME * 10 + MessageBean.MESSAGE_TYPE_VOICE:
+
+			convertView = mInflater.inflate(R.layout.chat_item_me_voice_layout,
+					null);
+
+			break;
 		default:
 
 			convertView = mInflater.inflate(R.layout.message_item_text_layout,
@@ -132,8 +137,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 				if (mDataManager.getUserGroup().size() == 0) {
 
 				} else {
-
-					popReply(position);
 
 				}
 
@@ -158,71 +161,108 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 		private ImageView contentImageView;
 		private TextView contentTextView;
-		private ImageButton starImageButton;
 		private ImageView profileImageView;
 		private TextView profileTextView;
 		private TextView timeTextView;
 
 		public ItemViewHolder(View parentView, final int position) {
 
-			switch (getMessageItems().get(position).getType()) {
-			case MessageBean.MESSAGE_TYPE_TEXT:
+			switch (getMessageItems().get(position).getType()
+					+ getMessageItems().get(position).getOwner() * 10) {
+			case MessageBean.MESSAGE_OWNER_HER * 10
+					+ MessageBean.MESSAGE_TYPE_TEXT:
 
 				contentTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_content);
-				starImageButton = (ImageButton) parentView
-						.findViewById(R.id.message_item_text_button_star);
+						.findViewById(R.id.chat_item_her_text_text_content);
 				profileImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_text_img_profile);
+						.findViewById(R.id.chat_item_her_text_img_profile);
 				profileTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_profile);
+						.findViewById(R.id.chat_item_her_text_text_profile);
 				timeTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_time);
+						.findViewById(R.id.chat_item_her_text_text_time);
 				contentTextView.setText(getMessageItems().get(position)
 						.getContent());
 				break;
 
-			case MessageBean.MESSAGE_TYPE_IMG:
+			case MessageBean.MESSAGE_OWNER_HER * 10
+					+ MessageBean.MESSAGE_TYPE_IMG:
 
 				contentImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_img_img_content);
-				starImageButton = (ImageButton) parentView
-						.findViewById(R.id.message_item_img_button_star);
+						.findViewById(R.id.chat_item_her_img_img_content);
 				profileImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_img_img_profile);
+						.findViewById(R.id.chat_item_her_img_img_profile);
 				profileTextView = (TextView) parentView
-						.findViewById(R.id.message_item_img_text_profile);
+						.findViewById(R.id.chat_item_her_img_text_profile);
 				timeTextView = (TextView) parentView
-						.findViewById(R.id.message_item_img_text_time);
+						.findViewById(R.id.chat_item_her_img_text_time);
 
 				break;
 
-			case MessageBean.MESSAGE_TYPE_VOICE:
+			case MessageBean.MESSAGE_OWNER_HER * 10
+					+ MessageBean.MESSAGE_TYPE_VOICE:
 
 				contentImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_voice_img_content);
-				starImageButton = (ImageButton) parentView
-						.findViewById(R.id.message_item_voice_button_star);
+						.findViewById(R.id.chat_item_her_voice_img_content);
 				profileImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_voice_img_profile);
+						.findViewById(R.id.chat_item_her_voice_img_profile);
 				profileTextView = (TextView) parentView
-						.findViewById(R.id.message_item_voice_text_profile);
+						.findViewById(R.id.chat_item_her_voice_text_profile);
 				timeTextView = (TextView) parentView
-						.findViewById(R.id.message_item_voice_text_time);
+						.findViewById(R.id.chat_item_her_voice_text_time);
+				break;
+
+			case MessageBean.MESSAGE_OWNER_ME * 10
+					+ MessageBean.MESSAGE_TYPE_TEXT:
+
+				contentTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_text_text_content);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.chat_item_me_text_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_text_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_text_text_time);
+				contentTextView.setText(getMessageItems().get(position)
+						.getContent());
+				break;
+
+			case MessageBean.MESSAGE_OWNER_ME * 10
+					+ MessageBean.MESSAGE_TYPE_IMG:
+
+				contentImageView = (ImageView) parentView
+						.findViewById(R.id.chat_item_me_img_img_content);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.chat_item_me_img_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_img_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_img_text_time);
+
+				break;
+
+			case MessageBean.MESSAGE_OWNER_ME * 10
+					+ MessageBean.MESSAGE_TYPE_VOICE:
+
+				contentImageView = (ImageView) parentView
+						.findViewById(R.id.chat_item_me_voice_img_content);
+				profileImageView = (ImageView) parentView
+						.findViewById(R.id.chat_item_me_voice_img_profile);
+				profileTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_voice_text_profile);
+				timeTextView = (TextView) parentView
+						.findViewById(R.id.chat_item_me_voice_text_time);
 				break;
 
 			default:
 
 				contentTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_content);
-				starImageButton = (ImageButton) parentView
-						.findViewById(R.id.message_item_text_button_star);
+						.findViewById(R.id.chat_item_her_text_text_content);
 				profileImageView = (ImageView) parentView
-						.findViewById(R.id.message_item_text_img_profile);
+						.findViewById(R.id.chat_item_her_text_img_profile);
 				profileTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_profile);
+						.findViewById(R.id.chat_item_her_text_text_profile);
 				timeTextView = (TextView) parentView
-						.findViewById(R.id.message_item_text_text_time);
+						.findViewById(R.id.chat_item_her_text_text_time);
 				contentTextView.setText("[目前暂不支持该类型消息]");
 				break;
 
@@ -258,8 +298,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 		}
 
-		setStarBackground(holder.starImageButton, position);
-
 		long time = Long.parseLong(getMessageItems().get(position)
 				.getDateTime());
 		Date date = new Date(time * 1000);
@@ -268,43 +306,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
 		holder.timeTextView.setText(timeString);
 		holder.profileImageView.setBackgroundResource(R.drawable.ic_launcher);
-
-		holder.profileImageView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mDataManager.createChat(mDataManager.getCurrentUser(),
-						getMessageItems().get(position).getFakeId());
-				Intent jumbIntent = new Intent();
-				jumbIntent.setClass(mContext, ChatActivity.class);
-				mContext.startActivity(jumbIntent);
-
-			}
-		});
-
 		holder.profileTextView.setText(""
 				+ getMessageItems().get(position).getNickName());
-		holder.starImageButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				// TODO Auto-generated method stub
-				boolean stared = mDataManager.getCurrentMessageHolder()
-						.getMessageList().get(position).getStarred();
-				mDataManager.getWechatManager().star(
-						mDataManager.getCurrentPosition(), position,
-						(ImageButton) v, !stared, new OnActionFinishListener() {
-
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-
-								setStarBackground(v, position);
-							}
-						});
-
-			}
-		});
 
 		setHeadImg(holder, position);
 
@@ -531,140 +534,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 		bindView(v, position);
 
 		return v;
-	}
-
-	public void popReply(final int position) {
-
-		LayoutInflater inflater = (LayoutInflater) mContext
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater.inflate(R.layout.dialog_edit_layout, null);
-		popTitleTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_edit_text_title);
-
-		popContentEditText = (EditText) dialogView
-				.findViewById(R.id.dialog_edit_edit_text);
-		popSureButton = (Button) dialogView
-				.findViewById(R.id.dialog_edit_button_sure);
-		popCancelButton = (Button) dialogView
-				.findViewById(R.id.dialog_edit_button_cancel);
-
-		textAmountTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_edit_text_num);
-		textAmountTextView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				popContentEditText.setText("");
-
-			}
-		});
-
-		if (lastReplyCanceled) {
-			popContentEditText.setText(canceledReplyContent);
-		}
-
-		popContentEditText.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				int remainTextAmount = MAX_TEXT_LENGTH - s.length();
-				if (remainTextAmount >= 0) {
-					textAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-				} else {
-					textAmountTextView.setTextColor(Color.RED);
-				}
-				textAmountTextView.setText(remainTextAmount + " x");
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		popTitleTextView.setText("Re:"
-				+ mDataManager.getCurrentMessageHolder().getMessageList()
-						.get(position).getNickName());
-		popSureButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				lastReplyCanceled = false;
-
-				reply(position);
-
-			}
-		});
-		popCancelButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				lastReplyCanceled = true;
-				canceledReplyContent = popContentEditText.getText().toString();
-				dialog.cancel();
-
-			}
-		});
-
-		dialog = new Dialog(mContext, R.style.dialog);
-
-		dialog.setContentView(dialogView);
-		dialog.show();
-
-	}
-
-	private void setStarBackground(View view, int position) {
-		boolean star = mDataManager.getCurrentMessageHolder().getMessageList()
-				.get(position).getStarred();
-
-		if (star) {
-			view.setBackgroundResource(R.drawable.msg_starred_button_bg);
-		} else {
-			view.setBackgroundResource(R.drawable.msg_star_button_bg);
-
-		}
-
-	}
-
-	private void reply(int position) {
-
-		String replyContent = popContentEditText.getText().toString();
-		if (replyContent.length() > MAX_TEXT_LENGTH) {
-
-			Toast.makeText(mContext, "字数超过限制", Toast.LENGTH_LONG).show();
-
-			return;
-		} else if (replyContent.length() == 0) {
-
-			Toast.makeText(mContext, "请输入内容", Toast.LENGTH_LONG).show();
-
-			return;
-		}
-		dialog.dismiss();
-		mDataManager.getWechatManager().reply(
-				mDataManager.getCurrentPosition(), position, replyContent,
-				new OnActionFinishListener() {
-
-					@Override
-					public void onFinish(Object object) {
-						// TODO Auto-generated method stub
-
-					}
-				});
 	}
 
 	@Override

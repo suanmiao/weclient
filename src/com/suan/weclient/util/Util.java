@@ -2,15 +2,18 @@ package com.suan.weclient.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +30,7 @@ import com.suan.weclient.R;
 
 public class Util {
 	public static Bitmap roundCorner(Bitmap src, float round) {
+		
 		// image size
 		int width = src.getWidth();
 		int height = src.getHeight();
@@ -36,24 +40,31 @@ public class Util {
 
 		// set canvas for painting
 		Canvas canvas = new Canvas(result);
+		//draw white
 		canvas.drawARGB(0, 0, 0, 0);
 
 		// config paint
 		final Paint paint = new Paint();
 		paint.setAntiAlias(true);
-		paint.setColor(Color.BLACK);
+//		paint.setColor(Color.BLACK);
 
 		// config rectangle for embedding
-		final Rect rect = new Rect(0, 0, width, height);
-		final RectF rectF = new RectF(rect);
+		final Rect srcRect = new Rect(0, 0, width, height);
+		final Rect desRect = new Rect(0, 0, width, height);
 
 		// draw rect to canvas
-		canvas.drawRoundRect(rectF, round, round, paint);
+		paint.setColor(Color.RED);
+		canvas.drawCircle(width/2, height/2, round, paint);
 
 		// create Xfer mode
 		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		// draw source image to canvas
-		canvas.drawBitmap(src, rect, rect, paint);
+		canvas.drawBitmap(src, srcRect, desRect, paint);
+		
+		paint.setColor(Color.parseColor("#ced0c4"));
+		paint.setStyle(Style.STROKE);
+		paint.setStrokeWidth(15);
+		canvas.drawCircle(width/2, height/2, round, paint);
 
 		// return final image
 		return result;
@@ -106,6 +117,13 @@ public class Util {
 		return loadingDialog;
 
 	}
+	
+	
+	public static float dipToPx(int dip,Resources resources) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
+				resources.getDisplayMetrics());
+	}
+
 
 	@SuppressWarnings("deprecation")
 	public static Dialog createEnsureDialog(

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="#ffffff"
 	android:orientation="vertical" >
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -12,42 +11,31 @@
 		android:layout_marginRight="5dip"
 		android:layout_marginTop="18dip"
 		android:orientation="horizontal" >
-		<RelativeLayout
-			android:layout_width="60dip"
-			android:layout_height="fill_parent"
-			android:layout_marginRight="10dip" >
-			<ImageView
-				android:id="@+id/message_item_voice_img_profile"
-				android:layout_width="60dip"
-				android:layout_height="60dip"
-				android:layout_marginTop="10dip"
-				android:background="#000000"
-				android:src="@drawable/head_default" />
-		</RelativeLayout>
 		<LinearLayout
-			android:layout_width="fill_parent"
+			android:layout_width="0dip"
+			android:layout_weight="1"
 			android:layout_height="wrap_content"
 			android:orientation="vertical" >
 			<RelativeLayout
 				android:layout_width="fill_parent"
 				android:layout_height="25dip" >
 				<TextView
-					android:id="@+id/message_item_voice_text_profile"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentLeft="true"
-					android:textColor="#196fab"
-					android:textSize="18dip" />
-				<TextView
-					android:id="@+id/message_item_voice_text_time"
+					android:id="@+id/chat_item_me_voice_text_profile"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
+					android:textColor="#196fab"
+					android:textSize="18dip" />
+				<TextView
+					android:id="@+id/chat_item_me_voice_text_time"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentLeft="true"
 					android:textColor="#494949"
 					android:textSize="12dip" />
 			</RelativeLayout>
 			<ImageView
-				android:id="@+id/message_item_voice_img_content"
+				android:id="@+id/chat_item_me_voice_img_content"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dip"
@@ -55,24 +43,18 @@
 				android:layout_marginTop="15dip"
 				android:scaleType="centerInside"
 				android:src="@drawable/ic_launcher" />
-			<RelativeLayout
-				android:id="@+id/message_item_voice_layout_star"
-				android:layout_width="fill_parent"
-				android:layout_height="30dip" >
-				<ImageButton
-					android:id="@+id/message_item_voice_button_star"
-					android:layout_width="25dip"
-					android:layout_height="20dip"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:layout_marginRight="10dip"
-					android:background="@drawable/msg_star_button_bg" />
-			</RelativeLayout>
 		</LinearLayout>
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="1px"
-		android:background="#96988e" >
+		<RelativeLayout
+			android:layout_width="60dip"
+			android:layout_height="fill_parent"
+			android:layout_marginRight="10dip" >
+			<ImageView
+				android:id="@+id/chat_item_me_voice_img_profile"
+				android:layout_width="60dip"
+				android:layout_height="60dip"
+				android:layout_marginTop="10dip"
+				android:background="#000000"
+				android:src="@drawable/head_default" />
+		</RelativeLayout>
 	</LinearLayout>
 </LinearLayout>

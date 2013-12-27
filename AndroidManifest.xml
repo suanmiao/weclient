@@ -42,6 +42,11 @@
 			android:screenOrientation="portrait" >
 		</activity>
 		<activity
+			android:name=".activity.ChatActivity"
+			android:windowSoftInputMode="adjustResize"
+			android:screenOrientation="portrait" >
+		</activity>
+		<activity
 			android:name=".activity.ShowImgActivity"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Transparent" >

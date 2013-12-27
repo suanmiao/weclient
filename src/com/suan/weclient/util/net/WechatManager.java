@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.suan.weclient.util.Util;
+import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.FansHolder;
 import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.net.DataParser.ChatListParseCallback;
 import com.suan.weclient.util.net.DataParser.FansListParseCallback;
 import com.suan.weclient.util.net.DataParser.MessageListParseCallBack;
 import com.suan.weclient.util.net.DataParser.MessageResultHolder;
@@ -258,34 +260,36 @@ public class WechatManager {
 			final String referer, final ImageView imageView,
 			final OnActionFinishListener onActionFinishListener) {
 
-		WeChatLoader.wechatGetHeadImg(new WechatExceptionListener() {
+		WeChatLoader.wechatGetHeadImg(
+				new WechatExceptionListener() {
 
-			@Override
-			public void onError() {
-				// TODO Auto-generated method stub
+					@Override
+					public void onError() {
+						// TODO Auto-generated method stub
 
-			}
-		},
+					}
+				},
 
-		new WechatGetHeadImgCallBack() {
+				new WechatGetHeadImgCallBack() {
 
-			@Override
-			public void onBack(Bitmap bitmap, String referer,
-					ImageView imageView) {
-				// TODO Auto-generated method stub
+					@Override
+					public void onBack(Bitmap bitmap, String referer,
+							ImageView imageView) {
+						// TODO Auto-generated method stub
 
-				try {
-					Bitmap roundBitmap = Util.roundCorner(bitmap, 10);
+						try {
+							Bitmap roundBitmap = Util.roundCorner(bitmap,
+									Util.dipToPx(30, mContext.getResources()));
 
-					imageView.setImageBitmap(roundBitmap);
-					onActionFinishListener.onFinish(roundBitmap);
+							imageView.setImageBitmap(roundBitmap);
+							onActionFinishListener.onFinish(roundBitmap);
 
-				} catch (Exception exception) {
+						} catch (Exception exception) {
 
-				}
+						}
 
-			}
-		}, mDataManager.getUserGroup().get(userIndex), fakeId, referer,
+					}
+				}, mDataManager.getUserGroup().get(userIndex), fakeId, referer,
 				imageView);
 
 	}
@@ -516,7 +520,8 @@ public class WechatManager {
 
 						@Override
 						public void onBack(
-								MessageResultHolder messageResultHolder,boolean dataChanged) {
+								MessageResultHolder messageResultHolder,
+								boolean dataChanged) {
 							// TODO
 							// Auto-generated
 							// method
@@ -551,23 +556,24 @@ public class WechatManager {
 		}, new WechatGetFansList() {
 
 			@Override
-			public void onBack(String strResult,String referer) {
+			public void onBack(String strResult, String referer) {
 				// TODO Auto-generated method stub
 				boolean refresh = false;
-				if(page==0){
-					
+				if (page == 0) {
+
 					refresh = true;
-					
+
 				}
-				DataParser.parseFansList(strResult,referer, mDataManager
+				DataParser.parseFansList(strResult, referer, mDataManager
 						.getFansHolders().get(userIndex), mDataManager
 						.getUserGroup().get(userIndex), refresh,
 						new FansListParseCallback() {
 
 							@Override
-							public void onBack(FansHolder fansHolder,boolean dataChanged) {
+							public void onBack(FansHolder fansHolder,
+									boolean dataChanged) {
 								// TODO Auto-generated method stub
-								
+
 								onActionFinishListener.onFinish(dataChanged);
 
 							}
@@ -613,7 +619,8 @@ public class WechatManager {
 
 						@Override
 						public void onBack(
-								MessageResultHolder messageResultHolder,boolean dataChanged) {
+								MessageResultHolder messageResultHolder,
+								boolean dataChanged) {
 							// TODO
 							// Auto-generated
 							// method
@@ -631,6 +638,84 @@ public class WechatManager {
 
 			}
 		}, mDataManager.getMessageHolders().get(userIndex), page);
+
+	}
+
+	public void getChatList(final int userIndex,
+			final OnActionFinishListener onActionFinishListener) {
+
+		ChatHolder chatHolder = mDataManager.getChatHolder();
+		WeChatLoader.wechatGetChatList(new WechatExceptionListener() {
+
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
+				mDataManager.doPopEnsureDialog(true, false, "获取聊天信息失败 重试?",
+						new DialogSureClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								getChatList(userIndex, onActionFinishListener);
+
+							}
+						});
+
+			}
+		}, new WeChatLoader.WechatGetChatList() {
+
+			@Override
+			public void onBack(String strResult) {
+				// TODO Auto-generated method stub
+				DataParser.parseChatList(strResult,
+						mDataManager.getChatHolder(),
+						new ChatListParseCallback() {
+
+							@Override
+							public void onBack(ChatHolder chatHolder,
+									boolean dataChanged) {
+								// TODO Auto-generated method stub
+
+								onActionFinishListener.onFinish(dataChanged);
+
+							}
+						});
+
+			}
+		}, chatHolder.getUserBean(), chatHolder.getToFakeId());
+
+	}
+
+	public void singleChat(final int userIndex, final int type,
+			final String content, final ChatHolder chatHolder,
+			final OnActionFinishListener onActionFinishListener) {
+
+		WeChatLoader.wechatChatSingle(new WechatExceptionListener() {
+
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
+
+			}
+		}, new WeChatLoader.WechatChatSingleCallBack() {
+
+			@Override
+			public void onBack(String result) {
+				// TODO Auto-generated method stub
+				try {
+					JSONObject resultJsonObject = new JSONObject(result);
+					JSONObject stateJsonObject = resultJsonObject
+							.getJSONObject("base_resp");
+					String ret = stateJsonObject.getString("ret");
+					Log.e("get ret", ret + "");
+
+				} catch (Exception exception) {
+					Log.e("single chat result parse error", "" + exception);
+
+				}
+
+			}
+		}, type, content, chatHolder);
 
 	}
 

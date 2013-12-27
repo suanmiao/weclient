@@ -124,20 +124,6 @@ public class MainActivity extends SlidingFragmentActivity {
 		t.replace(R.id.right_frame, rightFragment);
 
 		contentFragment = new ContentFragment(mDataManager);
-		contentFragment.setShowMenuListener(new ShowMenuListener() {
-
-			@Override
-			public void showLeftMenu() {
-				// TODO Auto-generated method stub
-				getSlidingMenu().showMenu();
-
-			}
-
-			public void showRightMenu() {
-				getSlidingMenu().showSecondaryMenu();
-
-			}
-		});
 		t.replace(R.id.content_layout, contentFragment);
 
 		t.commit();
@@ -157,6 +143,22 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		CustomActionView customActionView = new CustomActionView(this);
 		customActionView.init(mDataManager);
+
+		customActionView.setShowMenuListener(new ShowMenuListener() {
+
+			@Override
+			public void showLeftMenu() {
+				// TODO Auto-generated method stub
+				getSlidingMenu().showMenu();
+
+			}
+
+			public void showRightMenu() {
+				getSlidingMenu().showSecondaryMenu();
+
+			}
+		});
+
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
 		actionBar.setCustomView(customActionView, layoutParams);

@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.FansBean;
 import com.suan.weclient.util.data.FansGroupBean;
 import com.suan.weclient.util.data.FansHolder;
@@ -187,7 +188,8 @@ public class DataParser {
 	}
 
 	public interface MessageListParseCallBack {
-		public void onBack(MessageResultHolder messageResultHolder,boolean dataChanged);
+		public void onBack(MessageResultHolder messageResultHolder,
+				boolean dataChanged);
 	}
 
 	public static void parseNewMessage(
@@ -206,10 +208,11 @@ public class DataParser {
 				// 此处可以更新UI
 				MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
 				boolean dataChanged = false;
-				if(msg.arg1==1){
+				if (msg.arg1 == 1) {
 					dataChanged = true;
 				}
-				messageListParseCallBack.onBack(messageResultHolder,dataChanged);
+				messageListParseCallBack.onBack(messageResultHolder,
+						dataChanged);
 
 			}
 		};
@@ -240,7 +243,7 @@ public class DataParser {
 						messageResultHolder.messageHolder = messageHolder;
 						messageResultHolder.messageBeans = getMessageList;
 						message.obj = messageResultHolder;
-						message.arg1 = dataChanged?1:0;
+						message.arg1 = dataChanged ? 1 : 0;
 
 						loadHandler.sendMessage(message);
 
@@ -280,7 +283,7 @@ public class DataParser {
 				super.handleMessage(msg);
 				// 此处可以更新UI
 				MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
-				messageListParseCallBack.onBack(messageResultHolder,true);
+				messageListParseCallBack.onBack(messageResultHolder, true);
 
 			}
 		};
@@ -425,7 +428,7 @@ public class DataParser {
 	}
 
 	public interface FansListParseCallback {
-		public void onBack(FansHolder fansHolder,boolean dataChanged);
+		public void onBack(FansHolder fansHolder, boolean dataChanged);
 	}
 
 	public static void parseFansList(final String source, final String referer,
@@ -443,10 +446,10 @@ public class DataParser {
 				super.handleMessage(msg);
 				// 此处可以更新UI
 				boolean dataChanged = false;
-				if(msg.arg1==1){
+				if (msg.arg1 == 1) {
 					dataChanged = true;
 				}
-				fansListParseCallback.onBack(fansHolder,dataChanged);
+				fansListParseCallback.onBack(fansHolder, dataChanged);
 
 			}
 		};
@@ -504,8 +507,8 @@ public class DataParser {
 					}
 
 					Message nowMessage = new Message();
-					nowMessage.arg1 = dataChanged?1:0;
-					
+					nowMessage.arg1 = dataChanged ? 1 : 0;
+
 					loadHandler.sendMessage(nowMessage);
 
 				} catch (Exception exception) {
@@ -530,4 +533,81 @@ public class DataParser {
 
 	}
 
+	public interface ChatListParseCallback {
+		public void onBack(ChatHolder chatHolder, boolean dataChanged);
+	}
+
+	public static void parseChatList(final String source,
+			final ChatHolder chatHolder,
+			final ChatListParseCallback chatListParseCallback) {
+
+		final Handler loadHandler = new Handler() {
+
+			// 子类必须重写此方法,接受数据
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+
+				super.handleMessage(msg);
+				// 此处可以更新UI
+				boolean dataChanged = false;
+				if (msg.arg1 == 1) {
+					dataChanged = true;
+				}
+				chatListParseCallback.onBack(chatHolder, dataChanged);
+
+			}
+		};
+
+		new Thread() {
+			public void run() {
+
+				String contentBodyString = source.substring(
+						source.indexOf("wx.cgiData = {\"to_nick_name"),
+						source.indexOf("seajs.use(\"message/send\")"));
+				String messageContent = contentBodyString
+						.substring(contentBodyString
+								.indexOf("msg_items\":{\"msg_item\":") + 23,
+								contentBodyString
+										.indexOf("wx.cgiData.tofakeid") - 12);
+
+/*				Log.e("content", "" + contentBodyString);
+				Log.e("message content", "" + messageContent);
+*/
+				try {
+
+					Gson gson = new Gson();
+					JSONArray messageArray = new JSONArray(messageContent);
+					ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
+					for (int i = 0; i < messageArray.length(); i++) {
+						JSONObject nowJsonObject = messageArray 
+								.getJSONObject(i);
+						
+						MessageBean nowMessageBean = (MessageBean) gson
+								.fromJson(nowJsonObject.toString(),
+										MessageBean.class);
+						if(nowMessageBean.getFakeId().equals(chatHolder.getToFakeId())){
+							nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_HER);
+						}else{
+							nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_ME);
+						}
+						messageBeans.add(nowMessageBean);
+					}
+					
+					chatHolder.setMessage(messageBeans);
+
+
+					Message nowMessage = new Message();
+					nowMessage.arg1 = 1;
+
+					loadHandler.sendMessage(nowMessage);
+
+				} catch (Exception exception) {
+					Log.e("chat parse errror", "" + exception);
+				}
+			}
+
+		}.start();
+
+	}
 }

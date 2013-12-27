@@ -28,7 +28,7 @@ public class SPopUpWindow extends PopupWindow {
 
 		adapter= new ArrayAdapter<String>(
 				contentView.getContext(),
-				android.R.layout.simple_expandable_list_item_1,getData());
+				R.layout.drop_down_item,R.id.drop_down_item_text,getData());
 		contentListView.setAdapter(adapter);
 
 	}

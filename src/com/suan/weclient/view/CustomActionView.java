@@ -5,25 +5,36 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.suan.weclient.R;
+import com.suan.weclient.activity.MainActivity.ShowMenuListener;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
 
 public class CustomActionView extends LinearLayout {
+
+	private boolean indexPlaceSet = false;
 	private LinearLayout indexLayout;
 	private ScrollView indexScrollView;
 	private Resources resources;
 	private DataManager mDataManager;
 	private RelativeLayout customLayout;
+
+	private ImageView showMenuImageView;
 	private RelativeLayout firstIndecatorLayout, secondIndecatorLayout;
 	private RelativeLayout firstContentLayout, secondContentLayout;
+
+	/*
+	 * about popupwindow
+	 */
+	private ShowMenuListener showMenuListener;
 
 	private SPopUpWindow sPopUpWindow;
 
@@ -56,22 +67,23 @@ public class CustomActionView extends LinearLayout {
 			@Override
 			public void onPage(int page) {
 				// TODO Auto-generated method stub
-				firstIndecatorLayout.setSelected(false);
-				secondIndecatorLayout.setSelected(false);
-				switch (page) {
-				case 0:
-					firstIndecatorLayout.setSelected(true);
-					break;
-
-				case 1:
-					secondIndecatorLayout.setSelected(true);
-					break;
-				}
 
 			}
 		});
 
 		initWidgets();
+
+	}
+
+	public void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+
+		if (!indexPlaceSet) {
+
+			indexScrollView.scrollTo((int) Util.dipToPx(40,resources), 0);
+			indexPlaceSet = true;
+		}
+
 	}
 
 	private void initWidgets() {
@@ -83,6 +95,19 @@ public class CustomActionView extends LinearLayout {
 				.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
 		customLayout = (RelativeLayout) layoutInflater.inflate(
 				R.layout.custom_actionbar_main, null);
+
+		showMenuImageView = (ImageView) customLayout
+				.findViewById(R.id.actionbar_img_show_menu);
+
+		showMenuImageView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showMenuListener.showLeftMenu();
+
+			}
+		});
 
 		indexScrollView = (ScrollView) customLayout
 				.findViewById(R.id.actionbar_main_scroll_index);
@@ -156,9 +181,10 @@ public class CustomActionView extends LinearLayout {
 		View dropDownView = ((LayoutInflater) getContext().getSystemService(
 				Service.LAYOUT_INFLATER_SERVICE)).inflate(
 				R.layout.drop_down_layout, null);
-		sPopUpWindow = new SPopUpWindow(mDataManager,dropDownView, (int) dipToPx(100),
-				LayoutParams.WRAP_CONTENT, true);
-		sPopUpWindow.setBackgroundDrawable(resources.getDrawable(R.drawable.drop_down_window_bg));
+		sPopUpWindow = new SPopUpWindow(mDataManager, dropDownView,
+				(int) Util.dipToPx(100,resources), LayoutParams.WRAP_CONTENT, true);
+		sPopUpWindow.setBackgroundDrawable(resources
+				.getDrawable(R.drawable.drop_down_window_bg));
 		sPopUpWindow.setOutsideTouchable(true);
 		sPopUpWindow.setTouchable(true);
 
@@ -199,12 +225,14 @@ public class CustomActionView extends LinearLayout {
 
 	private void setScrollPercent(int page, double pagePercent) {
 
-		setPage(page);
+		// Log.e("page", page+"|"+pagePercent);
+		int index = (page+pagePercent)>0.5?1:0;
+		setPage(index);
 
-		double percent = (page + pagePercent) / 2;
+		double percent = (page + pagePercent);
 
-		float scrollWidth = dipToPx(80);
-		float indexWidth = dipToPx(40);
+		float scrollWidth = Util.dipToPx(80, resources);
+		float indexWidth = Util.dipToPx(40,resources);
 		double scrollDelta = scrollWidth / 2 * percent;
 		int scrollX = (int) (indexWidth - scrollDelta);
 
@@ -212,9 +240,9 @@ public class CustomActionView extends LinearLayout {
 
 	}
 
-	private float dipToPx(int dip) {
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
-				resources.getDisplayMetrics());
+	public void setShowMenuListener(ShowMenuListener showMenuListener) {
+		this.showMenuListener = showMenuListener;
 	}
+
 
 }

@@ -10,17 +10,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.suan.weclient.R;
-import com.suan.weclient.activity.MainActivity.ShowMenuListener;
-import com.suan.weclient.adapter.ScrollingTabsAdapter;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ContentFragmentChangeListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
@@ -28,27 +23,20 @@ import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.TabListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.UserBean;
-import com.suan.weclient.view.ScrollableTabView;
 
 public class ContentFragment extends Fragment implements
 		OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
 
 	private View mView;
-	private ShowMenuListener showMenuListener;
 	
-	private ImageButton showLeftButton, showRightButton;
-	private TextView nowUserTextView;
 
 	private MyAdapter mAdapter;
 	private ViewPager mPager;
 	private ArrayList<Fragment> pagerItemList = null;
 
-	private ProfileFragment profileFragment;
 	private MassFragment massFragment;
 	private MessageFragment messageFragment;
 
-	private ScrollableTabView mScrollableTabView;
-	private ScrollingTabsAdapter mScrollingTabsAdapter;
 	private DataManager mDataChangeListener;
 
 	public ContentFragment(DataManager dataManager) {
@@ -75,7 +63,7 @@ public class ContentFragment extends Fragment implements
 			public void onGroupChangeEnd() {
 				// TODO Auto-generated method stub
 				if(mDataChangeListener.getUserGroup().size()==0){
-					nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
+//					nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
 					
 				}
 				
@@ -108,7 +96,7 @@ public class ContentFragment extends Fragment implements
 			public void onGet(UserBean userBean) {
 				// TODO Auto-generated method stub
 				
-				nowUserTextView.setText(userBean.getNickname());
+//				nowUserTextView.setText(userBean.getNickname());
 			}
 		});
 		
@@ -144,37 +132,11 @@ public class ContentFragment extends Fragment implements
 	
 	private void initWidgets(){
 		
-		showLeftButton = (ImageButton) mView
-				.findViewById(R.id.head_button_show_left);
-		showRightButton = (ImageButton) mView
-				.findViewById(R.id.head_button_show_right);
-		showLeftButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showMenuListener.showLeftMenu();
-			}
-		});
-
-		showRightButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showMenuListener.showRightMenu();
-			}
-		});
-
-		nowUserTextView = (TextView) mView
-				.findViewById(R.id.head_layout_text_now_user);
-		nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
-
 		mPager = (ViewPager) mView.findViewById(R.id.vp_list);
 
 		pagerItemList = new ArrayList<Fragment>();
-		profileFragment = new ProfileFragment(mDataChangeListener);
 		messageFragment = new MessageFragment(mDataChangeListener);
 		massFragment = new MassFragment(mDataChangeListener);
-		pagerItemList.add(profileFragment);
 		pagerItemList.add(messageFragment);
 		pagerItemList.add(massFragment);
 		mAdapter = new MyAdapter(getFragmentManager());
@@ -182,25 +144,14 @@ public class ContentFragment extends Fragment implements
 		
 
 		mPager.setOnPageChangeListener(this);
-		initScrollableTabs(mView, mPager);
 	}
 	
 
-	private void initScrollableTabs(View view, ViewPager mViewPager) {
-		mScrollableTabView = (ScrollableTabView) view
-				.findViewById(R.id.scrollabletabview);
-		mScrollingTabsAdapter = new ScrollingTabsAdapter(getActivity());
-		mScrollableTabView.setAdapter(mScrollingTabsAdapter);
-		mScrollableTabView.setViewPage(mViewPager);
-	}
 
 	public ViewPager getViewPage() {
 		return mPager;
 	}
 	
-	public void setShowMenuListener(ShowMenuListener showMenuListener){
-		this.showMenuListener = showMenuListener;
-	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 
@@ -301,7 +252,6 @@ public class ContentFragment extends Fragment implements
 		 * arg2:px
 		 */
 		
-//		Log.e("page scroll", "position"+position+"|"+arg1+"|"+(int)arg2);
 		mDataChangeListener.getPagerListener().onScroll(position,arg1);
 		
 
@@ -312,9 +262,6 @@ public class ContentFragment extends Fragment implements
 		if (myPageChangeListener != null) {
 			myPageChangeListener.onPageSelected(position);
 		}
-		if (mScrollableTabView != null) {
-			mScrollableTabView.selectTab(position);
-		}
 		mDataChangeListener.getPagerListener().onPage(position);
 
 	}
@@ -324,8 +271,6 @@ public class ContentFragment extends Fragment implements
 		super.onDestroyView();
 		pagerItemList.clear();
 		pagerItemList = null;
-		mScrollableTabView = null;
-		mScrollingTabsAdapter = null;
 	}
 	
 	

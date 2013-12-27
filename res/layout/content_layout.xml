@@ -3,15 +3,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="#fff" >
-	<include
-		android:id="@+id/head_layout"
-		layout="@layout/head_layout" />
-	<com.suan.weclient.view.ScrollableTabView
-		android:id="@+id/scrollabletabview"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="#c6c6c6"
-		android:layout_below="@+id/head_layout" />
 	<android.support.v4.view.ViewPager
 		android:id="@+id/vp_list"
 		android:layout_width="fill_parent"

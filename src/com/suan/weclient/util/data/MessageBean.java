@@ -33,6 +33,13 @@ public class MessageBean {
 	private String slave_user = "";
 	private String referer = "";
 	
+	/*
+	 * about chat
+	 */
+	private int owner = -1;
+	public static final int MESSAGE_OWNER_ME = 0;
+	public static final int MESSAGE_OWNER_HER = 1;
+	
 
 	public String getToken(){
 		return token;
@@ -185,6 +192,14 @@ public class MessageBean {
 	
 	public void setRefuseReason(String data){
 		this.refuse_reason = data;
+	}
+	
+	public int getOwner(){
+		return owner;
+	}
+	
+	public void setOwner(int owner){
+		this.owner = owner;
 	}
 
 

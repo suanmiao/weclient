@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="#ffffff"
 	android:orientation="vertical" >
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -17,7 +16,7 @@
 			android:layout_height="fill_parent"
 			android:layout_marginRight="10dip" >
 			<ImageView
-				android:id="@+id/message_item_text_img_profile"
+				android:id="@+id/chat_item_her_text_img_profile"
 				android:layout_width="60dip"
 				android:layout_height="60dip"
 				android:layout_marginTop="10dip"
@@ -32,14 +31,14 @@
 				android:layout_width="fill_parent"
 				android:layout_height="25dip" >
 				<TextView
-					android:id="@+id/message_item_text_text_profile"
+					android:id="@+id/chat_item_her_text_text_profile"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_alignParentLeft="true"
 					android:textColor="#196fab"
 					android:textSize="18dip" />
 				<TextView
-					android:id="@+id/message_item_text_text_time"
+					android:id="@+id/chat_item_her_text_text_time"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
@@ -47,31 +46,13 @@
 					android:textSize="12dip" />
 			</RelativeLayout>
 			<TextView
-				android:id="@+id/message_item_text_text_content"
+				android:id="@+id/chat_item_her_text_text_content"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="5dip"
 				android:minLines="2"
 				android:textColor="#494949"
 				android:textSize="13dip" />
-			<RelativeLayout
-				android:id="@+id/message_item_text_layout_star"
-				android:layout_width="fill_parent"
-				android:layout_height="30dip" >
-				<ImageButton
-					android:id="@+id/message_item_text_button_star"
-					android:layout_width="25dip"
-					android:layout_height="20dip"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:layout_marginRight="10dip"
-					android:background="@drawable/msg_star_button_bg" />
-			</RelativeLayout>
 		</LinearLayout>
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="1px"
-		android:background="#96988e" >
 	</LinearLayout>
 </LinearLayout>
