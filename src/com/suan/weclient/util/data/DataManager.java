@@ -17,7 +17,7 @@ public class DataManager {
 	private ArrayList<MessageHolder> messageHolders;
 	private ArrayList<FansHolder> fansHolders;
 	private ArrayList<UserBean> userBeans;
-	
+
 	ArrayList<AutoLoginListener> autoLoginListeners;
 	ArrayList<MessageChangeListener > messageChangeListeners ;
 	ArrayList<ChatItemChangeListener> chatItemChangeListeners;
@@ -26,6 +26,9 @@ public class DataManager {
 	ArrayList<LoginListener> loginListeners;
 	ArrayList<DialogListener> dialogListeners ;
 	ArrayList<UserGroupListener> userGroupListeners;
+
+    ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
+
 	private ContentFragmentChangeListener contentFragmentChangeListener;
 	private int currentPosition = 0;
 	
@@ -228,6 +231,7 @@ public class DataManager {
 	
 	public void createChat(UserBean userBean,String toFakeId){
 		chatHolder = new ChatHolder(userBean,toFakeId);
+        chatNewItemGetListeners = new ArrayList<ChatNewItemGetListener>();
 	}
 
 	public void setCurrentPosition(int position) {
@@ -247,7 +251,12 @@ public class DataManager {
 	public void addChatItemChangeListenr(ChatItemChangeListener changeListener){
 		this.chatItemChangeListeners.add(changeListener);
 	}
-	
+
+    public void addChatNewItemGetListener(ChatNewItemGetListener chatNewItemGetListener){
+        this.chatNewItemGetListeners.add(chatNewItemGetListener);
+    }
+
+
 	public void addFansListChangeListener(FansListChangeListener fansListChangeListener){
 		this.fansListChangeListeners.add(fansListChangeListener);
 	}
@@ -306,6 +315,14 @@ public class DataManager {
 			chatItemChangeListeners.get(i).onItemGet(changed);
 		}
 	}
+
+    public void doChatNewItemGet(ArrayList<MessageBean> getMessage,String msgId){
+        for(int i = 0;i<chatNewItemGetListeners.size();i++){
+            chatNewItemGetListeners.get(i).onChatItemGet(getMessage,msgId);
+        }
+    }
+
+
 	public void doFansGet(boolean changed){
 		for(int i = 0 ;i<fansListChangeListeners.size();i++){
 			fansListChangeListeners.get(i).onFansGet(changed);
@@ -380,6 +397,10 @@ public class DataManager {
 	public interface ChatItemChangeListener{
 		public void onItemGet(boolean changed);
 	}
+
+    public interface ChatNewItemGetListener{
+        public void onChatItemGet(ArrayList<MessageBean> getMessage,String msgId);
+    }
 	
 	public interface FansListChangeListener{
 		public void onFansGet(boolean changed);

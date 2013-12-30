@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/gson.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jsoup.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/umeng_sdk.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/disklrucache.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/volley.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jl1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

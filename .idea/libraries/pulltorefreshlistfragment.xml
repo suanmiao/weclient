@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="pulltorefreshlistfragment">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshListFragment/bin/pulltorefreshlistfragment.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

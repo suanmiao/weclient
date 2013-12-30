@@ -11,238 +11,275 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
+import com.suan.weclient.util.net.WeChatLoader;
 
 public class CustomActionView extends LinearLayout {
 
-	private boolean indexPlaceSet = false;
-	private LinearLayout indexLayout;
-	private ScrollView indexScrollView;
-	private Resources resources;
-	private DataManager mDataManager;
-	private RelativeLayout customLayout;
+    private boolean indexPlaceSet = false;
+    private TextView indexTextView;
+    private LinearLayout indexLayout;
+    private ScrollView indexScrollView;
+    private Resources resources;
+    private DataManager mDataManager;
+    private RelativeLayout customLayout;
 
-	private ImageView showMenuImageView;
-	private RelativeLayout firstIndecatorLayout, secondIndecatorLayout;
-	private RelativeLayout firstContentLayout, secondContentLayout;
+    private ImageView showMenuImageView;
+    private RelativeLayout firstIndecatorLayout, secondIndecatorLayout;
+    private RelativeLayout firstContentLayout, secondContentLayout;
 
-	/*
-	 * about popupwindow
-	 */
-	private ShowMenuListener showMenuListener;
+    /*
+     * about popupwindow
+     */
+    private ShowMenuListener showMenuListener;
 
-	private SPopUpWindow sPopUpWindow;
+    private SPopUpWindow sPopUpWindow;
 
-	public CustomActionView(Context context) {
-		this(context, null);
-	}
+    public CustomActionView(Context context) {
+        this(context, null);
+    }
 
-	public CustomActionView(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
-	}
+    public CustomActionView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
 
-	public CustomActionView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs);
+    public CustomActionView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs);
 
-	}
+    }
 
-	public void init(DataManager dataManager) {
-		mDataManager = dataManager;
+    public void init(DataManager dataManager) {
+        mDataManager = dataManager;
 
-		mDataManager.setPagerListener(new PagerListener() {
+        mDataManager.setPagerListener(new PagerListener() {
 
-			@Override
-			public void onScroll(int page, double pagePercent) {
-				// TODO Auto-generated method stub
+            @Override
+            public void onScroll(int page, double pagePercent) {
+                // TODO Auto-generated method stub
 
-				setScrollPercent(page, pagePercent);
+                setScrollPercent(page, pagePercent);
 
-			}
+            }
 
-			@Override
-			public void onPage(int page) {
-				// TODO Auto-generated method stub
+            @Override
+            public void onPage(int page) {
+                // TODO Auto-generated method stub
 
-			}
-		});
+            }
+        });
+        mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
+            @Override
+            public void onMessageGet(boolean changed) {
+                dismissDropDownWindow();
+                switch (mDataManager.getCurrentMessageHolder().getNowMessageMode()) {
+                    case WeChatLoader.GET_MESSAGE_ALL:
+                        indexTextView.setText(getResources().getString(R.string.message_all));
 
-		initWidgets();
+                        break;
 
-	}
+                    case WeChatLoader.GET_MESSAGE_TODAY:
 
-	public void onLayout(boolean changed, int l, int t, int r, int b) {
-		super.onLayout(changed, l, t, r, b);
+                        indexTextView.setText(getResources().getString(R.string.message_today));
+                        break;
+                    case WeChatLoader.GET_MESSAGE_YESTERDAY:
 
-		if (!indexPlaceSet) {
+                        indexTextView.setText(getResources().getString(R.string.message_yesterday));
+                        break;
+                    case WeChatLoader.GET_MESSAGE_DAY_BEFORE:
 
-			indexScrollView.scrollTo((int) Util.dipToPx(40,resources), 0);
-			indexPlaceSet = true;
-		}
+                        indexTextView.setText(getResources().getString(R.string.message_day_before));
+                        break;
+                    case WeChatLoader.GET_MESSAGE_OLDER:
 
-	}
+                        indexTextView.setText(getResources().getString(R.string.message_older));
+                        break;
+                    case WeChatLoader.GET_MESSAGE_STAR:
 
-	private void initWidgets() {
-		Context context = getContext();
+                        indexTextView.setText(getResources().getString(R.string.message_star));
+                        break;
 
-		resources = context.getResources();
+                }
+            }
+        });
 
-		LayoutInflater layoutInflater = (LayoutInflater) context
-				.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
-		customLayout = (RelativeLayout) layoutInflater.inflate(
-				R.layout.custom_actionbar_main, null);
+        initWidgets();
 
-		showMenuImageView = (ImageView) customLayout
-				.findViewById(R.id.actionbar_img_show_menu);
+    }
 
-		showMenuImageView.setOnClickListener(new OnClickListener() {
+    public void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				showMenuListener.showLeftMenu();
+        if (!indexPlaceSet) {
 
-			}
-		});
+            indexScrollView.scrollTo((int) Util.dipToPx(40, resources), 0);
+            indexPlaceSet = true;
+        }
 
-		indexScrollView = (ScrollView) customLayout
-				.findViewById(R.id.actionbar_main_scroll_index);
+    }
 
-		indexLayout = (LinearLayout) customLayout
-				.findViewById(R.id.actionbar_main_layout_index);
+    private void initWidgets() {
+        Context context = getContext();
 
-		firstContentLayout = (RelativeLayout) customLayout
-				.findViewById(R.id.actionbar_left_layout_first);
-		secondContentLayout = (RelativeLayout) customLayout
-				.findViewById(R.id.actionbar_left_layout_second);
+        resources = context.getResources();
 
-		initDropDownWindow();
-		firstContentLayout.setOnClickListener(new OnClickListener() {
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+        customLayout = (RelativeLayout) layoutInflater.inflate(
+                R.layout.custom_actionbar_main, null);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (sPopUpWindow.isShowing()) {
-					dismissDropDownWindow();
+        showMenuImageView = (ImageView) customLayout
+                .findViewById(R.id.actionbar_img_show_menu);
 
-				} else {
+        showMenuImageView.setOnClickListener(new OnClickListener() {
 
-					showDropDownWindow(v);
-				}
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showMenuListener.showLeftMenu();
 
-			}
-		});
+            }
+        });
+        indexTextView = (TextView) customLayout.findViewById(R.id.actionbar_left_text_first);
 
-		firstIndecatorLayout = (RelativeLayout) customLayout
-				.findViewById(R.id.actionbar_main_layout_first);
+        indexScrollView = (ScrollView) customLayout
+                .findViewById(R.id.actionbar_main_scroll_index);
 
-		secondIndecatorLayout = (RelativeLayout) customLayout
-				.findViewById(R.id.actionbar_main_layout_second);
-		firstIndecatorLayout.setSelected(true);
-		firstIndecatorLayout.setOnClickListener(new OnClickListener() {
+        indexLayout = (LinearLayout) customLayout
+                .findViewById(R.id.actionbar_main_layout_index);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Log.e("width", CustomActionView.this.getWidth() + "|"
-						+ customLayout.getWidth());
-				mDataManager.getTabListener().onClickTab(0);
+        firstContentLayout = (RelativeLayout) customLayout
+                .findViewById(R.id.actionbar_left_layout_first);
+        secondContentLayout = (RelativeLayout) customLayout
+                .findViewById(R.id.actionbar_left_layout_second);
 
-			}
-		});
+        initDropDownWindow();
+        firstContentLayout.setOnClickListener(new OnClickListener() {
 
-		secondIndecatorLayout.setSelected(false);
-		secondIndecatorLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if (sPopUpWindow.isShowing()) {
+                    dismissDropDownWindow();
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				mDataManager.getTabListener().onClickTab(1);
+                } else {
 
-			}
-		});
+                    showDropDownWindow(v);
+                }
+
+            }
+        });
+
+        firstIndecatorLayout = (RelativeLayout) customLayout
+                .findViewById(R.id.actionbar_main_layout_first);
+
+        secondIndecatorLayout = (RelativeLayout) customLayout
+                .findViewById(R.id.actionbar_main_layout_second);
+        firstIndecatorLayout.setSelected(true);
+        firstIndecatorLayout.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Log.e("width", CustomActionView.this.getWidth() + "|"
+                        + customLayout.getWidth());
+                mDataManager.getTabListener().onClickTab(0);
+
+            }
+        });
+
+        secondIndecatorLayout.setSelected(false);
+        secondIndecatorLayout.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                mDataManager.getTabListener().onClickTab(1);
+
+            }
+        });
 
 		/*
-		 * interesting : I declare the match parent attribute in xml but it make
+         * interesting : I declare the match parent attribute in xml but it make
 		 * no sense,unless I write it again in java
 		 */
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT);
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
 
-		addView(customLayout, layoutParams);
+        addView(customLayout, layoutParams);
 
-	}
+    }
 
-	private void initDropDownWindow() {
-		View dropDownView = ((LayoutInflater) getContext().getSystemService(
-				Service.LAYOUT_INFLATER_SERVICE)).inflate(
-				R.layout.drop_down_layout, null);
-		sPopUpWindow = new SPopUpWindow(mDataManager, dropDownView,
-				(int) Util.dipToPx(100,resources), LayoutParams.WRAP_CONTENT, true);
-		sPopUpWindow.setBackgroundDrawable(resources
-				.getDrawable(R.drawable.drop_down_window_bg));
-		sPopUpWindow.setOutsideTouchable(true);
-		sPopUpWindow.setTouchable(true);
+    private void initDropDownWindow() {
+        View dropDownView = ((LayoutInflater) getContext().getSystemService(
+                Service.LAYOUT_INFLATER_SERVICE)).inflate(
+                R.layout.drop_down_layout, null);
+        sPopUpWindow = new SPopUpWindow(mDataManager, getContext(), dropDownView,
+                (int) Util.dipToPx(100, resources), LayoutParams.WRAP_CONTENT, true);
+        sPopUpWindow.setBackgroundDrawable(resources
+                .getDrawable(R.drawable.drop_down_window_bg));
+        sPopUpWindow.setOutsideTouchable(true);
+        sPopUpWindow.setTouchable(true);
 
-	}
+    }
 
-	private void showDropDownWindow(View view) {
-		sPopUpWindow.updateData();
-		sPopUpWindow.showAsDropDown(view, 0, 0);
+    private void showDropDownWindow(View view) {
+        sPopUpWindow.showAsDropDown(view, 0, 0);
 
-	}
+    }
 
-	private void dismissDropDownWindow() {
-		sPopUpWindow.dismiss();
+    private void dismissDropDownWindow() {
+        sPopUpWindow.dismiss();
 
-	}
+    }
 
-	private void setPage(int page) {
+    private void setPage(int page) {
 
-		switch (page) {
-		case 0:
-			firstIndecatorLayout.setSelected(true);
-			secondIndecatorLayout.setSelected(false);
-			firstContentLayout.setVisibility(View.VISIBLE);
-			secondContentLayout.setVisibility(View.GONE);
+        switch (page) {
+            case 0:
+                firstIndecatorLayout.setSelected(true);
+                secondIndecatorLayout.setSelected(false);
+                firstContentLayout.setVisibility(View.VISIBLE);
+                secondContentLayout.setVisibility(View.GONE);
 
-			break;
+                break;
 
-		case 1:
-			firstIndecatorLayout.setSelected(false);
-			secondIndecatorLayout.setSelected(true);
-			firstContentLayout.setVisibility(View.GONE);
-			secondContentLayout.setVisibility(View.VISIBLE);
+            case 1:
+                firstIndecatorLayout.setSelected(false);
+                secondIndecatorLayout.setSelected(true);
+                firstContentLayout.setVisibility(View.GONE);
+                secondContentLayout.setVisibility(View.VISIBLE);
 
-			break;
+                break;
 
-		}
-	}
+        }
+    }
 
-	private void setScrollPercent(int page, double pagePercent) {
+    private void setScrollPercent(int page, double pagePercent) {
 
-		// Log.e("page", page+"|"+pagePercent);
-		int index = (page+pagePercent)>0.5?1:0;
-		setPage(index);
+        // Log.e("page", page+"|"+pagePercent);
+        int index = (page + pagePercent) > 0.5 ? 1 : 0;
+        setPage(index);
 
-		double percent = (page + pagePercent);
+        double percent = (page + pagePercent);
 
-		float scrollWidth = Util.dipToPx(80, resources);
-		float indexWidth = Util.dipToPx(40,resources);
-		double scrollDelta = scrollWidth / 2 * percent;
-		int scrollX = (int) (indexWidth - scrollDelta);
+        float scrollWidth = Util.dipToPx(80, resources);
+        float indexWidth = Util.dipToPx(40, resources);
+        double scrollDelta = scrollWidth / 2 * percent;
+        int scrollX = (int) (indexWidth - scrollDelta);
 
-		indexScrollView.scrollTo(scrollX, 0);
+        indexScrollView.scrollTo(scrollX, 0);
 
-	}
+    }
 
-	public void setShowMenuListener(ShowMenuListener showMenuListener) {
-		this.showMenuListener = showMenuListener;
-	}
+    public void setShowMenuListener(ShowMenuListener showMenuListener) {
+        this.showMenuListener = showMenuListener;
+    }
 
 
 }

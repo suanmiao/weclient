@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="dexedLibs1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/pulltorefreshlistfragment-41d34731d1965999e7c431bfda2eb9bb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/pulltorefreshviewpager-d23271d2364850da8f55adc608e278d9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/android-support-v7-appcompat-a0b451f07a8db6f87715ba4b3cbf54ae.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/pulltorefreshlistfragment-c6aadfa5aa38c73b40909cbad966970a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/library-1a44fd01cdaffe120878af0294f272a0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/library-e45d21dbfdc8c9bc970783b7f676d1c3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/android-support-v4-1036137bfc6fa02c932f1cb36d82f7e8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/pulltorefreshviewpager-b00d561bc6905607976d6fa712e8b5b8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/bin/dexedLibs/android-support-v7-appcompat-90bb5b572fa86a228616ac2a4602e581.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

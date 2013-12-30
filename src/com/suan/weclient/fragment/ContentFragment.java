@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+
 import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ContentFragmentChangeListener;

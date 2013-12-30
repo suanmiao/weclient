@@ -39,6 +39,7 @@ import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.CustomActionView;
 import com.umeng.analytics.MobclickAgent;
@@ -163,7 +164,6 @@ public class MainActivity extends SlidingFragmentActivity {
 				LayoutParams.MATCH_PARENT);
 		actionBar.setCustomView(customActionView, layoutParams);
 
-		Log.e("action bar", actionBar + "");
 
 	}
 

@@ -7,6 +7,12 @@
 	<string name="cancel">取消</string>
 	<string name="send">发送</string>
 	<string name="message">消息</string>
+    <string name="message_all">全部消息</string>
+    <string name="message_today">今天消息</string>
+    <string name="message_yesterday">昨天消息</string>
+    <string name="message_day_before">前天消息</string>
+    <string name="message_older">更早消息</string>
+    <string name="message_star">星标消息</string>
 	<string name="mass">群发</string>
 	<string name="feedback_text">&#160;&#160;&#160;&#160;&#160;&#160;公众平台小助手是一款非官方的微信公众平台管理应用，由@华中科技大学联创团队 三名大学生完成。一直以来在手机上对微信公众平台进行管理都是一个令人困扰的问题，我们这样一个工具能够帮您解决一些苦恼。\n\n\t如有问题，请发送用户反馈，如希望得到回复，请留下电子邮箱。\n谢谢使用：)</string>
 	<string name="about">关于</string>

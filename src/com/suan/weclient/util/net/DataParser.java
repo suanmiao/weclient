@@ -591,7 +591,8 @@ public class DataParser {
 						}else{
 							nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_ME);
 						}
-						messageBeans.add(nowMessageBean);
+                        //reverse
+						messageBeans.add(0,nowMessageBean);
 					}
 					
 					chatHolder.setMessage(messageBeans);

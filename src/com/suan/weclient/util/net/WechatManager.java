@@ -15,6 +15,7 @@ import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.DataParser.ChatListParseCallback;
 import com.suan.weclient.util.net.DataParser.FansListParseCallback;
@@ -539,7 +540,7 @@ public class WechatManager {
 
 				}
 			}
-		}, mDataManager.getUserGroup().get(userIndex));
+		}, mDataManager.getUserGroup().get(userIndex),mDataManager.getMessageHolders().get(userIndex).getNowMessageMode());
 	}
 
 	public void getFansList(final int page, final int userIndex,
@@ -686,8 +687,8 @@ public class WechatManager {
 
 	}
 
-	public void singleChat(final int userIndex, final int type,
-			final String content, final ChatHolder chatHolder,
+	public void singleChat(final UserBean userBean,
+		final MessageBean messageBean,
 			final OnActionFinishListener onActionFinishListener) {
 
 		WeChatLoader.wechatChatSingle(new WechatExceptionListener() {
@@ -707,15 +708,24 @@ public class WechatManager {
 					JSONObject stateJsonObject = resultJsonObject
 							.getJSONObject("base_resp");
 					String ret = stateJsonObject.getString("ret");
+                    if(ret!=null){
+                        if(Integer.parseInt(ret)==WeChatLoader.WECHAT_SINGLE_CHAT_OK){
+                            messageBean.setSendState(MessageBean.MESSAGE_SEND_OK);
+                            onActionFinishListener.onFinish(true);
+                            return;
+                        }
+                    }
 					Log.e("get ret", ret + "");
 
 				} catch (Exception exception) {
 					Log.e("single chat result parse error", "" + exception);
 
 				}
+                onActionFinishListener.onFinish(false);
+                messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED);
 
 			}
-		}, type, content, chatHolder);
+		}, userBean, messageBean);
 
 	}
 

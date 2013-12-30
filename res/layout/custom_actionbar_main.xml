@@ -33,7 +33,7 @@
 					android:layout_centerVertical="true"
 					android:text="@string/mass"
 					android:textColor="#ffffff"
-					android:textSize="20dip" />
+					android:textSize="18dip" />
 			</RelativeLayout>
 			<RelativeLayout
 				android:id="@+id/actionbar_left_layout_first"
@@ -50,9 +50,9 @@
 					android:layout_height="wrap_content"
 					android:layout_centerHorizontal="true"
 					android:layout_centerVertical="true"
-					android:text="@string/message"
+					android:text="@string/message_all"
 					android:textColor="#ffffff"
-					android:textSize="20dip" />
+					android:textSize="18dip" />
 			</RelativeLayout>
 		</RelativeLayout>
 	</RelativeLayout>
@@ -78,10 +78,10 @@
 					android:layout_width="35dip"
 					android:layout_height="35dip"
 					android:layout_centerHorizontal="true"
-					android:paddingBottom="6dip"
-					android:paddingLeft="6dip"
-					android:paddingRight="6dip"
-					android:paddingTop="6dip"
+					android:paddingBottom="7dip"
+					android:paddingLeft="7dip"
+					android:paddingRight="7dip"
+					android:paddingTop="7dip"
 					android:src="@drawable/action_message_button_bg" />
 			</RelativeLayout>
 			<LinearLayout
@@ -101,10 +101,10 @@
 					android:layout_width="35dip"
 					android:layout_height="35dip"
 					android:layout_centerHorizontal="true"
-					android:paddingBottom="7dip"
-					android:paddingLeft="7dip"
-					android:paddingRight="7dip"
-					android:paddingTop="7dip"
+					android:paddingBottom="9dip"
+					android:paddingLeft="9dip"
+					android:paddingRight="9dip"
+					android:paddingTop="9dip"
 					android:src="@drawable/action_mass_button_bg" />
 			</RelativeLayout>
 		</LinearLayout>
@@ -126,6 +126,7 @@
 						android:layout_width="35dip"
 						android:layout_height="1dip"
 						android:layout_marginLeft="44dip"
+                        android:orientation="horizontal"
 						android:background="#ffffff" >
 					</LinearLayout>
 				</LinearLayout>

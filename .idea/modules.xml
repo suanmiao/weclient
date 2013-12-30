@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshListFragment/PullToRefreshListFragment.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshListFragment/PullToRefreshListFragment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshViewPager/PullToRefreshViewPager.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshViewPager/PullToRefreshViewPager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeClient.iml" filepath="$PROJECT_DIR$/WeClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SlidingMenu-project/abs-library/abs-library.iml" filepath="$PROJECT_DIR$/../SlidingMenu-project/abs-library/abs-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SlidingMenu-project/library/library.iml" filepath="$PROJECT_DIR$/../SlidingMenu-project/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/library/library1.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/library/library1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/sample.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/sample/sample.iml" />
+    </modules>
+  </component>
+</project>
+

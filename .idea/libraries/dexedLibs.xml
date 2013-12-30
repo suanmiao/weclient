@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/abs-library-5c73a411c471e64b5af11c8e76ad6f5d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/umeng_sdk-f5192773c70756d008059e598b33456a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jsoup-06db08d93e5a44ed2ff07e7780060518.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/disklrucache-d2ee46d232392f91c9a2342e8ea5f3c1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/android-support-v4-c69be93d41f50ae3664b67bba5c60488.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/ptr_library-72df709b63b00dfcb0ab2e6935bdf98e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/volley-2596851d499c3121eeb6d52510be6bb7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/pulltorefreshlistfragment-c6aadfa5aa38c73b40909cbad966970a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/pulltorefreshviewpager-b00d561bc6905607976d6fa712e8b5b8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/android-support-v7-appcompat-a0b451f07a8db6f87715ba4b3cbf54ae.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/sliding-library-6f316c5def01ad9002044cde5640246c.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/gson-6910c51f98a5bd836cbc3e349b7e2dad.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jl1.0.1-33542a7c754c75caea9dea0c761fbf42.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/annotations-920f0fdc28ce3f5e49f31a2051189ed1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

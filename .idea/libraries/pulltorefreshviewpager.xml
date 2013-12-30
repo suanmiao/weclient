@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="pulltorefreshviewpager">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Android-PullToRefresh-master/extras/PullToRefreshViewPager/bin/pulltorefreshviewpager.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
