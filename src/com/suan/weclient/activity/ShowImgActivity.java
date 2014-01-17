@@ -104,7 +104,7 @@ public class ShowImgActivity extends Activity {
 
 	private void loadImg() {
 		Bitmap imgBitmap = mImageCacheManager
-				.getDiskBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT + msgId);
+				.getBitmap(ImageCacheManager.CACHE_MESSAGE_CONTENT + msgId);
 		if (imgBitmap == null) {
 			loadingDialog.show();
 			WeChatLoader.wechatGetMessageImg(new WechatExceptionListener() {
@@ -122,9 +122,9 @@ public class ShowImgActivity extends Activity {
 					// TODO Auto-generated method stub
 					try {
 						mImageCacheManager
-								.putDiskBitmap(
+								.putBitmap(
 										ImageCacheManager.CACHE_MESSAGE_CONTENT
-												+ msgId, bitmap);
+												+ msgId, bitmap,true);
 						imageView.setImageBitmap(bitmap);
 						loadingDialog.dismiss();
 

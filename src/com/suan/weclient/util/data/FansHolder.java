@@ -6,6 +6,7 @@ public class FansHolder {
 	
 	private ArrayList<FansBean> fansBeans;
 	private ArrayList<FansGroupBean> fansGroupBeans;
+    private int currentGroupIndex = -1;
 	private int totalAmount = 0;
 	private UserBean userBean;
 	
@@ -23,6 +24,22 @@ public class FansHolder {
 			fansBeans.add(nowArrayList.get(i));
 		}
 	}
+
+    public int getCurrentGroupIndex(){
+        return currentGroupIndex;
+    }
+
+    public void setCurrentGroupIndex(int currentGroupIndex){
+        this.currentGroupIndex = currentGroupIndex;
+    }
+
+    public String getCurrentGroupId(){
+        if(currentGroupIndex==-1){
+            return "-1";
+        }else{
+            return fansGroupBeans.get(currentGroupIndex).getGroupId();
+        }
+    }
 	
 	public void setFans(ArrayList<FansBean> nowArrayList){
 		this.fansBeans = nowArrayList;

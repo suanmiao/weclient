@@ -4,36 +4,7 @@
 	android:layout_height="match_parent"
 	android:background="#dbdbdb"
 	android:orientation="vertical" >
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" >
-		<RelativeLayout
-			android:layout_width="fill_parent"
-			android:layout_height="50dip"
-			android:background="#27844b" >
-			<RelativeLayout
-				android:id="@+id/fans_list_layout_back"
-				android:layout_width="50dip"
-				android:layout_height="fill_parent"
-				android:orientation="horizontal" >
-				<ImageButton
-					android:id="@+id/about_button_back"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-					android:layout_margin="10dip"
-					android:background="@drawable/back_button_bg" />
-			</RelativeLayout>
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:layout_gravity="center"
-				android:gravity="center"
-				android:text="@string/fans_list"
-				android:textColor="@color/white"
-				android:textSize="38px" />
-		</RelativeLayout>
-	</LinearLayout>
+
 	<com.handmark.pulltorefresh.library.PullToRefreshListView
 		xmlns:ptr="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/fans_list"

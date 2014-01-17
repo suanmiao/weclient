@@ -3,6 +3,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="blue">#0066FF</color>
+    <color name="pageDivider">#585858</color>
     <color name="no_color">#00000000</color>
     <color name="bg_color">#F4F3F3</color>
     <color name="bg_color_deep">#E5E5E5</color>

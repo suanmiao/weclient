@@ -1,19 +1,26 @@
 package com.suan.weclient.activity;
 
 import android.app.Activity;
+import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.ChatListAdapter;
 import com.suan.weclient.util.GlobalContext;
@@ -23,13 +30,15 @@ import com.suan.weclient.util.data.DataManager.ChatItemChangeListener;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends SherlockActivity {
 
+    private ActionBar actionBar;
     private ListView mListView;
-    private RelativeLayout backButton;
+    private ImageView backButton;
     private ChatListAdapter chatListAdapter;
     private EditText contentEditText;
-    private ImageButton expressionButton, sendButton;
+    private ImageButton expressionButton;
+    private Button sendButton;
     private DataManager mDataManager;
     private ChatHandler chatHandler;
     private static final int INPUT_OK = 0;
@@ -40,27 +49,48 @@ public class ChatActivity extends Activity {
 
     public void onCreate(Bundle arg0) {
         super.onCreate(arg0);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.chat_layout);
+        initActionBar();
         initWidgets();
         initData();
         initListener();
 
     }
 
-    private void initWidgets() {
 
-        mListView = (ListView) findViewById(R.id.chat_layout_list);
-        backButton = (RelativeLayout)findViewById(R.id.chat_layout_back);
+    private void initActionBar() {
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
+
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+
+
+        View customActionBarView = layoutInflater.inflate(R.layout.custom_actionbar_chat, null);
+
+        backButton = (ImageView)customActionBarView. findViewById(R.id.actionbar_chat_img_back);
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatListAdapter.notifyDataSetChanged();
+                ChatActivity.this.finish();
             }
         });
-        contentEditText = (EditText) findViewById(R.id.chat_edit_edit);
+         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
+                ActionMenuView.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(customActionBarView, layoutParams);
+
+
+    }
+
+    private void initWidgets() {
+
+        mListView = (ListView) findViewById(R.id.chat_layout_list);
+       contentEditText = (EditText) findViewById(R.id.chat_edit_edit);
         expressionButton = (ImageButton) findViewById(R.id.chat_button_expression);
-        sendButton = (ImageButton) findViewById(R.id.chat_button_send);
+        sendButton = (Button) findViewById(R.id.chat_button_send);
         sendButton.setOnClickListener(new SendClickListener());
 
     }
@@ -77,7 +107,7 @@ public class ChatActivity extends Activity {
                 new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(Object object) {
+                    public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
 
                         Message message = new Message();
@@ -167,20 +197,20 @@ public class ChatActivity extends Activity {
         chatListAdapter.notifyDataSetChanged();
         sendMessage.setSendState(MessageBean.MESSAGE_SEND_ING);
         contentEditText.setText("");
-       String lastMsgId = getLastMsgId(chatHolder);
-        Log.e("lastMsgId","id:"+lastMsgId);
+        String lastMsgId = getLastMsgId(chatHolder);
+        Log.e("lastMsgId", "id:" + lastMsgId);
 
-        sendMessage.sendMessage(mDataManager,lastMsgId , mDataManager.getCurrentUser(), chatHolder.getToFakeId());
+        sendMessage.sendMessage(mDataManager, lastMsgId, mDataManager.getCurrentUser(), chatHolder.getToFakeId());
 
 
     }
 
-    private String getLastMsgId(ChatHolder chatHolder){
-         for(int i = 0;i<chatHolder.getMessageList().size();i++){
-             MessageBean nowMessage = chatHolder.getMessageList().get(chatHolder.getMessageList().size()-1-i);
-             if(nowMessage.getId().length()>1){
-                 return nowMessage.getId();
-             }
+    private String getLastMsgId(ChatHolder chatHolder) {
+        for (int i = 0; i < chatHolder.getMessageList().size(); i++) {
+            MessageBean nowMessage = chatHolder.getMessageList().get(chatHolder.getMessageList().size() - 1 - i);
+            if (nowMessage.getId().length() > 1) {
+                return nowMessage.getId();
+            }
         }
 
         return "";

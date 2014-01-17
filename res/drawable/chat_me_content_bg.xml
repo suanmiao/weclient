@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:state_pressed="false" android:state_selected="false" android:drawable="@drawable/chat_me"></item>
+	<item android:state_selected="true" android:state_pressed="false" android:drawable="@drawable/chat_me_failed"></item>
+    <item android:state_selected="true" android:state_pressed="true" android:drawable="@drawable/chat_me_failed_pressed"></item>
+	<item android:state_pressed="true" android:state_selected="false" android:drawable="@drawable/chat_me_hover"></item>
+	<item android:drawable="@drawable/chat_me"></item>
+</selector>

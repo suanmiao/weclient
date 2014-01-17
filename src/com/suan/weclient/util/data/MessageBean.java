@@ -241,7 +241,7 @@ public class MessageBean {
 
         dataManager.getWechatManager().singleChat(userBean, this, new WechatManager.OnActionFinishListener() {
             @Override
-            public void onFinish(Object object) {
+            public void onFinish(int code,Object object) {
                 Boolean result = (Boolean) object;
                 if (result) {
                     getChatNewItem();
@@ -257,7 +257,7 @@ public class MessageBean {
 
         mDataManager.getWechatManager().singleChat(userBean, this, new WechatManager.OnActionFinishListener() {
             @Override
-            public void onFinish(Object object) {
+            public void onFinish(int code,Object object) {
                 Boolean result = (Boolean) object;
                 if (result) {
                     getChatNewItem();

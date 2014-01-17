@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.suan.weclient.pushService.PushService;
 import com.suan.weclient.util.data.UserBean;
 
 import android.content.Context;
@@ -13,130 +14,253 @@ import android.content.SharedPreferences.Editor;
 
 public class SharedPreferenceManager {
 
-	private static final String USER_GROUP_SHAREDPREF = "userGroup";
+    private static final String USER_GROUP_SHAREDPREF = "userGroup";
 
-	private static final String USER_GROUP_CONTENT = "content";
+    private static final String USER_GROUP_CONTENT = "content";
+    private static final String USER_GROUP_CURRENT_INDEX = "currentIndex";
+
+    private static final String PUSH_STATE_SHAREDPREF = "activityState";
+    private static final String ACIVITY_RUNNING = "running";
+    private static final String PUSH_ENABLE = "pushEnable";
+    private static final String PUSH_FREQUENT = "pushFrequent";
+    private static final String NEW_PEOPLE = "newPeople";
+    private static final String NEW_MESSAGE = "newMessage";
+    private static final String LAST_MESSAGE_NOTIFY_TIME = "lastMessageNotifyTime";
+    private static final String LAST_PEOPLE_NOTIFY_TIME = "lastPeopleNotifyTime";
+
+    public static final int ENTER_STATE_FIRST_TIME = -1;
+    public static final int ENTER_STATE_OTHER_TIME = 1;
+
+    public static boolean getActivityRunning(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(ACIVITY_RUNNING, false);
+    }
+
+    public static boolean putActivityRunning(Context context, boolean running) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(ACIVITY_RUNNING, running);
+
+        return editor.commit();
+    }
+
+    public static boolean getPushEnable(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(PUSH_ENABLE, false);
+    }
+
+    public static boolean putPustEnable(Context context, boolean running) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PUSH_ENABLE, running);
+
+        return editor.commit();
+    }
 
 
-	public static final int ENTER_STATE_FIRST_TIME = -1;
-	public static final int ENTER_STATE_OTHER_TIME = 1;
-	
 
-//	public static int getEnterState(Context context) {
-//		SharedPreferences sharedPreferences = context.getSharedPreferences(
-//				ENTER_STATE_SHAREDPREF, 0);
-//		return sharedPreferences.getInt(ENTER_STATE_CONTENT, -1);
-//	}
-//
-//	public static boolean putEnterState(Context context, int state) {
-//		SharedPreferences sharedPreferences = context.getSharedPreferences(
-//				ENTER_STATE_SHAREDPREF, 0);
-//		Editor editor = sharedPreferences.edit();
-//		editor.putInt(ENTER_STATE_CONTENT, state);
-//
-//		return editor.commit();
-//	}
+    public static int getPustFrequent(Context context) {
 
-	private static String getUserGroupString(Context context) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				USER_GROUP_SHAREDPREF, 0);
-		return sharedPreferences.getString(USER_GROUP_CONTENT, "");
-	}
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getInt(PUSH_FREQUENT, PushService.PUSH_FREQUENT_NORMAL);
+    }
 
-	private static boolean putUserGroupString(Context context, String content) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				USER_GROUP_SHAREDPREF, 0);
-		Editor editor = sharedPreferences.edit();
-		editor.putString(USER_GROUP_CONTENT, content);
+    public static boolean putPustFrequent(Context context, int pushFrequent) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putInt(PUSH_FREQUENT, pushFrequent);
 
-		return editor.commit();
-	}
+        return editor.commit();
+    }
+    public static long getLastPeopleNotifyTime(Context context) {
 
-	public static ArrayList<UserBean> getUserGroup(Context context) {
-		ArrayList<UserBean> userGroupArrayList = new ArrayList<UserBean>();
-		String userContentString = getUserGroupString(context);
-		if (userContentString != "") {
-			try {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getLong(LAST_PEOPLE_NOTIFY_TIME, 0);
+    }
 
-				JSONArray userArray = new JSONArray(userContentString);
-				for (int i = 0; i < userArray.length(); i++) {
-					JSONObject nowJsonObject = userArray.getJSONObject(i);
-					UserBean nowUserBean = new UserBean(nowJsonObject);
-					userGroupArrayList.add(nowUserBean);
-				}
-			} catch (Exception exception) {
+    public static boolean putLastPeopleNotifyTime(Context context, long lastNotifyTime) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putLong(LAST_PEOPLE_NOTIFY_TIME, lastNotifyTime);
 
-			}
+        return editor.commit();
+    }
 
-		}
+    public static long getLastMessageNotifyTime(Context context) {
 
-		return userGroupArrayList;
-	}
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getLong(LAST_MESSAGE_NOTIFY_TIME, 0);
+    }
 
-	public static void insertUser(Context context, UserBean userBean) {
-		ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
-		userGroupArrayList.add(userBean);
+    public static boolean putLastMessageNotifyTime(Context context, long lastNotifyTime) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putLong(LAST_MESSAGE_NOTIFY_TIME, lastNotifyTime);
 
-		JSONArray contentArray = new JSONArray();
+        return editor.commit();
+    }
 
-		for (int i = 0; i < userGroupArrayList.size(); i++) {
-			contentArray.put(userGroupArrayList.get(i).getContentObject());
-		}
+    public static int getLastNewMessage(Context context) {
 
-		putUserGroupString(context, contentArray.toString());
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getInt(NEW_MESSAGE, 0);
+    }
 
-	}
-	
-	public static boolean containUser(Context context,String userName ){
-		
-		ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
-		for(int i = 0;i<userGroupArrayList.size();i++){
-			String nowUserName = userGroupArrayList.get(i).getUserName();
-			if(nowUserName.equals(userName)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
+    public static boolean putLastNewMessage(Context context, int newMessage) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putInt(NEW_MESSAGE, newMessage);
 
-	public static void updateUser(Context context, UserBean userBean) {
+        return editor.commit();
+    }
 
-		ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
-		for (int i = 0; i < userGroupArrayList.size(); i++) {
-			if (userGroupArrayList.get(i).getUserName()
-					.equals(userBean.getUserName())) {
-				userGroupArrayList.set(i, userBean);
-			}
-		}
+    public static int getLastNewPeople(Context context) {
 
-		JSONArray contentArray = new JSONArray();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getInt(NEW_PEOPLE, 0);
+    }
 
-		for (int i = 0; i < userGroupArrayList.size(); i++) {
-			contentArray.put(userGroupArrayList.get(i).getContentObject());
-		}
+    public static boolean putLastNewPeople(Context context, int newPeople) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putInt(NEW_PEOPLE, newPeople);
 
-		putUserGroupString(context, contentArray.toString());
+        return editor.commit();
+    }
 
-	}
 
-	public static void deleteUser(Context context, String userName) {
 
-		ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
-		for (int i = 0; i < userGroupArrayList.size(); i++) {
-			if (userGroupArrayList.get(i).getUserName().equals(userName)) {
-				userGroupArrayList.remove(i);
-			}
-		}
+    public static boolean putCurrentIndex(Context context, int currentIndex) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putInt(USER_GROUP_CURRENT_INDEX, currentIndex);
 
-		JSONArray contentArray = new JSONArray();
+        return editor.commit();
+    }
 
-		for (int i = 0; i < userGroupArrayList.size(); i++) {
-			contentArray.put(userGroupArrayList.get(i).getContentObject());
-		}
+    public static int getCurentIndex(Context context) {
 
-		putUserGroupString(context, contentArray.toString());
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getInt(USER_GROUP_CURRENT_INDEX, 0);
+    }
+    private static String getUserGroupString(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getString(USER_GROUP_CONTENT, "");
+    }
 
-	}
+    private static boolean putUserGroupString(Context context, String content) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putString(USER_GROUP_CONTENT, content);
+
+        return editor.commit();
+    }
+
+    public static ArrayList<UserBean> getUserGroup(Context context) {
+        ArrayList<UserBean> userGroupArrayList = new ArrayList<UserBean>();
+        String userContentString = getUserGroupString(context);
+        if (userContentString != "") {
+            try {
+
+                JSONArray userArray = new JSONArray(userContentString);
+                for (int i = 0; i < userArray.length(); i++) {
+                    JSONObject nowJsonObject = userArray.getJSONObject(i);
+                    UserBean nowUserBean = new UserBean(nowJsonObject);
+                    userGroupArrayList.add(nowUserBean);
+                }
+            } catch (Exception exception) {
+
+            }
+
+        }
+
+        return userGroupArrayList;
+    }
+
+    public static void insertUser(Context context, UserBean userBean) {
+        ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
+        userGroupArrayList.add(userBean);
+
+        JSONArray contentArray = new JSONArray();
+
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            contentArray.put(userGroupArrayList.get(i).getContentObject());
+        }
+
+        putUserGroupString(context, contentArray.toString());
+
+    }
+
+    public static boolean containUser(Context context, String userName) {
+
+        ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            String nowUserName = userGroupArrayList.get(i).getUserName();
+            if (nowUserName.equals(userName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void updateUser(Context context, UserBean userBean) {
+
+        ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            if (userGroupArrayList.get(i).getUserName()
+                    .equals(userBean.getUserName())) {
+                userGroupArrayList.set(i, userBean);
+            }
+        }
+
+        JSONArray contentArray = new JSONArray();
+
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            contentArray.put(userGroupArrayList.get(i).getContentObject());
+        }
+
+        putUserGroupString(context, contentArray.toString());
+
+    }
+
+    public static void deleteUser(Context context, String userName) {
+
+        ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            if (userGroupArrayList.get(i).getUserName().equals(userName)) {
+                userGroupArrayList.remove(i);
+            }
+        }
+
+        JSONArray contentArray = new JSONArray();
+
+        for (int i = 0; i < userGroupArrayList.size(); i++) {
+            contentArray.put(userGroupArrayList.get(i).getContentObject());
+        }
+
+        putUserGroupString(context, contentArray.toString());
+
+    }
 
 }

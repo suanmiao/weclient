@@ -21,7 +21,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,6 +44,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
     private Context mContext;
+
     private EditText popContentEditText;
     private TextView popTitleTextView;
     private TextView textAmountTextView;
@@ -101,6 +101,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     public View newView(final int position) {
 
         View convertView = null;
+
         switch (getMessageItems().get(position).getType()) {
             case MessageBean.MESSAGE_TYPE_TEXT:
                 convertView = mInflater.inflate(R.layout.message_item_text_layout,
@@ -127,7 +128,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
         }
 
 
-
         return convertView;
 
     }
@@ -152,14 +152,17 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         private ImageView contentImageView;
         private TextView contentTextView;
+        private RelativeLayout voicePlayLayout;
+        private TextView voiceInfoTextView;
+        private ImageView voicePlayView;
 
         private LinearLayout longClickLayout;
 
         private RelativeLayout copyLayout, shareLayout, downloadLayout;
-        private ImageButton copyButton, shareButton, downloadButton;
+        private ImageView copyButton, shareButton, downloadButton;
 
         private RelativeLayout replyLayout, starLayout;
-        private ImageButton replyButton, starImageButton;
+        private ImageView replyButton, starImageButton;
 
         public ItemViewHolder(View parentView, final int position) {
 
@@ -178,20 +181,20 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_content);
 
-                    longClickLayout = (LinearLayout)parentView.findViewById(R.id.message_item_text_layout_long_click);
+                    longClickLayout = (LinearLayout) parentView.findViewById(R.id.message_item_text_layout_long_click);
 
                     copyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_copy);
                     shareLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_share);
 
-                    copyButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_copy);
-                    shareButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_share);
+                    copyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_copy);
+                    shareButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_share);
 
                     starLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_star);
                     replyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_reply);
 
-                    starImageButton = (ImageButton) parentView
+                    starImageButton = (ImageView) parentView
                             .findViewById(R.id.message_item_text_button_star);
-                    replyButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_reply);
+                    replyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_reply);
                     contentTextView.setText(getMessageItems().get(position)
                             .getContent());
                     break;
@@ -207,21 +210,21 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     contentImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_img_img_content);
 
-                    longClickLayout = (LinearLayout)parentView.findViewById(R.id.message_item_img_layout_long_click);
+                    longClickLayout = (LinearLayout) parentView.findViewById(R.id.message_item_img_layout_long_click);
                     downloadLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_img_layout_download);
                     shareLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_img_layout_share);
 
-                    downloadButton = (ImageButton) parentView.findViewById(R.id.message_item_img_button_download);
-                    shareButton = (ImageButton) parentView.findViewById(R.id.message_item_img_button_share);
+                    downloadButton = (ImageView) parentView.findViewById(R.id.message_item_img_button_download);
+                    shareButton = (ImageView) parentView.findViewById(R.id.message_item_img_button_share);
 
 
                     starLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_img_layout_star);
                     replyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_img_layout_reply);
 
-                    starImageButton = (ImageButton) parentView
+                    starImageButton = (ImageView) parentView
                             .findViewById(R.id.message_item_img_button_star);
 
-                    replyButton = (ImageButton) parentView.findViewById(R.id.message_item_img_button_reply);
+                    replyButton = (ImageView) parentView.findViewById(R.id.message_item_img_button_reply);
                     break;
 
                 case MessageBean.MESSAGE_TYPE_VOICE:
@@ -233,23 +236,27 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.message_item_voi_text_time);
 
+                    voiceInfoTextView = (TextView) parentView.findViewById(R.id.message_item_voi_text_info);
+                    voicePlayLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_play);
+                    voicePlayView = (ImageView) parentView.findViewById(R.id.message_item_voi_button_play);
 
-                    longClickLayout = (LinearLayout)parentView.findViewById(R.id.message_item_voi_layout_long_click);
+
+                    longClickLayout = (LinearLayout) parentView.findViewById(R.id.message_item_voi_layout_long_click);
 
                     downloadLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_download);
                     shareLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_share);
 
-                    downloadButton = (ImageButton) parentView.findViewById(R.id.message_item_voi_button_download);
-                    shareButton = (ImageButton) parentView.findViewById(R.id.message_item_voi_button_share);
+                    downloadButton = (ImageView) parentView.findViewById(R.id.message_item_voi_button_download);
+                    shareButton = (ImageView) parentView.findViewById(R.id.message_item_voi_button_share);
 
 
                     starLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_star);
                     replyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_reply);
 
-                    starImageButton = (ImageButton) parentView
+                    starImageButton = (ImageView) parentView
                             .findViewById(R.id.message_item_voi_button_star);
 
-                    replyButton = (ImageButton) parentView.findViewById(R.id.message_item_voi_button_reply);
+                    replyButton = (ImageView) parentView.findViewById(R.id.message_item_voi_button_reply);
                     break;
 
                 default:
@@ -265,20 +272,20 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_content);
 
-                    longClickLayout = (LinearLayout)parentView.findViewById(R.id.message_item_text_layout_long_click);
+                    longClickLayout = (LinearLayout) parentView.findViewById(R.id.message_item_text_layout_long_click);
 
                     copyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_copy);
                     shareLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_share);
 
-                    copyButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_copy);
-                    shareButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_share);
+                    copyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_copy);
+                    shareButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_share);
 
                     starLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_star);
                     replyLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_text_layout_reply);
 
-                    starImageButton = (ImageButton) parentView
+                    starImageButton = (ImageView) parentView
                             .findViewById(R.id.message_item_text_button_star);
-                    replyButton = (ImageButton) parentView.findViewById(R.id.message_item_text_button_reply);
+                    replyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_reply);
                     contentTextView.setText("[目前暂不支持该类型消息]");
                     break;
 
@@ -287,25 +294,25 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
     }
 
-    public class LongClickListener implements View.OnLongClickListener{
+    public class LongClickListener implements View.OnLongClickListener {
         private ItemViewHolder holder;
 
-        public LongClickListener(ItemViewHolder holder)
-        {
+        public LongClickListener(ItemViewHolder holder) {
             this.holder = holder;
 
         }
-             @Override
-            public boolean onLongClick(View v) {
-                 if(holder.longClickLayout.getVisibility()!=View.VISIBLE){
 
-                     holder.longClickLayout.setVisibility(View.VISIBLE);
-                 }else{
-                     holder.longClickLayout.setVisibility(View.GONE);
+        @Override
+        public boolean onLongClick(View v) {
+            if (holder.longClickLayout.getVisibility() != View.VISIBLE) {
 
-                 }
-                return false;
+                holder.longClickLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.longClickLayout.setVisibility(View.GONE);
+
             }
+            return false;
+        }
 
     }
 
@@ -336,7 +343,18 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         }
 
-        holder.parentView.setOnLongClickListener(new LongClickListener(holder));
+//        holder.parentView.setOnLongClickListener(new LongClickListener(holder));
+        holder.parentView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDataManager.createChat(mDataManager.getCurrentUser(),
+                        getMessageItems().get(position).getFakeId());
+                Intent jumbIntent = new Intent();
+                jumbIntent.setClass(mContext, ChatActivity.class);
+                mContext.startActivity(jumbIntent);
+
+            }
+        });
 
         holder.replyLayout.setOnClickListener(new OnClickListener() {
 
@@ -354,6 +372,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             }
         });
         holder.starLayout.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(final View v) {
                 // TODO Auto-generated method stub
@@ -361,10 +380,11 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         .getMessageList().get(position).getStarred();
                 mDataManager.getWechatManager().star(
                         mDataManager.getCurrentPosition(), position,
-                        (ImageButton) v, !stared, new OnActionFinishListener() {
+                        !stared, new OnActionFinishListener() {
+
 
                     @Override
-                    public void onFinish(Object object) {
+                    public void onFinish(int code,Object object) {
                         // TODO Auto-generated method stub
 
                         setStarBackground(v, position);
@@ -409,8 +429,9 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     private void setVoiceMessageContent(final ItemViewHolder holder,
                                         final int position) {
 
+
         boolean voiceLoaded = false;
-        if (holder.contentImageView.getTag() != null) {
+        if (holder.voicePlayLayout.getTag() != null) {
             voiceLoaded = true;
         }
 
@@ -423,7 +444,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     new OnActionFinishListener() {
 
                         @Override
-                        public void onFinish(Object object) {
+                        public void onFinish(int code,Object object) {
                             // TODO Auto-generated method stub
                             try {
 
@@ -433,7 +454,19 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                                         .getPlayLength(),
                                         getMessageItems().get(position)
                                                 .getLength());
-                                holder.contentImageView.setTag(voiceHolder);
+                                int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                                int seconds = playLength / 1000;
+                                int minutes = seconds / 60;
+                                int leaveSecond = seconds % 60;
+                                String info = "";
+                                if (minutes != 0) {
+                                    info += minutes + "'";
+
+                                }
+                                info += " " + leaveSecond + "'";
+                                holder.voiceInfoTextView.setText(info);
+
+                                holder.voicePlayLayout.setTag(voiceHolder);
 
                             } catch (Exception exception) {
 
@@ -443,15 +476,15 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     });
 
         }
-        holder.contentImageView.setOnClickListener(new OnClickListener() {
+        holder.voicePlayLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                if (holder.contentImageView.getTag() != null) {
+                if (holder.voicePlayLayout.getTag() != null) {
 
-                    final VoiceHolder voiceHolder = (VoiceHolder) holder.contentImageView
+                    final VoiceHolder voiceHolder = (VoiceHolder) holder.voicePlayLayout
                             .getTag();
                     if (voiceHolder.getPlaying()) {
                         mDataManager.getVoiceManager().stopMusic();
@@ -470,8 +503,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                                         voiceHolder.setPlaying(false);
 
-                                        holder.contentImageView
-                                                .setBackgroundResource(R.drawable.ic_launcher);
+                                        holder.voicePlayView.setSelected(false);
 
                                     }
 
@@ -479,8 +511,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                                     public void onAudioStart() {
                                         // TODO Auto-generated method stub
                                         voiceHolder.setPlaying(true);
-                                        holder.contentImageView
-                                                .setBackgroundColor(Color.RED);
+                                        holder.voicePlayView.setSelected(true);
 
                                     }
 
@@ -533,7 +564,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         if (!mBusy || !imgLoaded) {
 
-            Bitmap contentBitmap = mDataManager.getCacheManager().getRomBitmap(
+            Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_CONTENT
                             + getMessageItems().get(position).getId());
             if (contentBitmap == null) {
@@ -549,15 +580,15 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         new OnActionFinishListener() {
 
                             @Override
-                            public void onFinish(Object object) {
+                            public void onFinish(int code,Object object) {
                                 // TODO Auto-generated method stub
                                 holder.contentImageView.setTag(true);
                                 Bitmap bitmap = (Bitmap) object;
-                                mDataManager.getCacheManager().putRomBitmap(
+                                mDataManager.getCacheManager().putBitmap(
                                         ImageCacheManager.CACHE_MESSAGE_CONTENT
                                                 + getMessageItems().get(
                                                 position).getId(),
-                                        bitmap);
+                                        bitmap,true);
 
                             }
                         });
@@ -577,7 +608,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         if (!mBusy || !imgLoaded) {
 
-            Bitmap headBitmap = mDataManager.getCacheManager().getDiskBitmap(
+            Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_PROFILE
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
@@ -591,16 +622,16 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         holder.profileImageView, new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(Object object) {
+                    public void onFinish(int code,Object object) {
                         // TODO Auto-generated method stub
                         holder.profileImageView.setTag(true);
                         Bitmap bitmap = (Bitmap) object;
 
-                        mDataManager.getCacheManager().putDiskBitmap(
+                        mDataManager.getCacheManager().putBitmap(
                                 ImageCacheManager.CACHE_MESSAGE_PROFILE
                                         + getMessageItems().get(
                                         position).getFakeId(),
-                                bitmap);
+                                bitmap,true);
                     }
                 });
 
@@ -727,10 +758,35 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
         boolean star = mDataManager.getCurrentMessageHolder().getMessageList()
                 .get(position).getStarred();
 
+        View starView = null;
+
+        switch (getMessageItems().get(position).getType()) {
+            case MessageBean.MESSAGE_TYPE_TEXT:
+                starView = view.findViewById(R.id.message_item_text_button_star);
+
+                break;
+
+            case MessageBean.MESSAGE_TYPE_IMG:
+
+                starView = view.findViewById(R.id.message_item_img_button_star);
+                break;
+            case MessageBean.MESSAGE_TYPE_VOICE:
+
+                starView = view.findViewById(R.id.message_item_voi_button_star);
+
+                break;
+
+            default:
+
+                starView = view.findViewById(R.id.message_item_text_button_star);
+
+                break;
+
+        }
         if (star) {
-            view.setBackgroundResource(R.drawable.msg_starred_button_bg);
+            starView.setBackgroundResource(R.drawable.msg_starred_button_bg);
         } else {
-            view.setBackgroundResource(R.drawable.msg_star_button_bg);
+            starView.setBackgroundResource(R.drawable.msg_star_button_bg);
 
         }
 
@@ -756,7 +812,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(Object object) {
+                    public void onFinish(int code,Object object) {
                         // TODO Auto-generated method stub
 
                     }

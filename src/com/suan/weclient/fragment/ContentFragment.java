@@ -26,254 +26,254 @@ import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.UserBean;
 
 public class ContentFragment extends Fragment implements
-		OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
+        OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
 
-	private View mView;
-	
+    private View mView;
 
-	private MyAdapter mAdapter;
-	private ViewPager mPager;
-	private ArrayList<Fragment> pagerItemList = null;
 
-	private MassFragment massFragment;
-	private MessageFragment messageFragment;
+    private MyAdapter mAdapter;
+    private ViewPager mPager;
+    private ArrayList<Fragment> pagerItemList = null;
 
-	private DataManager mDataChangeListener;
+    private MassFragment massFragment;
+    private MessageFragment messageFragment;
 
-	public ContentFragment(DataManager dataManager) {
-		initListener(dataManager);
-	}
-	
-	private void initListener(DataManager dataManager){
-		
-		mDataChangeListener = dataManager;
-		
-		mDataChangeListener.setTabListener(new TabListener() {
-			
-			@Override
-			public void onClickTab(int page) {
-				// TODO Auto-generated method stub
-				mPager.setCurrentItem(page);
-				
-				
-			}
-		});
-		mDataChangeListener.addUserGroupListener(new UserGroupListener() {
-			
-			@Override
-			public void onGroupChangeEnd() {
-				// TODO Auto-generated method stub
-				if(mDataChangeListener.getUserGroup().size()==0){
+    private DataManager mDataChangeListener;
+
+    public ContentFragment(DataManager dataManager) {
+        initListener(dataManager);
+    }
+
+    private void initListener(DataManager dataManager) {
+
+        mDataChangeListener = dataManager;
+
+        mDataChangeListener.setTabListener(new TabListener() {
+
+            @Override
+            public void onClickTab(int page) {
+                // TODO Auto-generated method stub
+                mPager.setCurrentItem(page);
+
+
+            }
+        });
+        mDataChangeListener.addUserGroupListener(new UserGroupListener() {
+
+            @Override
+            public void onGroupChangeEnd() {
+                // TODO Auto-generated method stub
+                if (mDataChangeListener.getUserGroup().size() == 0) {
 //					nowUserTextView.setText(getActivity().getResources().getString(R.string.app_name));
-					
-				}
-				
-			}
-			
-			@Override
-			public void onAddUser() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void deleteUser(int index) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		mDataChangeListener.addLoginListener(new LoginListener() {
-			
-			@Override
-			public void onLogin(UserBean userBean) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		mDataChangeListener.addProfileGetListener(new ProfileGetListener() {
-			
-			@Override
-			public void onGet(UserBean userBean) {
-				// TODO Auto-generated method stub
-				
+
+                }
+
+            }
+
+            @Override
+            public void onAddUser() {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void deleteUser(int index) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        mDataChangeListener.addLoginListener(new LoginListener() {
+
+            @Override
+            public void onLogin(UserBean userBean) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+        mDataChangeListener.addProfileGetListener(new ProfileGetListener() {
+
+            @Override
+            public void onGet(UserBean userBean) {
+                // TODO Auto-generated method stub
+
 //				nowUserTextView.setText(userBean.getNickname());
-			}
-		});
-		
-		mDataChangeListener.setContentFragmentListener(new ContentFragmentChangeListener() {
-			
-			@Override
-			public void onChange(int index) {
-				// TODO Auto-generated method stub
-			
-				mPager.setCurrentItem(index, true);
-			}
-		});
-		
-	}
+            }
+        });
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+        mDataChangeListener.setContentFragmentListener(new ContentFragmentChangeListener() {
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-	}
+            @Override
+            public void onChange(int index) {
+                // TODO Auto-generated method stub
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+                mPager.setCurrentItem(index, true);
+            }
+        });
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.content_layout, null);
         initWidgets();
 
-		return mView;
-	}
-	
-	private void initWidgets(){
-		
-		mPager = (ViewPager) mView.findViewById(R.id.vp_list);
+        return mView;
+    }
 
-		pagerItemList = new ArrayList<Fragment>();
-		messageFragment = new MessageFragment(mDataChangeListener);
-		massFragment = new MassFragment(mDataChangeListener);
-		pagerItemList.add(messageFragment);
-		pagerItemList.add(massFragment);
-		mAdapter = new MyAdapter(getFragmentManager());
-		mPager.setAdapter(mAdapter);
-		
+    private void initWidgets() {
 
-		mPager.setOnPageChangeListener(this);
-	}
-	
+        mPager = (ViewPager) mView.findViewById(R.id.vp_list);
+
+        pagerItemList = new ArrayList<Fragment>();
+        messageFragment = new MessageFragment(mDataChangeListener);
+        massFragment = new MassFragment(mDataChangeListener);
+        pagerItemList.add(messageFragment);
+        pagerItemList.add(massFragment);
+        mAdapter = new MyAdapter(getFragmentManager());
+        mPager.setAdapter(mAdapter);
+        mPager.setPageMargin(10);
+        mPager.setPageMarginDrawable(R.color.pageDivider);
 
 
-	public ViewPager getViewPage() {
-		return mPager;
-	}
-	
+        mPager.setOnPageChangeListener(this);
+    }
 
-	public void onActivityCreated(Bundle savedInstanceState) {
 
-		super.onActivityCreated(savedInstanceState);
+    public ViewPager getViewPage() {
+        return mPager;
+    }
 
-	}
 
-	public boolean isFirst() {
-		if (mPager.getCurrentItem() == 0)
-			return true;
-		else
-			return false;
-	}
+    public void onActivityCreated(Bundle savedInstanceState) {
 
-	public boolean isEnd() {
-		if (mPager.getCurrentItem() == pagerItemList.size() - 1)
-			return true;
-		else
-			return false;
-	}
+        super.onActivityCreated(savedInstanceState);
 
-	public class MyAdapter extends FragmentPagerAdapter {
-		public MyAdapter(FragmentManager fm) {
-			super(fm);
-		}
+    }
 
-		@Override
-		public int getCount() {
-			return pagerItemList.size();
-		}
+    public boolean isFirst() {
+        if (mPager.getCurrentItem() == 0)
+            return true;
+        else
+            return false;
+    }
 
-		@Override
-		public Fragment getItem(int position) {
+    public boolean isEnd() {
+        if (mPager.getCurrentItem() == pagerItemList.size() - 1)
+            return true;
+        else
+            return false;
+    }
 
-			Fragment fragment = null;
-			if (position < pagerItemList.size())
-				fragment = pagerItemList.get(position);
-			else
-				fragment = pagerItemList.get(0);
+    public class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-			return fragment;
+        @Override
+        public int getCount() {
+            return pagerItemList.size();
+        }
 
-		}
-	}
+        @Override
+        public Fragment getItem(int position) {
 
-	private MyPageChangeListener myPageChangeListener;
+            Fragment fragment = null;
+            if (position < pagerItemList.size())
+                fragment = pagerItemList.get(position);
+            else
+                fragment = pagerItemList.get(0);
 
-	public void setMyPageChangeListener(MyPageChangeListener l) {
+            return fragment;
 
-		myPageChangeListener = l;
+        }
+    }
 
-	}
+    private MyPageChangeListener myPageChangeListener;
 
-	public interface MyPageChangeListener {
-		public void onPageSelected(int position);
-	}
+    public void setMyPageChangeListener(MyPageChangeListener l) {
 
-	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		new GetDataTask(refreshView).execute();
-	}
+        myPageChangeListener = l;
 
-	private static class GetDataTask extends AsyncTask<Void, Void, Void> {
+    }
 
-		PullToRefreshBase<?> mRefreshedView;
+    public interface MyPageChangeListener {
+        public void onPageSelected(int position);
+    }
 
-		public GetDataTask(PullToRefreshBase<?> refreshedView) {
-			mRefreshedView = refreshedView;
-		}
+    @Override
+    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+        new GetDataTask(refreshView).execute();
+    }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-			}
-			return null;
-		}
+    private static class GetDataTask extends AsyncTask<Void, Void, Void> {
 
-		@Override
-		protected void onPostExecute(Void result) {
-			mRefreshedView.onRefreshComplete();
-			super.onPostExecute(result);
-		}
-	}
+        PullToRefreshBase<?> mRefreshedView;
 
-	@Override
-	public void onPageScrollStateChanged(int position) {
+        public GetDataTask(PullToRefreshBase<?> refreshedView) {
+            mRefreshedView = refreshedView;
+        }
 
-	}
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+            }
+            return null;
+        }
 
-	@Override
-	public void onPageScrolled(int position, float arg1, int arg2) {
-		
+        @Override
+        protected void onPostExecute(Void result) {
+            mRefreshedView.onRefreshComplete();
+            super.onPostExecute(result);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int position) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float arg1, int arg2) {
+
 		/*
 		 * arg1:percent
 		 * arg2:px
 		 */
-		
-		mDataChangeListener.getPagerListener().onScroll(position,arg1);
-		
 
-	}
+        mDataChangeListener.getPagerListener().onScroll(position, arg1);
 
-	@Override
-	public void onPageSelected(int position) {
-		if (myPageChangeListener != null) {
-			myPageChangeListener.onPageSelected(position);
-		}
-		mDataChangeListener.getPagerListener().onPage(position);
 
-	}
+    }
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		pagerItemList.clear();
-		pagerItemList = null;
-	}
-	
-	
+    @Override
+    public void onPageSelected(int position) {
+        if (myPageChangeListener != null) {
+            myPageChangeListener.onPageSelected(position);
+        }
+        mDataChangeListener.getPagerListener().onPage(position);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        pagerItemList.clear();
+        pagerItemList = null;
+    }
+
 
 }

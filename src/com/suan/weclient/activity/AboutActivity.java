@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.util.SpanUtil;
+import com.suan.weclient.util.span.SpanUtil;
 
 public class AboutActivity extends Activity {
 
@@ -61,7 +61,7 @@ public class AboutActivity extends Activity {
 				finish();
 			}
 		});
-		
+
 		versionTextView = (TextView)findViewById(R.id.about_text_version);
 		try{
 			String versionString = getVersionName();

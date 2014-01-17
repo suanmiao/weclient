@@ -84,7 +84,7 @@
                     android:adjustViewBounds="true"
                     android:maxHeight="250dip"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_loading" />
+                    android:src="@drawable/pic_default" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -96,40 +96,51 @@
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="30dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginLeft="5dip"
         android:orientation="horizontal"
         android:background="@drawable/message_item_bg_long_click">
 
 
         <RelativeLayout
             android:id="@+id/message_item_img_layout_download"
+            android:clickable="true"
+            android:background="@drawable/msg_click_layout_bg_middle"
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message_item_img_button_download"
                 android:layout_width="25dip"
                 android:layout_height="20dip"
-                android:layout_alignParentRight="true"
+                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dip"
-                android:background="@drawable/msg_star_button_bg" />
+                android:background="@drawable/msg_download" />
         </RelativeLayout>
 
+
+        <LinearLayout
+            android:layout_height="fill_parent"
+            android:layout_width="1px"
+            android:background="#cdcdcd"></LinearLayout>
         <RelativeLayout
             android:id="@+id/message_item_img_layout_share"
+            android:clickable="true"
+            android:background="@drawable/msg_click_layout_bg_middle"
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message_item_img_button_share"
                 android:layout_width="25dip"
                 android:layout_height="20dip"
-                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dip"
-                android:background="@drawable/msg_star_button_bg" />
+                android:background="@drawable/msg_share" />
         </RelativeLayout>
 
 
@@ -147,13 +158,15 @@
 
         <RelativeLayout
             android:id="@+id/message_item_img_layout_star"
+            android:clickable="true"
+            android:background="@drawable/msg_click_layout_bg_left_bottom"
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message_item_img_button_star"
-                android:layout_width="25dip"
+                android:layout_width="20dip"
                 android:layout_height="20dip"
 
                 android:layout_centerHorizontal="true"
@@ -168,17 +181,19 @@
 
         <RelativeLayout
             android:id="@+id/message_item_img_layout_reply"
+            android:clickable="true"
+            android:background="@drawable/msg_click_layout_bg_right_bottom"
             android:layout_width="0dip"
             android:layout_weight="1"
             android:layout_height="fill_parent">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/message_item_img_button_reply"
-                android:layout_width="25dip"
+                android:layout_width="20dip"
                 android:layout_height="20dip"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/msg_star_button_bg" />
+                android:background="@drawable/msg_reply" />
         </RelativeLayout>
 
 

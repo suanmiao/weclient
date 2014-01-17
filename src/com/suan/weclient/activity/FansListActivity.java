@@ -1,14 +1,17 @@
 package com.suan.weclient.activity;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Window;
+import android.util.Log;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -16,26 +19,30 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.FansListAdapter;
 import com.suan.weclient.util.GlobalContext;
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.FansListChangeListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
+import com.suan.weclient.view.actionbar.CustomFansActionView;
 
-public class FansListActivity extends Activity implements
+public class FansListActivity extends SherlockActivity implements
 		OnRefreshListener<ListView> {
 
+    private ActionBar actionBar;
+    private ImageView backButton;
 	private PullToRefreshListView mRefreshListView;
 	private FansListAdapter fansListAdapter;
 	private DataManager mDataManager;
 	private FansHandler fansHandler;
 	private static final int PAGE_FANS = 10;
-	private int groupId = -1;
 
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.fans_list_layout);
-		initWidgets();
-		initData();
+        initWidgets();
+        initData();
+        actionBar = getSupportActionBar();
+        initActionBar();
 		initListener();
 
 	}
@@ -46,7 +53,39 @@ public class FansListActivity extends Activity implements
 
 	}
 
+
+    private void initActionBar() {
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
+
+
+        CustomFansActionView customFansActionView = new CustomFansActionView(this);
+/*
+        backButton = (ImageView)customFansActionView.findViewById(R.id.actionbar_fans_img_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FansListActivity.this.finish();
+
+            }
+        });
+
+ */
+        customFansActionView.init(mDataManager);
+
+       ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
+                ActionMenuView.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(customFansActionView, layoutParams);
+
+
+    }
+
 	private void initData() {
+
 
 		GlobalContext globalContext = (GlobalContext) getApplicationContext();
 		mDataManager = globalContext.getDataManager();
@@ -56,11 +95,11 @@ public class FansListActivity extends Activity implements
 		fansHandler = new FansHandler();
 
 		mDataManager.getWechatManager().getFansList(0,
-				mDataManager.getCurrentPosition(), groupId,
+				mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
 				new OnActionFinishListener() {
 
 					@Override
-					public void onFinish(Object object) {
+					public void onFinish(int code,Object object) {
 						// TODO Auto-generated method stub
 
 						Message message = new Message();
@@ -79,8 +118,9 @@ public class FansListActivity extends Activity implements
 			@Override
 			public void onFansGet(boolean changed) {
 				// TODO Auto-generated method stub
+                Log.e("fans get",""+mDataManager.getCurrentFansHolder().getCurrentGroupIndex());
+                SharedPreferenceManager.putLastNewPeople(FansListActivity.this,0);
 				if (changed) {
-
 					fansListAdapter.updateCache();
 					fansListAdapter.notifyDataSetChanged();
 				} else {
@@ -139,11 +179,11 @@ public class FansListActivity extends Activity implements
 								.getFansBeans().size() / 10;
 
 						mDataManager.getWechatManager().getFansList(page,
-								mDataManager.getCurrentPosition(), groupId,
+								mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
 								new OnActionFinishListener() {
 
 									@Override
-									public void onFinish(Object object) {
+									public void onFinish(int code,Object object) {
 										// TODO Auto-generated method stub
 										Message message = new Message();
 										message.obj = object;
@@ -157,11 +197,13 @@ public class FansListActivity extends Activity implements
 					}
 				} else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
 					mDataManager.getWechatManager().getFansList(0,
-							mDataManager.getCurrentPosition(), 0,
+							mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+
 							new OnActionFinishListener() {
 
+
 								@Override
-								public void onFinish(Object object) {
+								public void onFinish(int code,Object object) {
 									// TODO Auto-generated method stub
 									Message message = new Message();
 									message.obj = object;

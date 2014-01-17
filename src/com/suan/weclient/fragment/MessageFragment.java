@@ -19,6 +19,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.MessageListAdapter;
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.MessageChangeListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
@@ -42,10 +43,12 @@ public class MessageFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.message_fragment, null);
+
 		mHandler = new MessageHandler();
 		initWidgets();
 		initListener();
 		initData();
+
 
 		return view;
 	}
@@ -186,7 +189,7 @@ public class MessageFragment extends Fragment implements
 								new OnActionFinishListener() {
 
 									@Override
-									public void onFinish(Object object) {
+									public void onFinish(int code,Object object) {
 										// TODO Auto-generated method stub
 										Message message = new Message();
 										message.obj = object;
@@ -208,7 +211,7 @@ public class MessageFragment extends Fragment implements
 							new OnActionFinishListener() {
 
 								@Override
-								public void onFinish(Object object) {
+								public void onFinish(int code,Object object) {
 									// TODO Auto-generated method stub
 
 									Message message = new Message();
@@ -218,14 +221,14 @@ public class MessageFragment extends Fragment implements
 									mDataManager
 											.getWechatManager()
 											.getUserProfile(
-													false,
+													false,false,
 													mDataManager
 															.getCurrentPosition(),
 													new OnActionFinishListener() {
 
 														@Override
 														public void onFinish(
-																Object object) {
+																int code,Object object) {
 															// TODO
 															// Auto-generated
 															// method stub

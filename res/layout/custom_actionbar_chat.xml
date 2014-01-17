@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/actionbar_main_layout_main"
+	android:layout_width="match_parent"
+	android:layout_height="45dip"
+	android:background="#1a6294" >
+	<RelativeLayout
+		android:layout_width="150dip"
+		android:layout_height="fill_parent" >
+
+        <ImageView
+            android:id="@+id/actionbar_chat_img_back"
+            android:layout_height="fill_parent"
+            android:layout_width="40dip"
+            android:layout_marginLeft="5dip"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
+            android:background="#1a6294"
+            android:src="@drawable/back"/>
+
+	</RelativeLayout>
+	<LinearLayout
+		android:id="@+id/actionbar_chat_layout_right"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="10dip"
+		android:layout_marginTop="5dip"
+		android:orientation="vertical" >
+
+	</LinearLayout>
+</RelativeLayout>

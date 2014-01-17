@@ -28,6 +28,15 @@
 		<item name="android:backgroundDimEnabled">true</item>
 		<item name="android:backgroundDimAmount">0.6</item>
 	</style>
+
+
+    <!-- spinner -->
+    <style name="spinner_style">
+        <item name="android:background">@drawable/fans_spinner_selector_bg</item>
+        <item name="android:paddingLeft">5dip</item>
+    </style>
+
+
 	<style name="Tabs">
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">@dimen/tab_height</item>

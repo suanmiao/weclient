@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:background="#777777"
+    android:layout_height="65sp">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:layout_height="20dip"
+            android:layout_width="20dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:src="@drawable/profile_head_default"
+            android:id="@+id/custom_notification_img_type" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/custom_notification_img_type"
+            android:layout_marginLeft="20dip"
+            android:id="@+id/custom_notification_text_content"
+            android:textColor="#ffffff"
+            android:text="新粉丝 5"
+            android:textSize="15dip" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

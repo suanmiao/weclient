@@ -21,7 +21,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,116 +40,123 @@ import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
+import com.suan.weclient.util.span.SpanUtil;
 
 public class MassFragment extends Fragment {
 
-	private DataManager mDataManager;
-	private EditText contentEditText;
-	private TextView textAmountTextView;
-	private TextView popContentTextView;
-	private TextView popTitleTextView;
-	private TextView popTextAmountTextView;
-	private TextView massLeftNumTextView;
-	private ImageButton popCancelButton, popSureButton;
-	private Dialog dialog;
+    private DataManager mDataManager;
+    private EditText contentEditText;
+    private TextView textAmountTextView;
+    private TextView popContentTextView;
+    private TextView popTitleTextView;
+    private TextView popTextAmountTextView;
+    private TextView massLeftNumTextView;
+    private ImageButton popCancelButton, popSureButton;
+    private Dialog dialog;
 
-	private ImageButton sendButton;
-	private View view;
+    private ImageButton sendButton;
+    private View view;
 
-	public MassFragment(DataManager dataManager) {
+    public MassFragment(DataManager dataManager) {
 
-		mDataManager = dataManager;
-	}
+        mDataManager = dataManager;
+    }
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.mass_layout, null);
-		initWidgets();
-		initWidgetsEvent();
-		initListener();
-		return view;
-	}
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.mass_layout, null);
+        initWidgets();
+        initWidgetsEvent();
+        initListener();
+       return view;
+    }
 
-	private void initListener() {
-		mDataManager.addLoginListener(new LoginListener() {
+    private void initListener() {
+        mDataManager.addLoginListener(new LoginListener() {
 
-			@Override
-			public void onLogin(final UserBean userBean) {
-				// TODO Auto-generated method stub
-				if (mDataManager.getUserGroup().size() == 0) {
-					sendButton
-							.setBackgroundResource(R.drawable.send_selected_state);
+            @Override
+            public void onLogin(final UserBean userBean) {
+                // TODO Auto-generated method stub
+                if (mDataManager.getUserGroup().size() == 0) {
+                    sendButton
+                            .setBackgroundResource(R.drawable.send_selected_state);
 
-				} else {
-					if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-						sendButton
-								.setBackgroundResource(R.drawable.send_selected_state);
-					} else {
-						sendButton.setSelected(false);
-					}
+                } else {
+                    if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+                        sendButton
+                                .setBackgroundResource(R.drawable.send_selected_state);
+                    } else {
+                        sendButton.setSelected(false);
+                    }
 
-				}
+                }
 
-			}
-		});
+            }
+        });
 
-	}
+    }
 
-	private void initWidgets() {
-		contentEditText = (EditText) view.findViewById(R.id.mass_edit_mass);
+    private void initWidgets() {
+        contentEditText = (EditText) view.findViewById(R.id.mass_edit_mass);
 
-		massLeftNumTextView = (TextView) view
-				.findViewById(R.id.mass_text_left_num);
-		textAmountTextView = (TextView) view.findViewById(R.id.mass_text_num);
+        massLeftNumTextView = (TextView) view
+                .findViewById(R.id.mass_text_left_num);
+        textAmountTextView = (TextView) view.findViewById(R.id.mass_text_num);
 
 
-		sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
+        sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
 
-	}
-		
-	private void initWidgetsEvent(){
-		
-		setMassLeft();
-		textAmountTextView.setOnClickListener(new OnClickListener() {
+    }
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				contentEditText.setText("");
+    private void initWidgetsEvent() {
 
-			}
-		});
-		contentEditText.addTextChangedListener(new TextWatcher() {
+        setMassLeft();
+        textAmountTextView.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				textAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-				textAmountTextView.setText(s.length() + " x");
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                contentEditText.setText("");
 
-			}
+            }
+        });
+        contentEditText.addTextChangedListener(new TextWatcher() {
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+                textAmountTextView.setTextColor(Color.rgb(0, 0, 0));
+                textAmountTextView.setText(s.length() + " x");
 
-			}
 
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
+            }
 
-			}
-		});
-		sendButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+            }
 
-				if (mDataManager.getUserGroup().size() == 0) {
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+
+            }
+        });
+        sendButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                String contentString = contentEditText.getText().toString();
+                Log.e("contentstring",contentString);
+                Spanned spanned = SpanUtil.setImgSpan(contentString, getActivity());
+                contentEditText.setText(spanned);
+/*
+                if (mDataManager.getUserGroup().size() == 0) {
 					sendButton
 							.setBackgroundResource(R.drawable.send_selected_state);
 
@@ -159,137 +169,139 @@ public class MassFragment extends Fragment {
 						dialogSure();
 					}
 
-				}
+				}*/
 
-			};
-		});
-	}
+            }
 
-	private void dialogSure() {
-		String content = contentEditText.getText().toString();
-		if (content.length() == 0) {
-			Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		LayoutInflater inflater = (LayoutInflater) getActivity()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater
-				.inflate(R.layout.dialog_preview_layout, null);
-		popTitleTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_preview_text_title);
+            ;
+        });
+    }
 
-		popSureButton = (ImageButton) dialogView
-				.findViewById(R.id.dialog_preview_button_sure);
-		popCancelButton = (ImageButton) dialogView
-				.findViewById(R.id.dialog_preview_button_cancel);
+    private void dialogSure() {
+        String content = contentEditText.getText().toString();
+        if (content.length() == 0) {
+            Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LayoutInflater inflater = (LayoutInflater) getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater
+                .inflate(R.layout.dialog_preview_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_preview_text_title);
 
-		popTextAmountTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_preview_text_num);
+        popSureButton = (ImageButton) dialogView
+                .findViewById(R.id.dialog_preview_button_sure);
+        popCancelButton = (ImageButton) dialogView
+                .findViewById(R.id.dialog_preview_button_cancel);
 
-		popContentTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_preview_text_content);
-		popContentTextView.setText(content);
+        popTextAmountTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_preview_text_num);
 
-		popTextAmountTextView.setText(" " + content.length() + " ");
-		popTitleTextView.setText("确认发送 帐号:"
-				+ mDataManager.getCurrentUser().getUserName());
-		popSureButton.setOnClickListener(new OnClickListener() {
+        popContentTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_preview_text_content);
+        popContentTextView.setText(content);
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				dialog.dismiss();
-				mass();
+        popTextAmountTextView.setText(" " + content.length() + " ");
+        popTitleTextView.setText("确认发送 帐号:"
+                + mDataManager.getCurrentUser().getUserName());
+        popSureButton.setOnClickListener(new OnClickListener() {
 
-			}
-		});
-		popCancelButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                mass();
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				dialog.cancel();
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
 
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.cancel();
 
-		dialog = new Dialog(getActivity(), R.style.dialog);
+            }
+        });
 
-		dialog.setContentView(dialogView);
-		dialog.show();
+        dialog = new Dialog(getActivity(), R.style.dialog);
 
-	}
+        dialog.setContentView(dialogView);
+        dialog.show();
 
-	private void mass() {
-		String massContent = contentEditText.getText().toString();
-		mDataManager.doLoadingStart("发送中");
-		mDataManager.getWechatManager().mass(mDataManager.getCurrentPosition(),
-				massContent, new OnActionFinishListener() {
+    }
 
-					@Override
-					public void onFinish(Object object) {
-						// TODO Auto-generated method stub
+    private void mass() {
+        String massContent = contentEditText.getText().toString();
+        mDataManager.doLoadingStart("发送中");
+        mDataManager.getWechatManager().mass(mDataManager.getCurrentPosition(),
+                massContent, new OnActionFinishListener() {
 
-						contentEditText.setText("");
+            @Override
+            public void onFinish(int code, Object object) {
+                // TODO Auto-generated method stub
 
-						mDataManager.doPopEnsureDialog(false, true, "群发成功",
-								new DialogSureClickListener() {
+                contentEditText.setText("");
 
-									@Override
-									public void onClick(View v) {
-										// TODO Auto-generated method stub
-										mDataManager.doDismissAllDialog();
+                mDataManager.doPopEnsureDialog(false, true, "群发成功",
+                        new DialogSureClickListener() {
 
-									}
-								});
-						
-						mDataManager.getCurrentUser().setMassLeft(mDataManager.getCurrentUser().getMassLeft()-1);
-						setMassLeft();
+                            @Override
+                            public void onClick(View v) {
+                                // TODO Auto-generated method stub
+                                mDataManager.doDismissAllDialog();
 
-					}
-				});
-	}
-	
-	public void setMassLeft(){
-		String typeString = "";
-		switch(mDataManager.getCurrentUser().getUserType()){
-		case UserBean.USER_TYPE_SUBSTRICTION:
-			typeString = "今天";
-			
-			break;
-			
-		case UserBean.USER_TYPE_SERVICE:
-			
-			typeString = "本月";
-			break;
-		}
-		
-		if (mDataManager.getUserGroup().size() == 0) {
-			
-			massLeftNumTextView.setText("你"+typeString+"还能群发 " + 0 + " 条消息");
+                            }
+                        });
 
-		} else {
-			massLeftNumTextView.setText("你"+typeString+"还能群发 "
-					+ mDataManager.getCurrentUser().getMassLeft() + " 条消息");
+                mDataManager.getCurrentUser().setMassLeft(mDataManager.getCurrentUser().getMassLeft() - 1);
+                setMassLeft();
 
-		}
-		if (mDataManager.getUserGroup().size() == 0) {
-			sendButton.setBackgroundResource(R.drawable.send_selected_state);
+            }
+        });
+    }
 
-		} else {
-			if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-				sendButton
-						.setBackgroundResource(R.drawable.send_selected_state);
-			} else {
+    public void setMassLeft() {
+        String typeString = "";
+        switch (mDataManager.getCurrentUser().getUserType()) {
+            case UserBean.USER_TYPE_SUBSTRICTION:
+                typeString = "今天";
 
-			}
+                break;
 
-		}
-	}
-	
+            case UserBean.USER_TYPE_SERVICE:
 
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+                typeString = "本月";
+                break;
+        }
+
+        if (mDataManager.getUserGroup().size() == 0) {
+
+            massLeftNumTextView.setText("你" + typeString + "还能群发 " + 0 + " 条消息");
+
+        } else {
+            massLeftNumTextView.setText("你" + typeString + "还能群发 "
+                    + mDataManager.getCurrentUser().getMassLeft() + " 条消息");
+
+        }
+        if (mDataManager.getUserGroup().size() == 0) {
+            sendButton.setBackgroundResource(R.drawable.send_selected_state);
+
+        } else {
+            if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+                sendButton
+                        .setBackgroundResource(R.drawable.send_selected_state);
+            } else {
+
+            }
+
+        }
+    }
+
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
 }

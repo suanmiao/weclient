@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item android:state_selected="false" android:drawable="@drawable/left_user_list_down"></item>
+	
+	<item android:state_selected="true" android:drawable="@drawable/left_user_list_up"></item>
+	<item android:drawable="@drawable/left_user_list_down"></item>
+</selector>

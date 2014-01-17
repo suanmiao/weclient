@@ -15,7 +15,7 @@ public class GlobalContext extends Application {
 	private final static String APP_NAME = "WeClient";
 
 	private DataManager mDataManager;
-	
+
 
 	public void onCreate() {
 		super.onCreate();

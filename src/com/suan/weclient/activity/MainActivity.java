@@ -31,17 +31,21 @@ import com.suan.weclient.R;
 import com.suan.weclient.fragment.ContentFragment;
 import com.suan.weclient.fragment.ContentFragment.MyPageChangeListener;
 import com.suan.weclient.fragment.LeftFragment;
-import com.suan.weclient.fragment.RightFragment;
+import com.suan.weclient.fragment.UserListFragment;
+import com.suan.weclient.pushService.AlarmReceiver;
+import com.suan.weclient.pushService.AlarmSysService;
+import com.suan.weclient.pushService.PushService;
 import com.suan.weclient.util.GlobalContext;
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
-import com.suan.weclient.view.CustomActionView;
+import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
@@ -55,631 +59,670 @@ import com.umeng.update.UpdateResponse;
 
 public class MainActivity extends SlidingFragmentActivity {
 
-	private GlobalContext mGlobalContext;
-	LeftFragment leftFragment;
-	RightFragment rightFragment;
-	ContentFragment contentFragment;
-	SlidingMenu mSlidingMenu;
-	private ActionBar actionBar;
+    private GlobalContext mGlobalContext;
+    LeftFragment leftFragment;
+    ContentFragment contentFragment;
+    SlidingMenu mSlidingMenu;
+    private ActionBar actionBar;
 
-	/*
-	 * about pop dialog
-	 */
-	private TextView popContentTextView;
-	private TextView popTitleTextView;
-	private EditText popContentEditText;
-	private TextView popTextAmountTextView;
-	private ImageButton popCancelButton, popSureButton;
+    /*
+     * about pop dialog
+     */
+    private TextView popContentTextView;
+    private TextView popTitleTextView;
+    private EditText popContentEditText;
+    private TextView popTextAmountTextView;
+    private ImageButton popCancelButton, popSureButton;
 
-	private FeedbackAgent agent;
-	private Conversation defaultConversation;
+    private FeedbackAgent agent;
+    private Conversation defaultConversation;
 
-	private DataManager mDataManager;
-	private Dialog popDialog;
-	private Dialog replyDialog;
+    private DataManager mDataManager;
+    private Dialog popDialog;
+    private Dialog replyDialog;
 
-	@Override
-	public void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
+    @Override
+    public void onCreate(Bundle arg0) {
+        super.onCreate(arg0);
 
-		initDataChangeListener();
-		initCache();
-		initSlidingMenu();
-		initWidgets();
+        initActivityState();
+        initDataChangeListener();
+        initService();
+        initCache();
+        initSlidingMenu();
+        initWidgets();
 
-		initActionBar();
+        initActionBar();
 
-		initListener(contentFragment);
-		autoLogin();
+        initListener(contentFragment);
+        //autoLogin();
 
-		initUmeng();
+        initUmeng();
 
-	}
+    }
 
-	private void initSlidingMenu() {
+    private void initActivityState() {
 
-		// set the Behind View
-		setBehindContentView(R.layout.left_frame);
-		setContentView(R.layout.main);
-		setBehindContentView(R.layout.left_frame);
+        SharedPreferenceManager.putActivityRunning(this, true);
+    }
 
-		mSlidingMenu = getSlidingMenu();
-		mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
-		mSlidingMenu.setShadowDrawable(R.drawable.shadow);
-		mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		mSlidingMenu.setFadeDegree(0.35f);
-		mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		// mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+    private void initService() {
+        if (SharedPreferenceManager.getPushEnable(this)) {
+            String _filePath = "com.suan.weclient.pushService.PushService";
+            boolean serviceRunning = Util.isServiceRunning(this, _filePath);
+            if (!serviceRunning) {
+                Intent startServiceIntent = new Intent();
+                startServiceIntent.setAction(AlarmReceiver.BROADCAST_ACTION_START_PUSH);
+                sendBroadcast(startServiceIntent);
 
-		mSlidingMenu.setSecondaryMenu(R.layout.right_frame);
+            }
 
-		FragmentTransaction t = this.getSupportFragmentManager()
-				.beginTransaction();
+        }
+    }
 
-		leftFragment = new LeftFragment(this.getSupportFragmentManager(),
-				mDataManager);
-		t.replace(R.id.left_frame, leftFragment);
+    private void initSlidingMenu() {
 
-		rightFragment = new RightFragment(mDataManager);
-		t.replace(R.id.right_frame, rightFragment);
+        // set the Behind View
+        setBehindContentView(R.layout.left_frame);
+        setContentView(R.layout.main);
+        setBehindContentView(R.layout.left_frame);
 
-		contentFragment = new ContentFragment(mDataManager);
-		t.replace(R.id.content_layout, contentFragment);
+        mSlidingMenu = getSlidingMenu();
+        mSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
+        mSlidingMenu.setShadowDrawable(R.drawable.shadow);
+        mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        // mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        mSlidingMenu.setMode(SlidingMenu.LEFT);
 
-		t.commit();
+        mSlidingMenu.setSecondaryMenu(R.layout.right_frame);
 
-	}
+        FragmentTransaction t = this.getSupportFragmentManager()
+                .beginTransaction();
 
-	private void initWidgets() {
-
-	}
-
-	private void initActionBar() {
-		actionBar = getSupportActionBar();
-		actionBar.setDisplayShowCustomEnabled(true);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setDisplayUseLogoEnabled(false);
-
-		CustomActionView customActionView = new CustomActionView(this);
-		customActionView.init(mDataManager);
-
-		customActionView.setShowMenuListener(new ShowMenuListener() {
-
-			@Override
-			public void showLeftMenu() {
-				// TODO Auto-generated method stub
-				getSlidingMenu().showMenu();
-
-			}
-
-			public void showRightMenu() {
-				getSlidingMenu().showSecondaryMenu();
-
-			}
-		});
-
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT);
-		actionBar.setCustomView(customActionView, layoutParams);
+        leftFragment = new LeftFragment(this.getSupportFragmentManager(),
+                mDataManager);
 
 
-	}
+        t.replace(R.id.left_frame, leftFragment);
 
-	private void initUmeng() {
+        contentFragment = new ContentFragment(mDataManager);
+        t.replace(R.id.content_layout, contentFragment);
 
-		agent = new FeedbackAgent(this);
-		defaultConversation = agent.getDefaultConversation();
+        t.commit();
 
-		Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
+    }
 
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				UmengUpdateAgent.setUpdateAutoPopup(true);
-				UmengUpdateAgent
-						.setDialogListener(new UmengDialogButtonListener() {
+    private void initWidgets() {
 
-							@Override
-							public void onClick(int arg0) {
-								// TODO Auto-generated method stub
+    }
 
-							}
-						});
-				UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-					@Override
-					public void onUpdateReturned(int updateStatus,
-							UpdateResponse updateInfo) {
-						switch (updateStatus) {
-						case 0: // has update
+    private void initActionBar() {
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
 
-							break;
-						case 1: // has no update
-							break;
-						case 2: // none wifi
-							break;
-						case 3: // time out
-							break;
-						}
-					}
-				});
-				UmengUpdateAgent.update(MainActivity.this);
+        CustomMainActionView customMainActionView = new CustomMainActionView(this);
+        customMainActionView.init(mDataManager);
 
-			}
+        customMainActionView.setShowMenuListener(new ShowMenuListener() {
 
-		}, 1000);
-		handler.postDelayed(new Runnable() {
+            @Override
+            public void showLeftMenu() {
+                // TODO Auto-generated method stub
+                getSlidingMenu().showMenu();
 
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				defaultConversation.sync(new SyncListener() {
+            }
 
-					@Override
-					public void onSendUserReply(List<Reply> arg0) {
-						// TODO Auto-generated method stub
+            public void showRightMenu() {
+                getSlidingMenu().showSecondaryMenu();
 
-					}
+            }
+        });
 
-					@Override
-					public void onReceiveDevReply(List<DevReply> arg0) {
-						// TODO Auto-generated method stub
-						String replyString = "";
-						/*
-						 * fuck umeng the arg0 might be null
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(customMainActionView, layoutParams);
+
+
+    }
+
+    private void initUmeng() {
+
+        agent = new FeedbackAgent(this);
+        defaultConversation = agent.getDefaultConversation();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                UmengUpdateAgent.setUpdateAutoPopup(true);
+                UmengUpdateAgent
+                        .setDialogListener(new UmengDialogButtonListener() {
+
+                            @Override
+                            public void onClick(int arg0) {
+                                // TODO Auto-generated method stub
+
+                            }
+                        });
+                UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int updateStatus,
+                                                 UpdateResponse updateInfo) {
+                        switch (updateStatus) {
+                            case 0: // has update
+
+                                break;
+                            case 1: // has no update
+                                break;
+                            case 2: // none wifi
+                                break;
+                            case 3: // time out
+                                break;
+                        }
+                    }
+                });
+                UmengUpdateAgent.update(MainActivity.this);
+
+            }
+
+        }, 1000);
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                defaultConversation.sync(new SyncListener() {
+
+                    @Override
+                    public void onSendUserReply(List<Reply> arg0) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onReceiveDevReply(List<DevReply> arg0) {
+                        // TODO Auto-generated method stub
+                        String replyString = "";
+                        /*
+                         * fuck umeng the arg0 might be null
 						 */
-						try {
-							for (int i = 0; i < arg0.size(); i++) {
-								SimpleDateFormat dateFormat = new SimpleDateFormat(
-										"MM-dd HH:mm");
-								replyString += dateFormat.format(arg0.get(i)
-										.getDatetime());
-								replyString += ":  ";
-								replyString += arg0.get(i).getContent();
-								replyString += "\n";
-
-							}
-							if (arg0.size() > 0) {
-								dialogShowDevReply(replyString);
-							}
-
-						} catch (Exception exception) {
-
-						}
-
-					}
-				});
-
-			}
-		}, 1000);
-
-	}
-
-	public void dialogShowDevReply(String content) {
-
-		LayoutInflater inflater = (LayoutInflater) this
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater.inflate(R.layout.dialog_dev_reply_layout,
-				null);
-		popTitleTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_dev_reply_text_title);
-
-		popSureButton = (ImageButton) dialogView
-				.findViewById(R.id.dialog_dev_reply_button_reply);
-		popCancelButton = (ImageButton) dialogView
-				.findViewById(R.id.dialog_dev_reply_button_o);
-
-		popContentTextView = (TextView) dialogView
-				.findViewById(R.id.dialog_dev_reply_text_content);
-		popContentTextView.setText(content);
-
-		popTitleTextView.setText("开发者回复:");
-		popSureButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				replyDialog.dismiss();
-				popFeedback();
-			}
-		});
-		popCancelButton.setOnClickListener(new OnClickListener() {
+                        try {
+                            for (int i = 0; i < arg0.size(); i++) {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                                        "MM-dd HH:mm");
+                                replyString += dateFormat.format(arg0.get(i)
+                                        .getDatetime());
+                                replyString += ":  ";
+                                replyString += arg0.get(i).getContent();
+                                replyString += "\n";
+
+                            }
+                            if (arg0.size() > 0) {
+                                dialogShowDevReply(replyString);
+                            }
+
+                        } catch (Exception exception) {
+
+                        }
+
+                    }
+                });
+
+            }
+        }, 1000);
+
+    }
+
+    public void dialogShowDevReply(String content) {
+
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_dev_reply_layout,
+                null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_dev_reply_text_title);
+
+        popSureButton = (ImageButton) dialogView
+                .findViewById(R.id.dialog_dev_reply_button_reply);
+        popCancelButton = (ImageButton) dialogView
+                .findViewById(R.id.dialog_dev_reply_button_o);
+
+        popContentTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_dev_reply_text_content);
+        popContentTextView.setText(content);
+
+        popTitleTextView.setText("开发者回复:");
+        popSureButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                replyDialog.dismiss();
+                popFeedback();
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				replyDialog.dismiss();
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                replyDialog.dismiss();
 
-			}
-		});
+            }
+        });
 
-		replyDialog = new Dialog(this, R.style.dialog);
+        replyDialog = new Dialog(this, R.style.dialog);
 
-		replyDialog.setContentView(dialogView);
-		replyDialog.show();
-	}
+        replyDialog.setContentView(dialogView);
+        replyDialog.show();
+    }
 
-	private void popFeedback() {
+    private void popFeedback() {
 
-		LayoutInflater inflater = (LayoutInflater) this
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
-		popTitleTextView = (TextView) dialogView
-				.findViewById(R.id.pop_feedback_text_title);
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.pop_feedback_text_title);
 
-		popContentEditText = (EditText) dialogView
-				.findViewById(R.id.pop_feedback_edit_text);
-		popSureButton = (ImageButton) dialogView
-				.findViewById(R.id.pop_feedback_button_sure);
-		popCancelButton = (ImageButton) dialogView
-				.findViewById(R.id.pop_feedback_button_cancel);
-
-		popTextAmountTextView = (TextView) dialogView
-				.findViewById(R.id.pop_feedback_text_num);
-		popTextAmountTextView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				popContentEditText.setText("");
-
-			}
-		});
-
-		popContentEditText.addTextChangedListener(new TextWatcher() {
+        popContentEditText = (EditText) dialogView
+                .findViewById(R.id.pop_feedback_edit_text);
+        popSureButton = (ImageButton) dialogView
+                .findViewById(R.id.pop_feedback_button_sure);
+        popCancelButton = (ImageButton) dialogView
+                .findViewById(R.id.pop_feedback_button_cancel);
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-				popTextAmountTextView.setText(popContentEditText.getText()
-						.length() + " x");
+        popTextAmountTextView = (TextView) dialogView
+                .findViewById(R.id.pop_feedback_text_num);
+        popTextAmountTextView.setOnClickListener(new OnClickListener() {
 
-			}
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popContentEditText.setText("");
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
+            }
+        });
 
-			}
+        popContentEditText.addTextChangedListener(new TextWatcher() {
 
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+                popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
+                popTextAmountTextView.setText(popContentEditText.getText()
+                        .length() + " x");
 
-			}
-		});
+            }
 
-		popTitleTextView.setText("反馈");
-		popSureButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+            }
 
-				String content = popContentEditText.getEditableText()
-						.toString();
-				defaultConversation.addUserReply(content);
-				replyDialog.dismiss();
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
 
-				mDataManager.doLoadingStart("反馈发送中...");
+            }
+        });
 
-				sync();
-			}
-		});
-		popCancelButton.setOnClickListener(new OnClickListener() {
+        popTitleTextView.setText("反馈");
+        popSureButton.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				replyDialog.cancel();
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
 
-			}
-		});
+                String content = popContentEditText.getEditableText()
+                        .toString();
+                defaultConversation.addUserReply(content);
+                replyDialog.dismiss();
 
-		replyDialog = new Dialog(this, R.style.dialog);
+                mDataManager.doLoadingStart("反馈发送中...");
 
-		replyDialog.setContentView(dialogView);
-		replyDialog.show();
+                sync();
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
 
-	}
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                replyDialog.cancel();
 
-	void sync() {
-		Conversation.SyncListener listener = new Conversation.SyncListener() {
+            }
+        });
 
-			@Override
-			public void onSendUserReply(List<Reply> replyList) {
-				popContentEditText.setText("");
-				mDataManager.doLoadingEnd();
+        replyDialog = new Dialog(this, R.style.dialog);
 
-				Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT)
-						.show();
+        replyDialog.setContentView(dialogView);
+        replyDialog.show();
 
-			}
+    }
 
-			@Override
-			public void onReceiveDevReply(List<DevReply> replyList) {
-			}
-		};
-		defaultConversation.sync(listener);
-	}
+    private void sync() {
+        Conversation.SyncListener listener = new Conversation.SyncListener() {
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
+            @Override
+            public void onSendUserReply(List<Reply> replyList) {
+                popContentEditText.setText("");
+                mDataManager.doLoadingEnd();
 
-	public void onResume() {
-		super.onResume();
-		MobclickAgent.onResume(this);
-	}
+                Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT)
+                        .show();
 
-	public void onPause() {
-		super.onPause();
-		MobclickAgent.onPause(this);
-	}
+            }
 
-	private void initDataChangeListener() {
+            @Override
+            public void onReceiveDevReply(List<DevReply> replyList) {
+            }
+        };
+        defaultConversation.sync(listener);
+    }
 
-		mGlobalContext = ((GlobalContext) getApplicationContext());
-		mDataManager = mGlobalContext.getDataManager();
+    public void onStart() {
+        super.onStart();
 
-		mDataManager.addAutoLoginListener(new AutoLoginListener() {
+    }
 
-			@Override
-			public void autoLogin() {
-				// TODO Auto-generated method stub
-				MainActivity.this.autoLogin();
+    @Override
+    protected void onStop() {
+        SharedPreferenceManager.putActivityRunning(this, false);
+        super.onStop();
 
-			}
+    }
 
-			public void onAutoLoginEnd() {
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 
-			}
-		});
-		mDataManager.addUserGroupListener(new UserGroupListener() {
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
-			@Override
-			public void onGroupChangeEnd() {
-				// TODO Auto-generated method stub
 
-			}
+    private void initListener(final ContentFragment fragment) {
 
-			@Override
-			public void deleteUser(int index) {
-				// TODO Auto-generated method stub
+        fragment.setMyPageChangeListener(new MyPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (fragment.isFirst()) {
+                    mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                } else if (fragment.isEnd()) {
+                    mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+                } else {
+                    // mSlidingMenu.setCanSliding(false, false);
+                }
+            }
+        });
+    }
 
-			}
+    private void initDataChangeListener() {
 
-			@Override
-			public void onAddUser() {
-				// TODO Auto-generated method stub
+        mGlobalContext = ((GlobalContext) getApplicationContext());
+        mDataManager = mGlobalContext.getDataManager();
+        mDataManager.updateUserGroup();
 
-			}
-		});
-		mDataManager.addLoadingListener(new DialogListener() {
+        mDataManager.addAutoLoginListener(new AutoLoginListener() {
 
-			@Override
-			public void onLoad(String loaingText) {
-				// TODO Auto-generated method stub
+            @Override
+            public void autoLogin() {
+                // TODO Auto-generated method stub
+                MainActivity.this.autoLogin();
 
-				if (MainActivity.this != null
-						&& !MainActivity.this.isFinishing()) {
+            }
 
-					if (popDialog != null) {
-						popDialog.dismiss();
+            public void onAutoLoginEnd() {
 
-						popDialog = Util.createLoadingDialog(MainActivity.this,
-								loaingText, false);
-					} else {
+            }
+        });
+        mDataManager.addUserGroupListener(new UserGroupListener() {
 
-						popDialog = Util.createLoadingDialog(MainActivity.this,
-								loaingText, false);
-					}
-					popDialog.show();
+            @Override
+            public void onGroupChangeEnd() {
+                // TODO Auto-generated method stub
 
-				}
+            }
 
-			}
+            @Override
+            public void deleteUser(int index) {
+                // TODO Auto-generated method stub
 
-			@Override
-			public void onFinishLoad() {
-				// TODO Auto-generated method stub
-				if (popDialog != null) {
+            }
 
-					popDialog.dismiss();
-					popDialog = null;
-				}
-
-			}
-
-			@Override
-			public void onPopEnsureDialog(boolean cancelVisible,
-					boolean cancelable, String titleText,
-					DialogSureClickListener dialogSureClickListener) {
-				// TODO Auto-generated method stub
-
-				try {
-					if (popDialog != null) {
-						popDialog.dismiss();
-					} else {
-						popDialog = Util.createEnsureDialog(
-								dialogSureClickListener, cancelVisible,
-								MainActivity.this, titleText, true);
-
-					}
-					popDialog.show();
-
-				} catch (Exception exception) {
-
-				}
-
-			}
-
-			@Override
-			public void onDismissAllDialog() {
-				// TODO Auto-generated method stub
-
-				if (popDialog != null) {
-					popDialog.dismiss();
-					popDialog = null;
-				}
-			}
-		});
-	}
-
-	private long lastBackKeyTouchTime = 0;
-
-	@SuppressLint("ShowToast")
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// 按下键盘上返回按钮
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (System.currentTimeMillis() - lastBackKeyTouchTime < 3000) {
-				finish();
-			} else {
-				Toast.makeText(getApplicationContext(), "再按一次返回键退出应用",
-						Toast.LENGTH_SHORT).show();
-				lastBackKeyTouchTime = System.currentTimeMillis();
-			}
-			return true;
-		} else {
-			return super.onKeyDown(keyCode, event);
-		}
-	}
-
-	private void initCache() {
-		mDataManager.createImageCache(getApplicationContext());
-
-	}
-
-	private void autoLogin() {
-
-		if (mDataManager.getUserGroup().size() <= 0) {
-			return;
-		}
-		mDataManager.setCurrentPosition(0);
-
-		mDataManager.getWechatManager().login(
-				mDataManager.getCurrentPosition(), true,
-				new OnActionFinishListener() {
-
-					@Override
-					public void onFinish(Object object) {
-						// TODO Auto-generated method stub
-						mDataManager.getWechatManager().getUserProfile(true,
-								mDataManager.getCurrentPosition(),
-								new OnActionFinishListener() {
-
-									@Override
-									public void onFinish(Object object) {
-										// TODO Auto-generated method stub
-										String referer = (String) object;
-
-										mDataManager
-												.getWechatManager()
-												.getUserImgWithReferer(
-														mDataManager
-																.getCurrentPosition(),
-														false,
-														null,
-														new OnActionFinishListener() {
-
-															@Override
-															public void onFinish(
-																	Object object) {
-																// TODO
-																// Auto-generated
-																// method stub
-
-															}
-														}, referer);
-										mDataManager
-												.getWechatManager()
-												.getMassData(
-														mDataManager
-																.getCurrentPosition(),
-														true,
-														new OnActionFinishListener() {
-
-															@Override
-															public void onFinish(
-																	Object object) {
-																// TODO
-																// Auto-generated
-																// method stub
-
-																mDataManager
-																		.getWechatManager()
-																		.getNewMessageList(
-																				true,
-																				mDataManager
-																						.getCurrentPosition(),
-																				new OnActionFinishListener() {
-
-																					@Override
-																					public void onFinish(
-																							Object object) {
-																						// TODO
-																						// Auto-generated
-																						// method
-																						// stub
-																						Boolean changed = (Boolean) object;
-																						mDataManager
-																								.doMessageGet(changed);
-																						mDataManager
-																								.doAutoLoginEnd();
-
-																					}
-																				});
-															}
-														});
-
-									}
-								});
-
-					}
-				});
-
-	}
-
-	private void initListener(final ContentFragment fragment) {
-		fragment.setMyPageChangeListener(new MyPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				if (fragment.isFirst()) {
-					// mSlidingMenu.setCanSliding(true, false);
-				} else if (fragment.isEnd()) {
-					// mSlidingMenu.setCanSliding(false, true);
-				} else {
-					// mSlidingMenu.setCanSliding(false, false);
-				}
-			}
-		});
-	}
-
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == LeftFragment.START_ACTIVITY_LOGIN) {
-			if (resultCode == RESULT_OK) {
-
-				mDataManager.updateUserGroup();
-				mDataManager.doAddUser();
-				mDataManager.doGroupChangeEnd();
-
-			} else if (resultCode == RESULT_CANCELED) {
-
-			}
-		}
-	}
-
-	public interface ShowMenuListener {
-		public void showLeftMenu();
-
-		public void showRightMenu();
-
-	}
+            @Override
+            public void onAddUser() {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
+            @Override
+            public void onMessageGet(boolean changed) {
+                SharedPreferenceManager.putLastNewMessage(MainActivity.this, 0);
+
+            }
+        });
+        mDataManager.addLoadingListener(new DialogListener() {
+
+            @Override
+            public void onLoad(String loaingText) {
+                // TODO Auto-generated method stub
+
+                if (MainActivity.this != null
+                        && !MainActivity.this.isFinishing()) {
+
+                    if (popDialog != null) {
+                        popDialog.dismiss();
+
+                        popDialog = Util.createLoadingDialog(MainActivity.this,
+                                loaingText, false);
+                    } else {
+
+                        popDialog = Util.createLoadingDialog(MainActivity.this,
+                                loaingText, false);
+                    }
+                    popDialog.show();
+
+                }
+
+            }
+
+            @Override
+            public void onFinishLoad() {
+                // TODO Auto-generated method stub
+                if (popDialog != null) {
+
+                    popDialog.dismiss();
+                    popDialog = null;
+                }
+
+            }
+
+            @Override
+            public void onPopEnsureDialog(boolean cancelVisible,
+                                          boolean cancelable, String titleText,
+                                          DialogSureClickListener dialogSureClickListener) {
+                // TODO Auto-generated method stub
+
+                try {
+                    if (popDialog != null) {
+                        popDialog.dismiss();
+                    } else {
+                        popDialog = Util.createEnsureDialog(
+                                dialogSureClickListener, cancelVisible,
+                                MainActivity.this, titleText, true);
+
+                    }
+                    popDialog.show();
+
+                } catch (Exception exception) {
+
+                }
+
+            }
+
+            @Override
+            public void onDismissAllDialog() {
+                // TODO Auto-generated method stub
+
+                if (popDialog != null) {
+                    popDialog.dismiss();
+                    popDialog = null;
+                }
+            }
+        });
+    }
+
+    private long lastBackKeyTouchTime = 0;
+
+    @SuppressLint("ShowToast")
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 按下键盘上返回按钮
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - lastBackKeyTouchTime < 3000) {
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "再按一次返回键退出应用",
+                        Toast.LENGTH_SHORT).show();
+                lastBackKeyTouchTime = System.currentTimeMillis();
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    private void initCache() {
+        mDataManager.createImageCache(getApplicationContext());
+
+    }
+
+    private void autoLogin() {
+
+        if (mDataManager.getUserGroup().size() <= 0) {
+            return;
+        }
+
+        mDataManager.getWechatManager().login(
+                mDataManager.getCurrentPosition(), true,true,
+                new OnActionFinishListener() {
+
+
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        // TODO Auto-generated method stub
+                        mDataManager.getWechatManager().getUserProfile(true,true,
+                                mDataManager.getCurrentPosition(),
+                                new OnActionFinishListener() {
+
+                                    @Override
+                                    public void onFinish(int code, Object object) {
+                                        // TODO Auto-generated method stub
+                                        String referer = (String) object;
+
+                                        mDataManager
+                                                .getWechatManager()
+                                                .getUserImgWithReferer(
+                                                        mDataManager
+                                                                .getCurrentPosition(),
+                                                        false,
+                                                        null,
+                                                        new OnActionFinishListener() {
+
+
+                                                            @Override
+                                                            public void onFinish(
+                                                                    int code, Object object) {
+                                                                // TODO
+                                                                // Auto-generated
+                                                                // method stub
+
+                                                            }
+                                                        }, referer);
+                                        mDataManager
+                                                .getWechatManager()
+                                                .getMassData(
+                                                        mDataManager
+                                                                .getCurrentPosition(),
+                                                        true,
+                                                        new OnActionFinishListener() {
+
+
+                                                            @Override
+                                                            public void onFinish(
+                                                                    int code, Object object) {
+                                                                // TODO
+                                                                // Auto-generated
+                                                                // method stub
+
+                                                                mDataManager
+                                                                        .getWechatManager()
+                                                                        .getNewMessageList(
+                                                                                true,
+                                                                                mDataManager
+                                                                                        .getCurrentPosition(),
+                                                                                new OnActionFinishListener() {
+
+
+                                                                                    @Override
+                                                                                    public void onFinish(
+                                                                                            int code, Object object) {
+                                                                                        // TODO
+                                                                                        // Auto-generated
+                                                                                        // method
+                                                                                        // stub
+                                                                                        Boolean changed = (Boolean) object;
+                                                                                        mDataManager
+                                                                                                .doMessageGet(changed);
+                                                                                        mDataManager
+                                                                                                .doAutoLoginEnd();
+
+                                                                                    }
+                                                                                });
+                                                            }
+                                                        });
+
+                                    }
+                                });
+
+                    }
+                });
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == UserListFragment.START_ACTIVITY_LOGIN) {
+            if (resultCode == RESULT_OK) {
+
+                mDataManager.updateUserGroup();
+                mDataManager.doAddUser();
+                mDataManager.doGroupChangeEnd();
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+    public interface ShowMenuListener {
+        public void showLeftMenu();
+
+        public void showRightMenu();
+
+    }
 
 }

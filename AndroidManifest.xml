@@ -1,76 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.suan.weclient"
-	android:versionCode="2"
-	android:versionName="1.1" >
-	<uses-sdk
-		android:minSdkVersion="8"
-		android:targetSdkVersion="17" />
-	<application
-		android:name="com.suan.weclient.util.GlobalContext"
-		android:allowBackup="true"
-		android:icon="@drawable/icon"
-		android:label="@string/app_name"
-		android:theme="@style/AppTheme" >
-		<activity
-			android:name="com.suan.weclient.activity.SplashActivity"
-			android:label="@string/app_name"
-			android:screenOrientation="portrait"
-			android:theme="@style/Theme.Transparent" >
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".activity.LoginActivity"
-			android:screenOrientation="portrait"
-			android:windowSoftInputMode="adjustResize" >
-		</activity>
-		<activity
-			android:name=".activity.AboutActivity"
-			android:screenOrientation="portrait"
-			android:windowSoftInputMode="adjustResize" >
-		</activity>
-		<activity
-			android:name=".activity.MainActivity"
-			android:theme="@style/Theme.Sherlock.Light"
-			android:screenOrientation="portrait" >
-		</activity>
-		<activity
-			android:name=".activity.FansListActivity"
-			android:screenOrientation="portrait" >
-		</activity>
-		<activity
-			android:name=".activity.ChatActivity"
-			android:windowSoftInputMode="adjustResize"
-			android:screenOrientation="portrait" >
-		</activity>
-		<activity
-			android:name=".activity.ShowImgActivity"
-			android:screenOrientation="portrait"
-			android:theme="@style/Theme.Transparent" >
-		</activity>
-		<!-- Caution! Do not change this app key. It is only for demo usage. -->
-		<meta-data
-			android:name="UMENG_APPKEY"
-			android:value="526cc84556240b8eda11fcd5" >
-		</meta-data>
-		<meta-data
-			android:name="UMENG_CHANNEL"
-			android:value="own" />
-		<service
-			android:name="com.umeng.common.net.DownloadingService"
-			android:process=":DownloadingService" >
-		</service>
-	</application>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
-	</uses-permission>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
-	</uses-permission>
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
-	</uses-permission>
+    package="com.suan.weclient"
+    android:versionCode="2"
+    android:versionName="1.1">
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="17" />
+    <application
+        android:name="com.suan.weclient.util.GlobalContext"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.suan.weclient.activity.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.FansListActivity"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".activity.ChatActivity"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.ShowImgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"></activity>
+        <!-- Caution! Do not change this app key. It is only for demo usage. -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="526cc84556240b8eda11fcd5"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="own" />
+
+        <!-- 为此应用私有的独立进程 -->
+        <service
+            android:process=":AlarmSysService"
+            android:name="com.suan.weclient.pushService.AlarmSysService"></service>
+        <!-- 为此应用私有的独立进程 -->
+        <service
+            android:process=":PushService"
+            android:name="com.suan.weclient.pushService.PushService"></service>
+        <!-- 监听系统启动广播 -->
+        <receiver android:name="com.suan.weclient.pushService.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
+        </receiver>
+
+
+        <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+    </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>
 </manifest>

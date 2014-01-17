@@ -21,11 +21,17 @@ public class FansBean {
 	public String getRemarkName(){
 		return remark_name;
 	}
-		
+
+    public void setRemarkName(String remarkName){
+        this.remark_name = remarkName;
+    }
 	public String getGoupId(){
 		return group_id;
 	}
-	
+
+    public void setGroupId(String groupId){
+        this.group_id = groupId;
+    }
 	public void setReferer(String referer){
 		this.referer = referer;
 	}

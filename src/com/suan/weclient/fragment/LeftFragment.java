@@ -15,330 +15,247 @@
  */
 package com.suan.weclient.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator;
+import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
 import com.suan.weclient.R;
-import com.suan.weclient.activity.LoginActivity;
-import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.DataManager.AutoLoginListener;
-import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
-public class LeftFragment extends Fragment implements OnItemClickListener,
-		OnItemLongClickListener {
+public class LeftFragment extends Fragment {
 
-	public static int START_ACTIVITY_LOGIN = 0;
+    private FragmentManager mFragmentManager;
+    private ProfileFragment profileFragment;
+    private UserListFragment userListFragment;
+    private View view;
+    private RelativeLayout headLayout;
+    private ImageView headImageView;
+    private TextView headTextView;
+    private LinearLayout userListLayout, profileLayout;
 
-	private View view;
-	private ListView mListView;
-	private RelativeLayout addUserButton;
+    private ImageView showListView;
+    private DataManager mDataManager;
 
-	private MyAdapter myAdapter;
-	private DataManager mDataManager;
-	private ImageView profileImageView;
+    public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
+        mFragmentManager = fragmentManager;
+        mDataManager = dataManager;
+    }
 
-	public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
-		mDataManager = dataManager;
-	}
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.left_layout, null);
+        initFragments();
+        initWidgets();
+        initListener();
 
-		view = inflater.inflate(R.layout.user_group_layout, null);
-		initWidgets();
-		initListener();
+        return view;
+    }
 
-		return view;
-	}
+    private void initFragments() {
+        profileFragment = new ProfileFragment(mDataManager);
+        userListFragment = new UserListFragment(mDataManager);
 
-	private void initListener() {
-		mDataManager.addAutoLoginListener(new AutoLoginListener() {
-			
-			@Override
-			public void onAutoLoginEnd() {
-				// TODO Auto-generated method stub
-				for(int i = 0;i<mListView.getChildCount();i++){
-					mListView.setItemChecked(i, false);
-				}
-				mListView.setItemChecked(mDataManager.getCurrentPosition(), true);
-				
-			}
-			
-			@Override
-			public void autoLogin() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		mDataManager.addUserGroupListener(new UserGroupListener() {
 
-			@Override
-			public void onGroupChangeEnd() {
-				// TODO Auto-generated method stub
+        FragmentTransaction t = mFragmentManager
+                .beginTransaction();
 
-				updateList();
-			}
+        t.replace(R.id.left_layout_profile, profileFragment);
+        t.replace(R.id.left_layout_user_list, userListFragment);
 
-			@Override
-			public void onAddUser() {
-				// TODO Auto-generated method stub
 
-			}
+        t.commit();
+    }
 
-			@Override
-			public void deleteUser(int index) {
-				// TODO Auto-generated method stub
+    private void initListener() {
 
-			}
-		});
 
-	}
+        mDataManager.setUserListControlListener(new ProfileFragment.UserListControlListener() {
+            @Override
+            public void onUserListShow() {
 
-	private void initWidgets() {
+                ValueHolder yValueHolder = new ValueHolder();
+                ObjectAnimator yObjectAnimator = ObjectAnimator.ofFloat(yValueHolder, "y", -userListLayout.getHeight(), 0).setDuration(600);
+               yObjectAnimator.addUpdateListener(new YUpdateListener());
+                yObjectAnimator.start();
 
-		mListView = (ListView) view.findViewById(R.id.left_listview);
 
-		myAdapter = new MyAdapter();
-		mListView.setAdapter(myAdapter);
-		mListView.setOnItemClickListener(this);
-		mListView.setOnItemLongClickListener(this);
+                ValueHolder degreeValueHolder = new ValueHolder();
+                ObjectAnimator degreeObjectAnimator = ObjectAnimator.ofFloat(degreeValueHolder, "degree", 0, 180).setDuration(600);
+                degreeObjectAnimator.addUpdateListener(new DegreeUpdateListener());
+                degreeObjectAnimator.start();
 
-		myAdapter.setSelectPosition(0);
+            }
 
-		addUserButton = (RelativeLayout) view
-				.findViewById(R.id.left_button_add_user);
-		addUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onUserListDismiss() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent jumbIntent = new Intent();
-				jumbIntent.setClass(getActivity(), LoginActivity.class);
-				getActivity().startActivityForResult(jumbIntent,
-						START_ACTIVITY_LOGIN);
 
-			}
-		});
-	}
+                ValueHolder yValueHolder = new ValueHolder();
+                ObjectAnimator yObjectAnimation = ObjectAnimator.ofFloat(yValueHolder, "y", 0, -userListLayout.getHeight()).setDuration(600);
+               yObjectAnimation.addUpdateListener(new YUpdateListener());
+                yObjectAnimation.start();
+                ValueHolder degreeValueHolder = new ValueHolder();
+                ObjectAnimator degreeObjectAnimator = ObjectAnimator.ofFloat(degreeValueHolder, "degree", 180, 0).setDuration(600);
+                degreeObjectAnimator.addUpdateListener(new DegreeUpdateListener());
+                degreeObjectAnimator.start();
 
-	public void updateList() {
-		myAdapter.notifyDataSetChanged();
+            }
+        });
 
-	}
+        mDataManager.addProfileGetListener(new DataManager.ProfileGetListener() {
+            @Override
+            public void onGet(UserBean userBean) {
 
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+                headTextView.setText(userBean.getNickname());
 
-	private class MyAdapter extends BaseAdapter {
 
-		private int selectPosition;
+                Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
+                        ImageCacheManager.CACHE_USER_PROFILE
+                                + mDataManager.getUserGroup().get(mDataManager.getCurrentPosition())
+                                .getUserName());
+                if (imgBitmap != null) {
+                    headImageView.setImageBitmap(imgBitmap);
 
-		@Override
-		public int getCount() {
-			return mDataManager.getUserGroup().size();
-		}
+                } else {
+                    mDataManager.getWechatManager().getUserImgDirectly(false,false,
+                            mDataManager.getCurrentPosition(), headImageView, new OnActionFinishListener() {
 
-		@Override
-		public Object getItem(int position) {
-			return mDataManager.getUserGroup().get(position);
-		}
+                        @Override
+                        public void onFinish(int code,Object object) {
+                            // TODO Auto-generated method stub
+                            Bitmap nowUserBitmap = (Bitmap) object;
+                            mDataManager.getCacheManager().putBitmap(
+                                    ImageCacheManager.CACHE_USER_PROFILE
+                                            + mDataManager.getUserGroup()
+                                            .get(mDataManager.getCurrentPosition())
+                                            .getUserName(),
+                                    nowUserBitmap,true);
 
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+                        }
+                    });
 
-		public void setSelectPosition(int position) {
-			selectPosition = position;
-		}
+                }
 
-		@Override
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
-			View row = LayoutInflater.from(getActivity()).inflate(
-					R.layout.user_group_item, null);
-			TextView nowUserNickname = (TextView) row
-					.findViewById(R.id.user_group_text_user_name);
-			ImageView nowUserImg = (ImageView) row
-					.findViewById(R.id.user_group_img_profile);
+            }
+        });
+    }
 
-			Bitmap imgBitmap = mDataManager.getCacheManager().getDiskBitmap(
-					ImageCacheManager.CACHE_USER_PROFILE
-							+ mDataManager.getUserGroup().get(position)
-									.getUserName());
-			if (imgBitmap != null) {
-				nowUserImg.setImageBitmap(imgBitmap);
+    private void initWidgets() {
 
-			} else {
-				mDataManager.getWechatManager().getUserImgDirectly(false,
-						position, nowUserImg, new OnActionFinishListener() {
 
-							@Override
-							public void onFinish(Object object) {
-								// TODO Auto-generated method stub
-								Bitmap nowUserBitmap = (Bitmap) object;
-								mDataManager.getCacheManager().putDiskBitmap(
-										ImageCacheManager.CACHE_USER_PROFILE
-												+ mDataManager.getUserGroup()
-														.get(position)
-														.getUserName(),
-										nowUserBitmap);
+        headLayout = (RelativeLayout) view.findViewById(R.id.left_layout_head);
 
-							}
-						});
+        headLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-			}
+                if (v.isSelected()) {
+                    showUserList();
+                    v.setSelected(false);
+                } else {
+                    dismissUserlist();
+                    v.setSelected(true);
+                }
+            }
+        });
 
-			nowUserNickname.setText(mDataManager.getUserGroup().get(position)
-					.getNickname()
-					+ "");
-			if (position == selectPosition) {
-				// row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
-				nowUserNickname.setSelected(true);
-			}
-			return row;
-		}
 
-	}
+        headImageView = (ImageView) view.findViewById(R.id.left_img_profile);
+        headTextView = (TextView) view.findViewById(R.id.left_text_profile);
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view,
-			final int position, long id) {
-		profileImageView = (ImageView) view
-				.findViewById(R.id.user_group_img_profile);
-		mDataManager.setCurrentPosition(position);
+        userListLayout = (LinearLayout) view.findViewById(R.id.left_layout_user_list);
 
-		mDataManager.doLoadingStart("登录...");
 
-		mDataManager.getWechatManager().login(position, false,
-				new OnActionFinishListener() {
+        profileLayout = (LinearLayout) view.findViewById(R.id.left_layout_profile);
 
-					@Override
-					public void onFinish(Object object) {
-						// TODO Auto-generated method stub
-						mDataManager.getWechatManager().getUserProfile(true,
-								position, new OnActionFinishListener() {
+        showListView = (ImageView) view.findViewById(R.id.left_button_show_list);
 
-									@Override
-									public void onFinish(Object object) {
-										// TODO Auto-generated method stub
-										String referer = (String) object;
 
-										mDataManager
-												.getWechatManager()
-												.getUserImgWithReferer(
-														position,
-														true,
-														profileImageView,
-														new OnActionFinishListener() {
 
-															@Override
-															public void onFinish(
-																	Object object) {
-																// TODO
-																// Auto-generated
-																// method stub
 
-																mDataManager
-																		.getWechatManager()
-																		.getMassData(
-																				position,
-																				true,
-																				new OnActionFinishListener() {
+    }
 
-																					@Override
-																					public void onFinish(
-																							Object object) {
-																						// TODO
-																						// Auto-generated
-																						// method
-																						// stub
+    public class ValueHolder {
+        private float x = 0;
+        private float y = 0;
+        private float degree = 0;
 
-																						mDataManager
-																								.getWechatManager()
-																								.getNewMessageList(
-																										true,
-																										position,
-																										new OnActionFinishListener() {
+        public float getX() {
+            return x;
+        }
 
-																											@Override
-																											public void onFinish(
-																													Object object) {
-																												// TODO
-																												// Auto-generated
-																												// method
-																												// stub
-																												Boolean changed = (Boolean)object;
-																												mDataManager.doMessageGet(changed);
+        public void setX(float x) {
+            this.x = x;
+        }
 
-																											}
-																										});
-																					}
-																				});
+        public float getY() {
+            return y;
+        }
 
-															}
-														}, referer);
+        public void setY(float y) {
+            this.y = y;
+        }
 
-									}
-								});
+        public void setDegree(float degree){
+            this.degree = degree;
+        }
 
-					}
-				});
+        public float getDegree(){
+            return this.degree;
+        }
+    }
 
-	}
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View view,
-			final int position, long id) {
-		// TODO Auto-generated method stub
+    public class DegreeUpdateListener implements ValueAnimator.AnimatorUpdateListener {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            Float value = (Float) animation.getAnimatedValue();
+            float degree = (float) value;
+            int toDegree = (int) degree;
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-				.setTitle("删除该用户？")
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            showListView.setRotationX(showListView.getWidth()/2- Util.dipToPx(15,getResources()));
+            showListView.setRotationY(showListView.getHeight()/2);
+            showListView.setRotation(toDegree);
+        }
+    }
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated
-						// method stub
-						SharedPreferenceManager.deleteUser(getActivity(),
-								mDataManager.getUserGroup().get(position)
-										.getUserName());
-						mDataManager.updateUserGroup();
-						updateList();
-					}
-				})
-				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+    public class YUpdateListener implements ValueAnimator.AnimatorUpdateListener {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            Float value = (Float) animation.getAnimatedValue();
+            float top = (float) value;
+            int toTop = (int) top;
+            userListLayout.setTop(toTop);
+        }
+    }
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
+    private void showUserList() {
 
-					}
-				});
-		builder.show();
+        mDataManager.getUserListControlListener().onUserListDismiss();
+    }
 
-		return false;
-	}
+    private void dismissUserlist() {
+
+        mDataManager.getUserListControlListener().onUserListShow();
+    }
 
 }

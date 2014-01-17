@@ -9,7 +9,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:divider="@null"
-		android:background="#ffffff"
-		ptr:ptrHeaderBackground="#ffffff"
+		android:background="#e7e7e7"
+		ptr:ptrHeaderBackground="#e7e7e7"
 		ptr:ptrMode="both" />
 </LinearLayout>

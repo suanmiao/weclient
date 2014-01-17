@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ShowImgActivity;
@@ -56,23 +50,23 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
         initListener();
     }
 
-    private void initListener(){
+    private void initListener() {
         mDataManager.addChatNewItemGetListener(new DataManager.ChatNewItemGetListener() {
             @Override
             public void onChatItemGet(ArrayList<MessageBean> getMessage, String msgId) {
                 int index = -1;
-                for(int i = 0;i<getMessageItems().size();i++){
+                for (int i = 0; i < getMessageItems().size(); i++) {
                     MessageBean nowMessage = getMessageItems().get(i);
-                    if(nowMessage.getId().equals(msgId)){
+                    if (nowMessage.getId().equals(msgId)) {
                         index = i;
-                        Log.e("getItem","hit"+i);
+                        Log.e("getItem", "hit" + i);
 
                     }
                 }
-                if(index!=-1){
+                if (index != -1) {
                     getMessageItems().remove(index);
-                    for(int i = 0;i<getMessage.size();i++){
-                        getMessageItems().add(index,getMessage.get(i));
+                    for (int i = 0; i < getMessage.size(); i++) {
+                        getMessageItems().add(index, getMessage.get(i));
                     }
 
                 }
@@ -157,24 +151,10 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         }
 
-		/*convertView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mDataManager.getUserGroup().size() == 0) {
-
-				} else {
-
-				}
-
-			}
-		});*/
-
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.e("click","index"+position);
+                Log.e("click", "index" + position);
                 int messageSendState = getMessageItems().get(position).getSendState();
                 switch (messageSendState) {
                     case MessageBean.MESSAGE_SEND_FAILED:
@@ -209,11 +189,15 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
     public class ItemViewHolder {
 
+        private ImageView profileImageView;
+        private TextView timeTextView;
+
+        private RelativeLayout contentLayout;
         private ImageView contentImageView;
         private TextView contentTextView;
-        private ImageView profileImageView;
-        private TextView profileTextView;
-        private TextView timeTextView;
+
+        private ImageView voicePlayView;
+        private TextView voiceInfoTextView;
 
         public ItemViewHolder(View parentView, final int position) {
 
@@ -222,12 +206,11 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_OWNER_HER * 10
                         + MessageBean.MESSAGE_TYPE_TEXT:
 
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_text_layout_content);
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_text_text_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_her_text_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_text_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_text_text_time);
                     contentTextView.setText(getMessageItems().get(position)
@@ -237,12 +220,11 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_OWNER_HER * 10
                         + MessageBean.MESSAGE_TYPE_IMG:
 
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_img_layout_content);
                     contentImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_her_img_img_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_her_img_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_img_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_img_text_time);
 
@@ -251,25 +233,23 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_OWNER_HER * 10
                         + MessageBean.MESSAGE_TYPE_VOICE:
 
-                    contentImageView = (ImageView) parentView
-                            .findViewById(R.id.chat_item_her_voice_img_content);
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_voice_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_her_voice_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_voice_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_voice_text_time);
+                    voicePlayView = (ImageView) parentView.findViewById(R.id.chat_item_her_voice_button_play);
+                    voiceInfoTextView = (TextView) parentView.findViewById(R.id.chat_item_her_voice_text_info);
                     break;
 
                 case MessageBean.MESSAGE_OWNER_ME * 10
                         + MessageBean.MESSAGE_TYPE_TEXT:
 
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_me_text_layout_content);
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_me_text_text_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_me_text_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_me_text_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_me_text_text_time);
                     contentTextView.setText(getMessageItems().get(position)
@@ -279,12 +259,11 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_OWNER_ME * 10
                         + MessageBean.MESSAGE_TYPE_IMG:
 
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_me_img_layout_content);
                     contentImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_me_img_img_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_me_img_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_me_img_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_me_img_text_time);
 
@@ -293,24 +272,23 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_OWNER_ME * 10
                         + MessageBean.MESSAGE_TYPE_VOICE:
 
-                    contentImageView = (ImageView) parentView
-                            .findViewById(R.id.chat_item_me_voice_img_content);
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_me_voice_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_me_voice_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_me_voice_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_me_voice_text_time);
+                    voicePlayView = (ImageView) parentView.findViewById(R.id.chat_item_me_voice_button_play);
+                    voiceInfoTextView = (TextView) parentView.findViewById(R.id.chat_item_me_voice_text_info);
+
                     break;
 
                 default:
 
+                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_text_layout_content);
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_text_text_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.chat_item_her_text_img_profile);
-                    profileTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_text_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_text_text_time);
                     contentTextView.setText("[目前暂不支持该类型消息]");
@@ -356,44 +334,46 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         holder.timeTextView.setText(timeString);
         holder.profileImageView.setBackgroundResource(R.drawable.ic_launcher);
-        holder.profileTextView.setText(""
-                + getMessageItems().get(position).getNickName());
 
         if (getMessageItems().get(position).getSendState() >= MessageBean.MESSAGE_SEND_PREPARE && getMessageItems().get(position).getMessageSendListener() == null) {
 
             switch (getMessageItems().get(position).getSendState()) {
                 case MessageBean.MESSAGE_SEND_ING:
-                    holder.timeTextView.setBackgroundColor(Color.RED);
+                    holder.contentLayout.setSelected(true);
 
+                    Log.e("get send state", "ing");
                     break;
                 case MessageBean.MESSAGE_SEND_OK:
-                    holder.timeTextView.setBackgroundColor(Color.GREEN);
+                    holder.contentLayout.setSelected(false);
+                    Log.e("send state", "ok");
 
                     break;
                 case MessageBean.MESSAGE_SEND_FAILED:
-                    holder.timeTextView.setBackgroundColor(Color.BLACK);
+                    holder.contentLayout.setSelected(true);
 
+                    Log.e("get send state", "failed");
                     break;
             }
 
 
-            getMessageItems().get(position).setMessageSendListener(holder,new MessageBean.MessageSendListener() {
+            getMessageItems().get(position).setMessageSendListener(holder, new MessageBean.MessageSendListener() {
                 @Override
-                public void onSendFinish(int state,ItemViewHolder holder) {
-                    Log.e("get send state", "" + state);
+                public void onSendFinish(int state, ItemViewHolder holder) {
                     switch (state) {
                         case MessageBean.MESSAGE_SEND_ING:
-                            holder.timeTextView.setBackgroundColor(Color.RED);
+                            holder.contentLayout.setSelected(true);
 
+                            Log.e("get send state", "ing");
                             break;
                         case MessageBean.MESSAGE_SEND_OK:
-                            holder.timeTextView.setBackgroundColor(Color.GREEN);
+                            holder.contentLayout.setSelected(false);
                             Log.e("send state", "ok");
 
                             break;
                         case MessageBean.MESSAGE_SEND_FAILED:
-                            holder.timeTextView.setBackgroundColor(Color.BLACK);
+                            holder.contentLayout.setSelected(true);
 
+                            Log.e("get send state", "failed");
                             break;
                     }
 
@@ -410,7 +390,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                                         final int position) {
 
         boolean voiceLoaded = false;
-        if (holder.contentImageView.getTag() != null) {
+        if (holder.contentLayout.getTag() != null) {
             voiceLoaded = true;
         }
 
@@ -423,7 +403,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     new OnActionFinishListener() {
 
                         @Override
-                        public void onFinish(Object object) {
+                        public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
                             try {
 
@@ -433,7 +413,21 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                                         .getPlayLength(),
                                         getMessageItems().get(position)
                                                 .getLength());
-                                holder.contentImageView.setTag(voiceHolder);
+                                int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                                int seconds = playLength / 1000;
+                                int minutes = seconds / 60;
+                                int leaveSecond = seconds % 60;
+                                String info = "";
+                                if (minutes != 0) {
+                                    info += minutes + "'";
+
+                                }
+                                info += " " + leaveSecond + "'";
+                                holder.voiceInfoTextView.setText(info);
+
+
+                                holder.contentLayout.setTag(voiceHolder);
+
 
                             } catch (Exception exception) {
 
@@ -443,15 +437,15 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     });
 
         }
-        holder.contentImageView.setOnClickListener(new OnClickListener() {
+        holder.contentLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                if (holder.contentImageView.getTag() != null) {
+                if (holder.contentLayout.getTag() != null) {
 
-                    final VoiceHolder voiceHolder = (VoiceHolder) holder.contentImageView
+                    final VoiceHolder voiceHolder = (VoiceHolder) holder.contentLayout
                             .getTag();
                     if (voiceHolder.getPlaying()) {
                         mDataManager.getVoiceManager().stopMusic();
@@ -469,9 +463,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                                         // TODO Auto-generated method stub
 
                                         voiceHolder.setPlaying(false);
-
-                                        holder.contentImageView
-                                                .setBackgroundResource(R.drawable.ic_launcher);
+                                        holder.voicePlayView.setSelected(false);
 
                                     }
 
@@ -479,8 +471,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                                     public void onAudioStart() {
                                         // TODO Auto-generated method stub
                                         voiceHolder.setPlaying(true);
-                                        holder.contentImageView
-                                                .setBackgroundColor(Color.RED);
+                                        holder.voicePlayView.setSelected(true);
 
                                     }
 
@@ -533,7 +524,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         if (!mBusy || !imgLoaded) {
 
-            Bitmap contentBitmap = mDataManager.getCacheManager().getRomBitmap(
+            Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_CONTENT
                             + getMessageItems().get(position).getId());
             if (contentBitmap == null) {
@@ -549,15 +540,15 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                         new OnActionFinishListener() {
 
                             @Override
-                            public void onFinish(Object object) {
+                            public void onFinish(int code, Object object) {
                                 // TODO Auto-generated method stub
                                 holder.contentImageView.setTag(true);
                                 Bitmap bitmap = (Bitmap) object;
-                                mDataManager.getCacheManager().putRomBitmap(
+                                mDataManager.getCacheManager().putBitmap(
                                         ImageCacheManager.CACHE_MESSAGE_CONTENT
                                                 + getMessageItems().get(
                                                 position).getId(),
-                                        bitmap);
+                                        bitmap, true);
 
                             }
                         });
@@ -577,7 +568,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         if (!mBusy || !imgLoaded) {
 
-            Bitmap headBitmap = mDataManager.getCacheManager().getDiskBitmap(
+            Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_PROFILE
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
@@ -591,16 +582,16 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                         holder.profileImageView, new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(Object object) {
+                    public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
                         holder.profileImageView.setTag(true);
                         Bitmap bitmap = (Bitmap) object;
 
-                        mDataManager.getCacheManager().putDiskBitmap(
+                        mDataManager.getCacheManager().putBitmap(
                                 ImageCacheManager.CACHE_MESSAGE_PROFILE
                                         + getMessageItems().get(
                                         position).getFakeId(),
-                                bitmap);
+                                bitmap, true);
                     }
                 });
 
@@ -624,7 +615,8 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
             v = mListCacheManager.getView(getMessageId(position));
 
         }
- */       bindView(v, position);
+ */
+        bindView(v, position);
 
         return v;
     }
