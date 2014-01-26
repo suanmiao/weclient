@@ -94,7 +94,7 @@ public class LeftFragment extends Fragment {
 
                 ValueHolder yValueHolder = new ValueHolder();
                 ObjectAnimator yObjectAnimator = ObjectAnimator.ofFloat(yValueHolder, "y", -userListLayout.getHeight(), 0).setDuration(600);
-               yObjectAnimator.addUpdateListener(new YUpdateListener());
+                yObjectAnimator.addUpdateListener(new YUpdateListener());
                 yObjectAnimator.start();
 
 
@@ -111,7 +111,7 @@ public class LeftFragment extends Fragment {
 
                 ValueHolder yValueHolder = new ValueHolder();
                 ObjectAnimator yObjectAnimation = ObjectAnimator.ofFloat(yValueHolder, "y", 0, -userListLayout.getHeight()).setDuration(600);
-               yObjectAnimation.addUpdateListener(new YUpdateListener());
+                yObjectAnimation.addUpdateListener(new YUpdateListener());
                 yObjectAnimation.start();
                 ValueHolder degreeValueHolder = new ValueHolder();
                 ObjectAnimator degreeObjectAnimator = ObjectAnimator.ofFloat(degreeValueHolder, "degree", 180, 0).setDuration(600);
@@ -136,11 +136,11 @@ public class LeftFragment extends Fragment {
                     headImageView.setImageBitmap(imgBitmap);
 
                 } else {
-                    mDataManager.getWechatManager().getUserImgDirectly(false,false,
+                    mDataManager.getWechatManager().getUserImgDirectly(false, false,
                             mDataManager.getCurrentPosition(), headImageView, new OnActionFinishListener() {
 
                         @Override
-                        public void onFinish(int code,Object object) {
+                        public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
                             Bitmap nowUserBitmap = (Bitmap) object;
                             mDataManager.getCacheManager().putBitmap(
@@ -148,7 +148,7 @@ public class LeftFragment extends Fragment {
                                             + mDataManager.getUserGroup()
                                             .get(mDataManager.getCurrentPosition())
                                             .getUserName(),
-                                    nowUserBitmap,true);
+                                    nowUserBitmap, true);
 
                         }
                     });
@@ -168,12 +168,11 @@ public class LeftFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (v.isSelected()) {
+                int userListTop = userListLayout.getTop();
+                if (userListTop!=0) {
                     showUserList();
-                    v.setSelected(false);
                 } else {
                     dismissUserlist();
-                    v.setSelected(true);
                 }
             }
         });
@@ -188,8 +187,6 @@ public class LeftFragment extends Fragment {
         profileLayout = (LinearLayout) view.findViewById(R.id.left_layout_profile);
 
         showListView = (ImageView) view.findViewById(R.id.left_button_show_list);
-
-
 
 
     }
@@ -215,11 +212,11 @@ public class LeftFragment extends Fragment {
             this.y = y;
         }
 
-        public void setDegree(float degree){
+        public void setDegree(float degree) {
             this.degree = degree;
         }
 
-        public float getDegree(){
+        public float getDegree() {
             return this.degree;
         }
     }
@@ -232,8 +229,8 @@ public class LeftFragment extends Fragment {
             float degree = (float) value;
             int toDegree = (int) degree;
 
-            showListView.setRotationX(showListView.getWidth()/2- Util.dipToPx(15,getResources()));
-            showListView.setRotationY(showListView.getHeight()/2);
+            showListView.setRotationX(showListView.getWidth() / 2 - Util.dipToPx(15, getResources()));
+            showListView.setRotationY(showListView.getHeight() / 2);
             showListView.setRotation(toDegree);
         }
     }
@@ -250,12 +247,12 @@ public class LeftFragment extends Fragment {
 
     private void showUserList() {
 
-        mDataManager.getUserListControlListener().onUserListDismiss();
+        mDataManager.getUserListControlListener().onUserListShow();
     }
 
     private void dismissUserlist() {
 
-        mDataManager.getUserListControlListener().onUserListShow();
+        mDataManager.getUserListControlListener().onUserListDismiss();
     }
 
 }

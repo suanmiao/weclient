@@ -35,7 +35,6 @@ import com.suan.weclient.util.net.WeChatLoader.WechatMessagePageCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMessageReplyCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMessageStarCallBack;
 import com.suan.weclient.util.net.images.ImageCacheManager;
-import com.umeng.common.net.u;
 
 public class WechatManager {
 
@@ -111,13 +110,13 @@ public class WechatManager {
                                     nowBean.setSlaveSid(slaveSid);
                                     nowBean.setSlaveUser(slaveUser);
                                     switch (loginResult) {
-                                        case DataParser.LOGIN_SUCCESS:
+                                        case DataParser.PARSE_LOGIN_SUCCESS:
                                             mDataManager.doLoginSuccess(nowBean);
 
                                             onActionFinishListener.onFinish(ACTION_SUCCESS, null);
                                             return;
 
-                                        case DataParser.LOGIN_FAILED:
+                                        case DataParser.PARSE_LOGIN_FAILED:
 
                                             break;
                                     }

@@ -1,6 +1,5 @@
 package com.suan.weclient.activity;
 
-import android.app.Activity;
 import android.app.Service;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,13 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -33,8 +31,9 @@ import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 public class ChatActivity extends SherlockActivity {
 
     private ActionBar actionBar;
-    private ListView mListView;
     private ImageView backButton;
+    private TextView titleTextView;
+    private ListView mListView;
     private ChatListAdapter chatListAdapter;
     private EditText contentEditText;
     private ImageButton expressionButton;
@@ -69,17 +68,24 @@ public class ChatActivity extends SherlockActivity {
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Service.LAYOUT_INFLATER_SERVICE);
 
 
-        View customActionBarView = layoutInflater.inflate(R.layout.custom_actionbar_chat, null);
+        View customActionBarView = layoutInflater.inflate(R.layout.custom_actionbar_back_with_title, null);
 
-        backButton = (ImageView)customActionBarView. findViewById(R.id.actionbar_chat_img_back);
+        backButton = (ImageView)customActionBarView. findViewById(R.id.actionbar_back_with_title_img_back);
         backButton.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 ChatActivity.this.finish();
             }
         });
+
+        titleTextView = (TextView)customActionBarView.findViewById(R.id.actionbar_back_with_title_text_title);
+        titleTextView.setText(getResources().getString(R.string.chat));
+
+
          ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
                 ActionMenuView.LayoutParams.MATCH_PARENT);
+
         actionBar.setCustomView(customActionBarView, layoutParams);
 
 

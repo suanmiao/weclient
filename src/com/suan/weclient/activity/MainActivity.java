@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,8 +34,6 @@ import com.suan.weclient.fragment.ContentFragment.MyPageChangeListener;
 import com.suan.weclient.fragment.LeftFragment;
 import com.suan.weclient.fragment.UserListFragment;
 import com.suan.weclient.pushService.AlarmReceiver;
-import com.suan.weclient.pushService.AlarmSysService;
-import com.suan.weclient.pushService.PushService;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
@@ -43,7 +42,6 @@ import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.umeng.analytics.MobclickAgent;
@@ -72,7 +70,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private TextView popTitleTextView;
     private EditText popContentEditText;
     private TextView popTextAmountTextView;
-    private ImageButton popCancelButton, popSureButton;
+    private Button popCancelButton, popSureButton;
 
     private FeedbackAgent agent;
     private Conversation defaultConversation;
@@ -80,6 +78,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private DataManager mDataManager;
     private Dialog popDialog;
     private Dialog replyDialog;
+
 
     @Override
     public void onCreate(Bundle arg0) {
@@ -95,7 +94,7 @@ public class MainActivity extends SlidingFragmentActivity {
         initActionBar();
 
         initListener(contentFragment);
-        //autoLogin();
+        autoLogin();
 
         initUmeng();
 
@@ -133,9 +132,7 @@ public class MainActivity extends SlidingFragmentActivity {
         mSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         mSlidingMenu.setFadeDegree(0.35f);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-        // mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setMode(SlidingMenu.LEFT);
-
         mSlidingMenu.setSecondaryMenu(R.layout.right_frame);
 
         FragmentTransaction t = this.getSupportFragmentManager()
@@ -143,7 +140,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
         leftFragment = new LeftFragment(this.getSupportFragmentManager(),
                 mDataManager);
-
 
         t.replace(R.id.left_frame, leftFragment);
 
@@ -289,9 +285,9 @@ public class MainActivity extends SlidingFragmentActivity {
         popTitleTextView = (TextView) dialogView
                 .findViewById(R.id.dialog_dev_reply_text_title);
 
-        popSureButton = (ImageButton) dialogView
+        popSureButton = (Button) dialogView
                 .findViewById(R.id.dialog_dev_reply_button_reply);
-        popCancelButton = (ImageButton) dialogView
+        popCancelButton = (Button) dialogView
                 .findViewById(R.id.dialog_dev_reply_button_o);
 
         popContentTextView = (TextView) dialogView
@@ -328,19 +324,19 @@ public class MainActivity extends SlidingFragmentActivity {
 
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
+        View dialogView = inflater.inflate(R.layout.dialog_feedback_layout, null);
         popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.pop_feedback_text_title);
+                .findViewById(R.id.dialog_feedback_text_title);
 
         popContentEditText = (EditText) dialogView
-                .findViewById(R.id.pop_feedback_edit_text);
-        popSureButton = (ImageButton) dialogView
-                .findViewById(R.id.pop_feedback_button_sure);
-        popCancelButton = (ImageButton) dialogView
-                .findViewById(R.id.pop_feedback_button_cancel);
+                .findViewById(R.id.dialog_feedback_edit_text);
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_cancel);
 
         popTextAmountTextView = (TextView) dialogView
-                .findViewById(R.id.pop_feedback_text_num);
+                .findViewById(R.id.dialog_feedback_text_num);
         popTextAmountTextView.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -440,7 +436,6 @@ public class MainActivity extends SlidingFragmentActivity {
     protected void onStop() {
         SharedPreferenceManager.putActivityRunning(this, false);
         super.onStop();
-
     }
 
     public void onResume() {
@@ -452,7 +447,6 @@ public class MainActivity extends SlidingFragmentActivity {
         super.onPause();
         MobclickAgent.onPause(this);
     }
-
 
     private void initListener(final ContentFragment fragment) {
 
@@ -494,6 +488,12 @@ public class MainActivity extends SlidingFragmentActivity {
             @Override
             public void onGroupChangeEnd() {
                 // TODO Auto-generated method stub
+                mDataManager.getUserListControlListener().onUserListDismiss();
+                int userAmount = mDataManager.getUserGroup().size();
+                if(userAmount==0){
+
+                    popLoginEnsure();
+                }
 
             }
 
@@ -587,6 +587,55 @@ public class MainActivity extends SlidingFragmentActivity {
         });
     }
 
+    private void popLoginEnsure() {
+
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_ensure_text_title);
+        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_cancel);
+
+        popTitleTextView.setText("跳转到登录");
+        popContentTextView.setText("你的账户列表目前为空，跳转到登录页面？");
+        popSureButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                popDialog.cancel();
+                Intent jumbIntent = new Intent();
+				jumbIntent.setClass(MainActivity.this, LoginActivity.class);
+				startActivityForResult(jumbIntent,
+						UserListFragment.START_ACTIVITY_LOGIN);
+
+
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popDialog.cancel();
+
+            }
+        });
+
+        popDialog = new Dialog(MainActivity.this, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+        popDialog.show();
+
+    }
+
+
     private long lastBackKeyTouchTime = 0;
 
     @SuppressLint("ShowToast")
@@ -618,14 +667,14 @@ public class MainActivity extends SlidingFragmentActivity {
         }
 
         mDataManager.getWechatManager().login(
-                mDataManager.getCurrentPosition(), true,true,
+                mDataManager.getCurrentPosition(), true, true,
                 new OnActionFinishListener() {
 
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        mDataManager.getWechatManager().getUserProfile(true,true,
+                        mDataManager.getWechatManager().getUserProfile(true, true,
                                 mDataManager.getCurrentPosition(),
                                 new OnActionFinishListener() {
 
@@ -668,6 +717,9 @@ public class MainActivity extends SlidingFragmentActivity {
                                                                 // TODO
                                                                 // Auto-generated
                                                                 // method stub
+
+                                                                mDataManager.doMassDataGet(mDataManager.getCurrentUser());
+
 
                                                                 mDataManager
                                                                         .getWechatManager()

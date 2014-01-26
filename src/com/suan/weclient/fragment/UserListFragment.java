@@ -132,11 +132,12 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
+                mDataManager.getUserListControlListener().onUserListDismiss();
 				Intent jumbIntent = new Intent();
 				jumbIntent.setClass(getActivity(), LoginActivity.class);
 				getActivity().startActivityForResult(jumbIntent,
 						START_ACTIVITY_LOGIN);
-
 			}
 		});
 	}
@@ -227,6 +228,8 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 			final int position, long id) {
 		profileImageView = (ImageView) view
 				.findViewById(R.id.user_group_img_profile);
+
+        mDataManager.getUserListControlListener().onUserListDismiss();
 		mDataManager.setCurrentPosition(position);
 
 		mDataManager.doLoadingStart("登录...");

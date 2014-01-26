@@ -239,15 +239,22 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
             }
         });
 
-        popTitleTextView.setText("Edit:"
+        popTitleTextView.setText("修改备注名:"
                 + getFansItems().get(position).getNickname());
         popSureButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                String editContent = popContentEditText.getText().toString();
+                if(editContent.length()==0){
+                    Toast.makeText(mContext,"备注名不能为空",Toast.LENGTH_SHORT).show();
 
-                editRemark(position, popContentEditText.getText().toString(), holder);
+                }else{
+
+                    editRemark(position,editContent , holder);
+                }
+
 
             }
         });

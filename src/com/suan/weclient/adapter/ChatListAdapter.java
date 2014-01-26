@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +26,13 @@ import android.widget.TextView;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.util.text.SpanUtil;
 import com.suan.weclient.util.voice.VoiceHolder;
 import com.suan.weclient.util.voice.VoiceManager.AudioPlayListener;
 
@@ -213,8 +217,12 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.chat_item_her_text_img_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_her_text_text_time);
-                    contentTextView.setText(getMessageItems().get(position)
-                            .getContent());
+                    String content = getMessageItems().get(position)
+                            .getContent();
+
+                    SpanUtil.setHtmlSpanAndImgSpan(contentTextView, content, mContext);
+
+
                     break;
 
                 case MessageBean.MESSAGE_OWNER_HER * 10
@@ -252,8 +260,12 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.chat_item_me_text_img_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.chat_item_me_text_text_time);
-                    contentTextView.setText(getMessageItems().get(position)
-                            .getContent());
+                    String meContent = getMessageItems().get(position)
+                            .getContent();
+
+                    SpanUtil.setHtmlSpanAndImgSpan(contentTextView, meContent, mContext);
+
+
                     break;
 
                 case MessageBean.MESSAGE_OWNER_ME * 10
@@ -333,7 +345,6 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
         String timeString = "" + format.format(date);
 
         holder.timeTextView.setText(timeString);
-        holder.profileImageView.setBackgroundResource(R.drawable.ic_launcher);
 
         if (getMessageItems().get(position).getSendState() >= MessageBean.MESSAGE_SEND_PREPARE && getMessageItems().get(position).getMessageSendListener() == null) {
 
@@ -572,7 +583,10 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     ImageCacheManager.CACHE_MESSAGE_PROFILE
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
-                holder.profileImageView.setImageBitmap(headBitmap);
+                Bitmap roundBitmap = Util.roundCornerWithBorder(headBitmap,
+                        Util.dipToPx(30, mContext.getResources()), 15);
+
+                holder.profileImageView.setImageBitmap(roundBitmap);
 
             } else {
                 mDataManager.getWechatManager().getMessageHeadImg(
@@ -586,6 +600,10 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                         // TODO Auto-generated method stub
                         holder.profileImageView.setTag(true);
                         Bitmap bitmap = (Bitmap) object;
+                        Bitmap roundBitmap = Util.roundCornerWithBorder(bitmap,
+                        Util.dipToPx(30, mContext.getResources()), 15);
+
+                        holder.profileImageView.setImageBitmap(roundBitmap);
 
                         mDataManager.getCacheManager().putBitmap(
                                 ImageCacheManager.CACHE_MESSAGE_PROFILE

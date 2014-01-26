@@ -13,6 +13,8 @@ public class MessageBean {
     public static final int MESSAGE_TYPE_IMG = 2;
     public static final int MESSAGE_TYPE_VOICE = 3;
 
+    public static final int MESSAGE_TYPE_EMPTY = 4;
+
     private String id = "";
     private int type = -1;
     private String fakeid = "";
@@ -62,6 +64,8 @@ public class MessageBean {
 
     public static final int MESSAGE_OWNER_ME = 0;
     public static final int MESSAGE_OWNER_HER = 1;
+
+
 
 
     public String getToken() {

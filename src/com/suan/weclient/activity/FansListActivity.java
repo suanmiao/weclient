@@ -29,7 +29,6 @@ public class FansListActivity extends SherlockActivity implements
 		OnRefreshListener<ListView> {
 
     private ActionBar actionBar;
-    private ImageView backButton;
 	private PullToRefreshListView mRefreshListView;
 	private FansListAdapter fansListAdapter;
 	private DataManager mDataManager;
@@ -64,18 +63,7 @@ public class FansListActivity extends SherlockActivity implements
 
 
         CustomFansActionView customFansActionView = new CustomFansActionView(this);
-/*
-        backButton = (ImageView)customFansActionView.findViewById(R.id.actionbar_fans_img_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FansListActivity.this.finish();
-
-            }
-        });
-
- */
-        customFansActionView.init(mDataManager);
+       customFansActionView.init(mDataManager,this);
 
        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
                 ActionMenuView.LayoutParams.MATCH_PARENT);

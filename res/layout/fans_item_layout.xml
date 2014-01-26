@@ -41,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:maxLength="8"
                 android:maxLines="1"
-                android:text="养鱼了空间空间"
                 android:textColor="#333333"
                 android:textSize="12dip" />
 
@@ -51,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:maxLength="8"
                 android:maxLines="1"
-                android:text="是了的空间范德萨空间发"
                 android:textColor="#a6a6a6"
                 android:textSize="10dip" />
 

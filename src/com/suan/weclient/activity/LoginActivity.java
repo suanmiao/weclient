@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
@@ -27,7 +27,7 @@ import com.umeng.analytics.MobclickAgent;
 
 public class LoginActivity extends Activity {
 
-	private ImageButton loginButton;
+	private Button loginButton;
 	private EditText userNameEditText, passWordEditText;
 	private static final int INPUT_OK = 0;
 	private static final int INPUT_USER_NAME_PROBLEM = 1;
@@ -84,7 +84,7 @@ public class LoginActivity extends Activity {
 		loginDialog = Util.createLoadingDialog(this, "登录", false);
 		userNameEditText = (EditText) findViewById(R.id.login_edit_text_user_id);
 		passWordEditText = (EditText) findViewById(R.id.login_edit_text_pass_word);
-		loginButton = (ImageButton) findViewById(R.id.login_button_login);
+		loginButton = (Button) findViewById(R.id.login_button_login);
 		loginButton.setOnClickListener(new loginClickListener());
 
 	}
@@ -168,7 +168,7 @@ public class LoginActivity extends Activity {
 							strResult, slaveSid, slaveUser,
 							getApplicationContext());
 					switch (loginResult) {
-					case DataParser.LOGIN_SUCCESS:
+					case DataParser.PARSE_LOGIN_SUCCESS:
 						
 
 						WeChatLoader.wechatGetUserProfile(
@@ -262,7 +262,7 @@ public class LoginActivity extends Activity {
 
 						break;
 
-					case DataParser.LOGIN_FAILED:
+					case DataParser.PARSE_LOGIN_FAILED:
 
 						loginDialog.dismiss();
 

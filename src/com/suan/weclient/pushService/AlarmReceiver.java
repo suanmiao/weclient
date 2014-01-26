@@ -3,6 +3,7 @@ package com.suan.weclient.pushService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 /**
  * Created by lhk on 1/2/14.
@@ -31,6 +32,11 @@ public class AlarmReceiver extends BroadcastReceiver {
             Intent pushIntent = new Intent(context, PushService.class);
             context.stopService(alarmIntent);
             context.stopService(pushIntent);
+        }
+        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            Intent alarmIntent = new Intent(context, AlarmSysService.class);
+            context.startService(alarmIntent);
+
         }
 
         if (intent.getAction().equals(SYSTEM_BROADCAST_ACTION)) {

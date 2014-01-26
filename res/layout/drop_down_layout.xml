@@ -7,6 +7,7 @@
 		android:id="@+id/drop_down_list"
 		android:layout_width="match_parent"
 		android:layout_height="150dip"
+        android:divider="@color/drop_item_divider_color"
 		android:scrollbars="@null" >
 	</ListView>
 </LinearLayout>

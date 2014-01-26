@@ -1,5 +1,8 @@
 package com.suan.weclient.util.net;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,12 +14,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.suan.weclient.util.SharedPreferenceManager;
@@ -30,8 +33,9 @@ import com.suan.weclient.util.data.UserBean;
 
 public class DataParser {
 
-    public static final int LOGIN_SUCCESS = 1;
-    public static final int LOGIN_FAILED = 0;
+    public static final int PARSE_LOGIN_SUCCESS = 1;
+    public static final int PARSE_LOGIN_FAILED = 0;
+    public static final int RET_LOGIN_SUCCESS = 302;
     public static final int GET_MESSAGE_SUCCESS = 1;
     public static final int GET_MESSAGE_FAILED = 0;
 
@@ -134,6 +138,7 @@ public class DataParser {
                 Document document = Jsoup.parse(source);
                 Elements typeElements = document
                         .getElementsByClass("mass_send_tips");
+
                 if (typeElements.size() > 0) {
 
                     String userType = typeElements.get(0).html();
@@ -222,46 +227,67 @@ public class DataParser {
                 Document document = Jsoup.parse(source);
                 Elements scriptElements = document.getElementsByTag("script");
                 for (Element nowElement : scriptElements) {
-                    if (nowElement.html().contains("wx.cgiData ")) {
-                        JSONArray getArray = getMessageArray(nowElement.html());
-                        ArrayList<MessageBean> getMessageList = getMessageItems(
-                                getArray, userBean, referer);
-                        String latestMsgId = getLatestMsgId(nowElement.html());
-                        boolean dataChanged = false;
-                        if (listChanged(messageHolder.getMessageList(),
-                                getMessageList)) {
-                            // when the message is list changed
-                            dataChanged = true;
 
-                            messageHolder.setMessage(getMessageList);
-                            messageHolder.setLatestMsgId(latestMsgId);
+                    if (nowElement.html().contains("wx.cgiData ")) {
+                        JSONObject contentObject = getMessageArray(nowElement.html());
+                        if (contentObject != null) {
+                            try {
+                                removeEmptyMessage(messageHolder.getMessageList());
+                                JSONArray getArray = contentObject.getJSONArray("messageArray");
+                                ArrayList<MessageBean> getMessageList = getMessageItems(
+                                        getArray, userBean, referer);
+                                String latestMsgId = contentObject.get("lastMsgId").toString();
+                                boolean dataChanged = false;
+                                if (!(messageHolder.getLatestMsgId().equals(latestMsgId) && messageHolder.getContentMessageMode() == messageHolder.getNowMessageMode())) {
+                                    // when the message is list changed
+                                    dataChanged = true;
+
+                                    messageHolder.setMessage(getMessageList);
+                                    messageHolder.setLatestMsgId(latestMsgId);
+                                    messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
+                                } else {
+
+                                }
+
+
+                                if (getMessageList.size() == 0) {
+                                    Log.e("holderempty", "holderhemp");
+                                    MessageBean emptyMessage = new MessageBean();
+                                    emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
+                                    messageHolder.getMessageList().add(emptyMessage);
+
+                                }
+
+                                Message message = new Message();
+                                MessageResultHolder messageResultHolder = new MessageResultHolder();
+                                messageResultHolder.lastMsgId = latestMsgId;
+                                messageResultHolder.messageHolder = messageHolder;
+                                messageResultHolder.messageBeans = getMessageList;
+                                message.obj = messageResultHolder;
+
+                                message.arg1 = dataChanged ? 1 : 0;
+                                loadHandler.sendMessage(message);
+
+                            } catch (Exception e) {
+
+                            }
+
                         }
 
-                        Message message = new Message();
-                        MessageResultHolder messageResultHolder = new MessageResultHolder();
-                        messageResultHolder.lastMsgId = latestMsgId;
-                        messageResultHolder.messageHolder = messageHolder;
-                        messageResultHolder.messageBeans = getMessageList;
-                        message.obj = messageResultHolder;
-                        message.arg1 = dataChanged ? 1 : 0;
-
-                        loadHandler.sendMessage(message);
-
                     }
+
                 }
+
             }
 
-            private boolean listChanged(ArrayList<MessageBean> oldArrayList,
-                                        ArrayList<MessageBean> nowArrayList) {
-                if (oldArrayList.size() == 0 || nowArrayList.size() == 0) {
-                    return true;
-                }
-                if (oldArrayList.get(0).getId()
-                        .equals(nowArrayList.get(0).getId())) {
-                    return false;
-                }
 
-                return true;
+            private void removeEmptyMessage(ArrayList<MessageBean> messageBeans) {
+                for (int i = 0; i < messageBeans.size(); i++) {
+                    if (messageBeans.get(i).getType() == MessageBean.MESSAGE_TYPE_EMPTY) {
+                        messageBeans.remove(i);
+                    }
+
+                }
 
             }
         }.start();
@@ -294,21 +320,30 @@ public class DataParser {
                 Elements scriptElements = document.getElementsByTag("script");
                 for (Element nowElement : scriptElements) {
                     if (nowElement.html().contains("wx.cgiData ")) {
-                        JSONArray getArray = getMessageArray(nowElement.html());
-                        ArrayList<MessageBean> getMessageList = getMessageItems(
-                                getArray, userBean, referer);
-                        String latestMsgId = getLatestMsgId(nowElement.html());
-                        messageHolder.addMessage(getMessageList);
-                        messageHolder.setLatestMsgId(latestMsgId);
+                        JSONObject contentObject = getMessageArray(nowElement.html());
+                        if (contentObject != null) {
+                            try {
+                                JSONArray getArray = contentObject.getJSONArray("messageArray");
+                                ArrayList<MessageBean> getMessageList = getMessageItems(
+                                        getArray, userBean, referer);
+                                String latestMsgId = contentObject.get("lastMsgId").toString();
+                                messageHolder.addMessage(getMessageList);
+                                messageHolder.setLatestMsgId(latestMsgId);
 
-                        Message message = new Message();
-                        MessageResultHolder messageResultHolder = new MessageResultHolder();
-                        messageResultHolder.lastMsgId = latestMsgId;
-                        messageResultHolder.messageHolder = messageHolder;
-                        messageResultHolder.messageBeans = getMessageList;
-                        message.obj = messageResultHolder;
+                                Message message = new Message();
+                                MessageResultHolder messageResultHolder = new MessageResultHolder();
+                                messageResultHolder.lastMsgId = latestMsgId;
+                                messageResultHolder.messageHolder = messageHolder;
+                                messageResultHolder.messageBeans = getMessageList;
+                                message.obj = messageResultHolder;
 
-                        loadHandler.sendMessage(message);
+                                loadHandler.sendMessage(message);
+
+                            } catch (Exception e) {
+
+                            }
+
+                        }
 
                     }
                 }
@@ -325,29 +360,49 @@ public class DataParser {
         try {
 
             resultJsonObject = new JSONObject(strResult);
-            int ret = (Integer) resultJsonObject.get("Ret");
-            if (resultJsonObject.get("Ret") != null) {
-                if (ret != 302) {
-                    // progressDialog.dismiss();
-                    Log.e("login failed",strResult);
+            int ret = getRet(resultJsonObject);
+            Log.e("get ret", "login" + ret);
+            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
 
-                    return LOGIN_FAILED;
 
+            try {
+                File file = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "weclient_test.txt");
+                file.createNewFile();
+                //write the bytes in file
+                if (file.exists()) {
+                    OutputStream fo = new FileOutputStream(file);
+
+                    fo.write(strResult.getBytes());
+                    fo.close();
                 }
+
+            } catch (Exception e) {
+
             }
 
-            int index = strResult.indexOf("token");
-            if (index != -1) {
+
+            if (ret != RET_LOGIN_SUCCESS) {
+                // progressDialog.dismiss();
+                Log.e("login failed", strResult);
+
+                return PARSE_LOGIN_FAILED;
+
+            }
+
+            if (strResult.contains("token")) {
                 String tokenString = getToken(resultJsonObject);
                 nowBean.setToken(tokenString);
                 SharedPreferenceManager.updateUser(context, nowBean);
             }
         } catch (Exception exception) {
             Log.e("login exception fuck", exception + "");
-            return LOGIN_FAILED;
+            return PARSE_LOGIN_FAILED;
 
         }
-        return LOGIN_SUCCESS;
+        return PARSE_LOGIN_SUCCESS;
 
     }
 
@@ -355,8 +410,15 @@ public class DataParser {
         String tokenString = "";
         try {
             String contentString = resultJsonObject.getString("ErrMsg");
-            tokenString = contentString.substring(
-                    contentString.indexOf("token") + 6, contentString.length());
+            String regex = "token=(\\d*)";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(contentString);
+            while (matcher.find()) {
+                String getToken = matcher.group(1);
+                if (getToken != null) {
+                    tokenString = getToken;
+                }
+            }
         } catch (Exception e) {
 
         }
@@ -364,12 +426,26 @@ public class DataParser {
         return tokenString;
     }
 
-    private static JSONArray getMessageArray(String source) {
+    private static JSONObject getMessageArray(String source) {
         try {
-            String content = source.substring(source.indexOf("{\"msg_item\":"),
-                    source.indexOf(").msg_item"));
-            JSONObject nowJsonObject = new JSONObject(content);
-            return nowJsonObject.getJSONArray("msg_item");
+            String regx = "latest_msg_id\\s:\\s'(\\d*)',[^\\(]*\\(\\{\"msg_item\":(\\[[^\\]]*\\])";
+
+            Pattern pattern = Pattern.compile(regx);
+            Matcher matcher = pattern.matcher(source);
+            while (matcher.find()) {
+                String lastMsgId = matcher.group(1);
+                String messageArray = matcher.group(2);
+                if (lastMsgId != null && messageArray != null) {
+                    JSONObject contentObject = new JSONObject();
+                    contentObject.put("lastMsgId", lastMsgId);
+                    contentObject.put("messageArray", new JSONArray(messageArray));
+
+
+                    return contentObject;
+                }
+
+            }
+
 
         } catch (Exception exception) {
 
@@ -377,18 +453,6 @@ public class DataParser {
 
         return null;
 
-    }
-
-    private static String getLatestMsgId(String source) {
-        String result = "";
-        Pattern pattern = Pattern.compile("latest_msg_id\\s:\\s'(\\d*)',");
-
-        Matcher matcher = pattern.matcher(source);
-        while (matcher.find()) {
-            return matcher.group(1);
-        }
-
-        return result;
     }
 
     private static ArrayList<MessageBean> getMessageItems(JSONArray jsonArray,
@@ -437,72 +501,96 @@ public class DataParser {
                 if (msg.arg1 == 1) {
                     dataChanged = true;
                 }
-                Log.e("fans get callback","get fans");
                 fansListParseCallback.onBack(fansHolder, dataChanged);
 
             }
         };
 
         new Thread() {
+
             public void run() {
 
-                String contentBodyString = source.substring(
-                        source.indexOf("wx.cgiData={"),
-                        source.indexOf("seajs.use(\"user/index\")"));
-                String fansTypeString = contentBodyString.substring(
-                        contentBodyString.indexOf("\"groups\":[") + 9,
-                        contentBodyString.indexOf("}).groups"));
-                String fansContentString = contentBodyString.substring(
-                        contentBodyString.indexOf("\"contacts\":") + 11,
-                        contentBodyString.indexOf("}).contacts"));
 
+                JSONObject fansContentObject = getFansContentObject(source);
+                if (fansContentObject != null) {
 
-                try {
+                    try {
 
-                   Gson gson = new Gson();
-                    JSONArray fansTypeArray = new JSONArray(fansTypeString);
-                    ArrayList<FansGroupBean> fansGroupBeans = new ArrayList<FansGroupBean>();
-                    for (int i = 0; i < fansTypeArray.length(); i++) {
-                        JSONObject nowJsonObject = fansTypeArray
-                                .getJSONObject(i);
-                        FansGroupBean nowGroupBean = (FansGroupBean) gson
-                                .fromJson(nowJsonObject.toString(),
-                                        FansGroupBean.class);
-                        fansGroupBeans.add(nowGroupBean);
+                        String fansTypeString = fansContentObject.get("fansType").toString();
+                        String fansContentString = fansContentObject.get("fansContent").toString();
+                        Gson gson = new Gson();
+                        JSONArray fansTypeArray = new JSONArray(fansTypeString);
+                        ArrayList<FansGroupBean> fansGroupBeans = new ArrayList<FansGroupBean>();
+                        for (int i = 0; i < fansTypeArray.length(); i++) {
+                            JSONObject nowJsonObject = fansTypeArray
+                                    .getJSONObject(i);
+                            FansGroupBean nowGroupBean = (FansGroupBean) gson
+                                    .fromJson(nowJsonObject.toString(),
+                                            FansGroupBean.class);
+                            fansGroupBeans.add(nowGroupBean);
+                        }
+                        fansHolder.setFansGroup(fansGroupBeans);
+
+                        JSONArray fansArray = new JSONArray(fansContentString);
+
+                        ArrayList<FansBean> fansBeans = new ArrayList<FansBean>();
+                        for (int i = 0; i < fansArray.length(); i++) {
+                            JSONObject nowJsonObject = fansArray.getJSONObject(i);
+                            FansBean nowFansBean = (FansBean) gson.fromJson(
+                                    nowJsonObject.toString(), FansBean.class);
+                            nowFansBean.setReferer(referer);
+                            fansBeans.add(nowFansBean);
+                        }
+
+                        boolean dataChanged = false;
+                        if (refresh) {
+
+                            dataChanged = true;
+                            fansHolder.setFans(fansBeans);
+
+                        } else {
+                            dataChanged = true;
+                            fansHolder.addFans(fansBeans);
+                        }
+
+                        Message nowMessage = new Message();
+                        nowMessage.arg1 = dataChanged ? 1 : 0;
+
+                        loadHandler.sendMessage(nowMessage);
+
+                    } catch (Exception exception) {
+                        Log.e("fans parse errror", "" + exception);
                     }
-                    fansHolder.setFansGroup(fansGroupBeans);
 
-                    JSONArray fansArray = new JSONArray(fansContentString);
-
-                    ArrayList<FansBean> fansBeans = new ArrayList<FansBean>();
-                    for (int i = 0; i < fansArray.length(); i++) {
-                        JSONObject nowJsonObject = fansArray.getJSONObject(i);
-                        FansBean nowFansBean = (FansBean) gson.fromJson(
-                                nowJsonObject.toString(), FansBean.class);
-                        nowFansBean.setReferer(referer);
-                        fansBeans.add(nowFansBean);
-                    }
-
-                    boolean dataChanged = false;
-                    if (refresh) {
-
-                        dataChanged = true;
-                        fansHolder.setFans(fansBeans);
-
-                    } else {
-                        dataChanged = true;
-                        fansHolder.addFans(fansBeans);
-                    }
-
-                    Message nowMessage = new Message();
-                    nowMessage.arg1 = dataChanged ? 1 : 0;
-
-                    loadHandler.sendMessage(nowMessage);
-
-                } catch (Exception exception) {
-                    Log.e("fans parse errror", "" + exception);
                 }
 
+
+            }
+
+            private JSONObject getFansContentObject(String source) {
+
+                String regex = "groupsList\\s*:\\s*\\(\\{\"groups\":(\\[[^\\]]*\\])[^\\[]*(\\[[^\\]]*])";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+                    String fansType = matcher.group(1);
+                    String fansContent = matcher.group(2);
+                    JSONObject fansContentObject = new JSONObject();
+                    try {
+                        fansContentObject.put("fansType", fansType);
+                        fansContentObject.put("fansContent", fansContent);
+
+                        return fansContentObject;
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                }
+
+
+                return null;
             }
 
 
@@ -537,55 +625,95 @@ public class DataParser {
         };
 
         new Thread() {
+
             public void run() {
 
-                String contentBodyString = source.substring(
-                        source.indexOf("wx.cgiData = {\"to_nick_name"),
-                        source.indexOf("seajs.use(\"message/send\")"));
-                String messageContent = contentBodyString
-                        .substring(contentBodyString
-                                .indexOf("msg_items\":{\"msg_item\":") + 23,
-                                contentBodyString
-                                        .indexOf("wx.cgiData.tofakeid") - 12);
+                JSONObject chatContentObject = getChatContentObject(source);
+                if (chatContentObject != null) {
 
-/*				Log.e("content", "" + contentBodyString);
-                Log.e("message content", "" + messageContent);
-*/
-                try {
+                    try {
 
-                    Gson gson = new Gson();
-                    JSONArray messageArray = new JSONArray(messageContent);
-                    ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
-                    for (int i = 0; i < messageArray.length(); i++) {
-                        JSONObject nowJsonObject = messageArray
-                                .getJSONObject(i);
+                        String messageContent = chatContentObject.get("messageContent").toString();
+                        Gson gson = new Gson();
+                        JSONArray messageArray = new JSONArray(messageContent);
+                        ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
+                        for (int i = 0; i < messageArray.length(); i++) {
+                            JSONObject nowJsonObject = messageArray
+                                    .getJSONObject(i);
 
-                        MessageBean nowMessageBean = (MessageBean) gson
-                                .fromJson(nowJsonObject.toString(),
-                                        MessageBean.class);
-                        if (nowMessageBean.getFakeId().equals(chatHolder.getToFakeId())) {
-                            nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_HER);
-                        } else {
-                            nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_ME);
+                            MessageBean nowMessageBean = (MessageBean) gson
+                                    .fromJson(nowJsonObject.toString(),
+                                            MessageBean.class);
+                            if (nowMessageBean.getFakeId().equals(chatHolder.getToFakeId())) {
+                                nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_HER);
+                            } else {
+                                nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_ME);
+                            }
+                            //reverse
+                            messageBeans.add(0, nowMessageBean);
                         }
-                        //reverse
-                        messageBeans.add(0, nowMessageBean);
+
+                        chatHolder.setMessage(messageBeans);
+
+
+                        Message nowMessage = new Message();
+                        nowMessage.arg1 = 1;
+
+                        loadHandler.sendMessage(nowMessage);
+
+                    } catch (Exception exception) {
+                        Log.e("chat parse errror", "" + exception);
                     }
-
-                    chatHolder.setMessage(messageBeans);
-
-
-                    Message nowMessage = new Message();
-                    nowMessage.arg1 = 1;
-
-                    loadHandler.sendMessage(nowMessage);
-
-                } catch (Exception exception) {
-                    Log.e("chat parse errror", "" + exception);
                 }
+
             }
 
+
+            private JSONObject getChatContentObject(String source) {
+
+                String regex = "msg_item\":(\\[[^\\]]*\\])[^\\d]*(\\d*)";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+                    String messageContent = matcher.group(1);
+                    JSONObject chatContentObject = new JSONObject();
+                    try {
+                        chatContentObject.put("messageContent", messageContent);
+
+                        return chatContentObject;
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                }
+
+
+                return null;
+            }
         }.start();
 
     }
+
+
+    public static int getRet(JSONObject resultObject) {
+        try {
+            if (resultObject.get("Ret") != null) {
+                return Integer.parseInt("" + resultObject.get("Ret"));
+
+            }
+
+            if (resultObject.get("ret") != null) {
+                return Integer.parseInt("" + resultObject.get("ret"));
+            }
+        } catch (Exception e) {
+
+        }
+
+
+        return GET_RET_NONE;
+    }
+
+    public static final int GET_RET_NONE = -1;
 }

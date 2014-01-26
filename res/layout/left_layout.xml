@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/left_img_profile"
-                android:text="hualkjkl"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="18dip"
                 android:layout_marginLeft="8dip"

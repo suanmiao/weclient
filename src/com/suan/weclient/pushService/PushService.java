@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
@@ -37,7 +36,6 @@ public class PushService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("push service", "oncreate");
         messageNotification = MessageNotification.getInstance(this);
         //��һִ��
         checkServiceStatus();
@@ -46,7 +44,6 @@ public class PushService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean pushEnable = SharedPreferenceManager.getPushEnable(this);
-        Log.e("push start commant", "" + pushEnable);
 
         if (pushEnable) {
             doTask();
@@ -95,7 +92,6 @@ public class PushService extends Service {
                                 checkUserProfile();
 
                             } else {
-                                Toast.makeText(PushService.this, "just get failed,login", Toast.LENGTH_LONG).show();
 
                                 getProfileAfterLogin(mDatamanager, new WechatManager.OnActionFinishListener() {
                                     @Override
@@ -114,7 +110,6 @@ public class PushService extends Service {
 
                                         } else {
 
-                                            Toast.makeText(PushService.this, "login in get failed", Toast.LENGTH_LONG).show();
                                         }
 
                                     }
@@ -136,7 +131,6 @@ public class PushService extends Service {
 
 
         } catch (Exception exception) {
-            Log.e("service error", exception + "");
 
         }
     }
@@ -151,12 +145,12 @@ public class PushService extends Service {
     }
 
     private void justGetProfile(DataManager mDatamanager, WechatManager.OnActionFinishListener onActionFinishListener) {
-        mDatamanager.getWechatManager().getUserProfile(false,false, mDatamanager.getCurrentPosition(), onActionFinishListener);
+        mDatamanager.getWechatManager().getUserProfile(false, false, mDatamanager.getCurrentPosition(), onActionFinishListener);
 
     }
 
     private void getProfileAfterLogin(DataManager mDatamanager, WechatManager.OnActionFinishListener onActionFinishListener) {
-        mDatamanager.getWechatManager().login(mDatamanager.getCurrentPosition(), false,false, onActionFinishListener);
+        mDatamanager.getWechatManager().login(mDatamanager.getCurrentPosition(), false, false, onActionFinishListener);
 
     }
 
@@ -167,47 +161,53 @@ public class PushService extends Service {
         int lastNewMessage = SharedPreferenceManager.getLastNewMessage(this);
 
 
-        if (newPeople > lastNewPeople) {
-            //new people added
-            showNotification(MessageNotification.NOTIFI_TYPE_NEW_PEOPLE, newPeople, mDatamanager.getCurrentUser().getNickname());
-            SharedPreferenceManager.putLastNewPeople(this, newPeople);
+        boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(this);
+        if (pushNewPeopleEnable) {
+            if (newPeople > lastNewPeople) {
+                //new people added
+                showNotification(MessageNotification.NOTIFI_TYPE_NEW_PEOPLE, newPeople, mDatamanager.getCurrentUser().getNickname());
+                SharedPreferenceManager.putLastNewPeople(this, newPeople);
 
-
-        } else {
-            if (newPeople != 0) {
-                long lastUpdateTime = SharedPreferenceManager.getLastPeopleNotifyTime(this);
-                if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
-                    //more than 10minutes
-                    showNotification(MessageNotification.NOTIFI_TYPE_NEW_PEOPLE, newPeople, mDatamanager.getCurrentUser().getNickname());
-
-                }
 
             } else {
-                SharedPreferenceManager.putLastNewPeople(this, 0);
+                if (newPeople != 0) {
+                    long lastUpdateTime = SharedPreferenceManager.getLastPeopleNotifyTime(this);
+                    if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
+                        //more than 10minutes
+                        showNotification(MessageNotification.NOTIFI_TYPE_NEW_PEOPLE, newPeople, mDatamanager.getCurrentUser().getNickname());
+
+                    }
+
+                } else {
+                    SharedPreferenceManager.putLastNewPeople(this, 0);
+                }
+
             }
 
         }
 
+        boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(this);
+        if (pushNewMessageEnable) {
 
-        if (newMessage > lastNewMessage) {
-            Log.e("message", "new>last");
-            //new message added
-            showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
-            SharedPreferenceManager.putLastNewMessage(this, newMessage);
+            if (newMessage > lastNewMessage) {
+                //new message added
+                showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
+                SharedPreferenceManager.putLastNewMessage(this, newMessage);
 
-
-        } else {
-            if (newMessage != 0) {
-                long lastUpdateTime = SharedPreferenceManager.getLastMessageNotifyTime(this);
-                if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
-                    //more than 10minutes
-                    Log.e("message", "more time");
-                    showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
-
-                }
 
             } else {
-                SharedPreferenceManager.putLastNewMessage(this, 0);
+                if (newMessage != 0) {
+                    long lastUpdateTime = SharedPreferenceManager.getLastMessageNotifyTime(this);
+                    if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
+                        //more than 10minutes
+                        showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
+
+                    }
+
+                } else {
+                    SharedPreferenceManager.putLastNewMessage(this, 0);
+                }
+
             }
 
         }

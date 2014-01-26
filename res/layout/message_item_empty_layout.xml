@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dip"
+            android:layout_marginRight="75dip"
+            android:layout_marginTop="10dip"
+            android:padding="1px">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="3px">
+
+                <ImageView
+                    android:id="@+id/message_item_img_img_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dip"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/no_msg" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/no_message"
+            android:textSize="15dip"
+            android:textColor="#9d9d9d"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="70dip"
+            android:layout_centerInParent="true"/>
+
+
+
+        </RelativeLayout>
+
+
+
+</LinearLayout>

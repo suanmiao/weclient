@@ -1,81 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="300dip"
-	android:layout_height="wrap_content"
-	android:orientation="vertical" >
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:background="@drawable/radius_border_pop_title"
-		android:orientation="horizontal" >
-		<TextView
-			android:id="@+id/dialog_dev_reply_text_title"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginBottom="10dip"
-			android:layout_marginTop="10dip"
-			android:layout_marginLeft="20dip"
-			android:layout_marginRight="20dip"
-			android:gravity="center"
-			android:textColor="#a3a3a3"
-			android:textSize="15dip" />
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" >
-		<RelativeLayout
-			android:layout_width="fill_parent"
-			android:layout_height="160dip" >
-			<ScrollView
-				android:layout_width="fill_parent"
-				android:layout_height="160dip"
-				android:background="#c5c5c5" >
-				<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:orientation="vertical" >
-					<TextView
-						android:id="@+id/dialog_dev_reply_text_content"
-						android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						android:background="#c5c5c5"
-						android:gravity="left|top"
-						android:paddingBottom="5dip"
-						android:paddingLeft="5dip"
-						android:paddingRight="5dip"
-						android:paddingTop="5dip"
-						android:textColor="#333333"
-						android:textSize="16dip" />
-				</LinearLayout>
-			</ScrollView>
-		</RelativeLayout>
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="60dip"
-		android:background="@drawable/radius_border_pop_bottom"
-		android:orientation="horizontal" >
-		<RelativeLayout
-			android:layout_width="0dip"
-			android:layout_height="fill_parent"
-			android:layout_weight="1" >
-			<ImageButton
-				android:id="@+id/dialog_dev_reply_button_reply"
-				android:layout_width="100dip"
-				android:layout_height="35dip"
-				android:layout_centerInParent="true"
-				android:background="@drawable/pop_button_reply_bg" />
-		</RelativeLayout>
-		<RelativeLayout
-			android:layout_width="0dip"
-			android:layout_height="fill_parent"
-			android:layout_weight="1" >
-			<ImageButton
-				android:id="@+id/dialog_dev_reply_button_o"
-				android:layout_width="100dip"
-				android:layout_height="35dip"
-				android:layout_centerInParent="true"
-				android:background="@drawable/pop_button_o_bg" />
-		</RelativeLayout>
-	</LinearLayout>
+    android:layout_width="300dip"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_border_pop_title"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_dev_reply_text_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:gravity="center"
+            android:textColor="#a3a3a3"
+            android:textSize="15dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="160dip">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="160dip"
+                android:background="#c5c5c5">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dialog_dev_reply_text_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#c5c5c5"
+                        android:gravity="left|top"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="5dip"
+                        android:paddingRight="5dip"
+                        android:paddingTop="5dip"
+                        android:textColor="#333333"
+                        android:textSize="16dip" />
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="@drawable/radius_border_pop_bottom"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <Button
+                android:layout_width="80dip"
+                android:id="@+id/dialog_dev_reply_button_reply"
+                android:layout_height="35dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ensure_button_sure_bg"
+                android:text="@string/reply"
+                android:textColor="#ffffff"
+                android:textSize="15dip" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/dialog_dev_reply_button_o"
+                android:layout_width="80dip"
+                android:layout_height="35dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ensure_button_sure_bg"
+                android:text="o"
+                android:textColor="#ffffff"
+                android:textSize="15dip" />
+
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

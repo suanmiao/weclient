@@ -10,8 +10,13 @@
     <color name="black">#000000</color>
     <color name="text_color">#434343</color>
     <color name="black_half">#50000000</color>
-    <color name="transparent_background">#00000000</color>    
-    
+    <color name="transparent_background">#00000000</color>
+    <color name="setting_item_normal">#ffffff</color>
+    <color name="setting_item_pressed">#b1beb6</color>
+    <color name="setting_item_selected">#c4c4c4</color>
+    <color name="setting_text_color">#3787b8</color>
+
+    <color name="drop_item_divider_color">#ffffff</color>
      <!-- selected tab text -->
     <color name="selected_tabtext">#bb000000</color>
     

@@ -23,6 +23,8 @@ public class SharedPreferenceManager {
     private static final String ACIVITY_RUNNING = "running";
     private static final String PUSH_ENABLE = "pushEnable";
     private static final String PUSH_FREQUENT = "pushFrequent";
+    private static final String PUSH_NEW_MESSAGE = "pushNewMessage";
+    private static final String PUSH_NEW_PEOPLE = "pushNewPeople";
     private static final String NEW_PEOPLE = "newPeople";
     private static final String NEW_MESSAGE = "newMessage";
     private static final String LAST_MESSAGE_NOTIFY_TIME = "lastMessageNotifyTime";
@@ -65,14 +67,49 @@ public class SharedPreferenceManager {
 
 
 
-    public static int getPustFrequent(Context context) {
+    public static boolean getPushNewMessageEnable(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(PUSH_NEW_MESSAGE, false);
+    }
+
+    public static boolean putPustNewMessageEnable(Context context, boolean running) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PUSH_NEW_MESSAGE, running);
+
+        return editor.commit();
+    }
+
+
+
+    public static boolean getPushNewPeopleEnable(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(PUSH_NEW_PEOPLE, false);
+    }
+
+    public static boolean putPushNewPeopleEnable(Context context, boolean running) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PUSH_NEW_PEOPLE, running);
+
+        return editor.commit();
+    }
+
+
+    public static int getPushFrequent(Context context) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         return sharedPreferences.getInt(PUSH_FREQUENT, PushService.PUSH_FREQUENT_NORMAL);
     }
 
-    public static boolean putPustFrequent(Context context, int pushFrequent) {
+    public static boolean putPushFrequent(Context context, int pushFrequent) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         Editor editor = sharedPreferences.edit();

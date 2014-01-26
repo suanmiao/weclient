@@ -24,64 +24,63 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="67ebde4e-aaf1-417c-b44b-63fb9875324b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansProfileActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/span/ImageSpan.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/PopOptionWindow.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SMainDropListWindow.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/anim_index_down.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/anim_index_up.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/anim_none.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/anim_userlist_in.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/anim_userlist_out.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_edit_content_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_her_content_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_me_content_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_send_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_send_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_send_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_chat.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_fans.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_profile.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/custom_notification_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_list_item.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/fans_profile_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_remark_edit_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/left_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_left_bottom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_middle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_right_bottom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/profile_item_divider.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_checked_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_unchecked_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/setting_item_divider.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/setting_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/Constants.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/EmotionHandler.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceHolderView.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/HrefClickableSpan.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SImageSpan.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SpanUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/face_holder_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/face_item_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/face_page_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/message_item_empty_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/radius_border_login_bottom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/radius_border_login_middle.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/radius_border_login_title.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_pressed_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_selected_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_down_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_down_state_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_down_state_pressed_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_down_state_selected_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_middle_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_middle_state_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_middle_state_pressed_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_middle_state_selected_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_radius_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_radius_state_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_radius_state_pressed_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_radius_state_selected_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_upper_state_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_item_upper_state_pressed_bg.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/jl1.0.1.jar" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/img_loading.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_bg_first.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/msg_star.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/msg_star_pressed.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_first_pressed_state.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_second_pressed_state.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_second_state.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_third_pressed_state.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_third_state.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_cancel.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_cancel_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_o_pressed_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_o_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_reply_pressed_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_reply_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_sure.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/pop_sure_pressed.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_first.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_pressed_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_selected_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/pop_button_cancel_bg.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/pop_button_o_bg.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/pop_button_reply_bg.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/pop_button_sure_bg.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/layout/head_layout.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ScrollingTabsAdapter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Constant.java" afterPath="" />
@@ -92,42 +91,52 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/UserBean.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WeChatLoader.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WechatManager.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/span/ImageSpan.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/span/SpanUtil.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SlidingMenu.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_first_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/fans_spinner_selector_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_first_state.xml" afterPath="$PROJECT_DIR$/res/drawable/profile_user_indecator_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_second_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/left_user_list_button_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/profile_button_third_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/profile_item_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SClickableSpan.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/span/SClickableSpan.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SpanUtil.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/span/SpanUtil.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/CustomActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SPopUpWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SFansDropListWindow.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/mass_button_send_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_bg.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/setting_item_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_item_upper_bg.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_chat.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_back_with_title.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/pop_feedback_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_feedback_layout.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/span/SClickableSpan.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SClickableSpan.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/PopOptionWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SFansDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SMainDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/icon.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/GlobalContext.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/GlobalContext.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/ImageCacheManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/ImageCacheManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/RightFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/RightFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WeClient.iml" afterPath="$PROJECT_DIR$/WeClient.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/about_layout.xml" afterPath="$PROJECT_DIR$/res/layout/about_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" />
@@ -136,22 +145,26 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/content_layout.xml" afterPath="$PROJECT_DIR$/res/layout/content_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_item.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fans_item_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fans_list_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_list_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_fragment.xml" afterPath="$PROJECT_DIR$/res/layout/message_fragment.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_bg_long_click.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_long_click.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/left_layout.xml" afterPath="$PROJECT_DIR$/res/layout/left_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/login_layout.xml" afterPath="$PROJECT_DIR$/res/layout/login_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/mass_layout.xml" afterPath="$PROJECT_DIR$/res/layout/mass_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_pressed_state.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_state.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_state.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/profile_layout.xml" afterPath="$PROJECT_DIR$/res/layout/profile_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/shape_radius_mass_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/shape_radius_mass_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/show_left_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/show_left_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/show_right_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/show_right_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/setting_item_divider.xml" afterPath="$PROJECT_DIR$/res/layout/setting_item_divider.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/setting_layout.xml" afterPath="$PROJECT_DIR$/res/layout/setting_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/styles.xml" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/user_group_layout.xml" afterPath="$PROJECT_DIR$/res/layout/user_group_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WeClient.iws" />
@@ -207,7 +220,23 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceHolderView.java" line="80" class="com.suan.weclient.view.Face.FaceHolderView" package="com.suan.weclient.view.Face">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -217,228 +246,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="635" column="0" selection-start="20395" selection-end="20395" vertical-scroll-proportion="0.0" vertical-offset="11196" max-vertical-offset="13212">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4319#4339#0" expanded="true" />
-                <element signature="e#4441#4467#0" expanded="true" />
-                <element signature="e#6427#7756#0" expanded="true" />
-                <element signature="e#6685#6941#0" expanded="true" />
-                <element signature="e#6914#6915#0" expanded="true" />
-                <element signature="e#6995#7668#0" expanded="true" />
-                <element signature="e#7649#7650#0" expanded="true" />
-                <element signature="e#7744#7745#0" expanded="true" />
-                <element signature="e#7793#9349#0" expanded="true" />
-                <element signature="e#9338#9339#0" expanded="true" />
-                <element signature="e#10239#10472#0" expanded="true" />
-                <element signature="e#10461#10462#0" expanded="true" />
-                <element signature="e#10518#10721#0" expanded="true" />
-                <element signature="e#10710#10711#0" expanded="true" />
-                <element signature="e#11714#11926#0" expanded="true" />
-                <element signature="e#11915#11916#0" expanded="true" />
-                <element signature="e#12869#13321#0" expanded="true" />
-                <element signature="e#13310#13311#0" expanded="true" />
-                <element signature="e#13367#13569#0" expanded="true" />
-                <element signature="e#13558#13559#0" expanded="true" />
-                <element signature="e#14805#15299#0" expanded="true" />
-                <element signature="e#15288#15289#0" expanded="true" />
-                <element signature="e#16356#16581#0" expanded="true" />
-                <element signature="e#16570#16571#0" expanded="true" />
-                <element signature="e#19713#24890#0" expanded="true" />
-                <element signature="e#20084#24847#0" expanded="true" />
-                <element signature="e#20926#21559#0" expanded="true" />
-                <element signature="e#21500#21501#0" expanded="true" />
-                <element signature="e#22028#24772#0" expanded="true" />
-                <element signature="e#23173#24650#0" expanded="true" />
-                <element signature="e#24567#24568#0" expanded="true" />
-                <element signature="e#24713#24714#0" expanded="true" />
-                <element signature="e#24812#24813#0" expanded="true" />
-                <element signature="e#24871#24872#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="239" column="79" selection-start="6625" selection-end="6625" vertical-scroll-proportion="0.0" vertical-offset="3074" max-vertical-offset="4914">
-              <folding>
-                <element signature="e#6424#8576#0" expanded="true" />
-                <element signature="e#6646#8560#0" expanded="true" />
-                <element signature="e#8549#8550#0" expanded="true" />
-                <element signature="e#8569#8570#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WechatManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="306" column="33" selection-start="13175" selection-end="13175" vertical-scroll-proportion="0.0" vertical-offset="4266" max-vertical-offset="15390">
-              <folding>
-                <element signature="e#2782#3880#0" expanded="true" />
-                <element signature="e#3203#3786#0" expanded="true" />
-                <element signature="e#3739#3740#0" expanded="true" />
-                <element signature="e#3853#3854#0" expanded="true" />
-                <element signature="e#3907#5803#0" expanded="true" />
-                <element signature="e#5776#5777#0" expanded="true" />
-                <element signature="e#6345#7642#0" expanded="true" />
-                <element signature="e#6832#7494#0" expanded="true" />
-                <element signature="e#7429#7430#0" expanded="true" />
-                <element signature="e#7597#7598#0" expanded="true" />
-                <element signature="e#7661#9256#0" expanded="true" />
-                <element signature="e#9237#9238#0" expanded="true" />
-                <element signature="e#9631#10775#0" expanded="true" />
-                <element signature="e#10044#10680#0" expanded="true" />
-                <element signature="e#10619#10620#0" expanded="true" />
-                <element signature="e#10730#10731#0" expanded="true" />
-                <element signature="e#10794#11937#0" expanded="true" />
-                <element signature="e#11918#11919#0" expanded="true" />
-                <element signature="e#24489#26087#0" expanded="true" />
-                <element signature="e#25026#25713#0" expanded="true" />
-                <element signature="e#25682#25683#0" expanded="true" />
-                <element signature="e#26068#26069#0" expanded="true" />
-                <element signature="e#26457#26778#0" expanded="true" />
-                <element signature="e#26736#26737#0" expanded="true" />
-                <element signature="e#29096#31618#0" expanded="true" />
-                <element signature="e#31573#31574#0" expanded="true" />
-                <element signature="e#31922#33002#0" expanded="true" />
-                <element signature="e#32340#32907#0" expanded="true" />
-                <element signature="e#32854#32855#0" expanded="true" />
-                <element signature="e#32957#32958#0" expanded="true" />
-                <element signature="e#33021#34198#0" expanded="true" />
-                <element signature="e#34179#34180#0" expanded="true" />
-                <element signature="e#34507#35511#0" expanded="true" />
-                <element signature="e#34904#35422#0" expanded="true" />
-                <element signature="e#35364#35365#0" expanded="true" />
-                <element signature="e#35469#35470#0" expanded="true" />
-                <element signature="e#35513#36726#0" expanded="true" />
-                <element signature="e#36684#36685#0" expanded="true" />
-                <element signature="e#37029#37345#0" expanded="true" />
-                <element signature="e#37304#37305#0" expanded="true" />
-                <element signature="e#37347#39235#0" expanded="true" />
-                <element signature="e#39194#39195#0" expanded="true" />
-                <element signature="e#39749#40422#0" expanded="true" />
-                <element signature="e#40403#40404#0" expanded="true" />
-                <element signature="e#41076#42766#0" expanded="true" />
-                <element signature="e#42747#42748#0" expanded="true" />
-                <element signature="e#43126#43481#0" expanded="true" />
-                <element signature="e#43446#43447#0" expanded="true" />
-                <element signature="e#43500#45370#0" expanded="true" />
-                <element signature="e#44560#44999#0" expanded="true" />
-                <element signature="e#44952#44953#0" expanded="true" />
-                <element signature="e#45351#45352#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataParser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="266" column="0" selection-start="8937" selection-end="8937" vertical-scroll-proportion="0.0" vertical-offset="3708" max-vertical-offset="9666">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Util.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/Util.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="216" column="26" selection-start="7631" selection-end="7631" vertical-scroll-proportion="0.0" vertical-offset="2898" max-vertical-offset="3528">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MassFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="0" selection-start="2420" selection-end="2420" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="4392">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="223" column="62" selection-start="5735" selection-end="5735" vertical-scroll-proportion="0.0" vertical-offset="3096" max-vertical-offset="4122">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContentFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="256" column="0" selection-start="6770" selection-end="6770" vertical-scroll-proportion="0.0" vertical-offset="4392" max-vertical-offset="5130">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1667#1878#0" expanded="true" />
-                <element signature="e#1867#1868#0" expanded="true" />
-                <element signature="e#2591#2764#0" expanded="true" />
-                <element signature="e#2753#2754#0" expanded="true" />
-                <element signature="e#2818#3049#0" expanded="true" />
-                <element signature="e#3038#3039#0" expanded="true" />
-                <element signature="e#3108#3342#0" expanded="true" />
-                <element signature="e#3331#3332#0" expanded="true" />
-                <element signature="e#4442#4443#0" expanded="true" />
-                <element signature="e#4471#4472#0" expanded="true" />
-                <element signature="e#5594#5595#0" expanded="true" />
-                <element signature="e#5636#5637#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomMainActionView.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CustomMainActionView.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="270" column="0" selection-start="8834" selection-end="8834" vertical-scroll-proportion="0.0" vertical-offset="3996" max-vertical-offset="4608">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageListAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="345" column="1" selection-start="13529" selection-end="13529" vertical-scroll-proportion="0.0" vertical-offset="5405" max-vertical-offset="13518">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmReceiver.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="0" selection-start="1428" selection-end="1428" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="792">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AlarmSysService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="13" selection-start="1875" selection-end="1875" vertical-scroll-proportion="0.0" vertical-offset="936" max-vertical-offset="1458">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PushService.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="0" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.40358743" vertical-offset="576" max-vertical-offset="4374">
+            <state line="41" column="0" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.25531915" vertical-offset="288" max-vertical-offset="4824">
               <folding />
             </state>
           </provider>
@@ -451,6 +262,10 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="$USER_HOME$/doc/key" />
+    <option name="KEY_ALIAS" value="suanmiaobaicai" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -462,28 +277,28 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
+        <option value="$PROJECT_DIR$/res/drawable/setting_item_middle_state_selected_bg.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/setting_item_middle_bg.xml" />
+        <option value="$PROJECT_DIR$/res/layout/setting_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="24" />
+    <option name="y" value="-744" />
     <option name="width" value="1301" />
     <option name="height" value="744" />
   </component>
@@ -545,7 +360,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="PackagesPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -563,192 +378,6 @@
             <PATH_ELEMENT USER_OBJECT="Root">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="actionbar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pushService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fragment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adapter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.suan.weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="activity" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -811,7 +440,111 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Face" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="actionbar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="text" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="net" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1015,6 +748,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="abs-library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com.suan.weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -1035,26 +812,31 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SlidingMenu-project/abs-library/libs/android-support-v4.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/libammsdk.jar!/" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="76" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="295" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="ExportedModule" value="WeClient" />
+    <property name="ExportedApkPath" value="$USER_HOME$/weclient.apk" />
+    <property name="AndroidRunProguardForReleaseBuild" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.suan.weclient.util.span" />
       <recent name="com.suan.weclient.view" />
       <recent name="com.suan.weclient.activity" />
       <recent name="com.suan.weclient.pushService" />
       <recent name="com.suan.weclient.fragment" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/layout" />
       <recent name="$PROJECT_DIR$/res/drawable" />
+      <recent name="$PROJECT_DIR$/res/layout" />
       <recent name="$PROJECT_DIR$/res/anim" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.suan.weclient.view.DropWindow" />
       <recent name="com.suan.weclient.view.actionbar" />
       <recent name="com.suan.weclient.util.span" />
     </key>
@@ -1088,6 +870,19 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1113,19 +908,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1284,29 +1066,29 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1301" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="65" y="-744" width="1301" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39906833" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.50038433" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25826287" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34138486" sideWeight="0.5003997" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25826287" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2857143" sideWeight="0.49961567" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29658386" sideWeight="0.49961567" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28502417" sideWeight="0.49961567" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2962963" sideWeight="0.49961567" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21829362" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.49961567" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22701839" sideWeight="0.49880096" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34138486" sideWeight="0.49960032" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -1315,26 +1097,26 @@
     </layout>
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.50038433" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34138486" sideWeight="0.5003997" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25826287" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21829362" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22701839" sideWeight="0.49880096" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34138486" sideWeight="0.49960032" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.49961567" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39906833" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25826287" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2857143" sideWeight="0.49961567" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.49961567" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28502417" sideWeight="0.49961567" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2962963" sideWeight="0.49961567" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1353,224 +1135,149 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="483" column="20" selection-start="14111" selection-end="14111" vertical-scroll-proportion="0.45558086" vertical-offset="7882" max-vertical-offset="8532">
+        <state line="13" column="13" selection-start="300" selection-end="300" vertical-scroll-proportion="-0.23404256" vertical-offset="225" max-vertical-offset="1296">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="0" selection-start="2420" selection-end="2420" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="4392">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="256" column="0" selection-start="6770" selection-end="6770" vertical-scroll-proportion="0.0" vertical-offset="4392" max-vertical-offset="5130">
+        <state line="150" column="0" selection-start="5633" selection-end="5633" vertical-scroll-proportion="0.17021276" vertical-offset="1890" max-vertical-offset="8838">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1667#1878#0" expanded="true" />
-            <element signature="e#1867#1868#0" expanded="true" />
-            <element signature="e#2591#2764#0" expanded="true" />
-            <element signature="e#2753#2754#0" expanded="true" />
-            <element signature="e#2818#3049#0" expanded="true" />
-            <element signature="e#3038#3039#0" expanded="true" />
-            <element signature="e#3108#3342#0" expanded="true" />
-            <element signature="e#3331#3332#0" expanded="true" />
-            <element signature="e#4442#4443#0" expanded="true" />
-            <element signature="e#4471#4472#0" expanded="true" />
-            <element signature="e#5594#5595#0" expanded="true" />
-            <element signature="e#5636#5637#0" expanded="true" />
+            <element signature="e#3445#4418#0" expanded="true" />
+            <element signature="e#4407#4408#0" expanded="true" />
+            <element signature="e#4686#5657#0" expanded="true" />
+            <element signature="e#5646#5647#0" expanded="true" />
+            <element signature="e#6134#7145#0" expanded="true" />
+            <element signature="e#7134#7135#0" expanded="true" />
+            <element signature="e#7200#7747#0" expanded="true" />
+            <element signature="e#7736#7737#0" expanded="true" />
+            <element signature="e#7807#8356#0" expanded="true" />
+            <element signature="e#8345#8346#0" expanded="true" />
+            <element signature="e#8414#8961#0" expanded="true" />
+            <element signature="e#8950#8951#0" expanded="true" />
+            <element signature="e#9118#9407#0" expanded="true" />
+            <element signature="e#9396#9397#0" expanded="true" />
+            <element signature="e#9810#9962#0" expanded="true" />
+            <element signature="e#9951#9952#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/setting_item_middle_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="270" column="0" selection-start="8834" selection-end="8834" vertical-scroll-proportion="0.0" vertical-offset="3996" max-vertical-offset="4608">
+        <state line="0" column="37" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/setting_item_middle_state_selected_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="35" selection-start="308" selection-end="308" vertical-scroll-proportion="0.34042552" vertical-offset="0" max-vertical-offset="423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/setting_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="0" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.7309645" vertical-offset="378" max-vertical-offset="7560">
+          <folding>
+            <element signature="e#938#959#0" expanded="true" />
+            <element signature="e#2468#2501#0" expanded="true" />
+            <element signature="e#4016#4048#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="300" column="0" selection-start="12797" selection-end="12797" vertical-scroll-proportion="0.16312057" vertical-offset="3819" max-vertical-offset="13464">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="345" column="1" selection-start="13529" selection-end="13529" vertical-scroll-proportion="0.0" vertical-offset="5405" max-vertical-offset="13518">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="13" selection-start="1875" selection-end="1875" vertical-scroll-proportion="0.0" vertical-offset="936" max-vertical-offset="1458">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="1428" selection-end="1428" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="792">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="216" column="26" selection-start="7631" selection-end="7631" vertical-scroll-proportion="0.0" vertical-offset="2898" max-vertical-offset="3528">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="0" selection-start="9095" selection-end="9095" vertical-scroll-proportion="0.738041" vertical-offset="2556" max-vertical-offset="27720">
+        <state line="637" column="61" selection-start="24956" selection-end="24956" vertical-scroll-proportion="0.4680851" vertical-offset="9936" max-vertical-offset="13860">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="0" selection-start="8937" selection-end="8937" vertical-scroll-proportion="0.0" vertical-offset="3708" max-vertical-offset="9666">
+        <state line="240" column="0" selection-start="7890" selection-end="7890" vertical-scroll-proportion="0.29787233" vertical-offset="3492" max-vertical-offset="12168">
+          <folding>
+            <element signature="e#10391#10824#0" expanded="true" />
+            <element signature="e#10813#10814#0" expanded="true" />
+            <element signature="e#10835#12541#0" expanded="true" />
+            <element signature="e#12530#12531#0" expanded="true" />
+            <element signature="e#16016#16029#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="52" selection-start="4242" selection-end="4242" vertical-scroll-proportion="0.0" vertical-offset="2916" max-vertical-offset="5652">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="306" column="33" selection-start="13175" selection-end="13175" vertical-scroll-proportion="0.0" vertical-offset="4266" max-vertical-offset="15390">
-          <folding>
-            <element signature="e#2782#3880#0" expanded="true" />
-            <element signature="e#3203#3786#0" expanded="true" />
-            <element signature="e#3739#3740#0" expanded="true" />
-            <element signature="e#3853#3854#0" expanded="true" />
-            <element signature="e#3907#5803#0" expanded="true" />
-            <element signature="e#5776#5777#0" expanded="true" />
-            <element signature="e#6345#7642#0" expanded="true" />
-            <element signature="e#6832#7494#0" expanded="true" />
-            <element signature="e#7429#7430#0" expanded="true" />
-            <element signature="e#7597#7598#0" expanded="true" />
-            <element signature="e#7661#9256#0" expanded="true" />
-            <element signature="e#9237#9238#0" expanded="true" />
-            <element signature="e#9631#10775#0" expanded="true" />
-            <element signature="e#10044#10680#0" expanded="true" />
-            <element signature="e#10619#10620#0" expanded="true" />
-            <element signature="e#10730#10731#0" expanded="true" />
-            <element signature="e#10794#11937#0" expanded="true" />
-            <element signature="e#11918#11919#0" expanded="true" />
-            <element signature="e#24489#26087#0" expanded="true" />
-            <element signature="e#25026#25713#0" expanded="true" />
-            <element signature="e#25682#25683#0" expanded="true" />
-            <element signature="e#26068#26069#0" expanded="true" />
-            <element signature="e#26457#26778#0" expanded="true" />
-            <element signature="e#26736#26737#0" expanded="true" />
-            <element signature="e#29096#31618#0" expanded="true" />
-            <element signature="e#31573#31574#0" expanded="true" />
-            <element signature="e#31922#33002#0" expanded="true" />
-            <element signature="e#32340#32907#0" expanded="true" />
-            <element signature="e#32854#32855#0" expanded="true" />
-            <element signature="e#32957#32958#0" expanded="true" />
-            <element signature="e#33021#34198#0" expanded="true" />
-            <element signature="e#34179#34180#0" expanded="true" />
-            <element signature="e#34507#35511#0" expanded="true" />
-            <element signature="e#34904#35422#0" expanded="true" />
-            <element signature="e#35364#35365#0" expanded="true" />
-            <element signature="e#35469#35470#0" expanded="true" />
-            <element signature="e#35513#36726#0" expanded="true" />
-            <element signature="e#36684#36685#0" expanded="true" />
-            <element signature="e#37029#37345#0" expanded="true" />
-            <element signature="e#37304#37305#0" expanded="true" />
-            <element signature="e#37347#39235#0" expanded="true" />
-            <element signature="e#39194#39195#0" expanded="true" />
-            <element signature="e#39749#40422#0" expanded="true" />
-            <element signature="e#40403#40404#0" expanded="true" />
-            <element signature="e#41076#42766#0" expanded="true" />
-            <element signature="e#42747#42748#0" expanded="true" />
-            <element signature="e#43126#43481#0" expanded="true" />
-            <element signature="e#43446#43447#0" expanded="true" />
-            <element signature="e#43500#45370#0" expanded="true" />
-            <element signature="e#44560#44999#0" expanded="true" />
-            <element signature="e#44952#44953#0" expanded="true" />
-            <element signature="e#45351#45352#0" expanded="true" />
-          </folding>
+        <state line="345" column="38" selection-start="14565" selection-end="14565" vertical-scroll-proportion="0.38297874" vertical-offset="5058" max-vertical-offset="27756">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="635" column="0" selection-start="20395" selection-end="20395" vertical-scroll-proportion="0.0" vertical-offset="11196" max-vertical-offset="13212">
+        <state line="490" column="77" selection-start="15884" selection-end="15884" vertical-scroll-proportion="0.42553192" vertical-offset="6966" max-vertical-offset="11934">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4319#4339#0" expanded="true" />
-            <element signature="e#4441#4467#0" expanded="true" />
-            <element signature="e#6427#7756#0" expanded="true" />
-            <element signature="e#6685#6941#0" expanded="true" />
-            <element signature="e#6914#6915#0" expanded="true" />
-            <element signature="e#6995#7668#0" expanded="true" />
-            <element signature="e#7649#7650#0" expanded="true" />
-            <element signature="e#7744#7745#0" expanded="true" />
-            <element signature="e#7793#9349#0" expanded="true" />
-            <element signature="e#9338#9339#0" expanded="true" />
-            <element signature="e#10239#10472#0" expanded="true" />
-            <element signature="e#10461#10462#0" expanded="true" />
-            <element signature="e#10518#10721#0" expanded="true" />
-            <element signature="e#10710#10711#0" expanded="true" />
-            <element signature="e#11714#11926#0" expanded="true" />
-            <element signature="e#11915#11916#0" expanded="true" />
-            <element signature="e#12869#13321#0" expanded="true" />
-            <element signature="e#13310#13311#0" expanded="true" />
-            <element signature="e#13367#13569#0" expanded="true" />
-            <element signature="e#13558#13559#0" expanded="true" />
-            <element signature="e#14805#15299#0" expanded="true" />
-            <element signature="e#15288#15289#0" expanded="true" />
-            <element signature="e#16356#16581#0" expanded="true" />
-            <element signature="e#16570#16571#0" expanded="true" />
-            <element signature="e#19713#24890#0" expanded="true" />
-            <element signature="e#20084#24847#0" expanded="true" />
-            <element signature="e#20926#21559#0" expanded="true" />
-            <element signature="e#21500#21501#0" expanded="true" />
-            <element signature="e#22028#24772#0" expanded="true" />
-            <element signature="e#23173#24650#0" expanded="true" />
-            <element signature="e#24567#24568#0" expanded="true" />
-            <element signature="e#24713#24714#0" expanded="true" />
-            <element signature="e#24812#24813#0" expanded="true" />
-            <element signature="e#24871#24872#0" expanded="true" />
+            <element signature="e#19561#19963#0" expanded="true" />
+            <element signature="e#19952#19953#0" expanded="true" />
+            <element signature="e#20009#20209#0" expanded="true" />
+            <element signature="e#20198#20199#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="391" column="16" selection-start="11797" selection-end="11797" vertical-scroll-proportion="0.33333334" vertical-offset="6321" max-vertical-offset="9162">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="239" column="79" selection-start="6625" selection-end="6625" vertical-scroll-proportion="0.0" vertical-offset="3074" max-vertical-offset="4914">
-          <folding>
-            <element signature="e#6424#8576#0" expanded="true" />
-            <element signature="e#6646#8560#0" expanded="true" />
-            <element signature="e#8549#8550#0" expanded="true" />
-            <element signature="e#8569#8570#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="223" column="62" selection-start="5735" selection-end="5735" vertical-scroll-proportion="0.0" vertical-offset="3096" max-vertical-offset="4122">
+        <state line="49" column="0" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.34042552" vertical-offset="0" max-vertical-offset="4824">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="82" selection-start="5264" selection-end="5264" vertical-scroll-proportion="0.48430493" vertical-offset="1566" max-vertical-offset="3744">
+        <state line="253" column="0" selection-start="8056" selection-end="8056" vertical-scroll-proportion="0.68085104" vertical-offset="3510" max-vertical-offset="7920">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="0" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.40358743" vertical-offset="576" max-vertical-offset="4374">
+        <state line="226" column="0" selection-start="7188" selection-end="7188" vertical-scroll-proportion="0.5106383" vertical-offset="2610" max-vertical-offset="5616">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="0" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.25531915" vertical-offset="288" max-vertical-offset="4824">
           <folding />
         </state>
       </provider>
@@ -1627,7 +1334,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>library1</last-edited>
+          <last-edited>WeClient</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

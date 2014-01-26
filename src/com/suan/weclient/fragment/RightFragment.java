@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -57,7 +58,7 @@ public class RightFragment extends Fragment {
 	private EditText popContentEditText;
 	private TextView popTitleTextView;
 	private TextView popTextAmountTextView;
-	private ImageButton popCancelButton, popSureButton;
+	private Button popCancelButton, popSureButton;
 
 	private FeedbackAgent agent;
 	private Conversation defaultConversation;
@@ -158,19 +159,19 @@ public class RightFragment extends Fragment {
 
 		LayoutInflater inflater = (LayoutInflater) 
 				getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
+		View dialogView = inflater.inflate(R.layout.dialog_feedback_layout, null);
 		popTitleTextView = (TextView) dialogView
-				.findViewById(R.id.pop_feedback_text_title);
+				.findViewById(R.id.dialog_feedback_text_title);
 
 		popContentEditText = (EditText) dialogView
-				.findViewById(R.id.pop_feedback_edit_text);
-		popSureButton = (ImageButton) dialogView
-				.findViewById(R.id.pop_feedback_button_sure);
-		popCancelButton = (ImageButton) dialogView
-				.findViewById(R.id.pop_feedback_button_cancel);
+				.findViewById(R.id.dialog_feedback_edit_text);
+		popSureButton = (Button) dialogView
+				.findViewById(R.id.dialog_feedback_button_sure);
+		popCancelButton = (Button) dialogView
+				.findViewById(R.id.dialog_feedback_button_cancel);
 
 		popTextAmountTextView = (TextView) dialogView
-				.findViewById(R.id.pop_feedback_text_num);
+				.findViewById(R.id.dialog_feedback_text_num);
 		popTextAmountTextView.setOnClickListener(new OnClickListener() {
 
 			@Override

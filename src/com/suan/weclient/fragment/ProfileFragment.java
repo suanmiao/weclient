@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.FansListActivity;
 import com.suan.weclient.activity.SettingActivity;
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
@@ -49,9 +51,10 @@ public class ProfileFragment extends Fragment {
     private Dialog popDialog;
 
     private EditText popContentEditText;
+    private TextView popContentTextView;
     private TextView popTitleTextView;
     private TextView popTextAmountTextView;
-    private ImageButton popCancelButton, popSureButton;
+    private Button popCancelButton, popSureButton;
 
     private FeedbackAgent agent;
     private Conversation defaultConversation;
@@ -114,7 +117,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        checkUpdateLayout.setOnClickListener(new OnClickListener() {
+       checkUpdateLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkUpdate();
@@ -125,8 +128,64 @@ public class ProfileFragment extends Fragment {
         newPeopleLayout = (RelativeLayout) view.findViewById(R.id.profile_layout_new_people);
         newPeopleLayout.setVisibility(View.GONE);
 
+        exitAccountLayout = (RelativeLayout) view.findViewById(R.id.profile_layout_exit_account);
+        exitAccountLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popExitAccount();
+
+            }
+        });
+
         newUserTextView = (TextView) view.findViewById(R.id.profile_text_new_user);
         versionTextView = (TextView) view.findViewById(R.id.profile_text_version);
+
+    }
+
+
+    private void popExitAccount() {
+
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_ensure_text_title);
+        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_cancel);
+
+        popTitleTextView.setText("退出当前账户");
+        popContentTextView.setText("退出当前账户将删除当前账户的数据，确认退出？");
+        popSureButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                SharedPreferenceManager.deleteUser(getActivity(),
+                        mDataManager.getUserGroup().get(mDataManager.getCurrentPosition())
+                                .getUserName());
+                mDataManager.updateUserGroup();
+                popDialog.cancel();
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popDialog.cancel();
+
+            }
+        });
+
+        popDialog = new Dialog(getActivity(), R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+        popDialog.show();
 
     }
 
@@ -245,19 +304,19 @@ public class ProfileFragment extends Fragment {
 
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.pop_feedback_layout, null);
+        View dialogView = inflater.inflate(R.layout.dialog_feedback_layout, null);
         popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.pop_feedback_text_title);
+                .findViewById(R.id.dialog_feedback_text_title);
 
         popContentEditText = (EditText) dialogView
-                .findViewById(R.id.pop_feedback_edit_text);
-        popSureButton = (ImageButton) dialogView
-                .findViewById(R.id.pop_feedback_button_sure);
-        popCancelButton = (ImageButton) dialogView
-                .findViewById(R.id.pop_feedback_button_cancel);
+                .findViewById(R.id.dialog_feedback_edit_text);
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_cancel);
 
         popTextAmountTextView = (TextView) dialogView
-                .findViewById(R.id.pop_feedback_text_num);
+                .findViewById(R.id.dialog_feedback_text_num);
         popTextAmountTextView.setOnClickListener(new OnClickListener() {
 
             @Override

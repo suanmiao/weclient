@@ -36,6 +36,7 @@ import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.util.text.SpanUtil;
 import com.suan.weclient.util.voice.VoiceHolder;
 import com.suan.weclient.util.voice.VoiceManager.AudioPlayListener;
 
@@ -119,6 +120,14 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                 break;
 
+            case MessageBean.MESSAGE_TYPE_EMPTY:
+
+                convertView = mInflater.inflate(R.layout.message_item_empty_layout,
+                        null);
+
+                break;
+
+
             default:
 
                 convertView = mInflater.inflate(R.layout.message_item_text_layout,
@@ -195,8 +204,9 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     starImageButton = (ImageView) parentView
                             .findViewById(R.id.message_item_text_button_star);
                     replyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_reply);
-                    contentTextView.setText(getMessageItems().get(position)
-                            .getContent());
+                    String content = getMessageItems().get(position)
+                            .getContent();
+                    SpanUtil.setHtmlSpanAndImgSpan(contentTextView, content, mContext);
                     break;
 
                 case MessageBean.MESSAGE_TYPE_IMG:
@@ -257,6 +267,11 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                             .findViewById(R.id.message_item_voi_button_star);
 
                     replyButton = (ImageView) parentView.findViewById(R.id.message_item_voi_button_reply);
+                    break;
+
+                case MessageBean.MESSAGE_TYPE_EMPTY:
+
+
                     break;
 
                 default:
@@ -337,92 +352,97 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                 break;
 
+            case MessageBean.MESSAGE_TYPE_EMPTY:
+
+                break;
+
             default:
 
                 break;
 
         }
 
-//        holder.parentView.setOnLongClickListener(new LongClickListener(holder));
-        holder.parentView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDataManager.createChat(mDataManager.getCurrentUser(),
-                        getMessageItems().get(position).getFakeId());
-                Intent jumbIntent = new Intent();
-                jumbIntent.setClass(mContext, ChatActivity.class);
-                mContext.startActivity(jumbIntent);
-
-            }
-        });
-
-        holder.replyLayout.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if (mDataManager.getUserGroup().size() == 0) {
-
-                } else {
-
-                    popReply(position);
+        if (getMessageItems().get(position).getType() != MessageBean.MESSAGE_TYPE_EMPTY) {
+            holder.parentView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDataManager.createChat(mDataManager.getCurrentUser(),
+                            getMessageItems().get(position).getFakeId());
+                    Intent jumbIntent = new Intent();
+                    jumbIntent.setClass(mContext, ChatActivity.class);
+                    mContext.startActivity(jumbIntent);
 
                 }
+            });
 
-            }
-        });
-        holder.starLayout.setOnClickListener(new OnClickListener() {
+            holder.replyLayout.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(final View v) {
-                // TODO Auto-generated method stub
-                boolean stared = mDataManager.getCurrentMessageHolder()
-                        .getMessageList().get(position).getStarred();
-                mDataManager.getWechatManager().star(
-                        mDataManager.getCurrentPosition(), position,
-                        !stared, new OnActionFinishListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    if (mDataManager.getUserGroup().size() == 0) {
 
+                    } else {
 
-                    @Override
-                    public void onFinish(int code,Object object) {
-                        // TODO Auto-generated method stub
+                        popReply(position);
 
-                        setStarBackground(v, position);
                     }
-                });
 
-            }
-        });
+                }
+            });
+            holder.starLayout.setOnClickListener(new OnClickListener() {
 
-        setStarBackground(holder.starImageButton, position);
+                @Override
+                public void onClick(final View v) {
+                    // TODO Auto-generated method stub
+                    boolean stared = mDataManager.getCurrentMessageHolder()
+                            .getMessageList().get(position).getStarred();
+                    mDataManager.getWechatManager().star(
+                            mDataManager.getCurrentPosition(), position,
+                            !stared, new OnActionFinishListener() {
 
-        long time = Long.parseLong(getMessageItems().get(position)
-                .getDateTime());
-        Date date = new Date(time * 1000);
-        SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
-        String timeString = "" + format.format(date);
 
-        holder.timeTextView.setText(timeString);
-        holder.profileImageView.setBackgroundResource(R.drawable.ic_launcher);
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            // TODO Auto-generated method stub
 
-        holder.profileImageView.setOnClickListener(new OnClickListener() {
+                            setStarBackground(v, position);
+                        }
+                    });
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                mDataManager.createChat(mDataManager.getCurrentUser(),
-                        getMessageItems().get(position).getFakeId());
-                Intent jumbIntent = new Intent();
-                jumbIntent.setClass(mContext, ChatActivity.class);
-                mContext.startActivity(jumbIntent);
+                }
+            });
 
-            }
-        });
+            setStarBackground(holder.starImageButton, position);
 
-        holder.profileTextView.setText(""
-                + getMessageItems().get(position).getNickName());
+            long time = Long.parseLong(getMessageItems().get(position)
+                    .getDateTime());
+            Date date = new Date(time * 1000);
+            SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
+            String timeString = "" + format.format(date);
 
-        setHeadImg(holder, position);
+            holder.timeTextView.setText(timeString);
+
+            holder.profileImageView.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    mDataManager.createChat(mDataManager.getCurrentUser(),
+                            getMessageItems().get(position).getFakeId());
+                    Intent jumbIntent = new Intent();
+                    jumbIntent.setClass(mContext, ChatActivity.class);
+                    mContext.startActivity(jumbIntent);
+
+                }
+            });
+
+            holder.profileTextView.setText(""
+                    + getMessageItems().get(position).getNickName());
+
+            setHeadImg(holder, position);
+
+        }
 
     }
 
@@ -444,7 +464,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     new OnActionFinishListener() {
 
                         @Override
-                        public void onFinish(int code,Object object) {
+                        public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
                             try {
 
@@ -580,7 +600,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         new OnActionFinishListener() {
 
                             @Override
-                            public void onFinish(int code,Object object) {
+                            public void onFinish(int code, Object object) {
                                 // TODO Auto-generated method stub
                                 holder.contentImageView.setTag(true);
                                 Bitmap bitmap = (Bitmap) object;
@@ -588,7 +608,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                                         ImageCacheManager.CACHE_MESSAGE_CONTENT
                                                 + getMessageItems().get(
                                                 position).getId(),
-                                        bitmap,true);
+                                        bitmap, true);
 
                             }
                         });
@@ -622,7 +642,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         holder.profileImageView, new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(int code,Object object) {
+                    public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
                         holder.profileImageView.setTag(true);
                         Bitmap bitmap = (Bitmap) object;
@@ -631,7 +651,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                                 ImageCacheManager.CACHE_MESSAGE_PROFILE
                                         + getMessageItems().get(
                                         position).getFakeId(),
-                                bitmap,true);
+                                bitmap, true);
                     }
                 });
 
@@ -812,7 +832,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 new OnActionFinishListener() {
 
                     @Override
-                    public void onFinish(int code,Object object) {
+                    public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
 
                     }

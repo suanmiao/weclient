@@ -19,7 +19,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
 import com.suan.weclient.util.net.WeChatLoader;
-import com.suan.weclient.view.SMainDropListWindow;
+import com.suan.weclient.view.dropWindow.SMainDropListWindow;
 
 public class CustomMainActionView extends LinearLayout {
 
@@ -32,12 +32,14 @@ public class CustomMainActionView extends LinearLayout {
     private RelativeLayout customLayout;
 
     private ImageView showMenuImageView;
+    private RelativeLayout leftContentLayout;
     private RelativeLayout firstIndecatorLayout, secondIndecatorLayout;
     private RelativeLayout firstContentLayout, secondContentLayout;
 
     /*
      * about popupwindow
      */
+
     private ShowMenuListener showMenuListener;
 
     private SMainDropListWindow sMainDropListWindow;
@@ -71,6 +73,7 @@ public class CustomMainActionView extends LinearLayout {
             @Override
             public void onPage(int page) {
                 // TODO Auto-generated method stub
+                setPage(page);
 
             }
         });
@@ -147,6 +150,9 @@ public class CustomMainActionView extends LinearLayout {
             }
         });
 
+        leftContentLayout = (RelativeLayout) customLayout.findViewById(R.id.actionbar_main_layout_left);
+
+
         indexTextView = (TextView) customLayout.findViewById(R.id.actionbar_left_text_first);
 
         indexScrollView = (ScrollView) customLayout
@@ -156,7 +162,7 @@ public class CustomMainActionView extends LinearLayout {
                 .findViewById(R.id.actionbar_main_layout_index);
 
         firstContentLayout = (RelativeLayout) customLayout
-                .findViewById(R.id.actionbar_fans_left_layout);
+                .findViewById(R.id.actionbar_fans_left_layout_first);
         secondContentLayout = (RelativeLayout) customLayout
                 .findViewById(R.id.actionbar_main_left_layout_second);
 
@@ -188,8 +194,6 @@ public class CustomMainActionView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Log.e("width", CustomMainActionView.this.getWidth() + "|"
-                        + customLayout.getWidth());
                 mDataManager.getTabListener().onClickTab(0);
 
             }
@@ -244,18 +248,27 @@ public class CustomMainActionView extends LinearLayout {
 
         switch (page) {
             case 0:
+
                 firstIndecatorLayout.setSelected(true);
                 secondIndecatorLayout.setSelected(false);
+
                 firstContentLayout.setVisibility(View.VISIBLE);
                 secondContentLayout.setVisibility(View.GONE);
+
 
                 break;
 
             case 1:
+
+                leftContentLayout.bringChildToFront(secondContentLayout);
+
                 firstIndecatorLayout.setSelected(false);
                 secondIndecatorLayout.setSelected(true);
+
+
                 firstContentLayout.setVisibility(View.GONE);
                 secondContentLayout.setVisibility(View.VISIBLE);
+
 
                 break;
 
@@ -268,7 +281,6 @@ public class CustomMainActionView extends LinearLayout {
         int index = (page + pagePercent) > 0.5 ? 1 : 0;
 
 //        setPage(index);
-
 
 
         double percent = (page + pagePercent);

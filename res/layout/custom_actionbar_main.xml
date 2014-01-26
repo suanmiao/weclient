@@ -17,6 +17,7 @@
 			android:paddingTop="10dip"
 			android:src="@drawable/actionbar_left" />
 		<RelativeLayout
+            android:id="@+id/actionbar_main_layout_left"
 			android:layout_width="100dip"
 			android:layout_height="match_parent"
 			android:layout_marginLeft="28dip" >
@@ -25,7 +26,7 @@
 				android:layout_width="fill_parent"
 				android:layout_height="fill_parent"
 				android:layout_marginLeft="5dip"
-				android:visibility="gone" >
+				 >
 				<TextView
 					android:id="@+id/actionbar_main_left_text_second"
 					android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
 					android:textSize="18dip" />
 			</RelativeLayout>
 			<RelativeLayout
-				android:id="@+id/actionbar_fans_left_layout"
+				android:id="@+id/actionbar_fans_left_layout_first"
 				android:layout_marginTop="3dip"
 				android:layout_marginBottom="3dip"
 				android:layout_marginLeft="6dip"

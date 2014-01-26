@@ -1786,7 +1786,7 @@ containing a value of this type.
         public static final int message_item_text_layout=0x7f030034;
         public static final int message_item_voice_layout=0x7f030035;
         public static final int need_this_for_maven=0x7f030036;
-        public static final int pop_feedback_layout=0x7f030037;
+        public static final int dialog_feedback_layout =0x7f030037;
         public static final int profile_layout=0x7f030038;
         public static final int pull_to_refresh_header_horizontal=0x7f030039;
         public static final int pull_to_refresh_header_vertical=0x7f03003a;

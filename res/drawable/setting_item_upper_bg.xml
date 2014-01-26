@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true" android:state_selected="false" android:drawable="@drawable/setting_item_upper_state_pressed_bg">
+    </item>
+     <item android:state_pressed="false" android:state_selected="false" android:drawable="@drawable/setting_item_upper_state_bg">
+    </item>
+
+    <item android:state_pressed="true" android:state_selected="true" android:drawable="@drawable/setting_item_upper_state_pressed_bg">
+    </item>
+
+    <item android:state_pressed="false" android:state_selected="true" android:drawable="@drawable/setting_item_upper_state_pressed_bg">
+    </item>
+   <item android:drawable="@drawable/setting_item_upper_state_bg">
+    </item>
+</selector>

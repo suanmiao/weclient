@@ -28,6 +28,7 @@
                 android:id="@+id/chat_button_expression"
                 android:layout_width="50dip"
                 android:layout_height="fill_parent"
+                android:visibility="gone"
                 android:background="@drawable/ic_launcher" />
 
             <EditText
@@ -37,8 +38,8 @@
                 android:background="@drawable/chat_edit_content_bg"
                 android:layout_marginTop="5dip"
                 android:layout_marginBottom="5dip"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
+                android:paddingTop="8dip"
+                android:paddingBottom="8dip"
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip"
                 android:layout_weight="1" />

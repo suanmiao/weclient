@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.suan.weclient.util.SharedPreferenceManager;
 
@@ -34,10 +33,9 @@ public class AlarmSysService extends Service {
             Intent intent = new Intent(AlarmSysService.this, AlarmReceiver.class);
             intent.setAction(AlarmReceiver.BROADCAST_ACTION_START_PUSH_SERVICE);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmSysService.this, 0, intent, 0);
-            Log.e("alarm service", "start alarm");
             boolean pushEnable = SharedPreferenceManager.getPushEnable(this);
             if (pushEnable) {
-                int pushFrequent = SharedPreferenceManager.getPustFrequent(this);
+                int pushFrequent = SharedPreferenceManager.getPushFrequent(this);
                 int delay = 20 * 1000;
                 switch (pushFrequent) {
                     case PushService.PUSH_FREQUENT_FAST:
@@ -68,7 +66,6 @@ public class AlarmSysService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.e("alarmservice","destroy");
         super.onDestroy();
     }
 

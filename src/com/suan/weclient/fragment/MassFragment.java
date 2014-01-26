@@ -21,16 +21,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +40,8 @@ import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
-import com.suan.weclient.util.span.SpanUtil;
+import com.suan.weclient.util.text.EmotionHandler;
+import com.suan.weclient.view.Face.FaceHolderView;
 
 public class MassFragment extends Fragment {
 
@@ -51,11 +52,15 @@ public class MassFragment extends Fragment {
     private TextView popTitleTextView;
     private TextView popTextAmountTextView;
     private TextView massLeftNumTextView;
-    private ImageButton popCancelButton, popSureButton;
+    private Button popCancelButton, popSureButton;
     private Dialog dialog;
 
-    private ImageButton sendButton;
+
+    private FaceHolderView faceHolderView;
+    private ImageView faceShowButton;
+    private Button sendButton;
     private View view;
+    private EmotionHandler emotionHandler;
 
     public MassFragment(DataManager dataManager) {
 
@@ -68,7 +73,7 @@ public class MassFragment extends Fragment {
         initWidgets();
         initWidgetsEvent();
         initListener();
-       return view;
+        return view;
     }
 
     private void initListener() {
@@ -77,19 +82,14 @@ public class MassFragment extends Fragment {
             @Override
             public void onLogin(final UserBean userBean) {
                 // TODO Auto-generated method stub
-                if (mDataManager.getUserGroup().size() == 0) {
-                    sendButton
-                            .setBackgroundResource(R.drawable.send_selected_state);
+                setMassLeft();
 
-                } else {
-                    if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-                        sendButton
-                                .setBackgroundResource(R.drawable.send_selected_state);
-                    } else {
-                        sendButton.setSelected(false);
-                    }
-
-                }
+            }
+        });
+        mDataManager.addMassDataGetListener(new DataManager.MassDataGetListener() {
+            @Override
+            public void onGet(UserBean userBean) {
+                setMassLeft();
 
             }
         });
@@ -98,13 +98,54 @@ public class MassFragment extends Fragment {
 
     private void initWidgets() {
         contentEditText = (EditText) view.findViewById(R.id.mass_edit_mass);
+        contentEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    faceHolderView.setVisibility(View.GONE);
+                    faceShowButton.setSelected(false);
+                }
+
+            }
+        });
+
+        emotionHandler = new EmotionHandler(contentEditText);
 
         massLeftNumTextView = (TextView) view
                 .findViewById(R.id.mass_text_left_num);
         textAmountTextView = (TextView) view.findViewById(R.id.mass_text_num);
 
 
-        sendButton = (ImageButton) view.findViewById(R.id.mass_button_send);
+        sendButton = (Button) view.findViewById(R.id.mass_button_send);
+        faceShowButton = (ImageView) view.findViewById(R.id.mass_button_face_show);
+        faceShowButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (faceHolderView.getVisibility() != View.VISIBLE) {
+                    faceHolderView.setVisibility(View.VISIBLE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(contentEditText.getWindowToken(), 0);
+                    faceShowButton.setSelected(true);
+
+                } else {
+
+                    faceHolderView.setVisibility(View.GONE);
+
+                    faceShowButton.setSelected(false);
+                }
+
+            }
+        });
+
+        faceHolderView = (FaceHolderView) view.findViewById(R.id.face_holder_view);
+        faceHolderView.init(mDataManager);
+        faceHolderView.setInputFaceListener(new FaceHolderView.InputFaceListener() {
+            @Override
+            public void onInput(String key) {
+                emotionHandler.insert(key);
+
+            }
+        });
 
     }
 
@@ -116,10 +157,16 @@ public class MassFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                contentEditText.setText("");
+                if (contentEditText.getText().length() > 0) {
+
+                    popClearEnsure();
+                } else {
+
+                }
 
             }
         });
+
         contentEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -151,25 +198,26 @@ public class MassFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                String contentString = contentEditText.getText().toString();
-                Log.e("contentstring",contentString);
-                Spanned spanned = SpanUtil.setImgSpan(contentString, getActivity());
-                contentEditText.setText(spanned);
 /*
+                emotionHandler.insert("/::~");
+                String unspanned = SpanUtil.getUnspannedContentString(contentEditText);
+                Log.e("content", "" + unspanned);
+*/
+
+
                 if (mDataManager.getUserGroup().size() == 0) {
-					sendButton
-							.setBackgroundResource(R.drawable.send_selected_state);
+                    sendButton.setSelected(true);
 
-				} else {
-					if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-						sendButton
-								.setBackgroundResource(R.drawable.send_selected_state);
-					} else {
+                } else {
+                    if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
+                        sendButton.setSelected(true);
+                    } else {
+                        sendButton.setSelected(false);
 
-						dialogSure();
-					}
+                        dialogEnsureMass();
+                    }
 
-				}*/
+                }
 
             }
 
@@ -177,7 +225,51 @@ public class MassFragment extends Fragment {
         });
     }
 
-    private void dialogSure() {
+    private void popClearEnsure() {
+
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_ensure_text_title);
+        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_cancel);
+
+        popTitleTextView.setText("删除内容");
+        popContentTextView.setText("删除当前编辑的内容？");
+        popSureButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                contentEditText.setText("");
+
+                dialog.cancel();
+
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.cancel();
+
+            }
+        });
+
+        dialog = new Dialog(getActivity(), R.style.dialog);
+
+        dialog.setContentView(dialogView);
+        dialog.show();
+
+    }
+
+    private void dialogEnsureMass() {
         String content = contentEditText.getText().toString();
         if (content.length() == 0) {
             Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
@@ -190,9 +282,9 @@ public class MassFragment extends Fragment {
         popTitleTextView = (TextView) dialogView
                 .findViewById(R.id.dialog_preview_text_title);
 
-        popSureButton = (ImageButton) dialogView
+        popSureButton = (Button) dialogView
                 .findViewById(R.id.dialog_preview_button_sure);
-        popCancelButton = (ImageButton) dialogView
+        popCancelButton = (Button) dialogView
                 .findViewById(R.id.dialog_preview_button_cancel);
 
         popTextAmountTextView = (TextView) dialogView
@@ -286,14 +378,14 @@ public class MassFragment extends Fragment {
 
         }
         if (mDataManager.getUserGroup().size() == 0) {
-            sendButton.setBackgroundResource(R.drawable.send_selected_state);
+            sendButton.setSelected(true);
 
         } else {
             if (mDataManager.getCurrentUser().getMassLeft() <= 0) {
-                sendButton
-                        .setBackgroundResource(R.drawable.send_selected_state);
+                sendButton.setSelected(true);
             } else {
 
+                sendButton.setSelected(false);
             }
 
         }

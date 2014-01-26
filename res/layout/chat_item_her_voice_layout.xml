@@ -23,7 +23,6 @@
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginTop="10dip"
-                android:background="#000000"
                 android:src="@drawable/head_default" />
         </RelativeLayout>
 

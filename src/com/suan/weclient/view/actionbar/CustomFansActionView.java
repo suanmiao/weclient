@@ -1,11 +1,14 @@
 package com.suan.weclient.view.actionbar;
 
+import android.app.Activity;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +17,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.FansHolder;
-import com.suan.weclient.view.SFansDropListWindow;
+import com.suan.weclient.view.dropWindow.SFansDropListWindow;
 
 public class CustomFansActionView extends LinearLayout {
 
@@ -24,7 +27,9 @@ public class CustomFansActionView extends LinearLayout {
     private Resources resources;
     private DataManager mDataManager;
     private RelativeLayout customLayout;
+    private Activity activity;
 
+    private ImageView backButton;
 
     /*
      * about popupwindow
@@ -45,8 +50,9 @@ public class CustomFansActionView extends LinearLayout {
 
     }
 
-    public void init(DataManager dataManager) {
+    public void init(DataManager dataManager,Activity activity) {
         mDataManager = dataManager;
+        this.activity = activity;
 
 
         initListener();
@@ -87,6 +93,21 @@ public class CustomFansActionView extends LinearLayout {
                 .getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         customLayout = (RelativeLayout) layoutInflater.inflate(
                 R.layout.custom_actionbar_fans, null);
+
+
+        backButton = (ImageView)customLayout.findViewById(R.id.actionbar_fans_img_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.finish();
+
+            }
+        });
+
+
+
+
+
         indexLayout = (RelativeLayout) customLayout.findViewById(R.id.actionbar_fans_left_layout);
         indexTextView = (TextView) customLayout.findViewById(R.id.actionbar_fans_left_text_first);
 

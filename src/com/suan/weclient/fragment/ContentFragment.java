@@ -24,6 +24,7 @@ import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.TabListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.view.SViewPager;
 
 public class ContentFragment extends Fragment implements
         OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
@@ -32,7 +33,7 @@ public class ContentFragment extends Fragment implements
 
 
     private MyAdapter mAdapter;
-    private ViewPager mPager;
+    private SViewPager mPager;
     private ArrayList<Fragment> pagerItemList = null;
 
     private MassFragment massFragment;
@@ -133,7 +134,8 @@ public class ContentFragment extends Fragment implements
 
     private void initWidgets() {
 
-        mPager = (ViewPager) mView.findViewById(R.id.vp_list);
+        mPager = (SViewPager) mView.findViewById(R.id.vp_list);
+        mPager.init(mDataChangeListener);
 
         pagerItemList = new ArrayList<Fragment>();
         messageFragment = new MessageFragment(mDataChangeListener);
@@ -141,6 +143,7 @@ public class ContentFragment extends Fragment implements
         pagerItemList.add(messageFragment);
         pagerItemList.add(massFragment);
         mAdapter = new MyAdapter(getFragmentManager());
+
         mPager.setAdapter(mAdapter);
         mPager.setPageMargin(10);
         mPager.setPageMarginDrawable(R.color.pageDivider);

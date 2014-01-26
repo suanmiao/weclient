@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Rect;
 import android.view.View.OnClickListener;
 
 import com.suan.weclient.fragment.ProfileFragment;
@@ -11,7 +12,9 @@ import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceManager;
+import com.suan.weclient.view.SViewPager;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
+import com.tencent.mm.sdk.openapi.IWXAPI;
 
 public class DataManager {
 
@@ -25,11 +28,14 @@ public class DataManager {
     ArrayList<ChatItemChangeListener> chatItemChangeListeners;
     ArrayList<FansListChangeListener> fansListChangeListeners;
     ArrayList<ProfileGetListener> profileGetListeners;
+    ArrayList<MassDataGetListener> massDataGetListeners;
     ArrayList<LoginListener> loginListeners;
     ArrayList<DialogListener> dialogListeners;
     ArrayList<UserGroupListener> userGroupListeners;
 
     ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
+
+    private IWXAPI api;
 
     private ContentFragmentChangeListener contentFragmentChangeListener;
 
@@ -45,11 +51,12 @@ public class DataManager {
     private VoiceManager mVoiceManager;
     private Context mContext;
 
-    //test
     public CustomMainActionView customMainActionView;
 
     private PagerListener pagerListener;
     private TabListener tabListener;
+
+    private SViewPager.ScrollEnableListener scrollEnableListener;
 
 
     private ProfileFragment.UserListControlListener userListControlListener;
@@ -84,6 +91,7 @@ public class DataManager {
         chatItemChangeListeners = new ArrayList<DataManager.ChatItemChangeListener>();
         fansListChangeListeners = new ArrayList<DataManager.FansListChangeListener>();
         profileGetListeners = new ArrayList<DataManager.ProfileGetListener>();
+        massDataGetListeners = new ArrayList<MassDataGetListener>();
         loginListeners = new ArrayList<DataManager.LoginListener>();
         dialogListeners = new ArrayList<DataManager.DialogListener>();
         userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
@@ -287,6 +295,11 @@ public class DataManager {
 
     }
 
+
+    public void addMassDataGetListener(MassDataGetListener massDataGetListener) {
+        this.massDataGetListeners.add(massDataGetListener);
+
+    }
     public void addLoginListener(LoginListener loginListener) {
         this.loginListeners.add(loginListener);
 
@@ -295,6 +308,7 @@ public class DataManager {
     public void addUserGroupListener(UserGroupListener userGroupListener) {
         this.userGroupListeners.add(userGroupListener);
     }
+
 
 
     public void setContentFragmentListener(ContentFragmentChangeListener contentFragmentChangeListener) {
@@ -325,6 +339,12 @@ public class DataManager {
         }
     }
 
+
+    public void doMassDataGet(UserBean userBean) {
+        for (int i = 0; i < massDataGetListeners.size(); i++) {
+            massDataGetListeners.get(i).onGet(userBean);
+        }
+    }
     public void doMessageGet(boolean changed) {
         for (int i = 0; i < messageChangeListeners.size(); i++) {
             messageChangeListeners.get(i).onMessageGet(changed);
@@ -433,6 +453,11 @@ public class DataManager {
         public void onGet(UserBean userBean);
     }
 
+
+    public interface MassDataGetListener {
+        public void onGet(UserBean userBean);
+    }
+
     public interface LoginListener {
         public void onLogin(UserBean userBean);
     }
@@ -445,6 +470,16 @@ public class DataManager {
         public void onAddUser();
     }
 
+
+
+    public void setWechatShareApi(IWXAPI api){
+        this.api = api;
+
+    }
+
+    public IWXAPI getWechatShareApi(){
+        return this.api;
+    }
 
     public interface ContentFragmentChangeListener {
         public void onChange(int index);
@@ -506,4 +541,14 @@ public class DataManager {
         return tabListener;
     }
 
+    public void setPagerScrollListener(SViewPager.ScrollEnableListener scrollEnableListener){
+        this.scrollEnableListener = scrollEnableListener;
+    }
+
+    public void setPagerScrollDisableRect(Rect rect){
+        if(scrollEnableListener!=null){
+            scrollEnableListener.setFaceHolderRect(rect);
+        }
+
+    }
 }

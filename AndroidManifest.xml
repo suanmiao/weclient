@@ -30,6 +30,7 @@
         <activity
             android:name=".activity.AboutActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Sherlock.Light"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".activity.MainActivity"
@@ -83,6 +84,7 @@
             android:process=":DownloadingService"></service>
     </application>
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

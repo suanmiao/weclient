@@ -349,6 +349,8 @@ public class WeChatLoader {
         star:
         url1+url3+token+url5
      */
+
+                Log.e("message mode",""+mode);
                 String targetUrl = "";
 
                 switch (mode) {
