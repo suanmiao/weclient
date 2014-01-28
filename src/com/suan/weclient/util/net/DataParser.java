@@ -237,13 +237,12 @@ public class DataParser {
                                 ArrayList<MessageBean> getMessageList = getMessageItems(
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
-                                boolean dataChanged = false;
+
                                 if (!(messageHolder.getLatestMsgId().equals(latestMsgId) && messageHolder.getContentMessageMode() == messageHolder.getNowMessageMode())) {
                                     // when the message is list changed
-                                    dataChanged = true;
-
                                     messageHolder.setMessage(getMessageList);
                                     messageHolder.setLatestMsgId(latestMsgId);
+                                    messageHolder.getUserBean().setLastMsgId(latestMsgId);
                                     messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
                                 } else {
 
@@ -251,7 +250,6 @@ public class DataParser {
 
 
                                 if (getMessageList.size() == 0) {
-                                    Log.e("holderempty", "holderhemp");
                                     MessageBean emptyMessage = new MessageBean();
                                     emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
                                     messageHolder.getMessageList().add(emptyMessage);
@@ -265,7 +263,6 @@ public class DataParser {
                                 messageResultHolder.messageBeans = getMessageList;
                                 message.obj = messageResultHolder;
 
-                                message.arg1 = dataChanged ? 1 : 0;
                                 loadHandler.sendMessage(message);
 
                             } catch (Exception e) {
@@ -361,7 +358,7 @@ public class DataParser {
 
             resultJsonObject = new JSONObject(strResult);
             int ret = getRet(resultJsonObject);
-            Log.e("get ret", "login" + ret);
+/*
             Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
             Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
             Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
@@ -383,9 +380,9 @@ public class DataParser {
 
             }
 
+*/
 
             if (ret != RET_LOGIN_SUCCESS) {
-                // progressDialog.dismiss();
                 Log.e("login failed", strResult);
 
                 return PARSE_LOGIN_FAILED;
@@ -395,7 +392,6 @@ public class DataParser {
             if (strResult.contains("token")) {
                 String tokenString = getToken(resultJsonObject);
                 nowBean.setToken(tokenString);
-                SharedPreferenceManager.updateUser(context, nowBean);
             }
         } catch (Exception exception) {
             Log.e("login exception fuck", exception + "");
@@ -703,6 +699,11 @@ public class DataParser {
                 return Integer.parseInt("" + resultObject.get("Ret"));
 
             }
+
+        } catch (Exception e) {
+
+        }
+        try {
 
             if (resultObject.get("ret") != null) {
                 return Integer.parseInt("" + resultObject.get("ret"));

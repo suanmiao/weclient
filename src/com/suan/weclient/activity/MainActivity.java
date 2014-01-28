@@ -511,7 +511,7 @@ public class MainActivity extends SlidingFragmentActivity {
         });
         mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
             @Override
-            public void onMessageGet(boolean changed) {
+            public void onMessageGet() {
                 SharedPreferenceManager.putLastNewMessage(MainActivity.this, 0);
 
             }
@@ -737,9 +737,8 @@ public class MainActivity extends SlidingFragmentActivity {
                                                                                         // Auto-generated
                                                                                         // method
                                                                                         // stub
-                                                                                        Boolean changed = (Boolean) object;
                                                                                         mDataManager
-                                                                                                .doMessageGet(changed);
+                                                                                                .doMessageGet();
                                                                                         mDataManager
                                                                                                 .doAutoLoginEnd();
 

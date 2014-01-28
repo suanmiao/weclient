@@ -42,6 +42,15 @@
                 android:layout_centerVertical="true"
                 android:id="@+id/profile_text_user" />
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@+id/profile_text_user"
+                android:textColor="#ffffff"
+                android:textSize="15dip"
+                android:layout_marginLeft="5dip"
+                android:layout_centerVertical="true"
+                android:id="@+id/profile_text_total_user" />
             <RelativeLayout
                 android:id="@+id/profile_layout_new_people"
                 android:layout_height="20dip"

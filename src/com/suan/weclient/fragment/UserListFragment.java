@@ -16,6 +16,8 @@
 package com.suan.weclient.fragment;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,6 +32,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -38,6 +42,7 @@ import android.widget.TextView;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
@@ -45,278 +50,336 @@ import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class UserListFragment extends Fragment implements OnItemClickListener,
-		OnItemLongClickListener {
+        OnItemLongClickListener {
 
-	public static int START_ACTIVITY_LOGIN = 0;
+    public static int START_ACTIVITY_LOGIN = 0;
 
-	private View view;
-	private ListView mListView;
-	private RelativeLayout addUserButton;
+    private View view;
+    private ListView mListView;
+    private RelativeLayout addUserButton;
 
-	private MyAdapter myAdapter;
-	private DataManager mDataManager;
-	private ImageView profileImageView;
+    private MyAdapter myAdapter;
+    private DataManager mDataManager;
+    private ImageView profileImageView;
 
-	public UserListFragment( DataManager dataManager) {
-		mDataManager = dataManager;
-	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+    /*
+    about dialog
+     */
 
-		view = inflater.inflate(R.layout.user_group_layout, null);
-		initWidgets();
-		initListener();
+    private Dialog popDialog;
 
-		return view;
-	}
+    private TextView popContentTextView;
+    private TextView popTitleTextView;
+    private TextView popTextAmountTextView;
+    private Button popCancelButton, popSureButton;
 
-	private void initListener() {
-		mDataManager.addAutoLoginListener(new AutoLoginListener() {
-			
-			@Override
-			public void onAutoLoginEnd() {
-				// TODO Auto-generated method stub
-				for(int i = 0;i<mListView.getChildCount();i++){
-					mListView.setItemChecked(i, false);
-				}
-				mListView.setItemChecked(mDataManager.getCurrentPosition(), true);
-				
-			}
-			
-			@Override
-			public void autoLogin() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		mDataManager.addUserGroupListener(new UserGroupListener() {
 
-			@Override
-			public void onGroupChangeEnd() {
-				// TODO Auto-generated method stub
+    public UserListFragment(DataManager dataManager) {
+        mDataManager = dataManager;
+    }
 
-				updateList();
-			}
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-			@Override
-			public void onAddUser() {
-				// TODO Auto-generated method stub
+        view = inflater.inflate(R.layout.user_group_layout, null);
+        initWidgets();
+        initListener();
 
-			}
+        return view;
+    }
 
-			@Override
-			public void deleteUser(int index) {
-				// TODO Auto-generated method stub
+    private void initListener() {
+        mDataManager.addAutoLoginListener(new AutoLoginListener() {
 
-			}
-		});
+            @Override
+            public void onAutoLoginEnd() {
+                // TODO Auto-generated method stub
+                for (int i = 0; i < mListView.getChildCount(); i++) {
+                    mListView.setItemChecked(i, false);
+                }
+                mListView.setItemChecked(mDataManager.getCurrentPosition(), true);
 
-	}
+            }
 
-	private void initWidgets() {
+            @Override
+            public void autoLogin() {
+                // TODO Auto-generated method stub
 
-		mListView = (ListView) view.findViewById(R.id.left_listview);
+            }
+        });
+        mDataManager.addUserGroupListener(new UserGroupListener() {
 
-		myAdapter = new MyAdapter();
-		mListView.setAdapter(myAdapter);
-		mListView.setOnItemClickListener(this);
-		mListView.setOnItemLongClickListener(this);
+            @Override
+            public void onGroupChangeEnd() {
+                // TODO Auto-generated method stub
 
-		myAdapter.setSelectPosition(0);
+                updateList();
+            }
 
-		addUserButton = (RelativeLayout) view
-				.findViewById(R.id.left_button_add_user);
-		addUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onAddUser() {
+                // TODO Auto-generated method stub
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+            }
+
+            @Override
+            public void deleteUser(int index) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+    }
+
+    private void initWidgets() {
+
+        mListView = (ListView) view.findViewById(R.id.left_listview);
+
+        myAdapter = new MyAdapter();
+        mListView.setAdapter(myAdapter);
+        mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
+
+        myAdapter.setSelectPosition(0);
+
+        addUserButton = (RelativeLayout) view
+                .findViewById(R.id.left_button_add_user);
+        addUserButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
 
                 mDataManager.getUserListControlListener().onUserListDismiss();
-				Intent jumbIntent = new Intent();
-				jumbIntent.setClass(getActivity(), LoginActivity.class);
-				getActivity().startActivityForResult(jumbIntent,
-						START_ACTIVITY_LOGIN);
-			}
-		});
-	}
+                Intent jumbIntent = new Intent();
+                jumbIntent.setClass(getActivity(), LoginActivity.class);
+                getActivity().startActivityForResult(jumbIntent,
+                        START_ACTIVITY_LOGIN);
+            }
+        });
+    }
 
-	public void updateList() {
-		myAdapter.notifyDataSetChanged();
+    public void updateList() {
+        myAdapter.notifyDataSetChanged();
 
-	}
+    }
 
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
-	private class MyAdapter extends BaseAdapter {
+    private class MyAdapter extends BaseAdapter {
 
-		private int selectPosition;
+        private int selectPosition;
 
-		@Override
-		public int getCount() {
-			return mDataManager.getUserGroup().size();
-		}
+        @Override
+        public int getCount() {
+            return mDataManager.getUserGroup().size();
+        }
 
-		@Override
-		public Object getItem(int position) {
-			return mDataManager.getUserGroup().get(position);
-		}
+        @Override
+        public Object getItem(int position) {
+            return mDataManager.getUserGroup().get(position);
+        }
 
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-		public void setSelectPosition(int position) {
-			selectPosition = position;
-		}
+        public void setSelectPosition(int position) {
+            selectPosition = position;
+        }
 
-		@Override
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
-			View row = LayoutInflater.from(getActivity()).inflate(
-					R.layout.user_group_item, null);
-			TextView nowUserNickname = (TextView) row
-					.findViewById(R.id.user_group_text_user_name);
-			ImageView nowUserImg = (ImageView) row
-					.findViewById(R.id.user_group_img_profile);
+        @Override
+        public View getView(final int position, View convertView,
+                            ViewGroup parent) {
+            View row = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.user_group_item, null);
+            TextView nowUserNickname = (TextView) row
+                    .findViewById(R.id.user_group_text_user_name);
+            ImageView nowUserImg = (ImageView) row
+                    .findViewById(R.id.user_group_img_profile);
 
-			Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
-					ImageCacheManager.CACHE_USER_PROFILE
-							+ mDataManager.getUserGroup().get(position)
-									.getUserName());
-			if (imgBitmap != null) {
-				nowUserImg.setImageBitmap(imgBitmap);
+            Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
+                    ImageCacheManager.CACHE_USER_PROFILE
+                            + mDataManager.getUserGroup().get(position)
+                            .getUserName());
+            if (imgBitmap != null) {
+                nowUserImg.setImageBitmap(imgBitmap);
 
-			} else {
-				mDataManager.getWechatManager().getUserImgDirectly(false,false,
-						position, nowUserImg, new OnActionFinishListener() {
+            } else {
+                mDataManager.getWechatManager().getUserImgDirectly(false, false,
+                        position, nowUserImg, new OnActionFinishListener() {
 
-							@Override
-							public void onFinish(int code,Object object) {
-								// TODO Auto-generated method stub
-								Bitmap nowUserBitmap = (Bitmap) object;
-								mDataManager.getCacheManager().putBitmap(
-										ImageCacheManager.CACHE_USER_PROFILE
-												+ mDataManager.getUserGroup()
-														.get(position)
-														.getUserName(),
-										nowUserBitmap,true);
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        // TODO Auto-generated method stub
+                        Bitmap nowUserBitmap = (Bitmap) object;
+                        mDataManager.getCacheManager().putBitmap(
+                                ImageCacheManager.CACHE_USER_PROFILE
+                                        + mDataManager.getUserGroup()
+                                        .get(position)
+                                        .getUserName(),
+                                nowUserBitmap, true);
 
-							}
-						});
+                    }
+                });
 
-			}
+            }
+            String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
+                    .getNickname(), 13, 3);
 
-			nowUserNickname.setText(mDataManager.getUserGroup().get(position)
-					.getNickname()
-					+ "");
-			if (position == selectPosition) {
-				// row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
-				nowUserNickname.setSelected(true);
-			}
-			return row;
-		}
+            nowUserNickname.setText(shortedName
+            );
+            if (position == selectPosition) {
+                // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
+                nowUserNickname.setSelected(true);
+            }
+            return row;
+        }
 
-	}
+    }
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view,
-			final int position, long id) {
-		profileImageView = (ImageView) view
-				.findViewById(R.id.user_group_img_profile);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view,
+                            final int position, long id) {
+        profileImageView = (ImageView) view
+                .findViewById(R.id.user_group_img_profile);
 
         mDataManager.getUserListControlListener().onUserListDismiss();
-		mDataManager.setCurrentPosition(position);
+        mDataManager.setCurrentPosition(position);
 
-		mDataManager.doLoadingStart("登录...");
+        mDataManager.doLoadingStart("登录...");
 
-		mDataManager.getWechatManager().login(position, false,true,
-				new OnActionFinishListener() {
+        mDataManager.getWechatManager().login(position, false, true,
+                new OnActionFinishListener() {
 
-					@Override
-					public void onFinish(int code,Object object) {
-						// TODO Auto-generated method stub
-						mDataManager.getWechatManager().getUserProfile(true,true,
-								position, new OnActionFinishListener() {
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        // TODO Auto-generated method stub
+                        mDataManager.getWechatManager().getUserProfile(true, true,
+                                position, new OnActionFinishListener() {
 
-									@Override
-									public void onFinish(int code,Object object) {
-										// TODO Auto-generated method stub
-										String referer = (String) object;
+                            @Override
+                            public void onFinish(int code, Object object) {
+                                // TODO Auto-generated method stub
+                                String referer = (String) object;
 
-										mDataManager
-												.getWechatManager()
-												.getUserImgWithReferer(
-														position,
-														true,
-														profileImageView,
-														new OnActionFinishListener() {
+                                mDataManager
+                                        .getWechatManager()
+                                        .getUserImgWithReferer(
+                                                position,
+                                                true,
+                                                profileImageView,
+                                                new OnActionFinishListener() {
 
-															@Override
-															public void onFinish(
-																int code,	Object object) {
-																// TODO
-																// Auto-generated
-																// method stub
+                                                    @Override
+                                                    public void onFinish(
+                                                            int code, Object object) {
+                                                        // TODO
+                                                        // Auto-generated
+                                                        // method stub
 
-																mDataManager
-																		.getWechatManager()
-																		.getMassData(
-																				position,
-																				true,
-																				new OnActionFinishListener() {
+                                                        mDataManager
+                                                                .getWechatManager()
+                                                                .getMassData(
+                                                                        position,
+                                                                        true,
+                                                                        new OnActionFinishListener() {
 
-																					@Override
-																					public void onFinish(
-																						int code,	Object object) {
-																						// TODO
-																						// Auto-generated
-																						// method
-																						// stub
+                                                                            @Override
+                                                                            public void onFinish(
+                                                                                    int code, Object object) {
+                                                                                // TODO
+                                                                                // Auto-generated
+                                                                                // method
+                                                                                // stub
 
-																						mDataManager
-																								.getWechatManager()
-																								.getNewMessageList(
-																										true,
-																										position,
-																										new OnActionFinishListener() {
+                                                                                mDataManager
+                                                                                        .getWechatManager()
+                                                                                        .getNewMessageList(
+                                                                                                true,
+                                                                                                position,
+                                                                                                new OnActionFinishListener() {
 
-																											@Override
-																											public void onFinish(
-																													int code,Object object) {
-																												// TODO
-																												// Auto-generated
-																												// method
-																												// stub
-																												Boolean changed = (Boolean)object;
-																												mDataManager.doMessageGet(changed);
+                                                                                                    @Override
+                                                                                                    public void onFinish(
+                                                                                                            int code, Object object) {
+                                                                                                        // TODO
+                                                                                                        // Auto-generated
+                                                                                                        // method
+                                                                                                        // stub
+                                                                                                        mDataManager.doMessageGet();
 
-																											}
-																										});
-																					}
-																				});
+                                                                                                    }
+                                                                                                });
+                                                                            }
+                                                                        });
 
-															}
-														}, referer);
+                                                    }
+                                                }, referer);
 
-									}
-								});
+                            }
+                        });
 
-					}
-				});
+                    }
+                });
 
-	}
+    }
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View view,
-			final int position, long id) {
-		// TODO Auto-generated method stub
+    private void popDeleteUser(final int position) {
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_ensure_text_title);
+        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_cancel);
+
+        popTitleTextView.setText("删除账户");
+        popContentTextView.setText("删除账户将删除账户相关的所有数据，确认删除？");
+        popSureButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                SharedPreferenceManager.deleteUser(getActivity(),
+                        mDataManager.getUserGroup().get(position)
+                                .getUserName());
+                mDataManager.updateUserGroup();
+                updateList();
+                popDialog.dismiss();
+
+
+            }
+        });
+        popCancelButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popDialog.cancel();
+
+            }
+        });
+
+        popDialog = new Dialog(getActivity(), R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+        popDialog.show();
+
+
+
+       /*
+         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
 				.setTitle("删除该用户？")
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
@@ -324,12 +387,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated
 						// method stub
-						SharedPreferenceManager.deleteUser(getActivity(),
-								mDataManager.getUserGroup().get(position)
-										.getUserName());
-						mDataManager.updateUserGroup();
-						updateList();
-					}
+				}
 				})
 				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
@@ -340,8 +398,17 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 					}
 				});
 		builder.show();
+*/
+    }
 
-		return false;
-	}
+    @Override
+    public boolean onItemLongClick(AdapterView<?> arg0, View view,
+                                   final int position, long id) {
+        // TODO Auto-generated method stub
+        popDeleteUser(position);
+
+
+        return false;
+    }
 
 }

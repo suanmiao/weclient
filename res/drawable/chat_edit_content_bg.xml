@@ -9,7 +9,8 @@
 				android:left="0dip"
 				android:right="0dip"
 				android:top="0dip" />
-			<solid android:color="#e9e9e9" android:width="1dp"/>
+			<solid android:color="#ffffff" android:width="1dp"/>
+            <stroke android:color="#b1b1b1" android:width="1px"/>
 			<corners android:radius="20dip"/>
 		</shape>
 	</item>

@@ -22,6 +22,7 @@ import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.ChatListAdapter;
 import com.suan.weclient.util.GlobalContext;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ChatItemChangeListener;
@@ -49,10 +50,12 @@ public class ChatActivity extends SherlockActivity {
     public void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.chat_layout);
-        initActionBar();
         initWidgets();
         initData();
         initListener();
+        //actionbar should be inited after data ,cause nickname appear on actionbar
+        initActionBar();
+
 
     }
 
@@ -80,7 +83,8 @@ public class ChatActivity extends SherlockActivity {
         });
 
         titleTextView = (TextView)customActionBarView.findViewById(R.id.actionbar_back_with_title_text_title);
-        titleTextView.setText(getResources().getString(R.string.chat));
+        String targetUserName = mDataManager.getChatHolder().getUserBean().getNickname();
+        titleTextView.setText(getResources().getString(R.string.chat)+":"+ Util.getShortString(targetUserName,10,3));
 
 
          ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,

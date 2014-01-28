@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 android:text="@string/login_wechat"
-                android:textColor="#3888bd"
+                android:textColor="#3986bc"
                 android:textSize="13dip" />
 
         </RelativeLayout>

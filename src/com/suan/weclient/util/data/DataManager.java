@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View.OnClickListener;
 
 import com.suan.weclient.fragment.ProfileFragment;
@@ -130,6 +131,8 @@ public class DataManager {
                     messageHolders.add(0, new MessageHolder(newBean));
                     fansHolders.add(0, new FansHolder(newBean));
                     userBeans.add(0, newBean);
+                    //must reset the index to zero ,to login the new user
+                    setCurrentPosition(0);
                     doAutoLogin();
                 }
 
@@ -145,11 +148,16 @@ public class DataManager {
                     }
                 }
                 if (!exist) {
+
                     int deleteIndex = i;
+                    /*
+                    get current before delete
+                     */
+                    int currentPosition = getCurrentPosition();
                     userBeans.remove(deleteIndex);
                     messageHolders.remove(deleteIndex);
                     fansHolders.remove(deleteIndex);
-                    if (deleteIndex == getCurrentPosition()) {
+                    if (deleteIndex == currentPosition) {
                         //should relogin
                         this.doAutoLogin();
 
@@ -345,9 +353,9 @@ public class DataManager {
             massDataGetListeners.get(i).onGet(userBean);
         }
     }
-    public void doMessageGet(boolean changed) {
+    public void doMessageGet() {
         for (int i = 0; i < messageChangeListeners.size(); i++) {
-            messageChangeListeners.get(i).onMessageGet(changed);
+            messageChangeListeners.get(i).onMessageGet();
         }
     }
 
@@ -433,7 +441,7 @@ public class DataManager {
     }
 
     public interface MessageChangeListener {
-        public void onMessageGet(boolean changed);
+        public void onMessageGet();
     }
 
     public interface ChatItemChangeListener {

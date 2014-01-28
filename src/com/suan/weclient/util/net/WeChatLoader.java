@@ -74,6 +74,9 @@ public class WeChatLoader {
     private static final String WECHAT_URL_GET_MESSAGE_LIST_4 = "&token=";
     private static final String WECHAT_URL_GET_MESSAGE_LIST_5 = "&lang=zh_CN";
 
+    private static final String WECHAT_URL_GET_NEW_MESSAGE_COUNT = "https://mp.weixin.qq.com/cgi-bin/getnewmsgnum";
+
+
     private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&action=&keyword=&frommsgid=";
     private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_2 = "&offset=";
     private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_3 = "&count=20&day=7&token=";
@@ -287,6 +290,7 @@ public class WeChatLoader {
                         String strResult = EntityUtils.toString(response
                                 .getEntity());
                         contentHolder.put("result", strResult);
+
                         contentHolder.put("referer", targetUrl);
 
                         message.obj = contentHolder;
@@ -350,7 +354,7 @@ public class WeChatLoader {
         url1+url3+token+url5
      */
 
-                Log.e("message mode",""+mode);
+                Log.e("message mode", "" + mode);
                 String targetUrl = "";
 
                 switch (mode) {
@@ -1553,6 +1557,84 @@ public class WeChatLoader {
 
     }
 
+
+    public interface WechatGetNewMessageCountCallBack {
+        public void onBack(String result);
+    }
+
+    public static void wechatGetNewMessageCount(
+            final WechatExceptionListener wechatExceptionListener,
+            final WechatGetNewMessageCountCallBack newMessageCountCallBack, final UserBean userBean) {
+        final Handler loadHandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                ContentHolder contentHolder = (ContentHolder) msg.obj;
+                newMessageCountCallBack.onBack(contentHolder.get("result")
+                );
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+
+                String referer = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&count=20&day=7&token=" + userBean.getToken() + "&lang=zh_CN";
+                headerList
+                        .add(new BasicNameValuePair("Referer",
+                                referer));
+                headerList.add(new BasicNameValuePair("Content-Type",
+                        "text/html; charset=utf-8"));
+
+                headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+                        + userBean.getSlaveSid() + "; " + "slave_user="
+                        + userBean.getSlaveUser()));
+
+                ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("ajax", "1"));
+                params.add(new BasicNameValuePair("f", "json"));
+                params.add(new BasicNameValuePair("lastmsgid", userBean.getLastMsgId()));
+                params.add(new BasicNameValuePair("lang", "zh_CN"));
+                params.add(new BasicNameValuePair("random", "0.6920196032466058"));
+                params.add(new BasicNameValuePair("t", "ajax-getmsgnum"));
+                params.add(new BasicNameValuePair("token", userBean.getToken()));
+
+                HttpResponse response = httpPost(WECHAT_URL_GET_NEW_MESSAGE_COUNT, headerList,
+                        params);
+
+                if (response != null) {
+
+                    try {
+
+                        Message message = new Message();
+                        ContentHolder contentHolder = new ContentHolder();
+                        String strResult = EntityUtils.toString(response
+                                .getEntity());
+                        contentHolder.put("result", strResult);
+                        message.obj = contentHolder;
+
+                        loadHandler.sendMessage(message);
+                    } catch (Exception exception) {
+
+                    }
+
+                } else {
+                    wechatExceptionListener.onError();
+                }
+
+            }
+
+        }.start();
+
+    }
+
+
     private static HttpResponse httpPost(String targetUrl,
                                          ArrayList<NameValuePair> headerArrayList,
                                          ArrayList<NameValuePair> paramsArrayList) {
@@ -1601,7 +1683,7 @@ public class WeChatLoader {
     private static HttpResponse httpGet(String targetUrl,
                                         ArrayList<NameValuePair> headerArrayList) {
         /* 声明网址字符串 */
-		/* 建立HTTP Post联机 */
+        /* 建立HTTP Post联机 */
         HttpGet httpRequest = new HttpGet(targetUrl);
 		/*
 		 * Post运作传送变量必须用NameValuePair[]数组储存

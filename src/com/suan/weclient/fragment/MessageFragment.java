@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,245 +27,245 @@ import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MessageFragment extends Fragment implements
-		OnRefreshListener<ListView> {
-	View view;
-	private DataManager mDataManager;
-	private PullToRefreshListView pullToRefreshListView;
-	private MessageListAdapter messageListAdapter;
-	private MessageHandler mHandler;
+        OnRefreshListener<ListView> {
+    View view;
+    private DataManager mDataManager;
+    private PullToRefreshListView pullToRefreshListView;
+    private MessageListAdapter messageListAdapter;
+    private MessageHandler mHandler;
 
-	private static final int PAGE_MESSAGE_AMOUNT = 20;
+    private static final int PAGE_MESSAGE_AMOUNT = 20;
 
-	public MessageFragment(DataManager dataManager) {
+    public MessageFragment(DataManager dataManager) {
 
-		mDataManager = dataManager;
-	}
+        mDataManager = dataManager;
+    }
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.message_fragment, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.message_fragment, null);
 
-		mHandler = new MessageHandler();
-		initWidgets();
-		initListener();
-		initData();
+        mHandler = new MessageHandler();
+        initWidgets();
+        initListener();
+        initData();
 
 
-		return view;
-	}
+        return view;
+    }
 
-	private void initWidgets() {
-		pullToRefreshListView = (PullToRefreshListView) view
-				.findViewById(R.id.reply_list);
-		pullToRefreshListView.setClickable(true);
+    private void initWidgets() {
+        pullToRefreshListView = (PullToRefreshListView) view
+                .findViewById(R.id.reply_list);
+        pullToRefreshListView.setClickable(true);
 
-		pullToRefreshListView.setOnItemClickListener(new OnItemClickListener() {
+        pullToRefreshListView.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                // TODO Auto-generated method stub
 
-			}
-		});
+            }
+        });
 
-	}
+    }
 
-	private void initData() {
+    private void initData() {
 
-		if (mDataManager.getCurrentMessageHolder() != null) {
+        if (mDataManager.getCurrentMessageHolder() != null) {
 
-			messageListAdapter = new MessageListAdapter(getActivity(),
-					mDataManager);
-			pullToRefreshListView.setAdapter(messageListAdapter);
-			pullToRefreshListView.setOnRefreshListener(MessageFragment.this);
+            messageListAdapter = new MessageListAdapter(getActivity(),
+                    mDataManager);
+            pullToRefreshListView.setAdapter(messageListAdapter);
+            pullToRefreshListView.setOnRefreshListener(MessageFragment.this);
 
-		}
+        }
 
-	}
+    }
 
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-	}
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
-	private void initListener() {
+    private void initListener() {
 
-		mDataManager.addUserGroupListener(new UserGroupListener() {
+        mDataManager.addUserGroupListener(new UserGroupListener() {
 
-			@Override
-			public void onGroupChangeEnd() {
-				// TODO Auto-generated method stub
-				if (mDataManager.getUserGroup().size() == 0) {
-					messageListAdapter.notifyDataSetChanged();
+            @Override
+            public void onGroupChangeEnd() {
+                // TODO Auto-generated method stub
+                if (mDataManager.getUserGroup().size() == 0) {
+                    messageListAdapter.notifyDataSetChanged();
 
-				}
+                }
 
-			}
+            }
 
-			@Override
-			public void onAddUser() {
-				// TODO Auto-generated method stub
+            @Override
+            public void onAddUser() {
+                // TODO Auto-generated method stub
 
-			}
+            }
 
-			@Override
-			public void deleteUser(int index) {
-				// TODO Auto-generated method stub
+            @Override
+            public void deleteUser(int index) {
+                // TODO Auto-generated method stub
 
-			}
-		});
-		mDataManager.addMessageChangeListener(new MessageChangeListener() {
+            }
+        });
+        mDataManager.addMessageChangeListener(new MessageChangeListener() {
 
-			@Override
-			public void onMessageGet(boolean changed) {
-				// TODO Auto-generated method stub
-				if (changed) {
+            @Override
+            public void onMessageGet() {
+                // TODO Auto-generated method stub
+                messageListAdapter.updateCache();
 
-					messageListAdapter.updateCache();
+                messageListAdapter.notifyDataSetChanged();
+                //update the last msg id
+                if (getActivity() != null) {
 
-					messageListAdapter.notifyDataSetChanged();
-				}else{
-//					Toast.makeText(getActivity(), "没有新消息", Toast.LENGTH_SHORT).show();
-				}
+                    SharedPreferenceManager.updateUser(getActivity(), mDataManager);
+                }
 
-			}
-		});
 
-	}
+            }
+        });
 
-	public DataManager getMessageChangeListener() {
-		return mDataManager;
-	}
+    }
 
-	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		new GetDataTask(refreshView).execute();
+    public DataManager getMessageChangeListener() {
+        return mDataManager;
+    }
 
-	}
+    @Override
+    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+        new GetDataTask(refreshView).execute();
 
-	public class MessageHandler extends Handler {
+    }
 
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
+    public class MessageHandler extends Handler {
 
-			super.handleMessage(msg);
-			Boolean changed = (Boolean) msg.obj;
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
 
-			mDataManager.doMessageGet(changed);
+            super.handleMessage(msg);
 
-		}
-	}
+            mDataManager.doMessageGet();
 
-	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+        }
+    }
 
-		PullToRefreshBase<?> mRefreshedView;
-		private boolean end = false;
+    private class GetDataTask extends AsyncTask<Void, Void, Void> {
 
-		public GetDataTask(PullToRefreshBase<?> refreshedView) {
-			mRefreshedView = refreshedView;
-			end = false;
-			if (mDataManager.getCurrentMessageHolder() == null) {
-				end = true;
-				return;
-			}
+        PullToRefreshBase<?> mRefreshedView;
+        private boolean end = false;
 
-			try {
-				if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_END) {
+        public GetDataTask(PullToRefreshBase<?> refreshedView) {
+            mRefreshedView = refreshedView;
+            end = false;
+            if (mDataManager.getCurrentMessageHolder() == null) {
+                end = true;
+                return;
+            }
 
-					int size = mDataManager.getCurrentMessageHolder()
-							.getMessageList().size();
+            try {
+                if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_END) {
 
-					// must be fuul amount of page
+                    int size = mDataManager.getCurrentMessageHolder()
+                            .getMessageList().size();
 
-					if (size % PAGE_MESSAGE_AMOUNT == 0) {
-						int page = size
-								/ PAGE_MESSAGE_AMOUNT
-								+ ((size / PAGE_MESSAGE_AMOUNT == 0) ? size
-										% PAGE_MESSAGE_AMOUNT
-										/ (PAGE_MESSAGE_AMOUNT / 2) : 0) + 1;
+                    // must be fuul amount of page
 
-						mDataManager.getWechatManager().getNextMessageList(
-								page, mDataManager.getCurrentPosition(),
-								new OnActionFinishListener() {
+                    if (size % PAGE_MESSAGE_AMOUNT == 0) {
+                        int page = size
+                                / PAGE_MESSAGE_AMOUNT
+                                + ((size / PAGE_MESSAGE_AMOUNT == 0) ? size
+                                % PAGE_MESSAGE_AMOUNT
+                                / (PAGE_MESSAGE_AMOUNT / 2) : 0) + 1;
 
-									@Override
-									public void onFinish(int code,Object object) {
-										// TODO Auto-generated method stub
-										Message message = new Message();
-										message.obj = object;
-										mHandler.sendMessage(message);
+                        mDataManager.getWechatManager().getNextMessageList(
+                                page, mDataManager.getCurrentPosition(),
+                                new OnActionFinishListener() {
 
-										end = true;
+                                    @Override
+                                    public void onFinish(int code, Object object) {
+                                        // TODO Auto-generated method stub
+                                        Message message = new Message();
+                                        message.obj = object;
+                                        mHandler.sendMessage(message);
 
-									}
-								});
+                                        end = true;
 
-					} else {
-						end = true;
-					}
+                                    }
+                                });
 
-				} else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
+                    } else {
+                        end = true;
+                    }
 
-					mDataManager.getWechatManager().getNewMessageList(false,
-							mDataManager.getCurrentPosition(),
-							new OnActionFinishListener() {
+                } else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
 
-								@Override
-								public void onFinish(int code,Object object) {
-									// TODO Auto-generated method stub
+                    mDataManager.getWechatManager().getNewMessageList(false,
+                            mDataManager.getCurrentPosition(),
+                            new OnActionFinishListener() {
 
-									Message message = new Message();
-									message.obj = object;
-									mHandler.sendMessage(message);
-									end = true;
-									mDataManager
-											.getWechatManager()
-											.getUserProfile(
-													false,false,
-													mDataManager
-															.getCurrentPosition(),
-													new OnActionFinishListener() {
+                                @Override
+                                public void onFinish(int code, Object object) {
+                                    // TODO Auto-generated method stub
 
-														@Override
-														public void onFinish(
-																int code,Object object) {
-															// TODO
-															// Auto-generated
-															// method stub
+                                    Message message = new Message();
+                                    message.obj = object;
+                                    mHandler.sendMessage(message);
+                                    end = true;
+                                    mDataManager
+                                            .getWechatManager()
+                                            .getUserProfile(
+                                                    false, false,
+                                                    mDataManager
+                                                            .getCurrentPosition(),
+                                                    new OnActionFinishListener() {
 
-														}
-													});
-								}
-							});
+                                                        @Override
+                                                        public void onFinish(
+                                                                int code, Object object) {
+                                                            // TODO
+                                                            // Auto-generated
+                                                            // method stub
 
-				}
-			} catch (Exception e) {
+                                                        }
+                                                    });
+                                }
+                            });
 
-			}
-		}
+                }
+            } catch (Exception e) {
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
+            }
+        }
 
-				while (!end) {
-					Thread.sleep(50);
-				}
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
 
-			} catch (Exception exception) {
+                while (!end) {
+                    Thread.sleep(50);
+                }
 
-			}
+            } catch (Exception exception) {
 
-			return null;
-		}
+            }
 
-		@Override
-		protected void onPostExecute(Void result) {
-			mRefreshedView.onRefreshComplete();
-			super.onPostExecute(result);
-		}
-	}
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mRefreshedView.onRefreshComplete();
+            super.onPostExecute(result);
+        }
+    }
 
 }

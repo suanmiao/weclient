@@ -55,9 +55,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
                                 mDataManager
                                         .doAutoLoginEnd();
 
@@ -80,9 +79,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
 
                             }
                         });
@@ -103,9 +101,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
 
                             }
                         });
@@ -125,9 +122,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
 
                             }
                         });
@@ -147,9 +143,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
 
                             }
                         });
@@ -170,9 +165,8 @@ public class SMainDropListWindow extends PopupWindow {
                         mDataManager.getWechatManager().getNewMessageList(true, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code,Object object) {
-                                Boolean changed = (Boolean) object;
                                 mDataManager
-                                        .doMessageGet(changed);
+                                        .doMessageGet();
 
                             }
                         });

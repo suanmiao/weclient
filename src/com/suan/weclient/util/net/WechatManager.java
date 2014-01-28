@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.DataManager;
@@ -40,6 +41,8 @@ public class WechatManager {
 
     public static final int ACTION_SUCCESS = 0;
     public static final int ACTION_FAILED = 1;
+
+    public static final int GET_NEW_MESSAGE_COUNT_SUCCESS = 0;
 
     public interface OnActionFinishListener {
 
@@ -109,6 +112,7 @@ public class WechatManager {
                                             slaveUser, mContext);
                                     nowBean.setSlaveSid(slaveSid);
                                     nowBean.setSlaveUser(slaveUser);
+                                    SharedPreferenceManager.updateUser(mContext, mDataManager);
                                     switch (loginResult) {
                                         case DataParser.PARSE_LOGIN_SUCCESS:
                                             mDataManager.doLoginSuccess(nowBean);
@@ -140,7 +144,7 @@ public class WechatManager {
                 );
     }
 
-    public void getUserProfile(final boolean popDialog,final boolean autoRetry, final int userIndex,
+    public void getUserProfile(final boolean popDialog, final boolean autoRetry, final int userIndex,
                                final OnActionFinishListener onActionFinishListener) {
         if (popDialog) {
             mDataManager.doLoadingStart("获取用户数据...");
@@ -158,7 +162,7 @@ public class WechatManager {
                                                                   @Override
                                                                   public void onClick(View v) {
                                                                       // TODO Auto-generated method stub
-                                                                      getUserProfile(popDialog,autoRetry, userIndex,
+                                                                      getUserProfile(popDialog, autoRetry, userIndex,
                                                                               onActionFinishListener);
 
                                                                   }
@@ -202,10 +206,10 @@ public class WechatManager {
                         } catch (Exception exception) {
 
                         }
-                        if(autoRetry){
-                            getUserProfile(popDialog,autoRetry,userIndex,onActionFinishListener);
+                        if (autoRetry) {
+                            getUserProfile(popDialog, autoRetry, userIndex, onActionFinishListener);
 
-                        }else{
+                        } else {
 
                             onActionFinishListener.onFinish(ACTION_FAILED, null);
                         }
@@ -215,7 +219,7 @@ public class WechatManager {
 
     }
 
-    public void getUserImgDirectly(final boolean popDialog,final boolean autoRetry,
+    public void getUserImgDirectly(final boolean popDialog, final boolean autoRetry,
                                    final int userIndex, final ImageView userProfileImageView,
                                    final OnActionFinishListener onActionFinishListener) {
 
@@ -233,7 +237,7 @@ public class WechatManager {
                                                               public void onClick(View v) {
 
                                                                   // TODO Auto-generated method stub
-                                                                  getUserProfile(popDialog,autoRetry, userIndex,
+                                                                  getUserProfile(popDialog, autoRetry, userIndex,
                                                                           onActionFinishListener);
 
                                                               }
@@ -980,4 +984,41 @@ public class WechatManager {
                 }, mDataManager.getCurrentUser(), massContent
         );
     }
+
+
+    public void getNewMessageCount(final int userIndex, final boolean autoRetry,
+                                   final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetNewMessageCount(new WechatExceptionListener() {
+                                                  @Override
+                                                  public void onError() {
+
+                                                  }
+                                              }, new WeChatLoader.WechatGetNewMessageCountCallBack() {
+                                                  @Override
+                                                  public void onBack(String result) {
+                                                      try {
+                                                          JSONObject resultObject = new JSONObject(result);
+                                                          int ret = DataParser.getRet(resultObject);
+
+                                                          if (ret == GET_NEW_MESSAGE_COUNT_SUCCESS) {
+
+                                                              int newMessageCount = Integer.parseInt(resultObject.get("newTotalMsgCount").toString());
+                                                              onActionFinishListener.onFinish(ACTION_SUCCESS, newMessageCount);
+
+                                                          }
+
+                                                      } catch (Exception e) {
+                                                          Log.e("parse new message count error",""+e);
+
+                                                      }
+
+
+                                                  }
+                                              }, mDataManager.getUserGroup().get(userIndex)
+        );
+
+    }
+
+
 }

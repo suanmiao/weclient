@@ -4,9 +4,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import com.suan.weclient.activity.MainActivity.ShowMenuListener;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
+import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.view.dropWindow.SMainDropListWindow;
 
@@ -27,14 +29,17 @@ public class CustomMainActionView extends LinearLayout {
     private TextView indexTextView;
     private LinearLayout indexLayout;
     private ScrollView indexScrollView;
+    private HorizontalScrollView leftScrollView;
     private Resources resources;
     private DataManager mDataManager;
     private RelativeLayout customLayout;
 
     private ImageView showMenuImageView;
-    private RelativeLayout leftContentLayout;
     private RelativeLayout firstIndecatorLayout, secondIndecatorLayout;
     private RelativeLayout firstContentLayout, secondContentLayout;
+
+    private RelativeLayout newMessageIndecatorLayout;
+    private TextView newMessageTextView;
 
     /*
      * about popupwindow
@@ -79,7 +84,7 @@ public class CustomMainActionView extends LinearLayout {
         });
         mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
             @Override
-            public void onMessageGet(boolean changed) {
+            public void onMessageGet() {
                 dismissDropDownWindow();
                 switch (mDataManager.getCurrentMessageHolder().getNowMessageMode()) {
                     case WeChatLoader.GET_MESSAGE_ALL:
@@ -111,6 +116,20 @@ public class CustomMainActionView extends LinearLayout {
                 }
             }
         });
+        mDataManager.addProfileGetListener(new DataManager.ProfileGetListener() {
+            @Override
+            public void onGet(UserBean userBean) {
+                int newMessage = Integer.parseInt(userBean.getNewMessage());
+                if(newMessage == 0){
+                    newMessageIndecatorLayout.setVisibility(View.GONE);
+
+                }else{
+                    newMessageIndecatorLayout.setVisibility(View.VISIBLE);
+                    newMessageTextView.setText(newMessage+"");
+                }
+
+            }
+        });
 
         initWidgets();
 
@@ -122,6 +141,7 @@ public class CustomMainActionView extends LinearLayout {
         if (!indexPlaceSet) {
 
             indexScrollView.scrollTo((int) Util.dipToPx(40, resources), 0);
+            leftScrollView.scrollTo((int)Util.dipToPx(130,resources),0);
             indexPlaceSet = true;
         }
 
@@ -136,6 +156,7 @@ public class CustomMainActionView extends LinearLayout {
                 .getSystemService(Service.LAYOUT_INFLATER_SERVICE);
         customLayout = (RelativeLayout) layoutInflater.inflate(
                 R.layout.custom_actionbar_main, null);
+        leftScrollView = (HorizontalScrollView)customLayout.findViewById(R.id.actionbar_main_scroll_left);
 
         showMenuImageView = (ImageView) customLayout
                 .findViewById(R.id.actionbar_main_img_show_menu);
@@ -150,7 +171,13 @@ public class CustomMainActionView extends LinearLayout {
             }
         });
 
-        leftContentLayout = (RelativeLayout) customLayout.findViewById(R.id.actionbar_main_layout_left);
+        //disable scroll,pretty funny way
+        leftScrollView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
 
         indexTextView = (TextView) customLayout.findViewById(R.id.actionbar_left_text_first);
@@ -163,6 +190,11 @@ public class CustomMainActionView extends LinearLayout {
 
         firstContentLayout = (RelativeLayout) customLayout
                 .findViewById(R.id.actionbar_fans_left_layout_first);
+
+        newMessageIndecatorLayout = (RelativeLayout)customLayout.findViewById(R.id.actionbar_main_layout_new_message);
+
+        newMessageTextView = (TextView)customLayout.findViewById(R.id.actionbar_main_text_new_message);
+
         secondContentLayout = (RelativeLayout) customLayout
                 .findViewById(R.id.actionbar_main_left_layout_second);
 
@@ -251,23 +283,19 @@ public class CustomMainActionView extends LinearLayout {
 
                 firstIndecatorLayout.setSelected(true);
                 secondIndecatorLayout.setSelected(false);
+                leftScrollView.scrollTo((int)Util.dipToPx(130,getContext().getResources()),0);
 
-                firstContentLayout.setVisibility(View.VISIBLE);
-                secondContentLayout.setVisibility(View.GONE);
 
 
                 break;
 
             case 1:
 
-                leftContentLayout.bringChildToFront(secondContentLayout);
 
                 firstIndecatorLayout.setSelected(false);
                 secondIndecatorLayout.setSelected(true);
 
-
-                firstContentLayout.setVisibility(View.GONE);
-                secondContentLayout.setVisibility(View.VISIBLE);
+                leftScrollView.scrollTo((int)Util.dipToPx(0,getContext().getResources()),0);
 
 
                 break;

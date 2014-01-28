@@ -33,7 +33,9 @@ import com.suan.weclient.util.data.DataManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.sdk.openapi.WXImageObject;
 import com.tencent.mm.sdk.openapi.WXMediaMessage;
+import com.tencent.mm.sdk.openapi.WXTextObject;
 import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
@@ -51,10 +53,12 @@ public class SettingActivity extends SherlockActivity {
     private ImageView backButton;
 
     private DataManager mDataManager;
-    private RelativeLayout pushEnableLayout, pushNewMessageLayout, pushNewPeopleLayout, pushFrequentLayout, shareLayout, aboutUsLayout, feedbackLayout;
-    private RelativeLayout pushEnableCheckboxLayout, pushNewMessageCheckboxLayout, pushNewPeopleCheckboxLayout;
+    private RelativeLayout pushEnableLayout, pushCloseNightLayout, pushNewMessageLayout, pushNewPeopleLayout, pushFrequentLayout, shareLayout, aboutUsLayout, feedbackLayout;
+    private RelativeLayout pushEnableCheckboxLayout, pushCloseNightCheckbox, pushNewMessageCheckboxLayout, pushNewPeopleCheckboxLayout;
     private RelativeLayout pushFreFastCheckboxLayout, pushFreNormalCheckboxLayout, pushFreSlowCheckboxLayout;
     private TextView pushFrequentTextView;
+
+    private RelativeLayout shareTextlayout, shareImglayout, shareWebLayout;
 
 
     /*
@@ -65,11 +69,10 @@ public class SettingActivity extends SherlockActivity {
     private EditText popContentEditText;
     private TextView popTextAmountTextView;
     private Button popCancelButton, popSureButton;
-
     private FeedbackAgent agent;
     private Conversation defaultConversation;
 
-    private Dialog replyDialog;
+    private Dialog replyDialog, popDialog;
 
 
     /*
@@ -82,6 +85,7 @@ public class SettingActivity extends SherlockActivity {
         setContentView(R.layout.setting_layout);
 
         initWidgets();
+        fuckShare();
         initData();
         initUmeng();
         initWechat();
@@ -90,35 +94,146 @@ public class SettingActivity extends SherlockActivity {
 
     }
 
+    private void fuckShare() {
+        shareTextlayout = (RelativeLayout) findViewById(R.id.setting_layout_share_text);
+        shareImglayout = (RelativeLayout) findViewById(R.id.setting_layout_share_img);
+        shareWebLayout = (RelativeLayout) findViewById(R.id.setting_layout_share_web);
+
+        shareTextlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String description = "分享小助手到您的朋友圈 ^_^";
+                String title = "从此在手机上就能管理公众平台";
+                String text = "just a text";
+
+                WXTextObject textObject = new WXTextObject();
+                textObject.text = text;
+
+                WXMediaMessage msg = new WXMediaMessage();
+                msg.mediaObject = textObject;
+                msg.title = title;
+                msg.description = description;
+
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
+                req.message = msg;
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+                Log.e("share text result", "" + result);
+            }
+        });
+
+
+        shareImglayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String description = "分享小助手到您的朋友圈 ^_^";
+                String title = "从此在手机上就能管理公众平台";
+                String text = "just a text";
+
+
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+                WXImageObject imageObject = new WXImageObject();
+                imageObject.imageData = bmpToByteArray(thumb, false);
+
+                WXMediaMessage msg = new WXMediaMessage();
+                msg.mediaObject = imageObject;
+                msg.title = title;
+                msg.description = description;
+
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
+                req.message = msg;
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+                Log.e("share img result", "" + result);
+            }
+        });
+
+
+        shareWebLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String text = "just a text";
+
+
+                String description = "分享小助手到您的朋友圈 ^_^";
+                String title = "从此在手机上就能管理公众平台";
+                String url = "http://www.wandoujia.com/apps/com.suan.weclient";
+
+                WXWebpageObject webpage = new WXWebpageObject();
+                webpage.webpageUrl = url;
+
+                WXMediaMessage msg = new WXMediaMessage(webpage);
+                msg.title = title;
+                msg.description = description;
+
+                Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+                msg.thumbData = bmpToByteArray(thumb, false);
+
+                SendMessageToWX.Req req = new SendMessageToWX.Req();
+                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
+                req.message = msg;
+                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+                Log.e("share web result", "" + result);
+            }
+        });
+    }
+
     private void initWidgets() {
         pushEnableLayout = (RelativeLayout) findViewById(R.id.setting_layout_push);
         pushFrequentLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_frequent);
 
         pushEnableCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_push);
 
-        pushNewMessageLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_new_message);
-        pushNewMessageCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_new_message_checkbox);
+        pushCloseNightLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_close_night);
+        pushCloseNightCheckbox = (RelativeLayout) findViewById(R.id.setting_layout_close_night_checkbox);
 
-        pushNewMessageCheckboxLayout.setOnClickListener(new View.OnClickListener() {
+
+        pushCloseNightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                boolean pushNight = SharedPreferenceManager.getPushCloseNight(SettingActivity.this);
+                SharedPreferenceManager.putPustCloseNight(SettingActivity.this, !pushNight);
+                setPushLayout();
+
+
+            }
+        });
+
+        pushNewMessageLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_new_message);
+        pushNewMessageCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_new_message_checkbox);
+
+        pushNewMessageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
+                    return;
+
+                }
                 boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
 
                 boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(SettingActivity.this);
 
                 if (pushNewMessageEnable) {
                     pushNewMessageCheckboxLayout.setSelected(false);
-                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this,false);
-                    if(!pushNewPeopleEnable){
-                        SharedPreferenceManager.putPustEnable(SettingActivity.this,false);
+                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this, false);
+                    if (!pushNewPeopleEnable) {
+                        SharedPreferenceManager.putPushEnable(SettingActivity.this, false);
                         setPushLayout();
                     }
 
                 } else {
 
                     pushNewMessageCheckboxLayout.setSelected(true);
-                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this,true);
+                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this, true);
                 }
 
             }
@@ -127,10 +242,14 @@ public class SettingActivity extends SherlockActivity {
         pushNewPeopleLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_new_people);
         pushNewPeopleCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_new_people_checkbox);
 
-        pushNewPeopleCheckboxLayout.setOnClickListener(new View.OnClickListener() {
+        pushNewPeopleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
+                    return;
+
+                }
                 boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
 
                 boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(SettingActivity.this);
@@ -138,8 +257,8 @@ public class SettingActivity extends SherlockActivity {
                 if (pushNewPeopleEnable) {
                     pushNewPeopleCheckboxLayout.setSelected(false);
                     SharedPreferenceManager.putPushNewPeopleEnable(SettingActivity.this, false);
-                    if(!pushNewMessageEnable){
-                        SharedPreferenceManager.putPustEnable(SettingActivity.this,false);
+                    if (!pushNewMessageEnable) {
+                        SharedPreferenceManager.putPushEnable(SettingActivity.this, false);
                         setPushLayout();
                     }
 
@@ -159,14 +278,23 @@ public class SettingActivity extends SherlockActivity {
         pushFreNormalCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_normal);
 
         pushFreSlowCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_slow);
-         setPushLayout();
+        setPushLayout();
 
         pushEnableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (SharedPreferenceManager.getPushFirstUse(SettingActivity.this)) {
+                    popPushDialog();
+                    SharedPreferenceManager.putPushFirstUse(SettingActivity.this, false);
+
+
+                }
+
+
                 boolean pushEnable = SharedPreferenceManager.getPushEnable(SettingActivity.this);
                 if (pushEnable) {
-                    SharedPreferenceManager.putPustEnable(SettingActivity.this, false);
+                    SharedPreferenceManager.putPushEnable(SettingActivity.this, false);
 
                     Intent stopPushIntent = new Intent(SettingActivity.this, AlarmReceiver.class);
                     stopPushIntent.setAction(AlarmReceiver.BROADCAST_ACTION_STOP_PUSH);
@@ -176,7 +304,7 @@ public class SettingActivity extends SherlockActivity {
                     setPushLayout();
 
                 } else {
-                    SharedPreferenceManager.putPustEnable(SettingActivity.this, true);
+                    SharedPreferenceManager.putPushEnable(SettingActivity.this, true);
 
                     Intent startPush = new Intent(SettingActivity.this, AlarmReceiver.class);
                     startPush.setAction(AlarmReceiver.BROADCAST_ACTION_START_PUSH);
@@ -189,7 +317,7 @@ public class SettingActivity extends SherlockActivity {
 
             }
         });
-       pushFreFastCheckboxLayout.setOnClickListener(new View.OnClickListener() {
+        pushFreFastCheckboxLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -289,14 +417,19 @@ public class SettingActivity extends SherlockActivity {
         int pushFrequent = SharedPreferenceManager.getPushFrequent(SettingActivity.this);
         if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
 
+            pushCloseNightLayout.setSelected(true);
+            pushCloseNightCheckbox.setSelected(false);
             pushNewMessageLayout.setSelected(true);
             pushNewMessageCheckboxLayout.setSelected(false);
             pushNewPeopleLayout.setSelected(true);
             pushNewPeopleCheckboxLayout.setSelected(false);
+
+            pushFrequentLayout.setSelected(true);
+
             pushFreFastCheckboxLayout.setSelected(false);
             pushFreNormalCheckboxLayout.setSelected(false);
             pushFreSlowCheckboxLayout.setSelected(false);
-            pushFrequentLayout.setSelected(true);
+
             pushEnableCheckboxLayout.setSelected(false);
 
 
@@ -305,9 +438,13 @@ public class SettingActivity extends SherlockActivity {
         }
 
         pushFrequentLayout.setSelected(false);
+        pushCloseNightLayout.setSelected(false);
         pushEnableCheckboxLayout.setSelected(true);
         pushNewPeopleLayout.setSelected(false);
         pushNewMessageLayout.setSelected(false);
+
+        boolean pushNight = SharedPreferenceManager.getPushCloseNight(SettingActivity.this);
+        pushCloseNightCheckbox.setSelected(pushNight);
 
         boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
         if (pushNewMessageEnable) {
@@ -398,6 +535,54 @@ public class SettingActivity extends SherlockActivity {
 
     }
 
+
+    private void popPushDialog() {
+
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_ensure_text_title);
+        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_ensure_button_cancel);
+
+        popTitleTextView.setText("开启消息提醒");
+        popContentTextView.setText("此功能处于测试阶段。温馨提示：\n" +
+                "1.请确保应用后台未被xxx手机助手限制。\n" +
+                "2.您可以自定义是否提醒新消息和新用户\n" +
+                "3.因为应用通过模拟网页登录的方式获取消息，" +
+                "所以会比正常提醒功能消耗更多流量，" +
+                "因此您可以选择消息的请求频率以及在 11：00 -7：00期间是否提醒。" +
+                "如果流量不充足建议关闭此功能");
+        popSureButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                popDialog.cancel();
+            }
+        });
+        popCancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popDialog.cancel();
+
+            }
+        });
+
+        popDialog = new Dialog(SettingActivity.this, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+        popDialog.show();
+
+    }
 
     private void popFeedback() {
 

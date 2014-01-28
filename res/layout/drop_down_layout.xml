@@ -6,8 +6,8 @@
 	<ListView
 		android:id="@+id/drop_down_list"
 		android:layout_width="match_parent"
-		android:layout_height="150dip"
+		android:layout_height="200dip"
         android:divider="@color/drop_item_divider_color"
-		android:scrollbars="@null" >
+		android:scrollbars="none" >
 	</ListView>
 </LinearLayout>

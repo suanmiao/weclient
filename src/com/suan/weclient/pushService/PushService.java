@@ -14,6 +14,8 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.WechatManager;
 
+import java.util.Date;
+
 /**
  * Created by lhk on 1/2/14.
  */
@@ -44,8 +46,20 @@ public class PushService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean pushEnable = SharedPreferenceManager.getPushEnable(this);
+        boolean timeAppropriate = true;
+        boolean closeNight = SharedPreferenceManager.getPushCloseNight(this);
+        if (closeNight) {
+            Date date = new Date(System.currentTimeMillis());
 
-        if (pushEnable) {
+            int hour = date.getHours();
+            if (hour > 23 || hour < 7) {
+                timeAppropriate = false;
+            }
+
+        }
+
+
+        if (pushEnable && timeAppropriate) {
             doTask();
         } else {
 
@@ -75,16 +89,33 @@ public class PushService extends Service {
     private void doTask() {
         try {
 
-
             globalContext = (GlobalContext) getApplicationContext();
             mDatamanager = globalContext.getDataManager();
             boolean activityRunning = SharedPreferenceManager.getActivityRunning(this);
+            //I found this parameter is not so meaningful
+
+            activityRunning = false;
             if (!activityRunning) {
 
                 UserBean nowBean = mDatamanager.getCurrentUser();
                 if (nowBean.getSlaveSid() != null && nowBean.getSlaveSid().length() > 1) {
                     //slave sid is not null
                     //try it,just get profile
+
+                    mDatamanager.getWechatManager().getNewMessageCount(mDatamanager.getCurrentPosition(), false, new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            Log.e("code", "" + code);
+                            Log.e("result", "" + object);
+                            if(code==WechatManager.ACTION_SUCCESS){
+                                int newMessageCount = (Integer)object;
+                            }
+
+
+                        }
+                    });
+
+
                     justGetProfile(mDatamanager, new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {

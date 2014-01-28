@@ -223,4 +223,18 @@ public class Util {
         }
         return false;
     }
+
+
+    public static String getShortString(String source,int contentLength,int dotsLength){
+        if(source.length()<=contentLength){
+            return source;
+        }
+        String dotsString  = "";
+        for(int i = 0;i<dotsLength;i++){
+            dotsString+=".";
+
+        }
+        return source.replace(source.substring(contentLength,source.length()),dotsString);
+
+    }
 }

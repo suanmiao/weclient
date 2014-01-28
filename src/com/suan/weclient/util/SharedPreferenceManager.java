@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.suan.weclient.pushService.PushService;
+import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
 
 import android.content.Context;
@@ -22,7 +23,9 @@ public class SharedPreferenceManager {
     private static final String PUSH_STATE_SHAREDPREF = "activityState";
     private static final String ACIVITY_RUNNING = "running";
     private static final String PUSH_ENABLE = "pushEnable";
+    private static final String PUSH_FIRST_BLOOD = "pushFirstUse";
     private static final String PUSH_FREQUENT = "pushFrequent";
+    private static final String PUSH_CLOSE_NIGHT = "pushCloseNight";
     private static final String PUSH_NEW_MESSAGE = "pushNewMessage";
     private static final String PUSH_NEW_PEOPLE = "pushNewPeople";
     private static final String NEW_PEOPLE = "newPeople";
@@ -56,7 +59,7 @@ public class SharedPreferenceManager {
         return sharedPreferences.getBoolean(PUSH_ENABLE, false);
     }
 
-    public static boolean putPustEnable(Context context, boolean running) {
+    public static boolean putPushEnable(Context context, boolean running) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         Editor editor = sharedPreferences.edit();
@@ -67,11 +70,45 @@ public class SharedPreferenceManager {
 
 
 
+    public static boolean getPushFirstUse(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(PUSH_FIRST_BLOOD, true);
+    }
+
+    public static boolean putPushFirstUse(Context context, boolean running) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PUSH_FIRST_BLOOD, running);
+
+        return editor.commit();
+    }
+
+
+    public static boolean getPushCloseNight(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(PUSH_CLOSE_NIGHT, true);
+    }
+
+    public static boolean putPustCloseNight(Context context, boolean close) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PUSH_CLOSE_NIGHT, close);
+
+        return editor.commit();
+    }
+
+
     public static boolean getPushNewMessageEnable(Context context) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getBoolean(PUSH_NEW_MESSAGE, false);
+        return sharedPreferences.getBoolean(PUSH_NEW_MESSAGE, true);
     }
 
     public static boolean putPustNewMessageEnable(Context context, boolean running) {
@@ -261,20 +298,12 @@ public class SharedPreferenceManager {
         return false;
     }
 
-    public static void updateUser(Context context, UserBean userBean) {
-
-        ArrayList<UserBean> userGroupArrayList = getUserGroup(context);
-        for (int i = 0; i < userGroupArrayList.size(); i++) {
-            if (userGroupArrayList.get(i).getUserName()
-                    .equals(userBean.getUserName())) {
-                userGroupArrayList.set(i, userBean);
-            }
-        }
+    public static void updateUser(Context context,DataManager dataManager) {
 
         JSONArray contentArray = new JSONArray();
 
-        for (int i = 0; i < userGroupArrayList.size(); i++) {
-            contentArray.put(userGroupArrayList.get(i).getContentObject());
+        for (int i = 0; i < dataManager.getUserGroup().size(); i++) {
+            contentArray.put(dataManager.getUserGroup().get(i).getContentObject());
         }
 
         putUserGroupString(context, contentArray.toString());
@@ -295,7 +324,6 @@ public class SharedPreferenceManager {
         for (int i = 0; i < userGroupArrayList.size(); i++) {
             contentArray.put(userGroupArrayList.get(i).getContentObject());
         }
-
         putUserGroupString(context, contentArray.toString());
 
     }

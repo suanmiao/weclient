@@ -125,7 +125,8 @@ public class LeftFragment extends Fragment {
             @Override
             public void onGet(UserBean userBean) {
 
-                headTextView.setText(userBean.getNickname());
+                String nickName = Util.getShortString(userBean.getNickname(),10,3);
+                headTextView.setText(nickName);
 
 
                 Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
@@ -169,7 +170,7 @@ public class LeftFragment extends Fragment {
             public void onClick(View v) {
 
                 int userListTop = userListLayout.getTop();
-                if (userListTop!=0) {
+                if (userListTop != 0) {
                     showUserList();
                 } else {
                     dismissUserlist();
@@ -229,9 +230,49 @@ public class LeftFragment extends Fragment {
             float degree = (float) value;
             int toDegree = (int) degree;
 
-            showListView.setRotationX(showListView.getWidth() / 2 - Util.dipToPx(15, getResources()));
-            showListView.setRotationY(showListView.getHeight() / 2);
-            showListView.setRotation(toDegree);
+            try {
+                /*
+                error:
+
+                 Caused by: java.lang.IllegalStateException: Fragment LeftFragment{411e67e8} not attached to Activity
+            at android.support.v4.app.Fragment.getResources(Fragment.java:571)
+            at com.suan.weclient.fragment.LeftFragment$DegreeUpdateListener.onAnimationUpdate(LeftFragment.java:232)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator.animateValue(ValueAnimator.java:1179)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator.animateValue(ObjectAnimator.java:468)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator.animationFrame(ValueAnimator.java:1140)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator.setCurrentPlayTime(ValueAnimator.java:546)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator.start(ValueAnimator.java:929)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator.start(ValueAnimator.java:952)
+            at com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator.start(ObjectAnimator.java:365)
+            at com.suan.weclient.fragment.LeftFragment$1.onUserListDismiss(LeftFragment.java:119)
+            at com.suan.weclient.activity.MainActivity$13.onGroupChangeEnd(MainActivity.java:491)
+            at com.suan.weclient.util.data.DataManager.doGroupChangeEnd(DataManager.java:395)
+            at com.suan.weclient.util.data.DataManager.updateUserGroup(DataManager.java:163)
+            at com.suan.weclient.activity.MainActivity.initDataChangeListener(MainActivity.java:471)
+            at com.suan.weclient.activity.MainActivity.onCreate(MainActivity.java:88)
+            at android.app.Activity.performCreate(Activity.java:5104)
+            at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1080)
+            at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2262)
+            at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2358)
+            at android.app.ActivityThread.access$600(ActivityThread.java:153)
+            at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1247)
+            at android.os.Handler.dispatchMessage(Handler.java:99)
+            at android.os.Looper.loop(Looper.java:137)
+            at android.app.ActivityThread.main(ActivityThread.java:5227)
+            at java.lang.reflect.Method.invokeNative(Native Method)
+            at java.lang.reflect.Method.invoke(Method.java:511)
+            at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:795)
+            at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:562)
+            at de.robv.android.xposed.XposedBridge.main(XposedBridge.java:126)
+            at dalvik.system.NativeStart.main(Native Method)
+                 */
+                showListView.setRotationX(showListView.getWidth() / 2 - Util.dipToPx(15, getResources()));
+                showListView.setRotationY(showListView.getHeight() / 2);
+                showListView.setRotation(toDegree);
+
+            } catch (Exception e) {
+
+            }
         }
     }
 

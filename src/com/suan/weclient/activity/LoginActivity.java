@@ -169,7 +169,6 @@ public class LoginActivity extends Activity {
 							getApplicationContext());
 					switch (loginResult) {
 					case DataParser.PARSE_LOGIN_SUCCESS:
-						
 
 						WeChatLoader.wechatGetUserProfile(
 								new WechatExceptionListener() {
@@ -265,6 +264,7 @@ public class LoginActivity extends Activity {
 					case DataParser.PARSE_LOGIN_FAILED:
 
 						loginDialog.dismiss();
+//                        Log.e("dialog login","dismiss");
 
 						loginDialog = Util.createEnsureDialog(
 								new DataManager.DialogSureClickListener() {
@@ -277,6 +277,7 @@ public class LoginActivity extends Activity {
 									}
 								}, false, LoginActivity.this, "登录失败，请检查账户名和密码",
 								true);
+
 						loginDialog.show();
 						break;
 					}

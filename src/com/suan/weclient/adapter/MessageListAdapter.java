@@ -74,6 +74,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
             return blankArrayList;
         }
+
         return mDataManager.getCurrentMessageHolder().getMessageList();
     }
 
@@ -741,7 +742,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             }
         });
 
-        popTitleTextView.setText("Re:"
+        popTitleTextView.setText(mContext.getResources().getString(R.string.reply)+":"
                 + mDataManager.getCurrentMessageHolder().getMessageList()
                 .get(position).getNickName());
         popSureButton.setOnClickListener(new OnClickListener() {

@@ -16,7 +16,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +36,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
     private View view;
     private RelativeLayout userLayout, settingLayout, feedbackLayout, checkUpdateLayout, exitAccountLayout;
     private RelativeLayout newPeopleLayout;
-    private TextView newUserTextView, versionTextView;
+    private TextView totalUserTextView, newUserTextView, versionTextView;
 
 
     private Dialog popDialog;
@@ -81,13 +81,15 @@ public class ProfileFragment extends Fragment {
         checkUpdateLayout = (RelativeLayout) view.findViewById(R.id.profile_layout_check_for_update);
         exitAccountLayout = (RelativeLayout) view.findViewById(R.id.profile_layout_exit_account);
 
+        totalUserTextView = (TextView) view.findViewById(R.id.profile_text_total_user);
+
         userLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (mDataManager.getUserGroup().size() > 0) {
                     mDataManager.getCurrentUser().setNewPeople(0 + "");
-                    refreshNewPeopleLayout(mDataManager.getCurrentUser());
+                    refreshUserLayout(mDataManager.getCurrentUser());
 
                     Intent jumbIntent = new Intent();
                     jumbIntent.setClass(getActivity(), FansListActivity.class);
@@ -117,7 +119,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-       checkUpdateLayout.setOnClickListener(new OnClickListener() {
+        checkUpdateLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkUpdate();
@@ -227,14 +229,36 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onGet(UserBean userBean) {
                 // TODO Auto-generated method stub
-                refreshNewPeopleLayout(userBean);
+                refreshUserLayout(userBean);
 
             }
         });
 
     }
 
-    private void refreshNewPeopleLayout(UserBean userBean) {
+    private void refreshUserLayout(UserBean userBean) {
+        int totalUser = Integer.parseInt(userBean.getTotalPeople());
+        String totalUserString = "";
+        if (totalUser > 1000) {
+            if (totalUser > 10000) {
+
+                BigDecimal decimal = new BigDecimal((double) totalUser / 10000);
+                BigDecimal totalUserdecimal = decimal.setScale(1, BigDecimal.ROUND_HALF_UP);
+                totalUserString = "( " + totalUserdecimal + "w )";
+
+
+            } else {
+                BigDecimal decimal = new BigDecimal((double) totalUser / 1000);
+                BigDecimal totalUserdecimal = decimal.setScale(1, BigDecimal.ROUND_HALF_UP);
+                totalUserString = "( " + totalUserdecimal + "k )";
+
+            }
+
+        } else {
+            totalUserString = "( " + totalUser + " )";
+
+        }
+        totalUserTextView.setText(totalUserString);
         if (userBean.getNewPeople().equals("0")) {
             newPeopleLayout.setVisibility(View.GONE);
 

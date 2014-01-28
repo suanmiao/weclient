@@ -26,6 +26,12 @@ public class UserBean {
 	private String totalPeopleString = "";
 	private String fakeIdString = "";
 
+
+    /*
+    for message push
+     */
+    private String lastMsgId = "";
+
 	public UserBean(JSONObject contentJsonObject) {
 		this.contentObject = contentJsonObject;
 
@@ -84,6 +90,7 @@ public class UserBean {
 			Log.e("user bean parse error", "fake id" + exception);
 
 		}
+
 		try {
 			String valueString = contentJsonObject.getString("new_people");
 			if (valueString != null) {
@@ -156,6 +163,20 @@ public class UserBean {
 			Log.e("user bean parse error", "slave user" + exception);
 
 		}
+
+        try {
+			String valueString = contentJsonObject.getString("last_msg_id");
+			if (valueString != null) {
+                lastMsgId = valueString;
+
+			}
+
+		} catch (Exception exception) {
+			Log.e("user bean parse error", "last msg id" + exception);
+
+		}
+
+
 	}
 
 	public UserBean(String userName, String pwd) {
@@ -174,12 +195,26 @@ public class UserBean {
 
 	}
 
+
+	public String getLastMsgId() {
+		return lastMsgId;
+	}
+
+	public void setLastMsgId(String lastMsgId) {
+
+		try {
+			contentObject.put("last_msg_id", lastMsgId);
+            this.lastMsgId = lastMsgId;
+		} catch (Exception exception) {
+
+			Log.e("put error", "last msg id " + exception);
+		}
+	}
 	public int getUserType() {
 		return userType;
 	}
 
 	public void setUserType(int userType) {
-		Log.e("put usertype", "" + userType);
 
 		try {
 			contentObject.put("userType", userType);
