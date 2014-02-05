@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +38,7 @@ import com.suan.weclient.util.net.WeChatLoader.WechatMessagePageCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMessageReplyCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatMessageStarCallBack;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.view.dropWindow.PopOptionWindow;
 
 public class WechatManager {
 
@@ -44,9 +47,17 @@ public class WechatManager {
 
     public static final int GET_NEW_MESSAGE_COUNT_SUCCESS = 0;
 
+    /*
+    about pop dialog
+     */
+    public static final int DIALOG_POP_NOT_CANCELABLE = 3;
+    public static final int DIALOG_POP_CANCELABLE = 2;
+    public static final int DIALOG_POP_NO = 1;
+
     public interface OnActionFinishListener {
 
         public void onFinish(int code, Object object);
+
     }
 
     private DataManager mDataManager;
@@ -59,12 +70,12 @@ public class WechatManager {
     }
 
 
-    public void login(final int userIndex, final boolean popDialog, final boolean autoRetry,
+    public void login(final int userIndex, final int popDialog, final boolean autoRetry,
                       final OnActionFinishListener onActionFinishListener) {
 
-        if (popDialog) {
+        if (popDialog > DIALOG_POP_NO) {
             mDataManager.doDismissAllDialog();
-            mDataManager.doLoadingStart("登录...");
+            mDataManager.doLoadingStart("登录...", popDialog);
 
         }
 
@@ -78,9 +89,9 @@ public class WechatManager {
                             public void onError() {
                                 // TODO Auto-generated method stub
 
-                                if (popDialog) {
+                                if (popDialog > DIALOG_POP_NO) {
                                     mDataManager.doPopEnsureDialog(true, false,
-                                            "登录失败 重试?",
+                                            "失败", "登录失败 重试?",
                                             new DialogSureClickListener() {
 
                                                 @Override
@@ -112,7 +123,6 @@ public class WechatManager {
                                             slaveUser, mContext);
                                     nowBean.setSlaveSid(slaveSid);
                                     nowBean.setSlaveUser(slaveUser);
-                                    SharedPreferenceManager.updateUser(mContext, mDataManager);
                                     switch (loginResult) {
                                         case DataParser.PARSE_LOGIN_SUCCESS:
                                             mDataManager.doLoginSuccess(nowBean);
@@ -144,10 +154,10 @@ public class WechatManager {
                 );
     }
 
-    public void getUserProfile(final boolean popDialog, final boolean autoRetry, final int userIndex,
+    public void getUserProfile(final int popDialog, final boolean autoRetry, final int userIndex,
                                final OnActionFinishListener onActionFinishListener) {
-        if (popDialog) {
-            mDataManager.doLoadingStart("获取用户数据...");
+        if (popDialog > DIALOG_POP_NO) {
+            mDataManager.doLoadingStart("获取用户数据...", popDialog);
 
         }
         WeChatLoader.wechatGetUserProfile(new WechatExceptionListener() {
@@ -155,8 +165,8 @@ public class WechatManager {
                                               @Override
                                               public void onError() {
                                                   // TODO Auto-generated method stub
-                                                  if (popDialog) {
-                                                      mDataManager.doPopEnsureDialog(true, false, "获取用户信息失败 重试?",
+                                                  if (popDialog > DIALOG_POP_NO) {
+                                                      mDataManager.doPopEnsureDialog(true, false, "失败", "获取用户信息失败 重试?",
                                                               new DialogSureClickListener() {
 
                                                                   @Override
@@ -181,9 +191,9 @@ public class WechatManager {
                         // stub
 
                         try {
-                            if (popDialog) {
+                            if (popDialog > DIALOG_POP_NO) {
 
-                                mDataManager.doLoadingStart("解析用户数据...");
+                                mDataManager.doLoadingStart("解析用户数据...", popDialog);
 
                             }
                             int getUserProfileState = DataParser.parseUserProfile(
@@ -219,7 +229,7 @@ public class WechatManager {
 
     }
 
-    public void getUserImgDirectly(final boolean popDialog, final boolean autoRetry,
+    public void getUserImgDirectly(final int popDialog, final boolean autoRetry,
                                    final int userIndex, final ImageView userProfileImageView,
                                    final OnActionFinishListener onActionFinishListener) {
 
@@ -228,7 +238,7 @@ public class WechatManager {
                                               @Override
                                               public void onError() {
                                                   // TODO Auto-generated method stub
-                                                  mDataManager.doPopEnsureDialog(true, false, "获取用户信息失败 重试?",
+                                                  mDataManager.doPopEnsureDialog(true, false, "失败", "获取用户信息失败 重试?",
 
                                                           new DialogSureClickListener() {
 
@@ -301,18 +311,15 @@ public class WechatManager {
                                        ImageView imageView) {
                         // TODO Auto-generated method stub
 
-                        try {
-                            Bitmap roundBitmap = Util.roundCornerWithBorder(bitmap,
-                                    Util.dipToPx(30, mContext.getResources()), 15);
+                        if (bitmap != null) {
 
-                            imageView.setImageBitmap(roundBitmap);
-                            onActionFinishListener.onFinish(ACTION_SUCCESS, roundBitmap);
+                            onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
                             return;
-
-                        } catch (Exception exception) {
+                        } else {
+                            onActionFinishListener.onFinish(ACTION_FAILED, null);
 
                         }
-                        onActionFinishListener.onFinish(ACTION_FAILED, null);
+                        return;
 
                     }
                 }, mDataManager.getUserGroup().get(userIndex), fakeId, referer,
@@ -345,9 +352,7 @@ public class WechatManager {
 
     }
 
-    public void getMessageImg(final int userIndex, final String msgId,
-                              final String slaveSid, final String slaveUser, final String token,
-                              final String referer, final ImageView imageView,
+    public void getMessageImg(final int userIndex, final MessageBean messageBean, final ImageView imageView,
                               final String imgType,
                               final OnActionFinishListener onActionFinishListener) {
 
@@ -364,28 +369,32 @@ public class WechatManager {
                                              public void onBack(Bitmap bitmap, ImageView imageView) {
                                                  // TODO Auto-generated method stub
                                                  try {
-                                                     imageView.setImageBitmap(bitmap);
-                                                     onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
-                                                     return;
+                                                     if (bitmap != null) {
+                                                         imageView.setImageBitmap(bitmap);
+                                                         onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
+                                                         return;
+
+                                                     }
 
                                                  } catch (Exception exception) {
+                                                     Log.e("load img failed", "" + exception);
 
                                                  }
                                                  onActionFinishListener.onFinish(ACTION_FAILED, null);
 
                                              }
-                                         }, msgId, slaveSid, slaveUser, token, referer, imageView,
+                                         }, mDataManager.getUserGroup().get(userIndex), messageBean, imageView,
                 WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE
         );
 
     }
 
     public void getUserImgWithReferer(final int userIndex,
-                                      final boolean popDialog, final ImageView imageView,
+                                      final int popDialog, final ImageView imageView,
                                       final OnActionFinishListener onActionFinishListener,
                                       final String referer) {
-        if (popDialog) {
-            mDataManager.doLoadingStart("获取用户头像...");
+        if (popDialog > DIALOG_POP_NO) {
+            mDataManager.doLoadingStart("获取用户头像...", popDialog);
 
         }
 
@@ -399,7 +408,7 @@ public class WechatManager {
                                               // stub
                                               mDataManager.doLoadingEnd();
 
-                                              mDataManager.doPopEnsureDialog(true, false, "获取用户信息失败 重试?",
+                                              mDataManager.doPopEnsureDialog(true, false, "失败", "获取用户信息失败 重试?",
                                                       new DialogSureClickListener() {
 
                                                           @Override
@@ -425,9 +434,9 @@ public class WechatManager {
                         bitmap = Util.roundCorner(bitmap, bitmap.getWidth() / 2);
 
                         try {
-                            if (popDialog) {
+                            if (popDialog > DIALOG_POP_NO) {
 
-                                mDataManager.doLoadingStart("设置用户头像...");
+                                mDataManager.doLoadingStart("设置用户头像...", popDialog);
                             }
                             mDataManager.getCacheManager().putBitmap(
                                     ImageCacheManager.CACHE_USER_PROFILE
@@ -451,10 +460,10 @@ public class WechatManager {
 
     }
 
-    public void getMassData(final int userIndex, final boolean popDialog,
+    public void getMassData(final int userIndex, final int popDialog,
                             final OnActionFinishListener onActionFinishListener) {
-        if (popDialog) {
-            mDataManager.doLoadingStart("获取用户群发数据...");
+        if (popDialog > DIALOG_POP_NO) {
+            mDataManager.doLoadingStart("获取用户群发数据...", popDialog);
 
         }
 
@@ -463,7 +472,7 @@ public class WechatManager {
                                            @Override
                                            public void onError() {
                                                // TODO Auto-generated method stub
-                                               mDataManager.doPopEnsureDialog(true, false, "获取用户信息失败 重试?",
+                                               mDataManager.doPopEnsureDialog(true, false, "失败", "获取用户信息失败 重试?",
                                                        new DialogSureClickListener() {
 
                                                            @Override
@@ -483,9 +492,9 @@ public class WechatManager {
                                                // TODO Auto-generated method stub
 
                                                try {
-                                                   if (popDialog) {
+                                                   if (popDialog > DIALOG_POP_NO) {
 
-                                                       mDataManager.doLoadingStart("解析用户群发数据...");
+                                                       mDataManager.doLoadingStart("解析用户群发数据...", popDialog);
 
                                                    }
                                                    DataParser.parseMassData(strResult, mDataManager
@@ -511,12 +520,12 @@ public class WechatManager {
         );
     }
 
-    public void getNewMessageList(final boolean popLoadingDialog,
+    public void getNewMessageList(final int popLoadingDialog,
                                   final int userIndex,
                                   final OnActionFinishListener onActionFinishListener) {
-        if (popLoadingDialog) {
+        if (popLoadingDialog > DIALOG_POP_NO) {
 
-            mDataManager.doLoadingStart("获取消息数据...");
+            mDataManager.doLoadingStart("获取消息数据...", popLoadingDialog);
 
         }
 
@@ -525,7 +534,7 @@ public class WechatManager {
                                               @Override
                                               public void onError() {
                                                   // TODO Auto-generated method stub
-                                                  mDataManager.doPopEnsureDialog(true, false, "获取消息失败 重试?",
+                                                  mDataManager.doPopEnsureDialog(true, false, "失败", "获取消息失败 重试?",
                                                           new DialogSureClickListener() {
 
                                                               @Override
@@ -547,10 +556,10 @@ public class WechatManager {
                         // stub
 
                         try {
-                            if (popLoadingDialog) {
+                            if (popLoadingDialog > DIALOG_POP_NO) {
 
                                 mDataManager.doDismissAllDialog();
-                                mDataManager.doLoadingStart("解析消息数据...");
+                                mDataManager.doLoadingStart("解析消息数据...", popLoadingDialog);
 
                             }
 
@@ -577,7 +586,7 @@ public class WechatManager {
 
                         }
                     }
-                }, mDataManager.getUserGroup().get(userIndex), mDataManager.getMessageHolders().get(userIndex).getNowMessageMode()
+                }, mDataManager.getUserGroup().get(userIndex), mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(), SharedPreferenceManager.getHideKeyWordMessage(mContext)
         );
     }
 
@@ -691,7 +700,7 @@ public class WechatManager {
                                               public void onError() {
                                                   // TODO Auto-generated method stub
 
-                                                  mDataManager.doPopEnsureDialog(true, false,
+                                                  mDataManager.doPopEnsureDialog(true, false, "失败",
                                                           "获取消息列表失败 网络错误 重试?", new DialogSureClickListener() {
 
                                                       @Override
@@ -735,7 +744,7 @@ public class WechatManager {
                         }
 
                     }
-                }, mDataManager.getMessageHolders().get(userIndex), page
+                }, mDataManager.getMessageHolders().get(userIndex), page, mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(), SharedPreferenceManager.getHideKeyWordMessage(mContext)
         );
 
     }
@@ -749,7 +758,7 @@ public class WechatManager {
                                            @Override
                                            public void onError() {
                                                // TODO Auto-generated method stub
-                                               mDataManager.doPopEnsureDialog(true, false, "获取聊天信息失败 重试?",
+                                               mDataManager.doPopEnsureDialog(true, false, "失败", "获取聊天信息失败 重试?",
                                                        new DialogSureClickListener() {
 
                                                            @Override
@@ -806,15 +815,18 @@ public class WechatManager {
                                                   JSONObject resultJsonObject = new JSONObject(result);
                                                   JSONObject stateJsonObject = resultJsonObject
                                                           .getJSONObject("base_resp");
-                                                  String ret = stateJsonObject.getString("ret");
-                                                  if (ret != null) {
-                                                      if (Integer.parseInt(ret) == WeChatLoader.WECHAT_SINGLE_CHAT_OK) {
-                                                          messageBean.setSendState(MessageBean.MESSAGE_SEND_OK);
-                                                          onActionFinishListener.onFinish(ACTION_SUCCESS, true);
-                                                          return;
-                                                      }
+                                                  int ret = DataParser.getRet(stateJsonObject);
+
+                                                  if (ret == WeChatLoader.WECHAT_SINGLE_CHAT_OK) {
+                                                      messageBean.setSendState(MessageBean.MESSAGE_SEND_OK);
+                                                      onActionFinishListener.onFinish(ACTION_SUCCESS, true);
+                                                      return;
+                                                  } else if (ret == WeChatLoader.WECHAT_SINGLE_CHAT_OUT_OF_DATE) {
+
+                                                      messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED);
+                                                      onActionFinishListener.onFinish(ACTION_SUCCESS, false);
+                                                      return;
                                                   }
-                                                  Log.e("get ret", ret + "");
 
                                               } catch (Exception exception) {
                                                   Log.e("single chat result parse error", "" + exception);
@@ -960,7 +972,7 @@ public class WechatManager {
                                     Log.e("mass only ", "");
 
                                     mDataManager.doPopEnsureDialog(false, true,
-                                            "每天只能群发一条哦～",
+                                            "哎呀", "每天只能群发一条哦～",
                                             new DialogSureClickListener() {
 
                                                 @Override
@@ -986,7 +998,7 @@ public class WechatManager {
     }
 
 
-    public void getNewMessageCount(final int userIndex, final boolean autoRetry,
+    public void getNewMessageCount(final int userIndex, final String lastMsgId, final boolean autoRetry,
                                    final OnActionFinishListener onActionFinishListener) {
 
         WeChatLoader.wechatGetNewMessageCount(new WechatExceptionListener() {
@@ -1009,16 +1021,17 @@ public class WechatManager {
                                                           }
 
                                                       } catch (Exception e) {
-                                                          Log.e("parse new message count error",""+e);
+                                                          Log.e("parse new message count error", "" + e);
 
                                                       }
 
 
                                                   }
-                                              }, mDataManager.getUserGroup().get(userIndex)
+                                              }, mDataManager.getUserGroup().get(userIndex), lastMsgId
         );
 
     }
 
 
 }
+

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -30,12 +29,12 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.ListCacheManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.FansBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
-import com.umeng.analytics.a.h;
 
 public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     private LayoutInflater mInflater;
@@ -153,7 +152,8 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
         if (getFansItems().get(position).getRemarkName().length() != 0) {
             holder.profileTextView.setText(getFansItems().get(position).getRemarkName());
-            holder.nickNameTextView.setText("(" + getFansItems().get(position).getNickname() + ")");
+            String nickNameString = Util.getShortString(getFansItems().get(position).getNickname(), 13, 3);
+            holder.nickNameTextView.setText(nickNameString);
 
         } else {
             holder.profileTextView.setText(getFansItems().get(position).getNickname());
@@ -247,12 +247,12 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 String editContent = popContentEditText.getText().toString();
-                if(editContent.length()==0){
-                    Toast.makeText(mContext,"备注名不能为空",Toast.LENGTH_SHORT).show();
+                if (editContent.length() == 0) {
+                    Toast.makeText(mContext, "备注名不能为空", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
 
-                    editRemark(position,editContent , holder);
+                    editRemark(position, editContent, holder);
                 }
 
 
@@ -351,7 +351,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
         }
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view,final int index, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, final int index, long id) {
 
             dialog.dismiss();
 
@@ -422,7 +422,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
             Bitmap contentBitmap = mDataManager.getCacheManager()
                     .getBitmap(
-                            ImageCacheManager.CACHE_MESSAGE_PROFILE
+                            ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
                                     + getFansItems().get(position).getFansId());
             if (contentBitmap != null) {
                 holder.profileImageView.setImageBitmap(contentBitmap);
@@ -437,12 +437,16 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        Bitmap bitmap = (Bitmap) object;
+                        Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
+                                Util.dipToPx(30, mContext.getResources()), 10,
+                                Color.parseColor("#c6c6c6"));
+
                         mDataManager.getCacheManager().putBitmap(
-                                ImageCacheManager.CACHE_MESSAGE_PROFILE
+                                ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
                                         + getFansItems().get(position)
-                                        .getFansId(), bitmap, true);
-                        holder.profileImageView.setTag(bitmap);
+                                        .getFansId(), roundBitmap, true);
+                        holder.profileImageView.setImageBitmap(roundBitmap);
+                        holder.profileImageView.setTag(roundBitmap);
 
                     }
                 });

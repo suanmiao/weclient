@@ -238,6 +238,7 @@ public class DataParser {
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
 
+
                                 if (!(messageHolder.getLatestMsgId().equals(latestMsgId) && messageHolder.getContentMessageMode() == messageHolder.getNowMessageMode())) {
                                     // when the message is list changed
                                     messageHolder.setMessage(getMessageList);

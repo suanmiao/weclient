@@ -12,6 +12,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final String BROADCAST_ACTION_START_PUSH_SERVICE = "cn.com.action.suan.startPushService";
     public static final String BROADCAST_ACTION_START_PUSH = "cn.com.action.suan.startPush";
     public static final String BROADCAST_ACTION_STOP_PUSH = "cn.com.action.suan.stopPush";
+
     private final static String TAG = "AlarmReceiver";
     private final static String SYSTEM_BROADCAST_ACTION = "android.intent.action.BOOT_COMPLETED";
 

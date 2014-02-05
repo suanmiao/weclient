@@ -1,7 +1,9 @@
 package com.suan.weclient.util.data;
 
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.suan.weclient.adapter.ChatListAdapter;
 import com.suan.weclient.util.net.WeChatLoader;
@@ -18,7 +20,10 @@ public class MessageBean {
     private String id = "";
     private int type = -1;
     private String fakeid = "";
-    private String fileid = "";
+    /*
+    default file id is "0"
+     */
+    private String fileid = "0";
 
     private String nick_name = "";
     private String date_time = "";
@@ -28,6 +33,17 @@ public class MessageBean {
     private String has_reply = "";
     private String refuse_reason = "";
     private String is_starred_msg = "0";
+
+    /*
+    about media message
+     */
+    private String title = "";
+    private String desc = "";
+    private String content_url = "";
+
+    private String show_type = "";
+    private String app_sub_type = "";
+
 
     /*
      * about audio
@@ -62,10 +78,8 @@ public class MessageBean {
     public static final int MESSAGE_SEND_OK = 2;
     public static final int MESSAGE_SEND_FAILED = 3;
 
-    public static final int MESSAGE_OWNER_ME = 0;
-    public static final int MESSAGE_OWNER_HER = 1;
-
-
+    public static final int MESSAGE_OWNER_ME = 1;
+    public static final int MESSAGE_OWNER_HER = 2;
 
 
     public String getToken() {
@@ -213,13 +227,35 @@ public class MessageBean {
 
 
     public String getRefuseReason() {
+
         return refuse_reason;
     }
 
     public void setRefuseReason(String data) {
+
         this.refuse_reason = data;
     }
 
+
+    public String getTitle() {
+
+        return title;
+    }
+
+    public void setTitle(String data) {
+
+        this.title = data;
+    }
+
+
+    public String getContentUrl() {
+
+        return content_url;
+    }
+
+    public void setContentUrl(String data) {
+        this.content_url = data;
+    }
 
     public String getToFakeId() {
         return toFakeId;
@@ -233,22 +269,31 @@ public class MessageBean {
         return owner;
     }
 
+    private Context mContext;
 
-    public void sendMessage(DataManager dataManager, String lastMsgId, UserBean userBean, String toFakeId) {
+    public void sendMessage(DataManager dataManager, String lastMsgId, UserBean userBean, String toFakeId, Context context) {
         this.toFakeId = toFakeId;
         this.owner = MESSAGE_OWNER_ME;
         this.lastMsgId = lastMsgId;
         this.userBean = userBean;
         this.mDataManager = dataManager;
         this.createTime = (System.currentTimeMillis() + "").substring(0, 10);
+        this.mContext = context;
 
 
         dataManager.getWechatManager().singleChat(userBean, this, new WechatManager.OnActionFinishListener() {
             @Override
-            public void onFinish(int code,Object object) {
-                Boolean result = (Boolean) object;
-                if (result) {
-                    getChatNewItem();
+            public void onFinish(int code, Object object) {
+                if (code == WechatManager.ACTION_SUCCESS) {
+                    Boolean result = (Boolean) object;
+                    if (result) {
+                        getChatNewItem();
+                    } else {
+                        //send out of date
+                        Toast.makeText(mContext, "该用户48小时未主动给您发送消息，无法与其聊天", Toast.LENGTH_LONG).show();
+
+                    }
+
 
                 }
 
@@ -257,11 +302,11 @@ public class MessageBean {
 
     }
 
-    public void resend(){
+    public void resend() {
 
         mDataManager.getWechatManager().singleChat(userBean, this, new WechatManager.OnActionFinishListener() {
             @Override
-            public void onFinish(int code,Object object) {
+            public void onFinish(int code, Object object) {
                 Boolean result = (Boolean) object;
                 if (result) {
                     getChatNewItem();
@@ -275,16 +320,14 @@ public class MessageBean {
 
     private void getChatNewItem() {
 
-        Log.e("get new item","start");
         WeChatLoader.wechatGetChatNewItems(new WeChatLoader.WechatExceptionListener() {
                                                @Override
                                                public void onError() {
 
                                                }
-                                      }, new WeChatLoader.WechatGetChatNewItems() {
+                                           }, new WeChatLoader.WechatGetChatNewItems() {
                                                @Override
                                                public void onBack(String strResult) {
-                                                   Log.e("get new item",strResult);
 
                                                }
                                            }, userBean, this, lastMsgId, createTime, toFakeId

@@ -39,6 +39,7 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.text.EmotionHandler;
 import com.suan.weclient.view.Face.FaceHolderView;
@@ -326,7 +327,7 @@ public class MassFragment extends Fragment {
 
     private void mass() {
         String massContent = contentEditText.getText().toString();
-        mDataManager.doLoadingStart("发送中");
+        mDataManager.doLoadingStart("发送中", WechatManager.DIALOG_POP_CANCELABLE);
         mDataManager.getWechatManager().mass(mDataManager.getCurrentPosition(),
                 massContent, new OnActionFinishListener() {
 
@@ -336,7 +337,7 @@ public class MassFragment extends Fragment {
 
                 contentEditText.setText("");
 
-                mDataManager.doPopEnsureDialog(false, true, "群发成功",
+                mDataManager.doPopEnsureDialog(false, true,"恭喜", "群发成功",
                         new DialogSureClickListener() {
 
                             @Override

@@ -3,6 +3,7 @@ package com.suan.weclient.util.net.images;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.util.Log;
 
 /**
  * Implementation of volley's ImageCache interface. This manager tracks the
@@ -16,7 +17,8 @@ public class ImageCacheManager {
 
     public static final String CACHE_USER_PROFILE = "userProfile";
 
-    public static final String CACHE_MESSAGE_PROFILE = "messageProfile";
+    public static final String CACHE_MESSAGE_LIST_PROFILE = "messageListProfile";
+    public static final String CACHE_CHAT_LIST_PROFILE = "chatListProfile";
     public static final String CACHE_MESSAGE_CONTENT = "messageContent";
 
     /**
@@ -87,6 +89,8 @@ public class ImageCacheManager {
         try {
             mBitmapLruCache.put(createKey(key), bitmap);
         } catch (NullPointerException e) {
+            Log.e("fuck disk",""+mBitmapLruCache+"|"+bitmap);
+
             throw new IllegalStateException("Disk Cache Not initialized");
         }
         if (storeToDisk) {

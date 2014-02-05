@@ -7,10 +7,13 @@ public class ChatHolder{
 	private ArrayList<MessageBean> messageBeans;
 	private UserBean nowBean;
 	private String toFakeId = "";
-	public ChatHolder(UserBean userBean,String toFakeId){
+
+    private String toNickname = "";
+	public ChatHolder(UserBean userBean,String toFakeId,String toNickname){
 		nowBean = userBean;
 		messageBeans = new ArrayList<MessageBean>();
 		this.toFakeId = toFakeId;
+        this.toNickname = toNickname;
 		
 	}
 	
@@ -34,6 +37,11 @@ public class ChatHolder{
 	}
 	
 	public String getToFakeId(){
+
 		return toFakeId;
 	}
+
+    public String getToNickname(){
+        return toNickname;
+    }
 }

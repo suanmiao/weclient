@@ -8,21 +8,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:layout_marginLeft="15dip"
+        android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
-        android:layout_marginTop="10dip"
+        android:layout_marginTop="0dip"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="40dip"
             android:layout_height="fill_parent"
-            android:layout_marginRight="10dip">
+            android:layout_marginRight="5dip">
 
             <ImageView
                 android:id="@+id/chat_item_her_voice_img_profile"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginTop="10dip"
+                android:scaleType="centerInside"
                 android:src="@drawable/head_default" />
         </RelativeLayout>
 
@@ -36,10 +37,10 @@
                 android:layout_width="200dip"
                 android:layout_height="50dip"
                 android:layout_marginTop="15dip"
-                android:paddingLeft="20dip"
-                android:paddingRight="10dip"
-                android:paddingTop="10dip"
-                android:paddingBottom="10dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="6dip"
+                android:paddingTop="6dip"
+                android:paddingBottom="6dip"
                 android:background="@drawable/chat_her_content_bg">
 
                 <ImageView

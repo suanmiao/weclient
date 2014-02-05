@@ -31,7 +31,7 @@ public class DataManager {
     ArrayList<ProfileGetListener> profileGetListeners;
     ArrayList<MassDataGetListener> massDataGetListeners;
     ArrayList<LoginListener> loginListeners;
-    ArrayList<DialogListener> dialogListeners;
+    DialogListener dialogListener;
     ArrayList<UserGroupListener> userGroupListeners;
 
     ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
@@ -46,6 +46,11 @@ public class DataManager {
      *
      */
     private ChatHolder chatHolder;
+
+    /*
+    about showing img
+     */
+    private ImgHolder imgHolder;
 
 
     private WechatManager mWechatManager;
@@ -94,7 +99,6 @@ public class DataManager {
         profileGetListeners = new ArrayList<DataManager.ProfileGetListener>();
         massDataGetListeners = new ArrayList<MassDataGetListener>();
         loginListeners = new ArrayList<DataManager.LoginListener>();
-        dialogListeners = new ArrayList<DataManager.DialogListener>();
         userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
         mContext = context;
         mWechatManager = new WechatManager(this, context);
@@ -217,10 +221,10 @@ public class DataManager {
 
     public MessageHolder getCurrentMessageHolder() {
 
-        try{
+        try {
 
             return messageHolders.get(getCurrentPosition());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
@@ -230,10 +234,10 @@ public class DataManager {
     public FansHolder getCurrentFansHolder() {
 
 
-        try{
+        try {
 
             return fansHolders.get(getCurrentPosition());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
@@ -264,9 +268,18 @@ public class DataManager {
         return chatHolder;
     }
 
-    public void createChat(UserBean userBean, String toFakeId) {
-        chatHolder = new ChatHolder(userBean, toFakeId);
+    public void createChat(UserBean userBean, String toFakeId, String toNickname) {
+        chatHolder = new ChatHolder(userBean, toFakeId, toNickname);
         chatNewItemGetListeners = new ArrayList<ChatNewItemGetListener>();
+    }
+
+    public void createImgHolder(MessageBean messageBean,UserBean userBean){
+        this.imgHolder = new ImgHolder(messageBean,userBean);
+
+    }
+
+    public ImgHolder getImgHolder(){
+        return this.imgHolder;
     }
 
     public void setCurrentPosition(int position) {
@@ -308,6 +321,7 @@ public class DataManager {
         this.massDataGetListeners.add(massDataGetListener);
 
     }
+
     public void addLoginListener(LoginListener loginListener) {
         this.loginListeners.add(loginListener);
 
@@ -318,14 +332,14 @@ public class DataManager {
     }
 
 
-
     public void setContentFragmentListener(ContentFragmentChangeListener contentFragmentChangeListener) {
         this.contentFragmentChangeListener = contentFragmentChangeListener;
 
     }
 
-    public void addLoadingListener(DialogListener dialogListener) {
-        this.dialogListeners.add(dialogListener);
+    public void setLoadingListener(DialogListener dialogListener) {
+
+        this.dialogListener = dialogListener;
     }
 
 
@@ -353,6 +367,7 @@ public class DataManager {
             massDataGetListeners.get(i).onGet(userBean);
         }
     }
+
     public void doMessageGet() {
         for (int i = 0; i < messageChangeListeners.size(); i++) {
             messageChangeListeners.get(i).onMessageGet();
@@ -407,30 +422,36 @@ public class DataManager {
         contentFragmentChangeListener.onChange(index);
     }
 
-    public void doLoadingStart(String loadingText) {
-        for (int i = 0; i < dialogListeners.size(); i++) {
-            dialogListeners.get(i).onLoad(loadingText);
+    public void doLoadingStart(String loadingText, int dialogCancelType) {
+        if (dialogListener != null) {
+
+            dialogListener.onLoad(loadingText, dialogCancelType);
         }
+
     }
 
 
     public void doLoadingEnd() {
-        for (int i = 0; i < dialogListeners.size(); i++) {
-            dialogListeners.get(i).onFinishLoad();
+        if (dialogListener != null) {
+
+            dialogListener.onFinishLoad();
         }
+
     }
 
-    public void doPopEnsureDialog(boolean cancelVisible, boolean cancelable, String titleText, DialogSureClickListener dialogSureClickListener) {
+    public void doPopEnsureDialog(boolean cancelVisible, boolean cancelable, String titleText,String contentText, DialogSureClickListener dialogSureClickListener) {
 
-        for (int i = 0; i < dialogListeners.size(); i++) {
-            dialogListeners.get(i).onPopEnsureDialog(cancelVisible, cancelable, titleText, dialogSureClickListener);
+        if (dialogListener != null) {
+
+            dialogListener.onPopEnsureDialog(cancelVisible, cancelable, titleText,contentText, dialogSureClickListener);
         }
     }
 
 
     public void doDismissAllDialog() {
-        for (int i = 0; i < dialogListeners.size(); i++) {
-            dialogListeners.get(i).onDismissAllDialog();
+        if (dialogListener != null) {
+
+            dialogListener.onDismissAllDialog();
         }
     }
 
@@ -479,13 +500,12 @@ public class DataManager {
     }
 
 
-
-    public void setWechatShareApi(IWXAPI api){
+    public void setWechatShareApi(IWXAPI api) {
         this.api = api;
 
     }
 
-    public IWXAPI getWechatShareApi(){
+    public IWXAPI getWechatShareApi() {
         return this.api;
     }
 
@@ -494,11 +514,11 @@ public class DataManager {
     }
 
     public interface DialogListener {
-        public void onLoad(String loaingText);
+        public void onLoad(String loaingText, int dialogCancelType);
 
         public void onFinishLoad();
 
-        public void onPopEnsureDialog(boolean cancelVisible, boolean cancelable, String titleText, DialogSureClickListener dialogSureClickListener);
+        public void onPopEnsureDialog(boolean cancelVisible, boolean cancelable, String titleText,String contentText, DialogSureClickListener dialogSureClickListener);
 
         public void onDismissAllDialog();
 
@@ -519,7 +539,7 @@ public class DataManager {
 
 	
 	/*
-	 * interface about ui
+     * interface about ui
 	 */
 
     public interface PagerListener {
@@ -549,12 +569,12 @@ public class DataManager {
         return tabListener;
     }
 
-    public void setPagerScrollListener(SViewPager.ScrollEnableListener scrollEnableListener){
+    public void setPagerScrollListener(SViewPager.ScrollEnableListener scrollEnableListener) {
         this.scrollEnableListener = scrollEnableListener;
     }
 
-    public void setPagerScrollDisableRect(Rect rect){
-        if(scrollEnableListener!=null){
+    public void setPagerScrollDisableRect(Rect rect) {
+        if (scrollEnableListener != null) {
             scrollEnableListener.setFaceHolderRect(rect);
         }
 

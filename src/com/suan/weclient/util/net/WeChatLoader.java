@@ -48,6 +48,7 @@ public class WeChatLoader {
     public static final int WECHAT_REPLY_OK = 0;
 
     public static final int WECHAT_SINGLE_CHAT_OK = 0;
+    public static final int WECHAT_SINGLE_CHAT_OUT_OF_DATE = 10706;
 
     private static final String WECHAT_URL_LOGIN = "http://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN";
 
@@ -68,19 +69,11 @@ public class WeChatLoader {
 
     public static final int GET_MESSAGE_STAR = 5;
 
-    private static final String WECHAT_URL_GET_MESSAGE_LIST_1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&count=20&";
-    private static final String WECHAT_URL_GET_MESSAGE_LIST_2 = "&day=";
-    private static final String WECHAT_URL_GET_MESSAGE_LIST_3 = "&action=star&token=";
-    private static final String WECHAT_URL_GET_MESSAGE_LIST_4 = "&token=";
-    private static final String WECHAT_URL_GET_MESSAGE_LIST_5 = "&lang=zh_CN";
+    private static final String WECHAT_URL_GET_MESSAGE_LIST = "https://mp.weixin.qq.com/cgi-bin/message";
 
     private static final String WECHAT_URL_GET_NEW_MESSAGE_COUNT = "https://mp.weixin.qq.com/cgi-bin/getnewmsgnum";
 
-
-    private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&action=&keyword=&frommsgid=";
-    private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_2 = "&offset=";
-    private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_3 = "&count=20&day=7&token=";
-    private static final String WECHAT_URL_MESSAGE_LOAD_PAGE_4 = "&lang=zh_CN";
+    private static final String WECHAT_URL_MESSAGE_LOAD_PAGE = "https://mp.weixin.qq.com/cgi-bin/message";
 
     private static final String WECHAT_URL_MESSAGE_REPLY = "https://mp.weixin.qq.com/cgi-bin/singlesend";
 
@@ -88,39 +81,22 @@ public class WeChatLoader {
 
     private static final String WECHAT_URL_MESSAGE_MASS = "https://mp.weixin.qq.com/cgi-bin/masssend";
 
-    private static final String WECHAT_URL_GET_MESSAGE_PROFILE_IMG_1 = "https://mp.weixin.qq.com/cgi-bin/getheadimg?token=";
-    private static final String WECHAT_URL_GET_MESSAGE_PROFILE_IMG_2 = "&fakeid=";
+    private static final String WECHAT_URL_GET_MESSAGE_PROFILE_IMG = "https://mp.weixin.qq.com/cgi-bin/getheadimg";
 
-    private static final String WECHAT_URL_GET_USER_PROFILE = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
+    private static final String WECHAT_URL_GET_USER_PROFILE = "https://mp.weixin.qq.com/cgi-bin/home";
 
-    private static final String WECHAT_URL_GET_MASS_DATA_1 = "https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token=";
-    private static final String WECHAT_URL_GET_MASS_DATA_2 = "&lang=zh_CN";
+    private static final String WECHAT_URL_GET_MASS_DATA = "https://mp.weixin.qq.com/cgi-bin/masssendpage";
 
-    private static final String WECHAT_URL_GET_MESSAGE_IMG_1 = "https://mp.weixin.qq.com/cgi-bin/getimgdata?token=";
-    private static final String WECHAT_URL_GET_MESSAGE_IMG_2 = "&msgid=";
-    private static final String WECHAT_URL_GET_MESSAGE_IMG_3 = "&mode=";
-    private static final String WECHAT_URL_GET_MESSAGE_IMG_4 = "&source=&fileId=0";
+    private static final String WECHAT_URL_GET_MESSAGE_IMG = "https://mp.weixin.qq.com/cgi-bin/getimgdata";
 
     public static final String WECHAT_URL_MESSAGE_IMG_LARGE = "large";
     public static final String WECHAT_URL_MESSAGE_IMG_SMALL = "small";
 
-    private static final String WECHAT_URL_GET_VOICE_MESSAGE_1 = "https://mp.weixin.qq.com/cgi-bin/getvoicedata?msgid=";
-
-    private static final String WECHAT_URL_GET_VOICE_MESSAGE_2 = "&fileid=&token=";
-    private static final String WECHAT_URL_GET_VOICE_MESSAGE_3 = "&lang=zh_CN";
+    private static final String WECHAT_URL_GET_VOICE_MESSAGE = "https://mp.weixin.qq.com/cgi-bin/getvoicedata";
 
     private static final String WECHAT_URL_GET_VOICE_MESSAGE_REFERER = "https://mp.weixin.qq.com/mpres/zh_CN/htmledition/plprecorder/soundmanager2.swf";
 
-    private static final String WECHAT_URL_GET_FANS_LIST_1 = "https://mp.weixin.qq.com/cgi-bin/contactmanage?t=user/index&pagesize=10&pageidx=";
-    /*
-     * if want all the user,use 2,without groupId if want group user ,use 3,with
-     * groupId
-     */
-    private static final String WECHAT_URL_GET_FANS_LIST_2 = "&type=0";
-    private static final String WECHAT_URL_GET_FANS_LIST_3 = "&type=0&groupid=";
-    private static final String WECHAT_URL_GET_FANS_LIST_4 = "&token=";
-    private static final String WECHAT_URL_GET_FANS_LIST_5 = "&lang=zh_CN";
-
+    private static final String WECHAT_URL_GET_FANS_LIST = "https://mp.weixin.qq.com/cgi-bin/contactmanage";
 
     private static final String WECHAT_URL_MODIFY_CONTACTS = "https://mp.weixin.qq.com/cgi-bin/modifycontacts";
 
@@ -130,17 +106,11 @@ public class WeChatLoader {
     private static final String WECHAT_URL_GET_CONTACT_INFO = "https://mp.weixin.qq.com/cgi-bin/getcontactinfo";
 
 
-    private static final String WECHAT_URL_GET_CHAT_LIST_1 = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?tofakeid=";
-    private static final String WECHAT_URL_GET_CHAT_LIST_2 = "&t=message/send&action=index&token=";
-    private static final String WECHAT_URL_GET_CHAT_LIST_3 = "&lang=zh_CN";
+    private static final String WECHAT_URL_GET_CHAT_LIST = "https://mp.weixin.qq.com/cgi-bin/singlesendpage";
 
     private static final String WECHAT_URL_CHAT_SINGLE_SEND = "https://mp.weixin.qq.com/cgi-bin/singlesend";
 
-    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM_1 = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?token=";
-    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM_2 = "&lang=zh_CN&random=0.7740735916886479&f=json&ajax=1&tofakeid=";
-    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM_3 = "&action=sync&lastmsgfromfakeid=";
-    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM_4 = "&lastmsgid=";
-    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM_5 = "&createtime=";
+    private static final String WECHAT_URL_GET_CHAT_NEW_ITEM = "https://mp.weixin.qq.com/cgi-bin/singlesendpage";
 
     public interface WechatExceptionListener {
         public void onError();
@@ -240,7 +210,6 @@ public class WeChatLoader {
             }
 
         }.start();
-
     }
 
     public interface WechatGetUserProfleCallBack {
@@ -276,9 +245,20 @@ public class WeChatLoader {
                         + userBean.getSlaveUser()));
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
-                String targetUrl = WECHAT_URL_GET_USER_PROFILE
-                        + userBean.getToken();
-                HttpResponse response = httpGet(targetUrl, headerList);
+                String targetUrl = WECHAT_URL_GET_USER_PROFILE;
+
+               /* PROFILE = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
+                */
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("t","home/index"));
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+
+
+
+                HttpResponse response = httpGet(targetUrl, paramList, headerList);
 
                 if (response != null) {
 
@@ -318,7 +298,7 @@ public class WeChatLoader {
     public static void wechatGetMessageList(
             final WechatExceptionListener wechatExceptionListener,
             final WechatMessageListCallBack messageListCallBack,
-            final UserBean userBean, final int mode) {
+            final UserBean userBean, final int mode, final boolean hideKeyWordMessage) {
         final Handler loadHandler = new Handler() {
 
             // 子类必须重写此方法,接受数据
@@ -354,69 +334,72 @@ public class WeChatLoader {
         url1+url3+token+url5
      */
 
-                Log.e("message mode", "" + mode);
-                String targetUrl = "";
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&count=20";
+    2 = "&day=";
+    3 = "&action=star&token=";
+    4 = "&token=";
+    5 = "&lang=zh_CN";
+    6 = "&filterivrmsg=";*/
+
+                int hideKeyWord = hideKeyWordMessage ? 1 : 0;
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("t","message/list"));
+                paramList.add(new BasicNameValuePair("count","20"));
+
+                paramList.add(new BasicNameValuePair("filterivrmsg",hideKeyWord+""));
+
+
+
+
+
+                String targetUrl = WECHAT_URL_GET_MESSAGE_LIST;
 
                 switch (mode) {
                     case GET_MESSAGE_ALL:
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_2 +
-                                7 +
-                                WECHAT_URL_GET_MESSAGE_LIST_4 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+
+                        paramList.add(new BasicNameValuePair("day","7"));
+                       ;
 
 
                         break;
                     case GET_MESSAGE_TODAY:
 
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_2 +
-                                0 +
-                                WECHAT_URL_GET_MESSAGE_LIST_4 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+                        paramList.add(new BasicNameValuePair("day","0"));
+
+
                         break;
 
                     case GET_MESSAGE_YESTERDAY:
 
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_2 +
-                                1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_4 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+                        paramList.add(new BasicNameValuePair("day","1"));
                         break;
 
                     case GET_MESSAGE_DAY_BEFORE:
 
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_2 +
-                                2 +
-                                WECHAT_URL_GET_MESSAGE_LIST_4 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+                        paramList.add(new BasicNameValuePair("day","2"));
+
                         break;
 
                     case GET_MESSAGE_OLDER:
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_2 +
-                                3 +
-                                WECHAT_URL_GET_MESSAGE_LIST_4 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+
+                        paramList.add(new BasicNameValuePair("day","3"));
 
                         break;
 
                     case GET_MESSAGE_STAR:
-                        targetUrl = WECHAT_URL_GET_MESSAGE_LIST_1 +
-                                WECHAT_URL_GET_MESSAGE_LIST_3 +
-                                userBean.getToken() +
-                                WECHAT_URL_GET_MESSAGE_LIST_5;
+
+                        paramList.add(new BasicNameValuePair("action","star"));
 
                         break;
                 }
-                HttpResponse response = httpGet(targetUrl, headerList);
+
+
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
 
                 if (response != null) {
 
@@ -452,7 +435,7 @@ public class WeChatLoader {
     public static void wechatGetMessagePage(
             final WechatExceptionListener wechatExceptionListener,
             final WechatMessagePageCallBack messagePageCallBack,
-            final MessageHolder messageHolder, final int page) {
+            final MessageHolder messageHolder, final int page,final int mode, final boolean hideKeyWordMessage) {
         final Handler loadHandler = new Handler() {
 
             // 子类必须重写此方法,接受数据
@@ -481,13 +464,77 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
                 int offset = (page - 1) * 20;
-                String targetUrl = WECHAT_URL_MESSAGE_LOAD_PAGE_1
-                        + messageHolder.getLatestMsgId()
-                        + WECHAT_URL_MESSAGE_LOAD_PAGE_2 + offset
-                        + WECHAT_URL_MESSAGE_LOAD_PAGE_3
-                        + messageHolder.getUserBean().getToken()
-                        + WECHAT_URL_MESSAGE_LOAD_PAGE_4;
-                HttpResponse response = httpGet(targetUrl, headerList);
+                String targetUrl = WECHAT_URL_MESSAGE_LOAD_PAGE
+;
+
+               /*
+    1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&action=&keyword=&frommsgid=";
+    2 = "&offset=";
+    3 = "&count=20&day=7&token=";
+    4 = "&lang=zh_CN";
+*/
+
+
+                int hideKeyWord = hideKeyWordMessage ? 1 : 0;
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+
+                paramList.add(new BasicNameValuePair("t","message/list"));
+                paramList.add(new BasicNameValuePair("action",""));
+                paramList.add(new BasicNameValuePair("keyword",""));
+
+                paramList.add(new BasicNameValuePair("filterivrmsg",hideKeyWord+""));
+
+                paramList.add(new BasicNameValuePair("frommsgid",messageHolder.getLatestMsgId()));
+                paramList.add(new BasicNameValuePair("offset",offset+""));
+                paramList.add(new BasicNameValuePair("count","20"));
+
+
+                switch (mode) {
+                    case GET_MESSAGE_ALL:
+
+                        paramList.add(new BasicNameValuePair("day","7"));
+                       ;
+
+
+                        break;
+                    case GET_MESSAGE_TODAY:
+
+                        paramList.add(new BasicNameValuePair("day","0"));
+
+
+                        break;
+
+                    case GET_MESSAGE_YESTERDAY:
+
+                        paramList.add(new BasicNameValuePair("day","1"));
+                        break;
+
+                    case GET_MESSAGE_DAY_BEFORE:
+
+                        paramList.add(new BasicNameValuePair("day","2"));
+
+                        break;
+
+                    case GET_MESSAGE_OLDER:
+
+                        paramList.add(new BasicNameValuePair("day","3"));
+
+                        break;
+
+                    case GET_MESSAGE_STAR:
+
+                        paramList.add(new BasicNameValuePair("action","star"));
+
+                        break;
+                }
+
+
+                paramList.add(new BasicNameValuePair("token",messageHolder.getUserBean().getToken()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
 
                 if (response != null) {
 
@@ -798,10 +845,22 @@ public class WeChatLoader {
 
                 headerList.add(new BasicNameValuePair("Referer", referer));
 
-                String targetUrl = WECHAT_URL_GET_MESSAGE_PROFILE_IMG_1
-                        + userBean.getToken()
-                        + WECHAT_URL_GET_MESSAGE_PROFILE_IMG_2 + fakeId;
-                HttpResponse response = httpGet(targetUrl, headerList);
+                String targetUrl = WECHAT_URL_GET_MESSAGE_PROFILE_IMG
+;
+
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/getheadimg?token=";
+    2 = "&fakeid=";
+               */
+                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("fakeid",fakeId));
+
+
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
+
+
                 if (response != null) {
 
                     try {
@@ -837,8 +896,7 @@ public class WeChatLoader {
     public static void wechatGetMessageImg(
             final WechatExceptionListener wechatExceptionListener,
             final WechatGetMessageImgCallBack getMessageImgCallBack,
-            final String msgId, final String slaveSid, final String slaveUser,
-            final String token, final String referer,
+            final UserBean userBean,final MessageBean messageBean,
             final ImageView imageView, final String imgType) {
         final Handler loadHandler = new Handler() {
 
@@ -861,17 +919,32 @@ public class WeChatLoader {
                 Looper.prepare();
                 ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
                 headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
-                        + slaveSid + "; " + "slave_user=" + slaveUser));
+                        + userBean.getSlaveSid() + "; " + "slave_user=" + userBean.getSlaveUser()));
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
 
-                headerList.add(new BasicNameValuePair("Referer", referer));
+                headerList.add(new BasicNameValuePair("Referer", messageBean.getReferer()));
 
-                String targetUrl = WECHAT_URL_GET_MESSAGE_IMG_1 + token
-                        + WECHAT_URL_GET_MESSAGE_IMG_2 + msgId
-                        + WECHAT_URL_GET_MESSAGE_IMG_3 + imgType
-                        + WECHAT_URL_GET_MESSAGE_IMG_4;
-                HttpResponse response = httpGet(targetUrl, headerList);
+                String targetUrl = WECHAT_URL_GET_MESSAGE_IMG ;
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/getimgdata?token=";
+    2 = "&msgid=";
+    3 = "&mode=";
+    4 = "&source=&fileId=0";
+               */
+
+
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("msgid",messageBean.getId()));
+                paramList.add(new BasicNameValuePair("mode",imgType));
+                paramList.add(new BasicNameValuePair("source",messageBean.getSource()));
+                paramList.add(new BasicNameValuePair("fileId",messageBean.getFileId()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
                 if (response != null) {
 
                     try {
@@ -936,10 +1009,21 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Referer",
                         WECHAT_URL_GET_VOICE_MESSAGE_REFERER));
 
-                String targetUrl = WECHAT_URL_GET_VOICE_MESSAGE_1 + msgId
-                        + WECHAT_URL_GET_VOICE_MESSAGE_2 + userBean.getToken()
-                        + WECHAT_URL_GET_VOICE_MESSAGE_3;
-                HttpResponse response = httpGet(targetUrl, headerList);
+                String targetUrl = WECHAT_URL_GET_VOICE_MESSAGE ;
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/getvoicedata?msgid=";
+    2 = "&fileid=&token=";
+    3 = "&lang=zh_CN";
+               */
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("msgid",msgId));
+                paramList.add(new BasicNameValuePair("fileid",""));
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
                 if (response != null) {
 
                     try {
@@ -1003,10 +1087,24 @@ public class WeChatLoader {
 
                 headerList.add(new BasicNameValuePair("Referer",
                         WECHAT_URL_GET_USER_PROFILE + userBean.getToken()));
-                String targetUrl = WECHAT_URL_GET_MASS_DATA_1
-                        + userBean.getToken() + WECHAT_URL_GET_MASS_DATA_2;
 
-                HttpResponse response = httpGet(targetUrl, headerList);
+
+
+
+
+                String targetUrl = WECHAT_URL_GET_MASS_DATA
+                        ;
+   /*
+   1 = "https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token=";
+   2 = "&lang=zh_CN";
+*/
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("t","mass/send"));
+                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+
+
+                HttpResponse response = httpGet(targetUrl,paramList, headerList);
 
                 if (response != null) {
 
@@ -1081,30 +1179,48 @@ public class WeChatLoader {
 
                 } else {
 
-                    referer = WECHAT_URL_GET_FANS_LIST_1 + (page - 1)
-                            + WECHAT_URL_GET_FANS_LIST_2 + groupId
-                            + WECHAT_URL_GET_FANS_LIST_3 + userBean.getToken()
-                            + WECHAT_URL_GET_FANS_LIST_4;
+                    referer = "https://mp.weixin.qq.com/cgi-bin/contactmanage?t=user/index&pagesize=10&pageidx=" + (page - 1)
+                            + "&type=0&groupid=" + groupId
+                            + "&token=" + userBean.getToken()
+                            + "&lang=zh_CN";
 
                 }
-
                 headerList.add(new BasicNameValuePair("Referer", referer));
-                String targetUrl = "";
+
+
+                String targetUrl = WECHAT_URL_GET_FANS_LIST;
+
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/contactmanage?t=user/index&pagesize=10&pageidx=";
+    */
+/*
+     * if want all the user,use 2,without groupId if want group user ,use 3,with
+     * groupId
+     *//*
+
+    2 = "&type=0";
+    3 = "&type=0&groupid=";
+    4 = "&token=";
+    5 = "&lang=zh_CN";
+*/
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+
+                paramList.add(new BasicNameValuePair("t", "user/index"));
+                paramList.add(new BasicNameValuePair("pagesize", "10"));
+                paramList.add(new BasicNameValuePair("pageidx", page + ""));
+                paramList.add(new BasicNameValuePair("type", "0"));
                 if (groupId.equals("-1")) {
                     // all user
-                    targetUrl = WECHAT_URL_GET_FANS_LIST_1 + page
-                            + WECHAT_URL_GET_FANS_LIST_2
-                            + WECHAT_URL_GET_FANS_LIST_4 + userBean.getToken()
-                            + WECHAT_URL_GET_FANS_LIST_5;
+
                 } else {
 
-                    targetUrl = WECHAT_URL_GET_FANS_LIST_1 + page
-                            + WECHAT_URL_GET_FANS_LIST_3 + groupId
-                            + WECHAT_URL_GET_FANS_LIST_4 + userBean.getToken()
-                            + WECHAT_URL_GET_FANS_LIST_5;
+                    paramList.add(new BasicNameValuePair("groupid", groupId));
                 }
 
-                HttpResponse response = httpGet(targetUrl, headerList);
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
+
+                HttpResponse response = httpGet(targetUrl, paramList, headerList);
 
                 if (response != null) {
 
@@ -1116,6 +1232,7 @@ public class WeChatLoader {
                         String strResult = EntityUtils.toString(response
                                 .getEntity());
                         contentHolder.put("result", strResult);
+                        Log.e("fans result",""+strResult);
                         contentHolder.put("referer", targetUrl);
 
                         message.obj = contentHolder;
@@ -1205,7 +1322,6 @@ public class WeChatLoader {
                 paramArrayList.add(new BasicNameValuePair("token", userBean
                         .getToken()));
 
-                Log.e("params", paramArrayList.toString());
 
                 String targetUrl = WECHAT_URL_MODIFY_CONTACTS;
                 HttpResponse response = httpPost(targetUrl, headerList,
@@ -1292,7 +1408,6 @@ public class WeChatLoader {
                 paramArrayList.add(new BasicNameValuePair("token", userBean
                         .getToken()));
 
-                Log.e("params", paramArrayList.toString());
 
                 String targetUrl = WECHAT_URL_GET_CONTACT_INFO;
                 HttpResponse response = httpPost(targetUrl, headerList,
@@ -1357,11 +1472,22 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
 
-                String targetUrl = WECHAT_URL_GET_CHAT_LIST_1 + toFakeId
-                        + WECHAT_URL_GET_CHAT_LIST_2 + userBean.getToken()
-                        + WECHAT_URL_GET_CHAT_LIST_3;
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?tofakeid=";
+    2 = "&t=message/send&action=index&token=";
+    3 = "&lang=zh_CN";
+                */
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("tofakeid", toFakeId));
+                paramList.add(new BasicNameValuePair("t", "message/send"));
+                paramList.add(new BasicNameValuePair("action", "index"));
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
-                HttpResponse response = httpGet(targetUrl, headerList);
+
+                String targetUrl = WECHAT_URL_GET_CHAT_LIST;
+
+                HttpResponse response = httpGet(targetUrl, paramList, headerList);
 
                 if (response != null) {
 
@@ -1422,10 +1548,10 @@ public class WeChatLoader {
                 Looper.prepare();
                 ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
 
-                String referer = WECHAT_URL_GET_CHAT_LIST_1
-                        + messageBean.getToFakeId() + WECHAT_URL_GET_CHAT_LIST_2
+                String referer = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?tofakeid="
+                        + messageBean.getToFakeId() + "&t=message/send&action=index&token="
                         + userBean.getToken()
-                        + WECHAT_URL_GET_CHAT_LIST_3;
+                        + "&lang=zh_CN";
                 headerList.add(new BasicNameValuePair("Referer", referer));
                 headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
                         + userBean.getSlaveSid() + "; " + "slave_user="
@@ -1514,20 +1640,39 @@ public class WeChatLoader {
                         + userBean.getSlaveSid() + "; " + "slave_user="
                         + userBean.getSlaveUser()));
 
-                String referer = WECHAT_URL_GET_CHAT_LIST_1
-                        + messageBean.getToFakeId() + WECHAT_URL_GET_CHAT_LIST_2
+                String referer = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?tofakeid="
+                        + messageBean.getToFakeId() + "&t=message/send&action=index&token="
                         + userBean.getToken()
-                        + WECHAT_URL_GET_CHAT_LIST_3;
+                        + "&lang=zh_CN";
                 headerList.add(new BasicNameValuePair("Referer", referer));
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
-                String targetUrl = WECHAT_URL_GET_CHAT_NEW_ITEM_1 + userBean.getToken()
-                        + WECHAT_URL_GET_CHAT_NEW_ITEM_2 + messageBean.getToFakeId()
-                        + WECHAT_URL_GET_CHAT_NEW_ITEM_3 + userBean.getFakeId()
-                        + WECHAT_URL_GET_CHAT_NEW_ITEM_4 + lastMsgId
-                        + WECHAT_URL_GET_CHAT_NEW_ITEM_5 + createTime;
 
-                HttpResponse response = httpGet(targetUrl, headerList);
+
+/*
+    1 = "https://mp.weixin.qq.com/cgi-bin/singlesendpage?token=";
+   2 = "&lang=zh_CN&random=0.7740735916886479&f=json&ajax=1&tofakeid=";
+    3 = "&action=sync&lastmsgfromfakeid=";
+    4 = "&lastmsgid=";
+    5 = "&createtime=";
+
+     */
+
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
+                paramList.add(new BasicNameValuePair("random", "0.7740735916886479"));
+                paramList.add(new BasicNameValuePair("f", "json"));
+                paramList.add(new BasicNameValuePair("ajax", "1"));
+                paramList.add(new BasicNameValuePair("tofakeid", toFakeId));
+                paramList.add(new BasicNameValuePair("action", "sync"));
+                paramList.add(new BasicNameValuePair("lastmsgfromfakeid", userBean.getFakeId()));
+                paramList.add(new BasicNameValuePair("lastmsgid", lastMsgId));
+                paramList.add(new BasicNameValuePair("createtime", createTime));
+                String targetUrl = WECHAT_URL_GET_CHAT_NEW_ITEM;
+
+                HttpResponse response = httpGet(targetUrl, paramList, headerList);
 
                 if (response != null) {
 
@@ -1564,7 +1709,7 @@ public class WeChatLoader {
 
     public static void wechatGetNewMessageCount(
             final WechatExceptionListener wechatExceptionListener,
-            final WechatGetNewMessageCountCallBack newMessageCountCallBack, final UserBean userBean) {
+            final WechatGetNewMessageCountCallBack newMessageCountCallBack, final UserBean userBean, final String lastMsgId) {
         final Handler loadHandler = new Handler() {
 
             @Override
@@ -1599,7 +1744,7 @@ public class WeChatLoader {
                 ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("ajax", "1"));
                 params.add(new BasicNameValuePair("f", "json"));
-                params.add(new BasicNameValuePair("lastmsgid", userBean.getLastMsgId()));
+                params.add(new BasicNameValuePair("lastmsgid", lastMsgId));
                 params.add(new BasicNameValuePair("lang", "zh_CN"));
                 params.add(new BasicNameValuePair("random", "0.6920196032466058"));
                 params.add(new BasicNameValuePair("t", "ajax-getmsgnum"));
@@ -1680,17 +1825,28 @@ public class WeChatLoader {
 
     }
 
-    private static HttpResponse httpGet(String targetUrl,
+    private static HttpResponse httpGet(String targetUrl, ArrayList<NameValuePair> paramList,
                                         ArrayList<NameValuePair> headerArrayList) {
+
+        for (int i = 0; i < paramList.size(); i++) {
+            NameValuePair nowPair = paramList.get(i);
+            if (i == 0) {
+                targetUrl += ("?" + nowPair.getName() + "=" + nowPair.getValue());
+            } else {
+                targetUrl += ("&" + nowPair.getName() + "=" + nowPair.getValue());
+            }
+        }
+
+
         /* 声明网址字符串 */
         /* 建立HTTP Post联机 */
         HttpGet httpRequest = new HttpGet(targetUrl);
-		/*
-		 * Post运作传送变量必须用NameValuePair[]数组储存
+        /*
+         * Post运作传送变量必须用NameValuePair[]数组储存
 		 */
 
         try {
-			/* 发出HTTP request */
+            /* 发出HTTP request */
 
             for (int i = 0; i < headerArrayList.size(); i++) {
 
@@ -1699,9 +1855,9 @@ public class WeChatLoader {
 
             }
             HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, 130000);
-            HttpConnectionParams.setSoTimeout(httpParams, 150000);
-			/* 取得HTTP response */
+            HttpConnectionParams.setConnectionTimeout(httpParams, 60000);
+            HttpConnectionParams.setSoTimeout(httpParams, 50000);
+            /* 取得HTTP response */
             HttpClient httpClient = new DefaultHttpClient(httpParams);
 
             HttpResponse httpResponse = httpClient.execute(httpRequest);

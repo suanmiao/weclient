@@ -35,7 +35,15 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.Sherlock.Light"
-            android:screenOrientation="portrait"></activity>
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.suan.weclient.activity.MainActivity.BROADCAST_ACTION_REFRESH_MESSAGE">
+
+                </action>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activity.FansListActivity"
             android:theme="@style/Theme.Sherlock.Light"

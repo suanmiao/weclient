@@ -12,7 +12,7 @@
         android:layout_marginBottom="10dip"
         android:layout_marginLeft="15dip"
         android:layout_marginRight="5dip"
-        android:layout_marginTop="10dip"
+        android:layout_marginTop="0dip"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -31,10 +31,10 @@
                     android:id="@+id/chat_item_me_voice_layout_content"
                     android:layout_width="200dip"
                     android:layout_height="50dip"
-                    android:paddingLeft="10dip"
-                    android:paddingRight="20dip"
-                    android:paddingTop="10dip"
-                    android:paddingBottom="10dip"
+                    android:paddingLeft="6dip"
+                    android:paddingRight="15dip"
+                    android:paddingTop="6dip"
+                    android:paddingBottom="6dip"
                     android:layout_marginLeft="10dip"
                     android:layout_marginRight="10dip"
                     android:layout_marginTop="15dip"
@@ -87,12 +87,13 @@
         <RelativeLayout
             android:layout_width="40dip"
             android:layout_height="fill_parent"
-            android:layout_marginRight="10dip">
+            android:layout_marginRight="5dip">
 
             <ImageView
                 android:id="@+id/chat_item_me_voice_img_profile"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
+                android:scaleType="centerInside"
                 android:layout_marginTop="10dip"
                 android:src="@drawable/head_default" />
         </RelativeLayout>

@@ -53,13 +53,16 @@ public class SettingActivity extends SherlockActivity {
     private ImageView backButton;
 
     private DataManager mDataManager;
-    private RelativeLayout pushEnableLayout, pushCloseNightLayout, pushNewMessageLayout, pushNewPeopleLayout, pushFrequentLayout, shareLayout, aboutUsLayout, feedbackLayout;
-    private RelativeLayout pushEnableCheckboxLayout, pushCloseNightCheckbox, pushNewMessageCheckboxLayout, pushNewPeopleCheckboxLayout;
+    private RelativeLayout pushEnableLayout, pushCloseNightLayout, pushFrequentLayout, shareLayout, aboutUsLayout, feedbackLayout;
+    private RelativeLayout pushEnableCheckboxLayout, pushCloseNightCheckbox;
     private RelativeLayout pushFreFastCheckboxLayout, pushFreNormalCheckboxLayout, pushFreSlowCheckboxLayout;
+    private RelativeLayout hideKeyWordLayout;
+    private RelativeLayout hideKeyWordCheckbox;
     private TextView pushFrequentTextView;
 
+/*
     private RelativeLayout shareTextlayout, shareImglayout, shareWebLayout;
-
+*/
 
     /*
  * about pop dialog
@@ -85,7 +88,7 @@ public class SettingActivity extends SherlockActivity {
         setContentView(R.layout.setting_layout);
 
         initWidgets();
-        fuckShare();
+//        fuckShare();
         initData();
         initUmeng();
         initWechat();
@@ -94,6 +97,7 @@ public class SettingActivity extends SherlockActivity {
 
     }
 
+/*
     private void fuckShare() {
         shareTextlayout = (RelativeLayout) findViewById(R.id.setting_layout_share_text);
         shareImglayout = (RelativeLayout) findViewById(R.id.setting_layout_share_img);
@@ -183,6 +187,7 @@ public class SettingActivity extends SherlockActivity {
             }
         });
     }
+*/
 
     private void initWidgets() {
         pushEnableLayout = (RelativeLayout) findViewById(R.id.setting_layout_push);
@@ -206,70 +211,6 @@ public class SettingActivity extends SherlockActivity {
             }
         });
 
-        pushNewMessageLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_new_message);
-        pushNewMessageCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_new_message_checkbox);
-
-        pushNewMessageLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
-                    return;
-
-                }
-                boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
-
-                boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(SettingActivity.this);
-
-                if (pushNewMessageEnable) {
-                    pushNewMessageCheckboxLayout.setSelected(false);
-                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this, false);
-                    if (!pushNewPeopleEnable) {
-                        SharedPreferenceManager.putPushEnable(SettingActivity.this, false);
-                        setPushLayout();
-                    }
-
-                } else {
-
-                    pushNewMessageCheckboxLayout.setSelected(true);
-                    SharedPreferenceManager.putPustNewMessageEnable(SettingActivity.this, true);
-                }
-
-            }
-        });
-
-        pushNewPeopleLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_new_people);
-        pushNewPeopleCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_new_people_checkbox);
-
-        pushNewPeopleLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
-                    return;
-
-                }
-                boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
-
-                boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(SettingActivity.this);
-
-                if (pushNewPeopleEnable) {
-                    pushNewPeopleCheckboxLayout.setSelected(false);
-                    SharedPreferenceManager.putPushNewPeopleEnable(SettingActivity.this, false);
-                    if (!pushNewMessageEnable) {
-                        SharedPreferenceManager.putPushEnable(SettingActivity.this, false);
-                        setPushLayout();
-                    }
-
-                } else {
-
-                    pushNewPeopleCheckboxLayout.setSelected(true);
-                    SharedPreferenceManager.putPushNewPeopleEnable(SettingActivity.this, true);
-                }
-
-            }
-        });
         pushFrequentTextView = (TextView) findViewById(R.id.setting_text_push_frequent);
 
 
@@ -368,7 +309,6 @@ public class SettingActivity extends SherlockActivity {
         });
         setPushLayout();
 
-
         aboutUsLayout = (RelativeLayout) findViewById(R.id.setting_layout_about_us);
 
         aboutUsLayout.setOnClickListener(new View.OnClickListener() {
@@ -397,8 +337,29 @@ public class SettingActivity extends SherlockActivity {
                 shareToFriends();
 
             }
+
         });
 
+        hideKeyWordLayout = (RelativeLayout) findViewById(R.id.setting_layout_hide_key_word_message);
+        hideKeyWordCheckbox = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_hide_key_word_message);
+        setHideKeyWordLayout();
+        hideKeyWordLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean hideKeyWordMessage = SharedPreferenceManager.getHideKeyWordMessage(SettingActivity.this);
+                SharedPreferenceManager.putHideKeyWordMessage(SettingActivity.this,!hideKeyWordMessage);
+                setHideKeyWordLayout();
+            }
+        });
+
+
+    }
+
+    private void setHideKeyWordLayout() {
+
+        boolean hideKeyWordMessage = SharedPreferenceManager.getHideKeyWordMessage(SettingActivity.this);
+        hideKeyWordCheckbox.setSelected(hideKeyWordMessage);
     }
 
 
@@ -419,10 +380,6 @@ public class SettingActivity extends SherlockActivity {
 
             pushCloseNightLayout.setSelected(true);
             pushCloseNightCheckbox.setSelected(false);
-            pushNewMessageLayout.setSelected(true);
-            pushNewMessageCheckboxLayout.setSelected(false);
-            pushNewPeopleLayout.setSelected(true);
-            pushNewPeopleCheckboxLayout.setSelected(false);
 
             pushFrequentLayout.setSelected(true);
 
@@ -440,29 +397,10 @@ public class SettingActivity extends SherlockActivity {
         pushFrequentLayout.setSelected(false);
         pushCloseNightLayout.setSelected(false);
         pushEnableCheckboxLayout.setSelected(true);
-        pushNewPeopleLayout.setSelected(false);
-        pushNewMessageLayout.setSelected(false);
 
         boolean pushNight = SharedPreferenceManager.getPushCloseNight(SettingActivity.this);
         pushCloseNightCheckbox.setSelected(pushNight);
 
-        boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(SettingActivity.this);
-        if (pushNewMessageEnable) {
-            pushNewMessageCheckboxLayout.setSelected(true);
-
-        } else {
-
-            pushNewMessageCheckboxLayout.setSelected(false);
-        }
-        boolean pushNewPeopleEnable = SharedPreferenceManager.getPushNewPeopleEnable(SettingActivity.this);
-
-        if (pushNewPeopleEnable) {
-            pushNewPeopleCheckboxLayout.setSelected(true);
-
-        } else {
-
-            pushNewPeopleCheckboxLayout.setSelected(false);
-        }
         switch (pushFrequent) {
             case PushService.PUSH_FREQUENT_FAST:
                 pushFreFastCheckboxLayout.setSelected(true);
@@ -532,7 +470,6 @@ public class SettingActivity extends SherlockActivity {
 
         agent = new FeedbackAgent(this);
         defaultConversation = agent.getDefaultConversation();
-
     }
 
 
@@ -550,14 +487,11 @@ public class SettingActivity extends SherlockActivity {
         popCancelButton = (Button) dialogView
                 .findViewById(R.id.dialog_ensure_button_cancel);
 
-        popTitleTextView.setText("开启消息提醒");
+        popTitleTextView.setText("开启新消息提醒");
         popContentTextView.setText("此功能处于测试阶段。温馨提示：\n" +
                 "1.请确保应用后台未被xxx手机助手限制。\n" +
-                "2.您可以自定义是否提醒新消息和新用户\n" +
-                "3.因为应用通过模拟网页登录的方式获取消息，" +
-                "所以会比正常提醒功能消耗更多流量，" +
-                "因此您可以选择消息的请求频率以及在 11：00 -7：00期间是否提醒。" +
-                "如果流量不充足建议关闭此功能");
+                "2.您可以选择消息的请求频率以及在 11：00 -7：00期间是否提醒。"
+        );
         popSureButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.suan.weclient.R;
 import com.suan.weclient.activity.AboutActivity;
 import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.net.WechatManager;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;
@@ -218,7 +219,7 @@ public class RightFragment extends Fragment {
                         .toString();
                 defaultConversation.addUserReply(content);                
                 
-                mDataManager.doLoadingStart("反馈发送中...");
+                mDataManager.doLoadingStart("反馈发送中...", WechatManager.DIALOG_POP_CANCELABLE);
                 
                 sync();
 			}

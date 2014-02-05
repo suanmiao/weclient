@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,9 +32,11 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.ChatActivity;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.text.SpanUtil;
@@ -368,7 +371,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 @Override
                 public void onClick(View v) {
                     mDataManager.createChat(mDataManager.getCurrentUser(),
-                            getMessageItems().get(position).getFakeId());
+                            getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
                     Intent jumbIntent = new Intent();
                     jumbIntent.setClass(mContext, ChatActivity.class);
                     mContext.startActivity(jumbIntent);
@@ -430,7 +433,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
                     mDataManager.createChat(mDataManager.getCurrentUser(),
-                            getMessageItems().get(position).getFakeId());
+                            getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
                     Intent jumbIntent = new Intent();
                     jumbIntent.setClass(mContext, ChatActivity.class);
                     mContext.startActivity(jumbIntent);
@@ -562,19 +565,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 // TODO Auto-generated method stub
                 Intent jumbIntent = new Intent();
                 jumbIntent.setClass(mContext, ShowImgActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("slaveSid", mDataManager.getCurrentUser()
-                        .getSlaveSid());
-                bundle.putString("slaveUser", mDataManager.getCurrentUser()
-                        .getSlaveUser());
-                bundle.putString("msgId", getMessageItems().get(position)
-                        .getId());
-                bundle.putString("token", mDataManager.getCurrentUser()
-                        .getToken());
-                bundle.putString("referer", getMessageItems().get(position)
-                        .getReferer());
-                jumbIntent.putExtras(bundle);
-                mContext.startActivity(jumbIntent);
+                mDataManager.createImgHolder(getMessageItems().get(position),mDataManager.getCurrentUser());
+               mContext.startActivity(jumbIntent);
 
             }
         });
@@ -591,11 +583,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             if (contentBitmap == null) {
                 mDataManager.getWechatManager().getMessageImg(
                         mDataManager.getCurrentPosition(),
-                        getMessageItems().get(position).getId(),
-                        mDataManager.getCurrentUser().getSlaveSid(),
-                        mDataManager.getCurrentUser().getSlaveUser(),
-                        mDataManager.getCurrentUser().getToken(),
-                        getMessageItems().get(position).getReferer(),
+                        getMessageItems().get(position),
                         holder.contentImageView,
                         WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,
                         new OnActionFinishListener() {
@@ -630,13 +618,13 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
         if (!mBusy || !imgLoaded) {
 
             Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
-                    ImageCacheManager.CACHE_MESSAGE_PROFILE
+                    ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
-                holder.profileImageView.setImageBitmap(headBitmap);
+               holder.profileImageView.setImageBitmap(headBitmap);
 
             } else {
-                mDataManager.getWechatManager().getMessageHeadImg(
+               mDataManager.getWechatManager().getMessageHeadImg(
                         mDataManager.getCurrentPosition(),
                         getMessageItems().get(position).getFakeId(),
                         getMessageItems().get(position).getReferer(),
@@ -645,18 +633,27 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        holder.profileImageView.setTag(true);
-                        Bitmap bitmap = (Bitmap) object;
 
-                        mDataManager.getCacheManager().putBitmap(
-                                ImageCacheManager.CACHE_MESSAGE_PROFILE
-                                        + getMessageItems().get(
-                                        position).getFakeId(),
-                                bitmap, true);
+                        if (code == WechatManager.ACTION_SUCCESS) {
+                            Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap)object,
+                                    Util.dipToPx(30, mContext.getResources()), 10,
+                                    Color.parseColor("#c6c6c6"));
+                            holder.profileImageView.setImageBitmap(roundBitmap);
+                            holder.profileImageView.setTag(true);
+
+                            mDataManager.getCacheManager().putBitmap(
+                                    ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
+                                            + getMessageItems().get(
+                                            position).getFakeId(),
+                                    roundBitmap, true);
+
+                        }
                     }
                 });
 
             }
+        }else{
+
         }
     }
 
@@ -742,7 +739,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             }
         });
 
-        popTitleTextView.setText(mContext.getResources().getString(R.string.reply)+":"
+        popTitleTextView.setText(mContext.getResources().getString(R.string.reply) + ":"
                 + mDataManager.getCurrentMessageHolder().getMessageList()
                 .get(position).getNickName());
         popSureButton.setOnClickListener(new OnClickListener() {

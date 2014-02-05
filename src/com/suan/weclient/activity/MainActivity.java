@@ -5,11 +5,14 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,6 +45,7 @@ import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.umeng.analytics.MobclickAgent;
@@ -57,11 +61,20 @@ import com.umeng.update.UpdateResponse;
 
 public class MainActivity extends SlidingFragmentActivity {
 
+    public static final String BROADCAST_ACTION_REFRESH_MESSAGE = "cn.com.action.suan.refreshMessage";
+
     private GlobalContext mGlobalContext;
     LeftFragment leftFragment;
     ContentFragment contentFragment;
     SlidingMenu mSlidingMenu;
     private ActionBar actionBar;
+
+
+    /*
+    about broadcast
+     */
+
+    private BroadcastReceiver mReceiver;
 
     /*
      * about pop dialog
@@ -84,9 +97,8 @@ public class MainActivity extends SlidingFragmentActivity {
     public void onCreate(Bundle arg0) {
         super.onCreate(arg0);
 
-        initActivityState();
+        initReceiver();
         initDataChangeListener();
-        initService();
         initCache();
         initSlidingMenu();
         initWidgets();
@@ -94,22 +106,62 @@ public class MainActivity extends SlidingFragmentActivity {
         initActionBar();
 
         initListener(contentFragment);
-        autoLogin();
 
         initUmeng();
+        boolean networkConnected = Util.isNetConnected(MainActivity.this);
+        if (networkConnected) {
+            startLoad();
+        }
+
 
     }
 
-    private void initActivityState() {
+    private void initReceiver() {
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
-        SharedPreferenceManager.putActivityRunning(this, true);
+
+                Log.e(" receiver ", "receiver refresh");
+                /*
+                receive the broadcast ,
+                refresh the profile to show new message count
+                 */
+                mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO,false,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+                    @Override
+                    public void onFinish(int code, Object object) {
+
+                    }
+                });
+
+
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BROADCAST_ACTION_REFRESH_MESSAGE);
+        registerReceiver(mReceiver, filter);
+    }
+
+    private void initIntent() {
+
+        Intent getIntent = getIntent();
+        if (getIntent != null) {
+            String action = getIntent.getAction();
+
+            Bundle extra = getIntent.getExtras();
+            if (extra != null) {
+
+            }
+
+        }
     }
 
     private void initService() {
         if (SharedPreferenceManager.getPushEnable(this)) {
-            String _filePath = "com.suan.weclient.pushService.PushService";
-            boolean serviceRunning = Util.isServiceRunning(this, _filePath);
-            if (!serviceRunning) {
+            String alarmServicePath = "com.suan.weclient.pushService.AlarmSysService";
+            boolean alarmServiceRunning = Util.isServiceRunning(this, alarmServicePath);
+            if (!alarmServiceRunning) {
                 Intent startServiceIntent = new Intent();
                 startServiceIntent.setAction(AlarmReceiver.BROADCAST_ACTION_START_PUSH);
                 sendBroadcast(startServiceIntent);
@@ -385,7 +437,7 @@ public class MainActivity extends SlidingFragmentActivity {
                 defaultConversation.addUserReply(content);
                 replyDialog.dismiss();
 
-                mDataManager.doLoadingStart("反馈发送中...");
+                mDataManager.doLoadingStart("反馈发送中...", WechatManager.DIALOG_POP_CANCELABLE);
 
                 sync();
             }
@@ -428,24 +480,72 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     public void onStart() {
+        initIntent();
+
+        initService();
+        boolean networkConnected = Util.isNetConnected(MainActivity.this);
+        if (networkConnected) {
+
+        } else {
+            gotoNetworkSetting();
+
+        }
+
         super.onStart();
 
     }
 
+    private void gotoNetworkSetting() {
+
+        Handler popHandler = new Handler();
+        popHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                mDataManager.doPopEnsureDialog(true, false, "网络", "无网络连接，进入设置开启网络？", new DialogSureClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+            }
+        }, 500);
+
+
+    }
+
+    private void startLoad() {
+
+        autoLogin();
+    }
+
     @Override
     protected void onStop() {
-        SharedPreferenceManager.putActivityRunning(this, false);
         super.onStop();
     }
 
     public void onResume() {
+
+        SharedPreferenceManager.putActivityRunning(this, false);
         super.onResume();
         MobclickAgent.onResume(this);
     }
 
     public void onPause() {
+
+        SharedPreferenceManager.putActivityRunning(this, false);
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    public void onDestroy() {
+
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
     private void initListener(final ContentFragment fragment) {
@@ -490,7 +590,7 @@ public class MainActivity extends SlidingFragmentActivity {
                 // TODO Auto-generated method stub
                 mDataManager.getUserListControlListener().onUserListDismiss();
                 int userAmount = mDataManager.getUserGroup().size();
-                if(userAmount==0){
+                if (userAmount == 0) {
 
                     popLoginEnsure();
                 }
@@ -513,13 +613,17 @@ public class MainActivity extends SlidingFragmentActivity {
             @Override
             public void onMessageGet() {
                 SharedPreferenceManager.putLastNewMessage(MainActivity.this, 0);
+                //update the last msg id
+                SharedPreferenceManager.updateUser(MainActivity.this, mDataManager);
+
+                SharedPreferenceManager.putLastMsgId(MainActivity.this, mDataManager.getCurrentUser().getLastMsgId());
 
             }
         });
-        mDataManager.addLoadingListener(new DialogListener() {
+        mDataManager.setLoadingListener(new DialogListener() {
 
             @Override
-            public void onLoad(String loaingText) {
+            public void onLoad(String loaingText, int dialogCancelType) {
                 // TODO Auto-generated method stub
 
                 if (MainActivity.this != null
@@ -528,13 +632,10 @@ public class MainActivity extends SlidingFragmentActivity {
                     if (popDialog != null) {
                         popDialog.dismiss();
 
-                        popDialog = Util.createLoadingDialog(MainActivity.this,
-                                loaingText, false);
-                    } else {
-
-                        popDialog = Util.createLoadingDialog(MainActivity.this,
-                                loaingText, false);
                     }
+
+                    popDialog = Util.createLoadingDialog(MainActivity.this,
+                            loaingText, dialogCancelType);
                     popDialog.show();
 
                 }
@@ -554,22 +655,22 @@ public class MainActivity extends SlidingFragmentActivity {
 
             @Override
             public void onPopEnsureDialog(boolean cancelVisible,
-                                          boolean cancelable, String titleText,
+                                          boolean cancelable, String titleText, String contentText,
                                           DialogSureClickListener dialogSureClickListener) {
                 // TODO Auto-generated method stub
 
                 try {
                     if (popDialog != null) {
                         popDialog.dismiss();
-                    } else {
-                        popDialog = Util.createEnsureDialog(
-                                dialogSureClickListener, cancelVisible,
-                                MainActivity.this, titleText, true);
-
                     }
+                    popDialog = Util.createEnsureDialog(
+                            dialogSureClickListener, cancelVisible,
+                            MainActivity.this, titleText, contentText, true);
+
                     popDialog.show();
 
                 } catch (Exception exception) {
+                    Log.e("pop ensure error", "" + exception);
 
                 }
 
@@ -611,9 +712,9 @@ public class MainActivity extends SlidingFragmentActivity {
 
                 popDialog.cancel();
                 Intent jumbIntent = new Intent();
-				jumbIntent.setClass(MainActivity.this, LoginActivity.class);
-				startActivityForResult(jumbIntent,
-						UserListFragment.START_ACTIVITY_LOGIN);
+                jumbIntent.setClass(MainActivity.this, LoginActivity.class);
+                startActivityForResult(jumbIntent,
+                        UserListFragment.START_ACTIVITY_LOGIN);
 
 
             }
@@ -667,14 +768,14 @@ public class MainActivity extends SlidingFragmentActivity {
         }
 
         mDataManager.getWechatManager().login(
-                mDataManager.getCurrentPosition(), true, true,
+                mDataManager.getCurrentPosition(), WechatManager.DIALOG_POP_NOT_CANCELABLE, true,
                 new OnActionFinishListener() {
 
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        mDataManager.getWechatManager().getUserProfile(true, true,
+                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE, true,
                                 mDataManager.getCurrentPosition(),
                                 new OnActionFinishListener() {
 
@@ -688,7 +789,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                                 .getUserImgWithReferer(
                                                         mDataManager
                                                                 .getCurrentPosition(),
-                                                        false,
+                                                        WechatManager.DIALOG_POP_CANCELABLE,
                                                         null,
                                                         new OnActionFinishListener() {
 
@@ -707,7 +808,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                                 .getMassData(
                                                         mDataManager
                                                                 .getCurrentPosition(),
-                                                        true,
+                                                        WechatManager.DIALOG_POP_CANCELABLE,
                                                         new OnActionFinishListener() {
 
 
@@ -724,7 +825,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                                                 mDataManager
                                                                         .getWechatManager()
                                                                         .getNewMessageList(
-                                                                                true,
+                                                                                WechatManager.DIALOG_POP_CANCELABLE,
                                                                                 mDataManager
                                                                                         .getCurrentPosition(),
                                                                                 new OnActionFinishListener() {
@@ -758,7 +859,6 @@ public class MainActivity extends SlidingFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == UserListFragment.START_ACTIVITY_LOGIN) {
             if (resultCode == RESULT_OK) {
-
                 mDataManager.updateUserGroup();
                 mDataManager.doAddUser();
                 mDataManager.doGroupChangeEnd();

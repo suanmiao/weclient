@@ -37,6 +37,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -137,7 +138,7 @@ public class LeftFragment extends Fragment {
                     headImageView.setImageBitmap(imgBitmap);
 
                 } else {
-                    mDataManager.getWechatManager().getUserImgDirectly(false, false,
+                    mDataManager.getWechatManager().getUserImgDirectly(WechatManager.DIALOG_POP_NO, false,
                             mDataManager.getCurrentPosition(), headImageView, new OnActionFinishListener() {
 
                         @Override

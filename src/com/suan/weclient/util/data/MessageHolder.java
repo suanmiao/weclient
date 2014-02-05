@@ -22,6 +22,7 @@ public class MessageHolder{
 
 	}
 
+
     private void addEmptyMessage(){
         MessageBean emptyMessage = new MessageBean(); emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
         messageBeans.add(emptyMessage);

@@ -9,6 +9,7 @@
     <color name="bg_color_deep">#E5E5E5</color>
     <color name="black">#000000</color>
     <color name="text_color">#434343</color>
+    <color name="chat_text_color">#202020</color>
     <color name="black_half">#50000000</color>
     <color name="transparent_background">#00000000</color>
     <color name="setting_item_normal">#ffffff</color>

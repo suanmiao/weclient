@@ -14,6 +14,8 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
+import com.suan.weclient.util.net.WechatManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +75,7 @@ public class Util {
         return result;
     }
 
-    public static Bitmap roundCornerWithBorder(Bitmap src, float round, float borderWidth) {
+    public static Bitmap roundCornerWithBorder(Bitmap src, float round, float borderWidth,int borderColor) {
 
         // image size
         int width = src.getWidth();
@@ -88,7 +92,6 @@ public class Util {
         // config paint
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
-//		paint.setColor(Color.BLACK);
 
         // config rectangle for embedding
         final Rect srcRect = new Rect(0, 0, width, height);
@@ -103,7 +106,7 @@ public class Util {
         // draw source image to canvas
         canvas.drawBitmap(src, srcRect, desRect, paint);
 
-        paint.setColor(Color.parseColor("#ced0c4"));
+        paint.setColor(borderColor);
         paint.setStyle(Style.STROKE);
         paint.setStrokeWidth(borderWidth);
         canvas.drawCircle(width / 2, height / 2, round, paint);
@@ -120,7 +123,7 @@ public class Util {
      */
     @SuppressWarnings("deprecation")
     public static Dialog createLoadingDialog(Context context,
-                                             String loadingText, boolean cancelable) {
+                                             String loadingText, int dialogCancelType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.loading_dialog, null);// 得到加载view
@@ -151,7 +154,18 @@ public class Util {
 
         Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
-        loadingDialog.setCancelable(cancelable);// 不可以用“返回键”取消
+        switch (dialogCancelType){
+            case WechatManager.DIALOG_POP_CANCELABLE:
+
+                loadingDialog.setCancelable(true);// 不可以用“返回键”取消
+                break;
+
+            case WechatManager.DIALOG_POP_NOT_CANCELABLE:
+
+                loadingDialog.setCancelable(false);
+                break;
+        }
+
         loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.FILL_PARENT,
                 LinearLayout.LayoutParams.FILL_PARENT));// 设置布局
@@ -169,12 +183,12 @@ public class Util {
     @SuppressWarnings("deprecation")
     public static Dialog createEnsureDialog(
             OnClickListener sureOnClickListener, boolean cancelVisible,
-            Context context, String titleText, boolean cancelable) {
+            Context context, String titleText,String contentText, boolean cancelable) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.dialog_ensure_layout, null);// 得到加载view
         LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);// 加载布局
-        ImageButton sureButton = (ImageButton) v
+        Button sureButton = (Button) v
                 .findViewById(R.id.dialog_ensure_button_sure);
 
         RelativeLayout cancelLayout = (RelativeLayout) v
@@ -186,11 +200,14 @@ public class Util {
                 .findViewById(R.id.dialog_ensure_text_title);
         titleTextView.setText("" + titleText);
 
+        TextView contentTextView = (TextView)v.findViewById(R.id.dialog_ensure_text_content);
+        contentTextView.setText(""+contentText);
+
         final Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
         if (cancelVisible) {
 
-            ImageButton cancelButton = (ImageButton) v
+            Button cancelButton = (Button) v
                     .findViewById(R.id.dialog_ensure_button_cancel);
             cancelButton.setOnClickListener(new OnClickListener() {
 
@@ -236,5 +253,26 @@ public class Util {
         }
         return source.replace(source.substring(contentLength,source.length()),dotsString);
 
+    }
+
+
+    /**
+     * 检测网络是否连接
+     *
+     * @return
+     */
+    public static boolean isNetConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo[] infos = cm.getAllNetworkInfo();
+            if (infos != null) {
+                for (NetworkInfo ni : infos) {
+                    if (ni.isConnected()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

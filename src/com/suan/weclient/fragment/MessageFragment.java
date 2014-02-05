@@ -24,6 +24,7 @@ import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.MessageChangeListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 
 public class MessageFragment extends Fragment implements
@@ -122,11 +123,6 @@ public class MessageFragment extends Fragment implements
                 messageListAdapter.updateCache();
 
                 messageListAdapter.notifyDataSetChanged();
-                //update the last msg id
-                if (getActivity() != null) {
-
-                    SharedPreferenceManager.updateUser(getActivity(), mDataManager);
-                }
 
 
             }
@@ -207,7 +203,7 @@ public class MessageFragment extends Fragment implements
 
                 } else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
 
-                    mDataManager.getWechatManager().getNewMessageList(false,
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO,
                             mDataManager.getCurrentPosition(),
                             new OnActionFinishListener() {
 
@@ -222,7 +218,7 @@ public class MessageFragment extends Fragment implements
                                     mDataManager
                                             .getWechatManager()
                                             .getUserProfile(
-                                                    false, false,
+                                                    WechatManager.DIALOG_POP_NO, false,
                                                     mDataManager
                                                             .getCurrentPosition(),
                                                     new OnActionFinishListener() {

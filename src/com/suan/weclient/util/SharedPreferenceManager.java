@@ -12,13 +12,14 @@ import com.suan.weclient.util.data.UserBean;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class SharedPreferenceManager {
 
     private static final String USER_GROUP_SHAREDPREF = "userGroup";
-
     private static final String USER_GROUP_CONTENT = "content";
     private static final String USER_GROUP_CURRENT_INDEX = "currentIndex";
+    private static final String USER_HIDE_KEY_WORD_MESSAGE = "hideKeyWordMessage";
 
     private static final String PUSH_STATE_SHAREDPREF = "activityState";
     private static final String ACIVITY_RUNNING = "running";
@@ -27,11 +28,17 @@ public class SharedPreferenceManager {
     private static final String PUSH_FREQUENT = "pushFrequent";
     private static final String PUSH_CLOSE_NIGHT = "pushCloseNight";
     private static final String PUSH_NEW_MESSAGE = "pushNewMessage";
-    private static final String PUSH_NEW_PEOPLE = "pushNewPeople";
     private static final String NEW_PEOPLE = "newPeople";
     private static final String NEW_MESSAGE = "newMessage";
     private static final String LAST_MESSAGE_NOTIFY_TIME = "lastMessageNotifyTime";
     private static final String LAST_PEOPLE_NOTIFY_TIME = "lastPeopleNotifyTime";
+
+    /*
+    test
+     */
+    private static final String LAST_MESSAGE_ID = "lastMessageId";
+
+
 
     public static final int ENTER_STATE_FIRST_TIME = -1;
     public static final int ENTER_STATE_OTHER_TIME = 1;
@@ -122,22 +129,23 @@ public class SharedPreferenceManager {
 
 
 
-    public static boolean getPushNewPeopleEnable(Context context) {
+
+
+    public static String getLastMsgId(Context context) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getBoolean(PUSH_NEW_PEOPLE, false);
+        return sharedPreferences.getString(LAST_MESSAGE_ID, "");
     }
 
-    public static boolean putPushNewPeopleEnable(Context context, boolean running) {
+    public static boolean putLastMsgId(Context context, String lastMsgId) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         Editor editor = sharedPreferences.edit();
-        editor.putBoolean(PUSH_NEW_PEOPLE, running);
+        editor.putString(LAST_MESSAGE_ID, lastMsgId);
 
         return editor.commit();
     }
-
 
     public static int getPushFrequent(Context context) {
 
@@ -220,6 +228,23 @@ public class SharedPreferenceManager {
 
 
 
+
+    public static boolean putHideKeyWordMessage(Context context, boolean hideKeyWordMessage) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putBoolean(USER_HIDE_KEY_WORD_MESSAGE, hideKeyWordMessage);
+
+        return editor.commit();
+    }
+
+    public static boolean getHideKeyWordMessage(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(USER_HIDE_KEY_WORD_MESSAGE, true);
+    }
+
     public static boolean putCurrentIndex(Context context, int currentIndex) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
@@ -247,7 +272,8 @@ public class SharedPreferenceManager {
         Editor editor = sharedPreferences.edit();
         editor.putString(USER_GROUP_CONTENT, content);
 
-        return editor.commit();
+        boolean editResult =  editor.commit();
+        return editResult;
     }
 
     public static ArrayList<UserBean> getUserGroup(Context context) {
@@ -304,6 +330,10 @@ public class SharedPreferenceManager {
 
         for (int i = 0; i < dataManager.getUserGroup().size(); i++) {
             contentArray.put(dataManager.getUserGroup().get(i).getContentObject());
+            if(i==dataManager.getCurrentPosition()){
+
+            }
+
         }
 
         putUserGroupString(context, contentArray.toString());

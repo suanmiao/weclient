@@ -28,6 +28,7 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.net.WechatManager;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;
@@ -387,7 +388,7 @@ public class ProfileFragment extends Fragment {
                         .toString();
                 defaultConversation.addUserReply(content);
 
-                mDataManager.doLoadingStart("反馈发送中...");
+                mDataManager.doLoadingStart("反馈发送中...", WechatManager.DIALOG_POP_CANCELABLE);
 
                 sync();
             }

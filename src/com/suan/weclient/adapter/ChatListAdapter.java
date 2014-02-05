@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +28,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.text.SpanUtil;
@@ -63,7 +62,6 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     MessageBean nowMessage = getMessageItems().get(i);
                     if (nowMessage.getId().equals(msgId)) {
                         index = i;
-                        Log.e("getItem", "hit" + i);
 
                     }
                 }
@@ -87,6 +85,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
         }
         return mDataManager.getChatHolder().getMessageList();
     }
+
 
     @Override
     public int getCount() {
@@ -149,16 +148,32 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 break;
             default:
 
-                convertView = mInflater.inflate(R.layout.chat_item_her_text_layout,
-                        null);
+                if (getMessageItems().get(position).getOwner() == MessageBean.MESSAGE_OWNER_ME) {
+
+                    convertView = mInflater.inflate(R.layout.chat_item_me_text_layout,
+
+                            null);
+                } else {
+
+                    convertView = mInflater.inflate(R.layout.chat_item_her_text_layout,
+
+                            null);
+                }
                 break;
 
         }
 
+        convertView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("click on", "item" + position);
+            }
+        });
+/*
+
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.e("click", "index" + position);
                 int messageSendState = getMessageItems().get(position).getSendState();
                 switch (messageSendState) {
                     case MessageBean.MESSAGE_SEND_FAILED:
@@ -176,6 +191,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 return false;
             }
         });
+*/
 
         return convertView;
 
@@ -295,15 +311,29 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     break;
 
                 default:
+                    if (getMessageItems().get(position).getOwner() == MessageBean.MESSAGE_OWNER_ME) {
 
-                    contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_text_layout_content);
-                    contentTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_text_text_content);
-                    profileImageView = (ImageView) parentView
-                            .findViewById(R.id.chat_item_her_text_img_profile);
-                    timeTextView = (TextView) parentView
-                            .findViewById(R.id.chat_item_her_text_text_time);
-                    contentTextView.setText("[目前暂不支持该类型消息]");
+                        contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_me_text_layout_content);
+                        contentTextView = (TextView) parentView
+                                .findViewById(R.id.chat_item_me_text_text_content);
+                        profileImageView = (ImageView) parentView
+                                .findViewById(R.id.chat_item_me_text_img_profile);
+                        timeTextView = (TextView) parentView
+                                .findViewById(R.id.chat_item_me_text_text_time);
+                        contentTextView.setText("[目前暂不支持该类型消息]");
+
+                    } else {
+
+                        contentLayout = (RelativeLayout) parentView.findViewById(R.id.chat_item_her_text_layout_content);
+                        contentTextView = (TextView) parentView
+                                .findViewById(R.id.chat_item_her_text_text_content);
+                        profileImageView = (ImageView) parentView
+                                .findViewById(R.id.chat_item_her_text_img_profile);
+                        timeTextView = (TextView) parentView
+                                .findViewById(R.id.chat_item_her_text_text_time);
+                        contentTextView.setText("[目前暂不支持该类型消息]");
+                    }
+
                     break;
 
             }
@@ -352,17 +382,14 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_SEND_ING:
                     holder.contentLayout.setSelected(true);
 
-                    Log.e("get send state", "ing");
                     break;
                 case MessageBean.MESSAGE_SEND_OK:
                     holder.contentLayout.setSelected(false);
-                    Log.e("send state", "ok");
 
                     break;
                 case MessageBean.MESSAGE_SEND_FAILED:
                     holder.contentLayout.setSelected(true);
 
-                    Log.e("get send state", "failed");
                     break;
             }
 
@@ -374,22 +401,23 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                         case MessageBean.MESSAGE_SEND_ING:
                             holder.contentLayout.setSelected(true);
 
-                            Log.e("get send state", "ing");
                             break;
                         case MessageBean.MESSAGE_SEND_OK:
                             holder.contentLayout.setSelected(false);
-                            Log.e("send state", "ok");
 
                             break;
                         case MessageBean.MESSAGE_SEND_FAILED:
                             holder.contentLayout.setSelected(true);
 
-                            Log.e("get send state", "failed");
                             break;
                     }
 
                 }
             });
+        }
+        if (getMessageItems().get(position).getSendState() == MessageBean.MESSAGE_SEND_FAILED) {
+            holder.contentLayout.setSelected(true);
+
         }
 
 
@@ -510,20 +538,9 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                mDataManager.createImgHolder(getMessageItems().get(position), mDataManager.getCurrentUser());
                 Intent jumbIntent = new Intent();
                 jumbIntent.setClass(mContext, ShowImgActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("slaveSid", mDataManager.getCurrentUser()
-                        .getSlaveSid());
-                bundle.putString("slaveUser", mDataManager.getCurrentUser()
-                        .getSlaveUser());
-                bundle.putString("msgId", getMessageItems().get(position)
-                        .getId());
-                bundle.putString("token", mDataManager.getCurrentUser()
-                        .getToken());
-                bundle.putString("referer", getMessageItems().get(position)
-                        .getReferer());
-                jumbIntent.putExtras(bundle);
                 mContext.startActivity(jumbIntent);
 
             }
@@ -535,17 +552,14 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         if (!mBusy || !imgLoaded) {
 
+
             Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_CONTENT
                             + getMessageItems().get(position).getId());
             if (contentBitmap == null) {
                 mDataManager.getWechatManager().getMessageImg(
                         mDataManager.getCurrentPosition(),
-                        getMessageItems().get(position).getId(),
-                        mDataManager.getCurrentUser().getSlaveSid(),
-                        mDataManager.getCurrentUser().getSlaveUser(),
-                        mDataManager.getCurrentUser().getToken(),
-                        getMessageItems().get(position).getReferer(),
+                        getMessageItems().get(position),
                         holder.contentImageView,
                         WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,
                         new OnActionFinishListener() {
@@ -553,13 +567,16 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                             @Override
                             public void onFinish(int code, Object object) {
                                 // TODO Auto-generated method stub
-                                holder.contentImageView.setTag(true);
-                                Bitmap bitmap = (Bitmap) object;
-                                mDataManager.getCacheManager().putBitmap(
-                                        ImageCacheManager.CACHE_MESSAGE_CONTENT
-                                                + getMessageItems().get(
-                                                position).getId(),
-                                        bitmap, true);
+                                if (code == WechatManager.ACTION_SUCCESS) {
+                                    holder.contentImageView.setTag(true);
+                                    Bitmap bitmap = (Bitmap) object;
+                                    mDataManager.getCacheManager().putBitmap(
+                                            ImageCacheManager.CACHE_MESSAGE_CONTENT
+                                                    + getMessageItems().get(
+                                                    position).getId(),
+                                            bitmap, true);
+
+                                }
 
                             }
                         });
@@ -580,13 +597,16 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
         if (!mBusy || !imgLoaded) {
 
             Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
-                    ImageCacheManager.CACHE_MESSAGE_PROFILE
+                    ImageCacheManager.CACHE_CHAT_LIST_PROFILE
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
-                Bitmap roundBitmap = Util.roundCornerWithBorder(headBitmap,
-                        Util.dipToPx(30, mContext.getResources()), 15);
 
-                holder.profileImageView.setImageBitmap(roundBitmap);
+                if (getMessageItems().get(position).getOwner() == MessageBean.MESSAGE_OWNER_ME) {
+
+                } else {
+
+                }
+                holder.profileImageView.setImageBitmap(headBitmap);
 
             } else {
                 mDataManager.getWechatManager().getMessageHeadImg(
@@ -598,18 +618,21 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        holder.profileImageView.setTag(true);
-                        Bitmap bitmap = (Bitmap) object;
-                        Bitmap roundBitmap = Util.roundCornerWithBorder(bitmap,
-                        Util.dipToPx(30, mContext.getResources()), 15);
+                        if (code == WechatManager.ACTION_SUCCESS) {
+                            holder.profileImageView.setTag(true);
+                            Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
+                                    Util.dipToPx(30, mContext.getResources()), 15, Color.parseColor("#ffffff"));
 
-                        holder.profileImageView.setImageBitmap(roundBitmap);
+                            holder.profileImageView.setImageBitmap(roundBitmap);
 
-                        mDataManager.getCacheManager().putBitmap(
-                                ImageCacheManager.CACHE_MESSAGE_PROFILE
-                                        + getMessageItems().get(
-                                        position).getFakeId(),
-                                bitmap, true);
+                            mDataManager.getCacheManager().putBitmap(
+                                    ImageCacheManager.CACHE_CHAT_LIST_PROFILE
+                                            + getMessageItems().get(
+                                            position).getFakeId(),
+                                    roundBitmap, true);
+
+                        }
+
                     }
                 });
 
@@ -626,6 +649,9 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         View v;
         v = newView(position);
+        /*
+        can not use cache of this type ,or the display will be disorder
+         */
 /*        if (!mListCacheManager.containView(getMessageId(position))) {
             mListCacheManager.putView(v, getMessageId(position));
         } else {

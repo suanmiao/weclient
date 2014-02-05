@@ -73,7 +73,7 @@ public class ChatActivity extends SherlockActivity {
 
         View customActionBarView = layoutInflater.inflate(R.layout.custom_actionbar_back_with_title, null);
 
-        backButton = (ImageView)customActionBarView. findViewById(R.id.actionbar_back_with_title_img_back);
+        backButton = (ImageView) customActionBarView.findViewById(R.id.actionbar_back_with_title_img_back);
         backButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -82,12 +82,12 @@ public class ChatActivity extends SherlockActivity {
             }
         });
 
-        titleTextView = (TextView)customActionBarView.findViewById(R.id.actionbar_back_with_title_text_title);
-        String targetUserName = mDataManager.getChatHolder().getUserBean().getNickname();
-        titleTextView.setText(getResources().getString(R.string.chat)+":"+ Util.getShortString(targetUserName,10,3));
+        titleTextView = (TextView) customActionBarView.findViewById(R.id.actionbar_back_with_title_text_title);
+        String targetUserName = mDataManager.getChatHolder().getToNickname();
+        titleTextView.setText( Util.getShortString(targetUserName, 10, 3));
 
 
-         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
                 ActionMenuView.LayoutParams.MATCH_PARENT);
 
         actionBar.setCustomView(customActionBarView, layoutParams);
@@ -98,7 +98,7 @@ public class ChatActivity extends SherlockActivity {
     private void initWidgets() {
 
         mListView = (ListView) findViewById(R.id.chat_layout_list);
-       contentEditText = (EditText) findViewById(R.id.chat_edit_edit);
+        contentEditText = (EditText) findViewById(R.id.chat_edit_edit);
         expressionButton = (ImageButton) findViewById(R.id.chat_button_expression);
         sendButton = (Button) findViewById(R.id.chat_button_send);
         sendButton.setOnClickListener(new SendClickListener());
@@ -128,6 +128,7 @@ public class ChatActivity extends SherlockActivity {
 
         chatListAdapter = new ChatListAdapter(this, mDataManager);
         mListView.setAdapter(chatListAdapter);
+        mListView.setSelection(chatListAdapter.getCount()-1);
     }
 
     public class ChatHandler extends Handler {
@@ -150,7 +151,8 @@ public class ChatActivity extends SherlockActivity {
             public void onItemGet(boolean changed) {
                 // TODO Auto-generated method stub
                 chatListAdapter.notifyDataSetChanged();
-
+                //scroll to bottom
+                mListView.setSelection(chatListAdapter.getCount()-1);
             }
         });
 
@@ -203,15 +205,15 @@ public class ChatActivity extends SherlockActivity {
         sendMessage.setSendState(MessageBean.MESSAGE_SEND_PREPARE);
 
         ChatHolder chatHolder = mDataManager.getChatHolder();
+        //add is to the bottom
         chatHolder.getMessageList().add(sendMessage);
         chatListAdapter.notifyDataSetChanged();
         sendMessage.setSendState(MessageBean.MESSAGE_SEND_ING);
         contentEditText.setText("");
         String lastMsgId = getLastMsgId(chatHolder);
-        Log.e("lastMsgId", "id:" + lastMsgId);
 
-        sendMessage.sendMessage(mDataManager, lastMsgId, mDataManager.getCurrentUser(), chatHolder.getToFakeId());
-
+        sendMessage.sendMessage(mDataManager, lastMsgId, mDataManager.getCurrentUser(),
+                chatHolder.getToFakeId(),ChatActivity.this);
 
     }
 

@@ -43,10 +43,13 @@
     <string name="push_close_night_enable">23:00-7:00关闭提醒</string>
     <string name="push_new_people_enable">新用户提醒</string>
     <string name="push_disable">关闭提醒</string>
+
     <string name="push_frequent">消息检查频率</string>
     <string name="push_frequent_fast">快速</string>
     <string name="push_frequent_normal">正常</string>
     <string name="push_frequent_slow">较慢</string>
+
+    <string name="hide_key_word_message">隐藏关键词消息</string>
 	<string name="fans_list">用户列表</string>
     <string name="reply">回复</string>
 </resources>

@@ -19,6 +19,7 @@
             android:id="@+id/message_item_text_img_profile"
             android:layout_width="50dip"
             android:layout_height="50dip"
+            android:scaleType="centerInside"
             android:layout_marginLeft="15dip"
             android:layout_marginTop="10dip"
             android:layout_marginBottom="10dip"

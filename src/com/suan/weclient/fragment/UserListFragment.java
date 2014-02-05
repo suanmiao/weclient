@@ -46,6 +46,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -210,7 +211,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
                 nowUserImg.setImageBitmap(imgBitmap);
 
             } else {
-                mDataManager.getWechatManager().getUserImgDirectly(false, false,
+                mDataManager.getWechatManager().getUserImgDirectly(WechatManager.DIALOG_POP_NO, false,
                         position, nowUserImg, new OnActionFinishListener() {
 
                     @Override
@@ -226,7 +227,6 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 
                     }
                 });
-
             }
             String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
                     .getNickname(), 13, 3);
@@ -251,15 +251,15 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
         mDataManager.getUserListControlListener().onUserListDismiss();
         mDataManager.setCurrentPosition(position);
 
-        mDataManager.doLoadingStart("登录...");
+        mDataManager.doLoadingStart("登录...",WechatManager.DIALOG_POP_NOT_CANCELABLE);
 
-        mDataManager.getWechatManager().login(position, false, true,
+        mDataManager.getWechatManager().login(position, WechatManager.DIALOG_POP_NOT_CANCELABLE, true,
                 new OnActionFinishListener() {
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        mDataManager.getWechatManager().getUserProfile(true, true,
+                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE, true,
                                 position, new OnActionFinishListener() {
 
                             @Override
@@ -271,7 +271,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
                                         .getWechatManager()
                                         .getUserImgWithReferer(
                                                 position,
-                                                true,
+                                                WechatManager.DIALOG_POP_CANCELABLE,
                                                 profileImageView,
                                                 new OnActionFinishListener() {
 
@@ -286,7 +286,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
                                                                 .getWechatManager()
                                                                 .getMassData(
                                                                         position,
-                                                                        true,
+                                                                        WechatManager.DIALOG_POP_CANCELABLE,
                                                                         new OnActionFinishListener() {
 
                                                                             @Override
@@ -300,7 +300,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
                                                                                 mDataManager
                                                                                         .getWechatManager()
                                                                                         .getNewMessageList(
-                                                                                                true,
+                                                                                                WechatManager.DIALOG_POP_CANCELABLE,
                                                                                                 position,
                                                                                                 new OnActionFinishListener() {
 
