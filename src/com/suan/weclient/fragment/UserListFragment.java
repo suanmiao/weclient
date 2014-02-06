@@ -46,6 +46,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.UserGoupPushHelper;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
@@ -250,6 +251,9 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 
         mDataManager.getUserListControlListener().onUserListDismiss();
         mDataManager.setCurrentPosition(position);
+        UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(getActivity()));
+        userGoupPushHelper.updateUserGroup(mDataManager);
+        SharedPreferenceManager.putPushUserGroup(getActivity(),userGoupPushHelper.getString());
 
         mDataManager.doLoadingStart("登录...",WechatManager.DIALOG_POP_NOT_CANCELABLE);
 

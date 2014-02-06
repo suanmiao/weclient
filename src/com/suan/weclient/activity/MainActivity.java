@@ -45,6 +45,7 @@ import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.UserGoupPushHelper;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
@@ -121,19 +122,16 @@ public class MainActivity extends SlidingFragmentActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-
-                Log.e(" receiver ", "receiver refresh");
                 /*
                 receive the broadcast ,
                 refresh the profile to show new message count
                  */
-                mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO,false,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+                mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO, false, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
                     @Override
                     public void onFinish(int code, Object object) {
 
                     }
                 });
-
 
             }
         };
@@ -143,19 +141,23 @@ public class MainActivity extends SlidingFragmentActivity {
         registerReceiver(mReceiver, filter);
     }
 
-    private void initIntent() {
 
-        Intent getIntent = getIntent();
-        if (getIntent != null) {
-            String action = getIntent.getAction();
+    public void onNewIntent(Intent intent) {
 
-            Bundle extra = getIntent.getExtras();
-            if (extra != null) {
-
+        //analyse intent
+        int getCurrentIndex = intent.getIntExtra("currentIndex", -1);
+        if (getCurrentIndex != -1) {
+            //get the current value
+            if (getCurrentIndex != mDataManager.getCurrentPosition()) {
+                if (mDataManager.setCurrentPosition(getCurrentIndex)) {
+                    autoLogin();
+                }
             }
 
         }
+        super.onNewIntent(intent);
     }
+
 
     private void initService() {
         if (SharedPreferenceManager.getPushEnable(this)) {
@@ -480,7 +482,6 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     public void onStart() {
-        initIntent();
 
         initService();
         boolean networkConnected = Util.isNetConnected(MainActivity.this);
@@ -612,11 +613,17 @@ public class MainActivity extends SlidingFragmentActivity {
         mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
             @Override
             public void onMessageGet() {
-                SharedPreferenceManager.putLastNewMessage(MainActivity.this, 0);
-                //update the last msg id
-                SharedPreferenceManager.updateUser(MainActivity.this, mDataManager);
 
-                SharedPreferenceManager.putLastMsgId(MainActivity.this, mDataManager.getCurrentUser().getLastMsgId());
+                UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(MainActivity.this));
+                userGoupPushHelper.updateUserGroup(mDataManager);
+
+                mDataManager.saveUserGroup(MainActivity.this);
+
+                userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastNewMessageCount(0);
+
+                userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastMsgId(mDataManager.getCurrentUser().getLastMsgId());
+
+                SharedPreferenceManager.putPushUserGroup(MainActivity.this, userGoupPushHelper.getString());
 
             }
         });

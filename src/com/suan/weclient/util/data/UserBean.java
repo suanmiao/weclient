@@ -6,25 +6,25 @@ import android.util.Log;
 
 public class UserBean {
 
-	private JSONObject contentObject;
+    private JSONObject contentObject;
 
-	public static final int USER_TYPE_SUBSTRICTION = 1;
-	public static final int USER_TYPE_SERVICE = 2;
-	public static final int USER_TYPE_NOT_INITED = -1;
-	public static final int USER_TYPE_NONE = 0;
+    public static final int USER_TYPE_SUBSTRICTION = 1;
+    public static final int USER_TYPE_SERVICE = 2;
+    public static final int USER_TYPE_NOT_INITED = -1;
+    public static final int USER_TYPE_NONE = 0;
 
-	private int userType = -1;
-	private String nickNameString = "";
-	private int massLeft = 0;
-	private String userNameString = "";
-	private String pwdString = "";
-	private String tokenString = "";
-	private String slaveSidString = "";
-	private String slaveUserString = "";
-	private String newMessageString = "";
-	private String newPeopleString = "";
-	private String totalPeopleString = "";
-	private String fakeIdString = "";
+    private int userType = -1;
+    private String nickNameString = "";
+    private int massLeft = 0;
+    private String userNameString = "";
+    private String pwdString = "";
+    private String tokenString = "";
+    private String slaveSidString = "";
+    private String slaveUserString = "";
+    private String newMessageString = "";
+    private String newPeopleString = "";
+    private String totalPeopleString = "";
+    private String fakeIdString = "";
 
 
     /*
@@ -32,361 +32,374 @@ public class UserBean {
      */
     private String lastMsgId = "";
 
-	public UserBean(JSONObject contentJsonObject) {
-		this.contentObject = contentJsonObject;
-
-		try {
-			String valueString = contentJsonObject.getString("nickname");
-			if (valueString != null) {
-				nickNameString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "nickname" + exception);
-
-		}
-
-		try {
-
-			userType = contentJsonObject.getInt("userType");
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "userType" + exception);
-
-		}
-
-		/*
-		 * for the version transition
-		 */
-		if (userType == USER_TYPE_NOT_INITED) {
-			try {
-
-				contentJsonObject.put("userType", USER_TYPE_NONE);
-
-			} catch (Exception exception) {
-
-			}
-
-		}
-
-		try {
-			String valueString = contentJsonObject.getString("new_message");
-			if (valueString != null) {
-				newMessageString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "new message" + exception);
-
-		}
-
-		try {
-			String valueString = contentJsonObject.getString("fake_id");
-			if (valueString != null) {
-				fakeIdString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "fake id" + exception);
-
-		}
-
-		try {
-			String valueString = contentJsonObject.getString("new_people");
-			if (valueString != null) {
-				newPeopleString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "new people" + exception);
-
-		}
-
-		try {
-			String valueString = contentJsonObject.getString("total_people");
-			if (valueString != null) {
-				totalPeopleString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "total people" + exception);
-
-		}
-		try {
-			String valueString = contentJsonObject.getString("username");
-			if (valueString != null) {
-				userNameString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "user name" + exception);
-
-		}
-
-		try {
-			String valueString = contentJsonObject.getString("pwd");
-			if (valueString != null) {
-				pwdString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "pwd" + exception);
-
-		}
-		try {
-			String valueString = contentJsonObject.getString("token");
-			if (valueString != null) {
-				tokenString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "token" + exception);
-
-		}
-		try {
-			String valueString = contentJsonObject.getString("slave_sid");
-			if (valueString != null) {
-				slaveSidString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "slave sid" + exception);
-
-		}
-		try {
-			String valueString = contentJsonObject.getString("slave_user");
-			if (valueString != null) {
-				slaveUserString = valueString;
-			}
-
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "slave user" + exception);
-
-		}
+    public UserBean(JSONObject contentJsonObject) {
+        this.contentObject = contentJsonObject;
 
         try {
-			String valueString = contentJsonObject.getString("last_msg_id");
-			if (valueString != null) {
+            String valueString = contentJsonObject.getString("nickname");
+            if (valueString != null) {
+                nickNameString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "nickname" + exception);
+
+        }
+
+        try {
+
+            userType = contentJsonObject.getInt("userType");
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "userType" + exception);
+
+        }
+
+		/*
+         * for the version transition
+		 */
+        if (userType == USER_TYPE_NOT_INITED) {
+            try {
+
+                contentJsonObject.put("userType", USER_TYPE_NONE);
+
+            } catch (Exception exception) {
+
+            }
+
+        }
+
+        try {
+            String valueString = contentJsonObject.getString("new_message");
+            if (valueString != null) {
+                newMessageString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "new message" + exception);
+
+        }
+
+        try {
+            String valueString = contentJsonObject.getString("fake_id");
+            if (valueString != null) {
+                fakeIdString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "fake id" + exception);
+
+        }
+
+        try {
+            String valueString = contentJsonObject.getString("new_people");
+            if (valueString != null) {
+                newPeopleString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "new people" + exception);
+
+        }
+
+        try {
+            String valueString = contentJsonObject.getString("total_people");
+            if (valueString != null) {
+                totalPeopleString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "total people" + exception);
+
+        }
+        try {
+            String valueString = contentJsonObject.getString("username");
+            if (valueString != null) {
+                userNameString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "user name" + exception);
+
+        }
+
+        try {
+            String valueString = contentJsonObject.getString("pwd");
+            if (valueString != null) {
+                pwdString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "pwd" + exception);
+
+        }
+        try {
+            String valueString = contentJsonObject.getString("token");
+            if (valueString != null) {
+                tokenString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "token" + exception);
+
+        }
+        try {
+            String valueString = contentJsonObject.getString("slave_sid");
+            if (valueString != null) {
+                slaveSidString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "slave sid" + exception);
+
+        }
+        try {
+            String valueString = contentJsonObject.getString("slave_user");
+            if (valueString != null) {
+                slaveUserString = valueString;
+            }
+
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "slave user" + exception);
+
+        }
+
+        try {
+
+            String valueString = contentJsonObject.getString("last_msg_id");
+            if (valueString != null) {
                 lastMsgId = valueString;
+            }
 
-			}
+        } catch (Exception exception) {
+            Log.e("user bean parse error", "last msg id" + exception);
 
-		} catch (Exception exception) {
-			Log.e("user bean parse error", "last msg id" + exception);
+        }
 
-		}
 
+    }
 
-	}
+    public UserBean(String userName, String pwd) {
+        contentObject = new JSONObject();
 
-	public UserBean(String userName, String pwd) {
-		contentObject = new JSONObject();
+        userNameString = userName;
+        pwdString = pwd;
 
-		userNameString = userName;
-		pwdString = pwd;
 
-		try {
+    }
 
-			contentObject.put("username", userName);
-			contentObject.put("pwd", pwd);
-		} catch (Exception exception) {
 
-		}
+    public String getLastMsgId() {
+        return lastMsgId;
+    }
 
-	}
+    public void setLastMsgId(String lastMsgId) {
+        this.lastMsgId = lastMsgId;
 
+    }
 
-	public String getLastMsgId() {
-		return lastMsgId;
-	}
+    public int getUserType() {
+        return userType;
+    }
 
-	public void setLastMsgId(String lastMsgId) {
+    public void setUserType(int userType) {
 
-		try {
-			contentObject.put("last_msg_id", lastMsgId);
-            this.lastMsgId = lastMsgId;
-		} catch (Exception exception) {
 
-			Log.e("put error", "last msg id " + exception);
-		}
-	}
-	public int getUserType() {
-		return userType;
-	}
+        this.userType = userType;
 
-	public void setUserType(int userType) {
+    }
 
-		try {
-			contentObject.put("userType", userType);
-			this.userType = userType;
-		} catch (Exception exception) {
+    public int getMassLeft() {
+        return massLeft;
+    }
 
-			Log.e("put error", "usertype " + exception);
-		}
-	}
+    public void setMassLeft(int massLeft) {
 
-	public int getMassLeft() {
-		return massLeft;
-	}
+        this.massLeft = massLeft;
+    }
 
-	public void setMassLeft(int massLeft) {
+    public String getNickname() {
+        return nickNameString;
+    }
 
-		this.massLeft = massLeft;
-	}
+    public void setNickname(String nickname) {
 
-	public String getNickname() {
-		return nickNameString;
-	}
+        nickNameString = nickname;
 
-	public void setNickname(String nickname) {
+    }
 
-		nickNameString = nickname;
-		try {
-			contentObject.put("nickname", nickname);
-		} catch (Exception exception) {
-			Log.e("put error", "nickname" + exception);
+    public String getFakeId() {
+        return fakeIdString;
+    }
 
-		}
-	}
+    public void setFakeId(String fakeId) {
+        fakeIdString = fakeId;
 
-	public String getFakeId() {
-		return fakeIdString;
-	}
+    }
 
-	public void setFakeId(String fakeId) {
-		fakeIdString = fakeId;
+    public String getNewPeople() {
+        return newPeopleString;
+    }
 
-		try {
-			contentObject.put("fake_id", fakeId);
-		} catch (Exception exception) {
+    public void setNewPeople(String newPeople) {
+        newPeopleString = newPeople;
 
-		}
-	}
 
-	public String getNewPeople() {
-		return newPeopleString;
-	}
+    }
 
-	public void setNewPeople(String newPeople) {
-		newPeopleString = newPeople;
+    public String getNewMessage() {
+        return newMessageString;
+    }
 
-		try {
-			contentObject.put("new_people", newPeople);
-		} catch (Exception exception) {
+    public void setNewMessage(String newMessage) {
+        newMessageString = newMessage;
 
-			Log.e("put error", "new people " + exception);
-		}
-	}
 
-	public String getNewMessage() {
-		return newMessageString;
-	}
+    }
 
-	public void setNewMessage(String newMessage) {
-		newMessageString = newMessage;
+    public String getTotalPeople() {
+        return totalPeopleString;
+    }
 
-		try {
-			contentObject.put("new_message", newMessage);
-		} catch (Exception exception) {
+    public void setTotalPeople(String totalPeople) {
+        totalPeopleString = totalPeople;
 
-			Log.e("put error", "new message " + exception);
-		}
-	}
 
-	public String getTotalPeople() {
-		return totalPeopleString;
-	}
+    }
 
-	public void setTotalPeople(String totalPeople) {
-		totalPeopleString = totalPeople;
+    public String getUserName() {
+        return userNameString;
+    }
 
-		try {
-			contentObject.put("total_people", totalPeople);
-		} catch (Exception exception) {
+    public void setUserName(String userName) {
+        userNameString = userName;
 
-		}
-	}
 
-	public String getUserName() {
-		return userNameString;
-	}
+    }
 
-	public void setUserName(String userName) {
-		userNameString = userName;
+    public String getPwd() {
+        return pwdString;
+    }
 
-		try {
-			contentObject.put("username", userName);
-		} catch (Exception exception) {
+    public void setPwd(String pwd) {
+        pwdString = pwd;
 
-		}
-	}
 
-	public String getPwd() {
-		return pwdString;
-	}
+    }
 
-	public void setPwd(String pwd) {
-		pwdString = pwd;
+    public String getToken() {
+        return tokenString;
+    }
 
-		try {
+    public void setToken(String token) {
+        tokenString = token;
 
-			contentObject.put("pwd", pwd);
-		} catch (Exception exception) {
 
-		}
-	}
+    }
 
-	public String getToken() {
-		return tokenString;
-	}
+    public String getSlaveSid() {
+        return slaveSidString;
+    }
 
-	public void setToken(String token) {
-		tokenString = token;
+    public void setSlaveSid(String slaveSid) {
+        slaveSidString = slaveSid;
 
-		try {
 
-			contentObject.put("token", token);
-		} catch (Exception exception) {
+    }
 
-		}
-	}
+    public String getSlaveUser() {
+        return slaveUserString;
+    }
 
-	public String getSlaveSid() {
-		return slaveSidString;
-	}
+    public void setSlaveUser(String slaveUser) {
+        slaveUserString = slaveUser;
 
-	public void setSlaveSid(String slaveSid) {
-		slaveSidString = slaveSid;
 
-		try {
+    }
 
-			contentObject.put("slave_sid", slaveSid);
-		} catch (Exception exception) {
+    public JSONObject getContentObject() {
+        try {
 
-		}
-	}
+            contentObject.put("username", userNameString);
+            contentObject.put("pwd", pwdString);
+        } catch (Exception exception) {
 
-	public String getSlaveUser() {
-		return slaveUserString;
-	}
+        }
+        try {
+            contentObject.put("last_msg_id", lastMsgId);
+        } catch (Exception exception) {
 
-	public void setSlaveUser(String slaveUser) {
-		slaveUserString = slaveUser;
+            Log.e("put error", "last msg id " + exception);
+        }
+        try {
+            contentObject.put("userType", userType);
+        } catch (Exception exception) {
 
-		try {
+            Log.e("put error", "usertype " + exception);
+        }
 
-			contentObject.put("slave_user", slaveUser);
-		} catch (Exception exception) {
+        try {
+            contentObject.put("nickname", nickNameString);
+        } catch (Exception exception) {
+            Log.e("put error", "nickname" + exception);
 
-		}
-	}
+        }
+        try {
+            contentObject.put("fake_id", fakeIdString);
+        } catch (Exception exception) {
 
-	public JSONObject getContentObject() {
-		return contentObject;
-	}
+        }
+        try {
+            contentObject.put("new_people", newPeopleString);
+        } catch (Exception exception) {
 
-	public String toString() {
-		return contentObject.toString();
-	}
+            Log.e("put error", "new people " + exception);
+        }
+        try {
+            contentObject.put("new_message", newMessageString);
+        } catch (Exception exception) {
+
+            Log.e("put error", "new message " + exception);
+        }
+        try {
+            contentObject.put("total_people", totalPeopleString);
+        } catch (Exception exception) {
+
+        }
+        try {
+            contentObject.put("username", userNameString);
+        } catch (Exception exception) {
+
+        }
+        try {
+
+            contentObject.put("pwd", pwdString);
+        } catch (Exception exception) {
+
+        }
+        try {
+
+            contentObject.put("token", tokenString);
+        } catch (Exception exception) {
+
+        }
+        try {
+
+            contentObject.put("slave_sid", slaveSidString);
+        } catch (Exception exception) {
+
+        }
+        try {
+
+            contentObject.put("slave_user", slaveUserString);
+        } catch (Exception exception) {
+
+        }
+        return contentObject;
+    }
+
+    public String toString() {
+        return contentObject.toString();
+    }
 
 }

@@ -13,6 +13,7 @@ import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.UserGoupPushHelper;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 
@@ -98,53 +99,26 @@ public class PushService extends Service {
 
             boolean networkConnected = Util.isNetConnected(PushService.this);
             if (networkConnected) {
+                UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+                boolean notifyWholeGroup = SharedPreferenceManager.getPushNotifyWholeGroup(PushService.this);
 
-                UserBean nowBean = mDatamanager.getCurrentUser();
-                lastMsgId = SharedPreferenceManager.getLastMsgId(PushService.this);
-                if (nowBean.getSlaveSid() != null && nowBean.getSlaveSid().length() > 1) {
-                    //slave sid is not null
-                    //try it,just get profile
+                if (notifyWholeGroup) {
 
-                    justGetNewMessage(mDatamanager, lastMsgId, new WechatManager.OnActionFinishListener() {
-                        @Override
-                        public void onFinish(int code, Object object) {
-                            if (code == WechatManager.ACTION_SUCCESS) {
-                                int newMessageCount = (Integer) object;
-                                logic(newMessageCount);
+                    for (int i = 0; i < userGoupPushHelper.getUserHolders().size(); i++) {
+                        pushUser(userGoupPushHelper.getUserHolders().get(i), mDatamanager, i);
 
-                            } else {
+                    }
+                } else {
+                    int currentIndex = userGoupPushHelper.getCurrentIndex();
 
-                                getNewMessageAfterLogin(mDatamanager, new WechatManager.OnActionFinishListener() {
-                                    @Override
-                                    public void onFinish(int code, Object object) {
-                                        if (code == WechatManager.ACTION_SUCCESS) {
-                                            justGetNewMessage(mDatamanager, lastMsgId, new WechatManager.OnActionFinishListener() {
-                                                @Override
-                                                public void onFinish(int code, Object object) {
-
-                                                    int newMessageCount = (Integer) object;
-                                                    logic(newMessageCount);
-
-                                                }
-                                            });
-
-                                        }
-
-                                    }
-                                });
-
-                            }
-
-                        }
-                    });
-
+                    pushUser(userGoupPushHelper.getUserHolders().get(currentIndex), mDatamanager, currentIndex);
 
                 }
+
 
             } else {
                 //activity running
                 //clear all notification
-                messageNotification.clearAllNotification();
             }
 
 
@@ -153,43 +127,106 @@ public class PushService extends Service {
         }
     }
 
-    private void justGetNewMessage(DataManager mDatamanager, String lastMsgId, WechatManager.OnActionFinishListener onActionFinishListener) {
-        mDatamanager.getWechatManager().getNewMessageCount(mDatamanager.getCurrentPosition(), lastMsgId, false, onActionFinishListener);
+    private void pushUser(final UserGoupPushHelper.PushUserHolder userHolder, final DataManager mDatamanager, final int index) {
+        UserBean nowBean = userHolder.getUserBean();
+        lastMsgId = userHolder.getLastMsgId();
+        if (nowBean.getSlaveSid() != null && nowBean.getSlaveSid().length() > 1 && lastMsgId.length() > 1) {
+            //slave sid is not null
+            //try it,just get profile
 
-    }
+            justGetNewMessage(mDatamanager, index, lastMsgId, new WechatManager.OnActionFinishListener() {
+                @Override
+                public void onFinish(int code, Object object) {
+                    if (code == WechatManager.ACTION_SUCCESS) {
+                        int newMessageCount = (Integer) object;
+                        logic(newMessageCount, userHolder, index);
 
-    private void getNewMessageAfterLogin(DataManager mDatamanager, WechatManager.OnActionFinishListener onActionFinishListener) {
-        mDatamanager.getWechatManager().login(mDatamanager.getCurrentPosition(), WechatManager.DIALOG_POP_NO, false, onActionFinishListener);
+                    } else {
 
-    }
+                        getNewMessageAfterLogin(mDatamanager, index, new WechatManager.OnActionFinishListener() {
+                            @Override
+                            public void onFinish(int code, Object object) {
+                                if (code == WechatManager.ACTION_SUCCESS) {
+                                    //refresh the token
+                                    UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+                                    userGoupPushHelper.updateUserGroup(mDatamanager);
+                                    mDatamanager.saveUserGroup(PushService.this);
 
+                                    SharedPreferenceManager.putPushUserGroup(PushService.this, userGoupPushHelper.getString());
 
-    private void logic(int newMessage) {
+                                    justGetNewMessage(mDatamanager, index, lastMsgId, new WechatManager.OnActionFinishListener() {
+                                        @Override
+                                        public void onFinish(int code, Object object) {
+                                            if (code == WechatManager.ACTION_SUCCESS) {
 
-        int lastNewMessage = SharedPreferenceManager.getLastNewMessage(this);
+                                                int newMessageCount = (Integer) object;
+                                                logic(newMessageCount, userHolder, index);
 
-        boolean pushNewMessageEnable = SharedPreferenceManager.getPushNewMessageEnable(this);
-        if (pushNewMessageEnable) {
+                                            }
 
-            if (newMessage > lastNewMessage) {
-                //new message added
+                                        }
+                                    });
 
+                                }
 
-                showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
-                SharedPreferenceManager.putLastNewMessage(this, newMessage);
-
-
-            } else {
-                if (newMessage != 0) {
-                    long lastUpdateTime = SharedPreferenceManager.getLastMessageNotifyTime(this);
-                    if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
-                        //more than 10minutes
-                        showNotification(MessageNotification.NOTIFI_TYPE_NEW_MESSAGE, newMessage, mDatamanager.getCurrentUser().getNickname());
+                            }
+                        });
 
                     }
 
-                } else {
-                    SharedPreferenceManager.putLastNewMessage(this, 0);
+                }
+            });
+
+
+        }
+
+    }
+
+    private void justGetNewMessage(DataManager mDatamanager, int userIndex, String lastMsgId, WechatManager.OnActionFinishListener onActionFinishListener) {
+        mDatamanager.getWechatManager().getNewMessageCount(userIndex, lastMsgId, onActionFinishListener);
+
+    }
+
+    private void getNewMessageAfterLogin(DataManager mDatamanager, int userIndex, WechatManager.OnActionFinishListener onActionFinishListener) {
+        mDatamanager.getWechatManager().login(userIndex, WechatManager.DIALOG_POP_NO, false, onActionFinishListener);
+
+    }
+
+
+    private void logic(int newMessage, UserGoupPushHelper.PushUserHolder userHolder, final int index) {
+
+        int lastNewMessage = userHolder.getLastNewMessageCount();
+
+
+        if (newMessage > lastNewMessage) {
+            //new message added
+
+            showNotification(newMessage, userHolder.getUserBean().getNickname(), index);
+
+            UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+            userGoupPushHelper.getUserHolders().get(index).setLastNewMessageCount(newMessage);
+            SharedPreferenceManager.putPushUserGroup(PushService.this, userGoupPushHelper.getString());
+
+
+        } else {
+            if (newMessage != 0) {
+
+                long lastUpdateTime = userHolder.getLastNotifyTime();
+                if (System.currentTimeMillis() - lastUpdateTime > 10 * 60 * 1000) {
+                    //more than 10minutes
+                    showNotification(newMessage, userHolder.getUserBean().getNickname(), index);
+
+                }
+
+            } else {
+
+                try {
+                    UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+                    userGoupPushHelper.getUserHolders().get(index).setLastNewMessageCount(0);
+                    SharedPreferenceManager.putPushUserGroup(PushService.this, userGoupPushHelper.getString());
+
+                } catch (Exception e) {
+
                 }
 
             }
@@ -199,24 +236,23 @@ public class PushService extends Service {
 
     }
 
-    private void showNotification(int type, int amount, String accountName) {
+    private void showNotification(int amount, String accountName, int index) {
 
         boolean activityRunning = SharedPreferenceManager.getActivityRunning(this);
         if (!activityRunning) {
 
-            messageNotification.createNotification(type, amount, accountName);
-            switch (type) {
-                case MessageNotification.NOTIFI_TYPE_NEW_PEOPLE:
-                    SharedPreferenceManager.putLastPeopleNotifyTime(this, System.currentTimeMillis());
+            messageNotification.createNotification(amount, accountName,index);
 
-                    break;
+            //update notify time
 
-                case MessageNotification.NOTIFI_TYPE_NEW_MESSAGE:
+            try {
+                UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+                userGoupPushHelper.getUserHolders().get(index).setLastNotifyTime(System.currentTimeMillis());
+                SharedPreferenceManager.putPushUserGroup(PushService.this, userGoupPushHelper.getString());
 
-                    SharedPreferenceManager.putLastMessageNotifyTime(this, System.currentTimeMillis());
-                    break;
+            } catch (Exception e) {
+
             }
-
         }
 
         sendRefreshBroadcast();

@@ -17,6 +17,8 @@ import com.suan.weclient.view.SViewPager;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 
+import org.json.JSONArray;
+
 public class DataManager {
 
 
@@ -199,6 +201,10 @@ public class DataManager {
         return userBeans;
     }
 
+    public void saveUserGroup(Context context){
+        SharedPreferenceManager.updateUser(context,this);
+    }
+
     public ArrayList<MessageHolder> getMessageHolders() {
         return messageHolders;
     }
@@ -282,8 +288,13 @@ public class DataManager {
         return this.imgHolder;
     }
 
-    public void setCurrentPosition(int position) {
-        SharedPreferenceManager.putCurrentIndex(mContext, position);
+    public boolean setCurrentPosition(int position) {
+        if(position>=0&&position<userBeans.size()){
+
+            SharedPreferenceManager.putCurrentIndex(mContext, position);
+            return true;
+        }
+        return false;
     }
 
 

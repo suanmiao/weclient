@@ -20,9 +20,6 @@ public class MessageNotification {
     private NotificationManager mNotificationManager = null;
     public static final String INTENT_ACTION_FROM_NOTIGICATION = "intentFromNotification";
     private Context mContext;
-    public static final int NOTIFI_TYPE_NEW_PEOPLE = 0;
-
-    public static final int NOTIFI_TYPE_NEW_MESSAGE = 1;
 
 
     private MessageNotification(Context context) {
@@ -37,7 +34,7 @@ public class MessageNotification {
         return mInstance;
     }
 
-    public void createNotification(int type, int amount, String accountName) {
+    public void createNotification( int amount, String accountName,int userIndex) {
         Notification mNotification = new Notification();
         mNotification.icon = R.drawable.icon;
         mNotification.defaults |= Notification.DEFAULT_SOUND;
@@ -46,37 +43,25 @@ public class MessageNotification {
 
         mNotification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-
         Intent intent = new Intent(mContext, MainActivity.class);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        intent.putExtra("currentIndex",userIndex);
+
+        PendingIntent mPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mNotification.contentIntent = mPendingIntent;
         String fromAccount = "(" + mContext.getResources().getString(R.string.from_account) + ":\"" + accountName + "\"" + ")";
-        switch (type) {
-            case NOTIFI_TYPE_NEW_MESSAGE:
 
-                mNotification.tickerText = amount + mContext.getResources().getString(R.string.new_message);
+        mNotification.tickerText = amount + mContext.getResources().getString(R.string.new_message);
 
-                RemoteViews newMessageRemoteViews = new RemoteViews(mContext.getPackageName(), R.layout.custom_notification_layout);
-                newMessageRemoteViews.setTextViewText(R.id.custom_notification_text_content, amount + mContext.getResources().getString(R.string.new_message) + fromAccount);
-                newMessageRemoteViews.setImageViewResource(R.id.custom_notification_img_type, R.drawable.profile_head_default);
-                mNotification.contentView = newMessageRemoteViews;
+        RemoteViews newMessageRemoteViews = new RemoteViews(mContext.getPackageName(), R.layout.custom_notification_layout);
+        newMessageRemoteViews.setTextViewText(R.id.custom_notification_text_content, amount + mContext.getResources().getString(R.string.new_message) + fromAccount);
+        newMessageRemoteViews.setImageViewResource(R.id.custom_notification_img_type, R.drawable.profile_head_default);
+        mNotification.contentView = newMessageRemoteViews;
 
-                mNotificationManager.cancel(messageNotificationID);
-                mNotificationManager.notify(messageNotificationID, mNotification);
-                break;
-            case NOTIFI_TYPE_NEW_PEOPLE:
-
-                RemoteViews newPeopleRemoteViews = new RemoteViews(mContext.getPackageName(), R.layout.custom_notification_layout);
-                newPeopleRemoteViews.setTextViewText(R.id.custom_notification_text_content, amount + mContext.getResources().getString(R.string.new_fans) + fromAccount);
-                newPeopleRemoteViews.setImageViewResource(R.id.custom_notification_img_type, R.drawable.profile_head_default);
-                mNotification.contentView = newPeopleRemoteViews;
-                mNotificationManager.cancel(peopleNotificationID);
-                mNotificationManager.notify(peopleNotificationID, mNotification);
-                break;
-
-        }
+        mNotificationManager.cancel(messageNotificationID);
+        mNotificationManager.notify(messageNotificationID, mNotification);
 
     }
 

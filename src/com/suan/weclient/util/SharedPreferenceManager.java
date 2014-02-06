@@ -27,16 +27,11 @@ public class SharedPreferenceManager {
     private static final String PUSH_FIRST_BLOOD = "pushFirstUse";
     private static final String PUSH_FREQUENT = "pushFrequent";
     private static final String PUSH_CLOSE_NIGHT = "pushCloseNight";
-    private static final String PUSH_NEW_MESSAGE = "pushNewMessage";
-    private static final String NEW_PEOPLE = "newPeople";
-    private static final String NEW_MESSAGE = "newMessage";
-    private static final String LAST_MESSAGE_NOTIFY_TIME = "lastMessageNotifyTime";
-    private static final String LAST_PEOPLE_NOTIFY_TIME = "lastPeopleNotifyTime";
 
-    /*
-    test
-     */
-    private static final String LAST_MESSAGE_ID = "lastMessageId";
+    private static final String PUSH_NOTIFY_WHOLE_GROUP = "pushNotifyWholeGroup";
+    private static final String PUSH_USER_GROUP = "pushUserGroup";
+
+
 
 
 
@@ -111,41 +106,8 @@ public class SharedPreferenceManager {
     }
 
 
-    public static boolean getPushNewMessageEnable(Context context) {
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getBoolean(PUSH_NEW_MESSAGE, true);
-    }
-
-    public static boolean putPustNewMessageEnable(Context context, boolean running) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        Editor editor = sharedPreferences.edit();
-        editor.putBoolean(PUSH_NEW_MESSAGE, running);
-
-        return editor.commit();
-    }
 
 
-
-
-
-    public static String getLastMsgId(Context context) {
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getString(LAST_MESSAGE_ID, "");
-    }
-
-    public static boolean putLastMsgId(Context context, String lastMsgId) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        Editor editor = sharedPreferences.edit();
-        editor.putString(LAST_MESSAGE_ID, lastMsgId);
-
-        return editor.commit();
-    }
 
     public static int getPushFrequent(Context context) {
 
@@ -162,70 +124,41 @@ public class SharedPreferenceManager {
 
         return editor.commit();
     }
-    public static long getLastPeopleNotifyTime(Context context) {
+
+
+
+    public static boolean getPushNotifyWholeGroup(Context context) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getLong(LAST_PEOPLE_NOTIFY_TIME, 0);
+        return sharedPreferences.getBoolean(PUSH_NOTIFY_WHOLE_GROUP, true);
     }
 
-    public static boolean putLastPeopleNotifyTime(Context context, long lastNotifyTime) {
+    public static boolean putPushNotifyWholeGroup(Context context, boolean close) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         Editor editor = sharedPreferences.edit();
-        editor.putLong(LAST_PEOPLE_NOTIFY_TIME, lastNotifyTime);
+        editor.putBoolean(PUSH_NOTIFY_WHOLE_GROUP, close);
 
         return editor.commit();
     }
 
-    public static long getLastMessageNotifyTime(Context context) {
+
+    public static String getPushUserGroup(Context context) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getLong(LAST_MESSAGE_NOTIFY_TIME, 0);
+        return sharedPreferences.getString(PUSH_USER_GROUP, "");
     }
 
-    public static boolean putLastMessageNotifyTime(Context context, long lastNotifyTime) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        Editor editor = sharedPreferences.edit();
-        editor.putLong(LAST_MESSAGE_NOTIFY_TIME, lastNotifyTime);
-
-        return editor.commit();
-    }
-
-    public static int getLastNewMessage(Context context) {
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getInt(NEW_MESSAGE, 0);
-    }
-
-    public static boolean putLastNewMessage(Context context, int newMessage) {
+    public static boolean putPushUserGroup(Context context, String pushUserGroup) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
         Editor editor = sharedPreferences.edit();
-        editor.putInt(NEW_MESSAGE, newMessage);
+        editor.putString(PUSH_USER_GROUP, pushUserGroup);
 
         return editor.commit();
     }
-
-    public static int getLastNewPeople(Context context) {
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getInt(NEW_PEOPLE, 0);
-    }
-
-    public static boolean putLastNewPeople(Context context, int newPeople) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        Editor editor = sharedPreferences.edit();
-        editor.putInt(NEW_PEOPLE, newPeople);
-
-        return editor.commit();
-    }
-
 
 
 

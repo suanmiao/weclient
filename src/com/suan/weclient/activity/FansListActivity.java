@@ -107,7 +107,6 @@ public class FansListActivity extends SherlockActivity implements
 			public void onFansGet(boolean changed) {
 				// TODO Auto-generated method stub
                 Log.e("fans get",""+mDataManager.getCurrentFansHolder().getCurrentGroupIndex());
-                SharedPreferenceManager.putLastNewPeople(FansListActivity.this,0);
 				if (changed) {
 					fansListAdapter.updateCache();
 					fansListAdapter.notifyDataSetChanged();

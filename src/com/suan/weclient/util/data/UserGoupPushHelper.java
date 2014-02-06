@@ -17,95 +17,111 @@ public class UserGoupPushHelper {
     private int currentIndex;
     private ArrayList<PushUserHolder> userHolders;
 
-    public UserGoupPushHelper(String source){
+    public UserGoupPushHelper(String source) {
 
         init(source);
 
     }
 
-    private void init(String source){
-        try{
+    private void init(String source) {
+        if (source.length() != 0) {
+            try {
 
-            JSONObject contentObject = new JSONObject(source);
-            currentIndex = contentObject.getInt("currentIndex");
+                JSONObject contentObject = new JSONObject(source);
+                currentIndex = contentObject.getInt("currentIndex");
+
+                userHolders = new ArrayList<PushUserHolder>();
+                JSONArray contentArray = contentObject.getJSONArray("contentArray");
+                for (int i = 0; i < contentArray.length(); i++) {
+                    JSONObject nowObject = contentArray.getJSONObject(i);
+                    PushUserHolder nowHolder = new PushUserHolder(nowObject);
+                    userHolders.add(nowHolder);
+                }
+
+                return;
+
+            } catch (Exception e) {
+                Log.e("init error", "" + e);
+            }
+
+        } else {
 
             userHolders = new ArrayList<PushUserHolder>();
-            JSONArray contentArray = contentObject.getJSONArray("contentArray");
-            for(int i = 0;i<contentArray.length();i++){
-                JSONObject nowObject = contentArray.getJSONObject(i);
-                PushUserHolder nowHolder = new PushUserHolder(nowObject);
-                userHolders.add(nowHolder);
-            }
-        }catch (Exception e){
-            Log.e("init error",""+e);
+            currentIndex = 0;
         }
+
     }
 
-    public String getString(){
-        try{
+    public String getString() {
+        try {
             JSONObject contentObject = new JSONObject();
-            contentObject.put("currentIndex",currentIndex);
+            contentObject.put("currentIndex", currentIndex);
             JSONArray contentArray = new JSONArray();
-            for(int i = 0;i<userHolders.size();i++){
+            for (int i = 0; i < userHolders.size(); i++) {
                 JSONObject nowObject = userHolders.get(i).getContentObject();
                 contentArray.put(nowObject);
             }
-            contentObject.put("contentArray",contentArray);
+            contentObject.put("contentArray", contentArray);
             return contentObject.toString();
 
-        }catch (Exception e){
-            Log.e("get contentObject error",""+e);
+        } catch (Exception e) {
+            Log.e("get contentObject error", "" + e);
 
         }
 
 
         return null;
     }
-    public void updateUserGroup(DataManager dataManager){
+
+    public void updateUserGroup(DataManager dataManager) {
+
         ArrayList<PushUserHolder> newUserHolders = new ArrayList<PushUserHolder>();
-        for(int i = 0;i<dataManager.getUserGroup().size();i++){
+
+        for (int i = 0; i < dataManager.getUserGroup().size(); i++) {
             PushUserHolder nowBornHolder = new PushUserHolder(dataManager.getUserGroup().get(i));
-            for(int j=0;j<userHolders.size();i++){
+            for (int j = 0; j < userHolders.size(); j++) {
                 PushUserHolder nowSearchHolder = userHolders.get(j);
                 //find the same old holder and set data to new holder
-                if(nowBornHolder.getUserBean().getUserName().equals(nowSearchHolder.getUserBean().getUserName())){
+                if (nowBornHolder.getUserBean().getUserName().equals(nowSearchHolder.getUserBean().getUserName())) {
                     nowBornHolder.setLastMsgId(nowSearchHolder.getLastMsgId());
                     nowBornHolder.setLastNotifyTime(nowSearchHolder.getLastNotifyTime());
                     nowBornHolder.setLastNewMessageCount(nowSearchHolder.getLastNewMessageCount());
 
                 }
 
-
             }
+            newUserHolders.add(nowBornHolder);
 
         }
 
         userHolders = newUserHolders;
 
 
+        currentIndex = dataManager.getCurrentPosition();
+
     }
 
-    public int getCurrentIndex(){
+    public int getCurrentIndex() {
         return currentIndex;
     }
 
-    public ArrayList<PushUserHolder > getUserHolders(){
+    public ArrayList<PushUserHolder> getUserHolders() {
         return userHolders;
     }
 
 
-    public class PushUserHolder{
+    public class PushUserHolder {
         private UserBean userBean;
         private String lastMsgId = "";
         private int lastNewMessageCount = 0;
         private long lastNotifyTime = 0;
 
-        public PushUserHolder(UserBean userBean){
+        public PushUserHolder(UserBean userBean) {
             this.userBean = userBean;
         }
 
-        public PushUserHolder(JSONObject jsonObject){
-            try{
+        public PushUserHolder(JSONObject jsonObject) {
+            try {
 
                 this.userBean = new UserBean(jsonObject.getJSONObject("userBean"));
                 this.lastMsgId = jsonObject.getString("lastMsgId");
@@ -113,23 +129,23 @@ public class UserGoupPushHelper {
                 this.lastNotifyTime = jsonObject.getLong("lastNotifyTime");
 
 
-            }catch (Exception e){
-                Log.e("user holder error",""+e);
+            } catch (Exception e) {
+                Log.e("user holder error", "" + e);
             }
 
         }
 
-        public JSONObject getContentObject(){
-            try{
+        public JSONObject getContentObject() {
+            try {
                 JSONObject contentObject = new JSONObject();
                 JSONObject userObject = userBean.getContentObject();
-                contentObject.put("userBean",userObject);
-                contentObject.put("lastMsgId",lastMsgId);
-                contentObject.put("lastNewMessageCount",lastNewMessageCount);
-                contentObject.put("lastNotifyTime",lastNotifyTime);
+                contentObject.put("userBean", userObject);
+                contentObject.put("lastMsgId", lastMsgId);
+                contentObject.put("lastNewMessageCount", lastNewMessageCount);
+                contentObject.put("lastNotifyTime", lastNotifyTime);
                 return contentObject;
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -137,36 +153,33 @@ public class UserGoupPushHelper {
 
         }
 
-        public String getLastMsgId(){
+        public String getLastMsgId() {
             return lastMsgId;
         }
 
-        public void setLastMsgId(String lastMsgId){
+        public void setLastMsgId(String lastMsgId) {
             this.lastMsgId = lastMsgId;
         }
 
-        public int getLastNewMessageCount(){
+        public int getLastNewMessageCount() {
             return lastNewMessageCount;
         }
 
-        public void setLastNewMessageCount(int lastNewMessageCount){
+        public void setLastNewMessageCount(int lastNewMessageCount) {
             this.lastNewMessageCount = lastNewMessageCount;
         }
 
-        public long getLastNotifyTime(){
+        public long getLastNotifyTime() {
             return lastNotifyTime;
         }
 
-        public void setLastNotifyTime(long lastNotifyTime){
+        public void setLastNotifyTime(long lastNotifyTime) {
             this.lastNotifyTime = lastNotifyTime;
         }
 
-        public UserBean getUserBean(){
+        public UserBean getUserBean() {
             return this.userBean;
         }
-
-
-
 
 
     }

@@ -275,4 +275,17 @@ public class Util {
         }
         return false;
     }
+
+    public static String getRandomFloat(int bit){
+        String result = "0.";
+        for(int i=0;i<bit;i++){
+            int nowInt = (int)(10*Math.random());
+            if(nowInt==10){
+                nowInt = 0;
+            }
+            result += nowInt;
+        }
+
+        return result;
+    }
 }

@@ -998,7 +998,7 @@ public class WechatManager {
     }
 
 
-    public void getNewMessageCount(final int userIndex, final String lastMsgId, final boolean autoRetry,
+    public void getNewMessageCount(final int userIndex, final String lastMsgId,
                                    final OnActionFinishListener onActionFinishListener) {
 
         WeChatLoader.wechatGetNewMessageCount(new WechatExceptionListener() {
@@ -1011,13 +1011,17 @@ public class WechatManager {
                                                   public void onBack(String result) {
                                                       try {
                                                           JSONObject resultObject = new JSONObject(result);
+
                                                           int ret = DataParser.getRet(resultObject);
 
                                                           if (ret == GET_NEW_MESSAGE_COUNT_SUCCESS) {
 
                                                               int newMessageCount = Integer.parseInt(resultObject.get("newTotalMsgCount").toString());
                                                               onActionFinishListener.onFinish(ACTION_SUCCESS, newMessageCount);
+                                                              return ;
 
+                                                          }else{
+                                                              onActionFinishListener.onFinish(ACTION_FAILED,null);
                                                           }
 
                                                       } catch (Exception e) {

@@ -32,6 +32,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.MessageHolder;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.data.UserBean;
@@ -772,7 +773,7 @@ public class WeChatLoader {
                         .getToken()));
                 paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
                 paramArrayList.add(new BasicNameValuePair("random",
-                        "0.7117042664902147"));
+                        Util.getRandomFloat(16)));
                 paramArrayList.add(new BasicNameValuePair("f", "json"));
                 paramArrayList.add(new BasicNameValuePair("ajax", "1"));
                 paramArrayList
@@ -1296,7 +1297,7 @@ public class WeChatLoader {
                 paramArrayList.add(new BasicNameValuePair("ajax", "1"));
                 paramArrayList.add(new BasicNameValuePair("f", "json"));
                 paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
-                String random = "0.5573073124532";
+                String random = Util.getRandomFloat(13);
                 random += (int) (Math.random() * 1000);
                 paramArrayList.add(new BasicNameValuePair("random", random));
 
@@ -1399,7 +1400,7 @@ public class WeChatLoader {
 
                 paramArrayList.add(new BasicNameValuePair("fakeid", fakeId));
                 paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
-                String random = "0.5573073124532";
+                String random = Util.getRandomFloat(13);
                 random += (int) (Math.random() * 1000);
                 paramArrayList.add(new BasicNameValuePair("random", random));
 
@@ -1569,7 +1570,7 @@ public class WeChatLoader {
                         + userBean.getToken()));
                 params.add(new BasicNameValuePair("lang", "zh_CN"));
                 params.add(new BasicNameValuePair("random",
-                        "0.015136290108785033"));
+                        Util.getRandomFloat(18)));
                 params.add(new BasicNameValuePair("f", "json"));
                 params.add(new BasicNameValuePair("ajax", "1"));
                 params.add(new BasicNameValuePair("t", "ajax-response"));
@@ -1662,7 +1663,7 @@ public class WeChatLoader {
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
                 paramList.add(new BasicNameValuePair("token", userBean.getToken()));
                 paramList.add(new BasicNameValuePair("lang", "zh_CN"));
-                paramList.add(new BasicNameValuePair("random", "0.7740735916886479"));
+                paramList.add(new BasicNameValuePair("random", Util.getRandomFloat(16)));
                 paramList.add(new BasicNameValuePair("f", "json"));
                 paramList.add(new BasicNameValuePair("ajax", "1"));
                 paramList.add(new BasicNameValuePair("tofakeid", toFakeId));
@@ -1746,7 +1747,7 @@ public class WeChatLoader {
                 params.add(new BasicNameValuePair("f", "json"));
                 params.add(new BasicNameValuePair("lastmsgid", lastMsgId));
                 params.add(new BasicNameValuePair("lang", "zh_CN"));
-                params.add(new BasicNameValuePair("random", "0.6920196032466058"));
+                params.add(new BasicNameValuePair("random", Util.getRandomFloat(16)));
                 params.add(new BasicNameValuePair("t", "ajax-getmsgnum"));
                 params.add(new BasicNameValuePair("token", userBean.getToken()));
 
