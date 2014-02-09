@@ -64,7 +64,11 @@ public class RightFragment extends Fragment {
 	private FeedbackAgent agent;
 	private Conversation defaultConversation;
 	private DataManager mDataManager;
-	
+
+    public RightFragment(){
+
+    }
+
 	public RightFragment(DataManager dataManager){
 		mDataManager = dataManager;
 		

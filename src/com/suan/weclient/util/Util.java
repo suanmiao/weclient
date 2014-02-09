@@ -16,6 +16,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +43,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Util {
+
+
+    /*
+     * about pop dialog
+     */
+    private static TextView popContentTextView;
+    private static TextView popTitleTextView;
+    public static EditText popContentEditText;
+    private static TextView popTextAmountTextView;
+    private static Button popCancelButton, popSureButton;
+    private static Dialog popDialog;
+    private static Dialog replyDialog;
+
     public static Bitmap roundCorner(Bitmap src, float round) {
 
         // image size
@@ -56,7 +73,6 @@ public class Util {
         // config paint
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
-//		paint.setColor(Color.BLACK);
 
         // config rectangle for embedding
         final Rect srcRect = new Rect(0, 0, width, height);
@@ -75,7 +91,7 @@ public class Util {
         return result;
     }
 
-    public static Bitmap roundCornerWithBorder(Bitmap src, float round, float borderWidth,int borderColor) {
+    public static Bitmap roundCornerWithBorder(Bitmap src, float round, float borderWidth, int borderColor) {
 
         // image size
         int width = src.getWidth();
@@ -154,7 +170,7 @@ public class Util {
 
         Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
-        switch (dialogCancelType){
+        switch (dialogCancelType) {
             case WechatManager.DIALOG_POP_CANCELABLE:
 
                 loadingDialog.setCancelable(true);// 不可以用“返回键”取消
@@ -173,17 +189,122 @@ public class Util {
 
     }
 
+    public static Dialog createDevReplyDialog(Context context, String title,
+                                              String content, OnClickListener sureClickListener,
+                                              OnClickListener cancelClickListener) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_dev_reply_layout,
+                null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_dev_reply_text_title);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_dev_reply_button_reply);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_dev_reply_button_o);
+
+        popContentTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_dev_reply_text_content);
+        popContentTextView.setText(content);
+
+        popTitleTextView.setText(title);
+        popSureButton.setOnClickListener(sureClickListener);
+        popCancelButton.setOnClickListener(cancelClickListener);
+
+        replyDialog = new Dialog(context, R.style.dialog);
+
+        replyDialog.setContentView(dialogView);
+
+        return replyDialog;
+
+    }
+
+    public static Dialog createFeedbackDialog(Context context,OnClickListener sureClickListener,OnClickListener cancelClickListener) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_feedback_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_feedback_text_title);
+
+        popContentEditText = (EditText) dialogView
+                .findViewById(R.id.dialog_feedback_edit_text);
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_feedback_button_cancel);
+
+        popTextAmountTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_feedback_text_num);
+        popTextAmountTextView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popContentEditText.setText("");
+
+            }
+        });
+
+        popContentEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+                popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
+                popTextAmountTextView.setText(popContentEditText.getText()
+                        .length() + " x");
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+        popTitleTextView.setText("反馈");
+
+        popSureButton.setOnClickListener(sureClickListener);
+
+        popCancelButton.setOnClickListener(cancelClickListener);
+
+        replyDialog = new Dialog(context, R.style.dialog);
+
+        replyDialog.setContentView(dialogView);
+        return replyDialog;
+    }
+
 
     public static float dipToPx(int dip, Resources resources) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
                 resources.getDisplayMetrics());
     }
 
+    public static int getScreenHeight(Resources resources){
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+
+        return displayMetrics.heightPixels;
+    }
+
 
     @SuppressWarnings("deprecation")
     public static Dialog createEnsureDialog(
             OnClickListener sureOnClickListener, boolean cancelVisible,
-            Context context, String titleText,String contentText, boolean cancelable) {
+            Context context, String titleText, String contentText, boolean cancelable) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.dialog_ensure_layout, null);// 得到加载view
@@ -200,8 +321,8 @@ public class Util {
                 .findViewById(R.id.dialog_ensure_text_title);
         titleTextView.setText("" + titleText);
 
-        TextView contentTextView = (TextView)v.findViewById(R.id.dialog_ensure_text_content);
-        contentTextView.setText(""+contentText);
+        TextView contentTextView = (TextView) v.findViewById(R.id.dialog_ensure_text_content);
+        contentTextView.setText("" + contentText);
 
         final Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
@@ -242,16 +363,16 @@ public class Util {
     }
 
 
-    public static String getShortString(String source,int contentLength,int dotsLength){
-        if(source.length()<=contentLength){
+    public static String getShortString(String source, int contentLength, int dotsLength) {
+        if (source.length() <= contentLength) {
             return source;
         }
-        String dotsString  = "";
-        for(int i = 0;i<dotsLength;i++){
-            dotsString+=".";
+        String dotsString = "";
+        for (int i = 0; i < dotsLength; i++) {
+            dotsString += ".";
 
         }
-        return source.replace(source.substring(contentLength,source.length()),dotsString);
+        return source.replace(source.substring(contentLength, source.length()), dotsString);
 
     }
 
@@ -276,11 +397,11 @@ public class Util {
         return false;
     }
 
-    public static String getRandomFloat(int bit){
+    public static String getRandomFloat(int bit) {
         String result = "0.";
-        for(int i=0;i<bit;i++){
-            int nowInt = (int)(10*Math.random());
-            if(nowInt==10){
+        for (int i = 0; i < bit; i++) {
+            int nowInt = (int) (10 * Math.random());
+            if (nowInt == 10) {
                 nowInt = 0;
             }
             result += nowInt;

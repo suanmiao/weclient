@@ -1,8 +1,10 @@
 package com.suan.weclient.util.net;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketTimeoutException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -16,6 +18,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
@@ -38,6 +43,11 @@ import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.data.UserBean;
 
 public class WeChatLoader {
+
+    public static final int WECHAT_RESULT_MESSAGE_OK = 10;
+    public static final int WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT = 20;
+    public static final int WECHAT_RESULT_MESSAGE_ERROR_OTHER = 30;
+
 
     public static final int WECHAT_LOGIN_OK = 302;
     public static final int WECHAT_MASS_OK = 0;
@@ -97,6 +107,10 @@ public class WeChatLoader {
 
     private static final String WECHAT_URL_GET_VOICE_MESSAGE_REFERER = "https://mp.weixin.qq.com/mpres/zh_CN/htmledition/plprecorder/soundmanager2.swf";
 
+
+    private static final String WECHAT_URL_GET_APP_MSG_LIST = "https://mp.weixin.qq.com/cgi-bin/appmsg";
+
+
     private static final String WECHAT_URL_GET_FANS_LIST = "https://mp.weixin.qq.com/cgi-bin/contactmanage";
 
     private static final String WECHAT_URL_MODIFY_CONTACTS = "https://mp.weixin.qq.com/cgi-bin/modifycontacts";
@@ -113,20 +127,19 @@ public class WeChatLoader {
 
     private static final String WECHAT_URL_GET_CHAT_NEW_ITEM = "https://mp.weixin.qq.com/cgi-bin/singlesendpage";
 
-    public interface WechatExceptionListener {
-        public void onError();
-    }
+    private static final String WECHAT_URL_GET_UPLOAD_INFO = "https://mp.weixin.qq.com/cgi-bin/filepage";
+
+    private static final String WECHAT_URL_UPLOAD_FILE = "https://mp.weixin.qq.com/cgi-bin/filetransfer";
 
     /**
      * 回调接口 *
      */
 
     public interface WechatLoginCallBack {
-        public void onBack(String result, String slaveSid, String slaveUser);
+        public void onBack(int resultCode, String result, String slaveSid, String slaveUser);
     }
 
     public static void wechatLogin(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatLoginCallBack loginCallBack, final String username,
             final String pwd, final String imgcode, final String f) {
         final Handler loadHandler = new Handler() {
@@ -136,11 +149,25 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                loginCallBack.onBack(contentHolder.get("result"),
-                        contentHolder.get("slaveSid"),
-                        contentHolder.get("slaveUser"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        loginCallBack.onBack(msg.arg1, resultHolder.get("result"),
+                                resultHolder.get("slaveSid"),
+                                resultHolder.get("slaveUser"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        loginCallBack.onBack(msg.arg1, null, null, null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        loginCallBack.onBack(msg.arg1, null, null, null);
+                        break;
+                }
 
             }
         };
@@ -160,53 +187,69 @@ public class WeChatLoader {
                 params.add(new BasicNameValuePair("imgcode", imgcode));
                 params.add(new BasicNameValuePair("f", f));
 
-                HttpResponse response = httpPost(WECHAT_URL_LOGIN, headerList,
+                ResponseHolder responseHolder = httpPost(WECHAT_URL_LOGIN, headerList,
                         params);
 
-                if (response != null) {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                    try {
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        for (int i = 0; i < response.getAllHeaders().length; i++) {
-                            if (response.getAllHeaders()[i].getName().contains(
-                                    "Set-Cookie")) {
-                                String nowCookie = response.getAllHeaders()[i]
-                                        .getValue();
-                                if (nowCookie.contains("slave_user")) {
-                                    String slaveUser = nowCookie
-                                            .substring(
-                                                    nowCookie
-                                                            .indexOf("slave_user") + 11,
-                                                    nowCookie.indexOf(";"));
-                                    contentHolder.put("slaveUser", slaveUser);
-                                }
-                                if (nowCookie.contains("slave_sid")) {
 
-                                    String slaveSid = nowCookie
-                                            .substring(nowCookie
-                                                    .indexOf("slave_sid") + 10,
-                                                    nowCookie.indexOf(";"));
-                                    contentHolder.put("slaveSid", slaveSid);
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+
+                            for (int i = 0; i < responseHolder.response.getAllHeaders().length; i++) {
+                                if (responseHolder.response.getAllHeaders()[i].getName().contains(
+                                        "Set-Cookie")) {
+                                    String nowCookie = responseHolder.response.getAllHeaders()[i]
+                                            .getValue();
+                                    if (nowCookie.contains("slave_user")) {
+                                        String slaveUser = nowCookie
+                                                .substring(
+                                                        nowCookie
+                                                                .indexOf("slave_user") + 11,
+                                                        nowCookie.indexOf(";"));
+                                        resultHolder.put("slaveUser", slaveUser);
+                                    }
+                                    if (nowCookie.contains("slave_sid")) {
+
+                                        String slaveSid = nowCookie
+                                                .substring(nowCookie
+                                                        .indexOf("slave_sid") + 10,
+                                                        nowCookie.indexOf(";"));
+                                        resultHolder.put("slaveSid", slaveSid);
+                                    }
+
                                 }
 
                             }
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
+
+                        } catch (Exception e) {
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
                         }
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -214,11 +257,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetUserProfleCallBack {
-        public void onBack(String strResult, String referer);
+        public void onBack(int resultCode, String strResult, String referer);
     }
 
     public static void wechatGetUserProfile(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetUserProfleCallBack userProfileCallBack,
             final UserBean userBean) {
         final Handler loadHandler = new Handler() {
@@ -229,10 +271,27 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                userProfileCallBack.onBack(contentHolder.get("result"),
-                        contentHolder.get("referer"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        userProfileCallBack.onBack(msg.arg1, resultHolder.get("result"),
+                                resultHolder.get("referer"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        userProfileCallBack.onBack(msg.arg1, "timeOut", null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        userProfileCallBack.onBack(msg.arg1, "other", null);
+
+                        break;
+                }
 
             }
         };
@@ -247,45 +306,56 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
                 String targetUrl = WECHAT_URL_GET_USER_PROFILE;
+                Log.e("get intkeljljlkfj", "lskjdflkjsdlfk");
 
                /* PROFILE = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
                 */
 
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("t","home/index"));
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                paramList.add(new BasicNameValuePair("t", "home/index"));
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
 
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
 
-                HttpResponse response = httpGet(targetUrl, paramList, headerList);
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                if (response != null) {
 
-                    try {
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
 
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
 
-                        contentHolder.put("referer", targetUrl);
+                            resultHolder.put("referer", targetUrl);
 
-                        message.obj = contentHolder;
+                            message.obj = resultHolder;
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        } catch (Exception exception) {
 
-                    }
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
 
-                } else {
-                    wechatExceptionListener.onError();
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
 
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
 
+
+                loadHandler.sendMessage(message);
             }
 
         }.start();
@@ -293,11 +363,10 @@ public class WeChatLoader {
     }
 
     public interface WechatMessageListCallBack {
-        public void onBack(String strResult, String referer);
+        public void onBack(int resultCode, String strResult, String referer);
     }
 
     public static void wechatGetMessageList(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatMessageListCallBack messageListCallBack,
             final UserBean userBean, final int mode, final boolean hideKeyWordMessage) {
         final Handler loadHandler = new Handler() {
@@ -308,11 +377,27 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
 
-                messageListCallBack.onBack(contentHolder.get("result"),
-                        contentHolder.get("referer"));
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+
+                        messageListCallBack.onBack(msg.arg1, resultHolder.get("result"),
+                                resultHolder.get("referer"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        messageListCallBack.onBack(msg.arg1, "timeOut", null);
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        messageListCallBack.onBack(msg.arg1, "other", null);
+
+                        break;
+                }
 
             }
         };
@@ -346,83 +431,90 @@ public class WeChatLoader {
                 int hideKeyWord = hideKeyWordMessage ? 1 : 0;
 
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("t","message/list"));
-                paramList.add(new BasicNameValuePair("count","20"));
+                paramList.add(new BasicNameValuePair("t", "message/list"));
+                paramList.add(new BasicNameValuePair("count", "20"));
 
-                paramList.add(new BasicNameValuePair("filterivrmsg",hideKeyWord+""));
+                paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
 
-
-
-
+                Log.e("message mode", "" + mode);
 
                 String targetUrl = WECHAT_URL_GET_MESSAGE_LIST;
 
                 switch (mode) {
                     case GET_MESSAGE_ALL:
 
-                        paramList.add(new BasicNameValuePair("day","7"));
-                       ;
-
+                        paramList.add(new BasicNameValuePair("day", "7"));
+                        ;
 
                         break;
                     case GET_MESSAGE_TODAY:
 
-                        paramList.add(new BasicNameValuePair("day","0"));
+                        paramList.add(new BasicNameValuePair("day", "0"));
 
 
                         break;
 
                     case GET_MESSAGE_YESTERDAY:
 
-                        paramList.add(new BasicNameValuePair("day","1"));
+                        paramList.add(new BasicNameValuePair("day", "1"));
                         break;
 
                     case GET_MESSAGE_DAY_BEFORE:
 
-                        paramList.add(new BasicNameValuePair("day","2"));
+                        paramList.add(new BasicNameValuePair("day", "2"));
 
                         break;
 
                     case GET_MESSAGE_OLDER:
 
-                        paramList.add(new BasicNameValuePair("day","3"));
+                        paramList.add(new BasicNameValuePair("day", "3"));
 
                         break;
 
                     case GET_MESSAGE_STAR:
 
-                        paramList.add(new BasicNameValuePair("action","star"));
+                        paramList.add(new BasicNameValuePair("action", "star"));
 
                         break;
                 }
 
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
 
-                if (response != null) {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                    try {
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        contentHolder.put("referer", targetUrl);
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            resultHolder.put("referer", targetUrl);
+                            message.obj = resultHolder;
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        } catch (Exception exception) {
 
-                    }
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
 
-                } else {
-                    wechatExceptionListener.onError();
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
 
+                loadHandler.sendMessage(message);
             }
 
         }.start();
@@ -430,13 +522,12 @@ public class WeChatLoader {
     }
 
     public interface WechatMessagePageCallBack {
-        public void onBack(String strResult, String referer);
+        public void onBack(int resultCode, String strResult, String referer);
     }
 
     public static void wechatGetMessagePage(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatMessagePageCallBack messagePageCallBack,
-            final MessageHolder messageHolder, final int page,final int mode, final boolean hideKeyWordMessage) {
+            final MessageHolder messageHolder, final int page, final int mode, final boolean hideKeyWordMessage) {
         final Handler loadHandler = new Handler() {
 
             // 子类必须重写此方法,接受数据
@@ -445,11 +536,27 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
 
-                messagePageCallBack.onBack(contentHolder.get("result"),
-                        contentHolder.get("referer"));
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+
+                        messagePageCallBack.onBack(msg.arg1, resultHolder.get("result"),
+                                resultHolder.get("referer"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        messagePageCallBack.onBack(msg.arg1, "timeOut", null);
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        messagePageCallBack.onBack(msg.arg1, "other", null);
+
+                        break;
+                }
 
             }
         };
@@ -465,99 +572,101 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
                 int offset = (page - 1) * 20;
-                String targetUrl = WECHAT_URL_MESSAGE_LOAD_PAGE
-;
+                String targetUrl = WECHAT_URL_MESSAGE_LOAD_PAGE;
 
-               /*
-    1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&action=&keyword=&frommsgid=";
-    2 = "&offset=";
-    3 = "&count=20&day=7&token=";
-    4 = "&lang=zh_CN";
-*/
 
+                Log.e("get page message", "" + mode);
 
                 int hideKeyWord = hideKeyWordMessage ? 1 : 0;
 
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
 
-                paramList.add(new BasicNameValuePair("t","message/list"));
-                paramList.add(new BasicNameValuePair("action",""));
-                paramList.add(new BasicNameValuePair("keyword",""));
+                paramList.add(new BasicNameValuePair("t", "message/list"));
+                paramList.add(new BasicNameValuePair("keyword", ""));
 
-                paramList.add(new BasicNameValuePair("filterivrmsg",hideKeyWord+""));
+                paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
 
-                paramList.add(new BasicNameValuePair("frommsgid",messageHolder.getLatestMsgId()));
-                paramList.add(new BasicNameValuePair("offset",offset+""));
-                paramList.add(new BasicNameValuePair("count","20"));
+                paramList.add(new BasicNameValuePair("frommsgid", messageHolder.getLatestMsgId()));
+                paramList.add(new BasicNameValuePair("offset", offset + ""));
+                paramList.add(new BasicNameValuePair("count", "20"));
 
 
                 switch (mode) {
                     case GET_MESSAGE_ALL:
 
-                        paramList.add(new BasicNameValuePair("day","7"));
-                       ;
-
-
+                        paramList.add(new BasicNameValuePair("day", "7"));
+                        ;
                         break;
                     case GET_MESSAGE_TODAY:
 
-                        paramList.add(new BasicNameValuePair("day","0"));
+                        paramList.add(new BasicNameValuePair("day", "0"));
 
 
                         break;
 
                     case GET_MESSAGE_YESTERDAY:
 
-                        paramList.add(new BasicNameValuePair("day","1"));
+                        paramList.add(new BasicNameValuePair("day", "1"));
                         break;
 
                     case GET_MESSAGE_DAY_BEFORE:
 
-                        paramList.add(new BasicNameValuePair("day","2"));
+                        paramList.add(new BasicNameValuePair("day", "2"));
 
                         break;
 
                     case GET_MESSAGE_OLDER:
 
-                        paramList.add(new BasicNameValuePair("day","3"));
+                        paramList.add(new BasicNameValuePair("day", "3"));
 
                         break;
 
                     case GET_MESSAGE_STAR:
 
-                        paramList.add(new BasicNameValuePair("action","star"));
+                        paramList.add(new BasicNameValuePair("action", "star"));
 
                         break;
                 }
 
 
-                paramList.add(new BasicNameValuePair("token",messageHolder.getUserBean().getToken()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                paramList.add(new BasicNameValuePair("token", messageHolder.getUserBean().getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        contentHolder.put("referer", targetUrl);
-                        message.obj = contentHolder;
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            resultHolder.put("referer", targetUrl);
+                            message.obj = resultHolder;
 
-                    }
+                        } catch (Exception exception) {
 
-                } else {
-                    wechatExceptionListener.onError();
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        break;
                 }
 
+                loadHandler.sendMessage(message);
             }
 
         }.start();
@@ -565,11 +674,10 @@ public class WeChatLoader {
     }
 
     public interface WechatMessageReplyCallBack {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatMessageReply(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatMessageReplyCallBack messagReplyCallBack,
             final UserBean userBean, final MessageBean messageBean,
             final String replyContent) {
@@ -581,10 +689,24 @@ public class WeChatLoader {
 
                 super.handleMessage(msg);
 
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
 
-                messagReplyCallBack.onBack(contentHolder.get("result"));
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+
+                        messagReplyCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        messagReplyCallBack.onBack(msg.arg1, "timeOut");
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        messagReplyCallBack.onBack(msg.arg1, "other");
+                        break;
+                }
 
             }
         };
@@ -617,29 +739,42 @@ public class WeChatLoader {
                         .getToken()));
                 paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
                 String targetUrl = WECHAT_URL_MESSAGE_REPLY;
-                HttpResponse response = httpPost(targetUrl, headerList,
+                ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
 
+
+                loadHandler.sendMessage(message);
             }
 
         }.start();
@@ -647,11 +782,10 @@ public class WeChatLoader {
     }
 
     public interface WechatMessageStarCallBack {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatMessageStar(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatMessageStarCallBack messagStarCallBack,
             final UserBean userBean, final MessageBean messageBean,
             final boolean star) {
@@ -663,9 +797,23 @@ public class WeChatLoader {
 
                 super.handleMessage(msg);
 
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                messagStarCallBack.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        messagStarCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        messagStarCallBack.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+                        messagStarCallBack.onBack(msg.arg1, "other");
+
+                        break;
+                }
 
             }
         };
@@ -693,28 +841,44 @@ public class WeChatLoader {
                         .getToken()));
                 paramArrayList.add(new BasicNameValuePair("lang", "zh_CN"));
                 String targetUrl = WECHAT_URL_MESSAGE_STAR;
-                HttpResponse response = httpPost(targetUrl, headerList,
+
+                ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -723,11 +887,10 @@ public class WeChatLoader {
     }
 
     public interface WechatMassCallBack {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatMass(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatMassCallBack massCallBack, final UserBean userBean,
             final String content) {
         final Handler loadHandler = new Handler() {
@@ -738,9 +901,23 @@ public class WeChatLoader {
 
                 super.handleMessage(msg);
 
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                massCallBack.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        massCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        massCallBack.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+                        massCallBack.onBack(msg.arg1, "other");
+
+                        break;
+                }
 
             }
         };
@@ -779,28 +956,42 @@ public class WeChatLoader {
                 paramArrayList
                         .add(new BasicNameValuePair("t", "ajax-response"));
                 String targetUrl = WECHAT_URL_MESSAGE_MASS;
-                HttpResponse response = httpPost(targetUrl, headerList,
+                ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -809,11 +1000,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetHeadImgCallBack {
-        public void onBack(Bitmap bitmap, String referer, ImageView imageView);
+        public void onBack(int resultCode, Bitmap bitmap, String referer, ImageView imageView);
     }
 
     public static void wechatGetHeadImg(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetHeadImgCallBack getHeadImgCallBack,
             final UserBean userBean, final String fakeId, final String referer,
             final ImageView imageView) {
@@ -825,11 +1015,26 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                getHeadImgCallBack.onBack(
-                        (Bitmap) contentHolder.getExtra("result"),
-                        contentHolder.get("referer"), imageView);
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        getHeadImgCallBack.onBack(msg.arg1,
+                                (Bitmap) resultHolder.getExtra("result"),
+                                resultHolder.get("referer"), imageView);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        getHeadImgCallBack.onBack(msg.arg1, null, "timeOut", null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        getHeadImgCallBack.onBack(msg.arg1, null, "other", null);
+                        break;
+                }
 
             }
         };
@@ -846,43 +1051,54 @@ public class WeChatLoader {
 
                 headerList.add(new BasicNameValuePair("Referer", referer));
 
-                String targetUrl = WECHAT_URL_GET_MESSAGE_PROFILE_IMG
-;
+                String targetUrl = WECHAT_URL_GET_MESSAGE_PROFILE_IMG;
 
 /*
     1 = "https://mp.weixin.qq.com/cgi-bin/getheadimg?token=";
     2 = "&fakeid=";
                */
-                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("fakeid",fakeId));
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("fakeid", fakeId));
 
 
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
+
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
 
-                if (response != null) {
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            Bitmap bitmap = BitmapFactory
+                                    .decodeStream((InputStream) responseHolder.response
+                                            .getEntity().getContent());
+                            resultHolder.putExtra("result", bitmap);
+                            resultHolder.put("referer", targetUrl);
+                            message.obj = resultHolder;
 
-                    try {
+                        } catch (Exception exception) {
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        Bitmap bitmap = BitmapFactory
-                                .decodeStream((InputStream) response
-                                        .getEntity().getContent());
-                        contentHolder.putExtra("result", bitmap);
-                        contentHolder.put("referer", targetUrl);
-                        message.obj = contentHolder;
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -891,13 +1107,12 @@ public class WeChatLoader {
     }
 
     public interface WechatGetMessageImgCallBack {
-        public void onBack(Bitmap bitmap, ImageView imageView);
+        public void onBack(int resultCode, Bitmap bitmap, ImageView imageView);
     }
 
     public static void wechatGetMessageImg(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetMessageImgCallBack getMessageImgCallBack,
-            final UserBean userBean,final MessageBean messageBean,
+            final UserBean userBean, final MessageBean messageBean,
             final ImageView imageView, final String imgType) {
         final Handler loadHandler = new Handler() {
 
@@ -907,10 +1122,25 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                getMessageImgCallBack.onBack(
-                        (Bitmap) contentHolder.getExtra("result"), imageView);
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        getMessageImgCallBack.onBack(msg.arg1,
+                                (Bitmap) resultHolder.getExtra("result"), imageView);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        getMessageImgCallBack.onBack(msg.arg1, null, null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        getMessageImgCallBack.onBack(msg.arg1, null, null);
+                        break;
+                }
 
             }
         };
@@ -926,7 +1156,7 @@ public class WeChatLoader {
 
                 headerList.add(new BasicNameValuePair("Referer", messageBean.getReferer()));
 
-                String targetUrl = WECHAT_URL_GET_MESSAGE_IMG ;
+                String targetUrl = WECHAT_URL_GET_MESSAGE_IMG;
 /*
     1 = "https://mp.weixin.qq.com/cgi-bin/getimgdata?token=";
     2 = "&msgid=";
@@ -935,37 +1165,51 @@ public class WeChatLoader {
                */
 
 
-
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("msgid",messageBean.getId()));
-                paramList.add(new BasicNameValuePair("mode",imgType));
-                paramList.add(new BasicNameValuePair("source",messageBean.getSource()));
-                paramList.add(new BasicNameValuePair("fileId",messageBean.getFileId()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("msgid", messageBean.getId()));
+                paramList.add(new BasicNameValuePair("mode", imgType));
+                paramList.add(new BasicNameValuePair("source", messageBean.getSource()));
+                paramList.add(new BasicNameValuePair("fileId", messageBean.getFileId()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
-                if (response != null) {
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                    try {
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        Bitmap bitmap = BitmapFactory
-                                .decodeStream((InputStream) response
-                                        .getEntity().getContent());
-                        contentHolder.putExtra("result", bitmap);
-                        message.obj = contentHolder;
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                    }
 
-                } else {
-                    wechatExceptionListener.onError();
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            Bitmap bitmap = BitmapFactory
+                                    .decodeStream((InputStream) responseHolder.response
+                                            .getEntity().getContent());
+                            resultHolder.putExtra("result", bitmap);
+                            message.obj = resultHolder;
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -974,11 +1218,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetVoiceMsgCallBack {
-        public void onBack(byte[] bytes);
+        public void onBack(int resultCode, byte[] bytes);
     }
 
     public static void wechatGetVoiceMsg(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetVoiceMsgCallBack getVoiceMsgCallBack,
             final UserBean userBean, final String msgId, final int length) {
         final Handler loadHandler = new Handler() {
@@ -989,10 +1232,25 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                getVoiceMsgCallBack.onBack((byte[]) contentHolder
-                        .getExtra("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        getVoiceMsgCallBack.onBack(msg.arg1, (byte[]) resultHolder
+                                .getExtra("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        getVoiceMsgCallBack.onBack(msg.arg1, null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        getVoiceMsgCallBack.onBack(msg.arg1, null);
+                        break;
+                }
 
             }
         };
@@ -1010,43 +1268,58 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Referer",
                         WECHAT_URL_GET_VOICE_MESSAGE_REFERER));
 
-                String targetUrl = WECHAT_URL_GET_VOICE_MESSAGE ;
+                String targetUrl = WECHAT_URL_GET_VOICE_MESSAGE;
 /*
     1 = "https://mp.weixin.qq.com/cgi-bin/getvoicedata?msgid=";
     2 = "&fileid=&token=";
     3 = "&lang=zh_CN";
                */
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("msgid",msgId));
-                paramList.add(new BasicNameValuePair("fileid",""));
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                paramList.add(new BasicNameValuePair("msgid", msgId));
+                paramList.add(new BasicNameValuePair("fileid", ""));
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
 
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        InputStream inputStream = (InputStream) response
-                                .getEntity().getContent();
-                        byte[] bytes = new byte[length * 2];
-                        inputStream.read(bytes);
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        contentHolder.putExtra("result", bytes);
-                        message.obj = contentHolder;
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            InputStream inputStream = (InputStream) responseHolder.response
+                                    .getEntity().getContent();
+                            byte[] bytes = new byte[length * 2];
+                            inputStream.read(bytes);
 
-                    }
+                            resultHolder.putExtra("result", bytes);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1054,12 +1327,134 @@ public class WeChatLoader {
 
     }
 
+
+    public interface WechatGetAppMsgListCallBack {
+        public void onBack(int resultCode, String result);
+    }
+
+    public static void wechatGetAppListMsg(
+            final WechatGetAppMsgListCallBack getAppMsgListCallBack,
+            final UserBean userBean) {
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        getAppMsgListCallBack.onBack(msg.arg1,
+                                resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        getAppMsgListCallBack.onBack(msg.arg1, null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        getAppMsgListCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+                headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+                        + userBean.getSlaveSid() + "; " + "slave_user=" + userBean.getSlaveUser()));
+                headerList.add(new BasicNameValuePair("Content-Type",
+                        "text/html; charset=utf-8"));
+
+                String referer = "https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token="
+                        + userBean.getToken() + "&lang=zh_CN";
+
+                headerList.add(new BasicNameValuePair("Referer", referer));
+
+                String targetUrl = WECHAT_URL_GET_APP_MSG_LIST;
+
+                /*
+                ?token=1651728002
+                &lang=zh_CN
+                &random=0.6870156622989926
+                &f=json
+                &ajax=1
+                &type=10
+                &action=list
+                &begin=0
+                &count=10
+                 */
+
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
+                paramList.add(new BasicNameValuePair("random", Util.getRandomFloat(16)));
+                paramList.add(new BasicNameValuePair("f", "json"));
+                paramList.add(new BasicNameValuePair("ajax", "1"));
+                paramList.add(new BasicNameValuePair("type", "10"));
+                paramList.add(new BasicNameValuePair("action", "list"));
+                paramList.add(new BasicNameValuePair("begin", "0"));
+                paramList.add(new BasicNameValuePair("count", "10"));
+
+
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
+
+
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
+
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+
+                            message.obj = resultHolder;
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
+                }
+
+
+                loadHandler.sendMessage(message);
+
+            }
+
+        }.start();
+
+    }
+
+
     public interface WechatGetMassData {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatGetMassData(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetMassData wechatGetMassData, final UserBean userBean) {
         final Handler loadHandler = new Handler() {
 
@@ -1069,9 +1464,24 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                wechatGetMassData.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatGetMassData.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        wechatGetMassData.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatGetMassData.onBack(msg.arg1, "other");
+                        break;
+                }
 
             }
         };
@@ -1090,44 +1500,54 @@ public class WeChatLoader {
                         WECHAT_URL_GET_USER_PROFILE + userBean.getToken()));
 
 
-
-
-
-                String targetUrl = WECHAT_URL_GET_MASS_DATA
-                        ;
+                String targetUrl = WECHAT_URL_GET_MASS_DATA;
    /*
    1 = "https://mp.weixin.qq.com/cgi-bin/masssendpage?t=mass/send&token=";
    2 = "&lang=zh_CN";
 */
                 ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
-                paramList.add(new BasicNameValuePair("t","mass/send"));
-                paramList.add(new BasicNameValuePair("token",userBean.getToken()));
-                paramList.add(new BasicNameValuePair("lang","zh_CN"));
+                paramList.add(new BasicNameValuePair("t", "mass/send"));
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
 
-                HttpResponse response = httpGet(targetUrl,paramList, headerList);
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
 
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                            message.obj = resultHolder;
 
-                    }
+                        } catch (Exception exception) {
 
-                } else {
-                    wechatExceptionListener.onError();
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1136,11 +1556,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetFansList {
-        public void onBack(String strResult, String referer);
+        public void onBack(int resultCode, String strResult, String referer);
     }
 
     public static void wechatGetFansList(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetFansList wechatGetFansList, final UserBean userBean,
             final String groupId, final int page) {
         final Handler loadHandler = new Handler() {
@@ -1151,10 +1570,25 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                wechatGetFansList.onBack(contentHolder.get("result"),
-                        contentHolder.get("referer"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatGetFansList.onBack(msg.arg1, resultHolder.get("result"),
+                                resultHolder.get("referer"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        wechatGetFansList.onBack(msg.arg1, "timeOut", null);
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatGetFansList.onBack(msg.arg1, "other", null);
+                        break;
+                }
 
             }
         };
@@ -1221,31 +1655,44 @@ public class WeChatLoader {
                 paramList.add(new BasicNameValuePair("token", userBean.getToken()));
                 paramList.add(new BasicNameValuePair("lang", "zh_CN"));
 
-                HttpResponse response = httpGet(targetUrl, paramList, headerList);
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        Log.e("fans result",""+strResult);
-                        contentHolder.put("referer", targetUrl);
 
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            resultHolder.put("referer", targetUrl);
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                            message.obj = resultHolder;
 
-                    }
+                        } catch (Exception exception) {
 
-                } else {
-                    wechatExceptionListener.onError();
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1255,11 +1702,10 @@ public class WeChatLoader {
 
 
     public interface WechatModifyContactsCallBack {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatModifyContacts(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatModifyContactsCallBack editFansGroupCallBack,
             final UserBean userBean, final int action,
             final String groupId, final String toFakeIdList,
@@ -1273,9 +1719,23 @@ public class WeChatLoader {
 
                 super.handleMessage(msg);
 
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                editFansGroupCallBack.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        editFansGroupCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        editFansGroupCallBack.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+                        editFansGroupCallBack.onBack(msg.arg1, "other");
+
+                        break;
+                }
 
             }
         };
@@ -1325,28 +1785,43 @@ public class WeChatLoader {
 
 
                 String targetUrl = WECHAT_URL_MODIFY_CONTACTS;
-                HttpResponse response = httpPost(targetUrl, headerList,
+                ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1356,11 +1831,10 @@ public class WeChatLoader {
 
 
     public interface WechatGetContactInfoCallBack {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatGetContactInfo(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetContactInfoCallBack getContactInfoCallBack,
             final UserBean userBean,
             final String fakeId
@@ -1373,9 +1847,24 @@ public class WeChatLoader {
 
                 super.handleMessage(msg);
 
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                getContactInfoCallBack.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        getContactInfoCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        getContactInfoCallBack.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        getContactInfoCallBack.onBack(msg.arg1, "other");
+
+                        break;
+                }
 
             }
         };
@@ -1411,28 +1900,43 @@ public class WeChatLoader {
 
 
                 String targetUrl = WECHAT_URL_GET_CONTACT_INFO;
-                HttpResponse response = httpPost(targetUrl, headerList,
+                ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1441,11 +1945,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetChatList {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatGetChatList(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetChatList wechatGetChatList, final UserBean userBean,
             final String toFakeId) {
         final Handler loadHandler = new Handler() {
@@ -1456,9 +1959,24 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                wechatGetChatList.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatGetChatList.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        wechatGetChatList.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatGetChatList.onBack(msg.arg1, "other");
+                        break;
+                }
 
             }
         };
@@ -1488,29 +2006,43 @@ public class WeChatLoader {
 
                 String targetUrl = WECHAT_URL_GET_CHAT_LIST;
 
-                HttpResponse response = httpGet(targetUrl, paramList, headerList);
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
 
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
 
-                    }
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -1523,11 +2055,10 @@ public class WeChatLoader {
      */
 
     public interface WechatChatSingleCallBack {
-        public void onBack(String result);
+        public void onBack(int resultCode, String result);
     }
 
     public static void wechatChatSingle(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatChatSingleCallBack chatSingleCallBack,
             final UserBean userBean, final MessageBean messageBean) {
         final Handler loadHandler = new Handler() {
@@ -1537,9 +2068,25 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                chatSingleCallBack.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        chatSingleCallBack.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        chatSingleCallBack.onBack(msg.arg1, "timeOut");
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        chatSingleCallBack.onBack(msg.arg1, "other");
+
+                        break;
+                }
+
 
             }
         };
@@ -1576,28 +2123,43 @@ public class WeChatLoader {
                 params.add(new BasicNameValuePair("t", "ajax-response"));
 
 
-                HttpResponse response = httpPost(WECHAT_URL_CHAT_SINGLE_SEND,
+                ResponseHolder responseHolder = httpPost(WECHAT_URL_CHAT_SINGLE_SEND,
                         headerList, params);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
 
-                } else {
-                    wechatExceptionListener.onError();
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -1606,11 +2168,10 @@ public class WeChatLoader {
     }
 
     public interface WechatGetChatNewItems {
-        public void onBack(String strResult);
+        public void onBack(int resultCode, String strResult);
     }
 
     public static void wechatGetChatNewItems(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetChatNewItems wechatGetChatNewItems, final UserBean userBean,
             final MessageBean messageBean,
             final String lastMsgId,
@@ -1626,9 +2187,24 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                wechatGetChatNewItems.onBack(contentHolder.get("result"));
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatGetChatNewItems.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        wechatGetChatNewItems.onBack(msg.arg1, "timeOut");
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatGetChatNewItems.onBack(msg.arg1, "other");
+                        break;
+                }
 
             }
         };
@@ -1673,29 +2249,43 @@ public class WeChatLoader {
                 paramList.add(new BasicNameValuePair("createtime", createTime));
                 String targetUrl = WECHAT_URL_GET_CHAT_NEW_ITEM;
 
-                HttpResponse response = httpGet(targetUrl, paramList, headerList);
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
 
-                if (response != null) {
 
-                    try {
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
 
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
 
-                    }
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
 
             }
 
@@ -1705,11 +2295,10 @@ public class WeChatLoader {
 
 
     public interface WechatGetNewMessageCountCallBack {
-        public void onBack(String result);
+        public void onBack(int resultCode, String result);
     }
 
     public static void wechatGetNewMessageCount(
-            final WechatExceptionListener wechatExceptionListener,
             final WechatGetNewMessageCountCallBack newMessageCountCallBack, final UserBean userBean, final String lastMsgId) {
         final Handler loadHandler = new Handler() {
 
@@ -1718,10 +2307,23 @@ public class WeChatLoader {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                ContentHolder contentHolder = (ContentHolder) msg.obj;
-                newMessageCountCallBack.onBack(contentHolder.get("result")
-                );
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        newMessageCountCallBack.onBack(msg.arg1, resultHolder.get("result")
+                        );
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        newMessageCountCallBack.onBack(msg.arg1, "timeOut");
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        newMessageCountCallBack.onBack(msg.arg1, "other");
+                        break;
+                }
 
             }
         };
@@ -1751,28 +2353,44 @@ public class WeChatLoader {
                 params.add(new BasicNameValuePair("t", "ajax-getmsgnum"));
                 params.add(new BasicNameValuePair("token", userBean.getToken()));
 
-                HttpResponse response = httpPost(WECHAT_URL_GET_NEW_MESSAGE_COUNT, headerList,
+                ResponseHolder responseHolder = httpPost(WECHAT_URL_GET_NEW_MESSAGE_COUNT, headerList,
                         params);
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
 
-                if (response != null) {
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
 
-                    try {
 
-                        Message message = new Message();
-                        ContentHolder contentHolder = new ContentHolder();
-                        String strResult = EntityUtils.toString(response
-                                .getEntity());
-                        contentHolder.put("result", strResult);
-                        message.obj = contentHolder;
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
 
-                        loadHandler.sendMessage(message);
-                    } catch (Exception exception) {
 
-                    }
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
 
-                } else {
-                    wechatExceptionListener.onError();
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
                 }
+
+
+                loadHandler.sendMessage(message);
+
 
             }
 
@@ -1781,9 +2399,314 @@ public class WeChatLoader {
     }
 
 
-    private static HttpResponse httpPost(String targetUrl,
-                                         ArrayList<NameValuePair> headerArrayList,
-                                         ArrayList<NameValuePair> paramsArrayList) {
+    public interface WechatGetUploadInfo {
+        public void onBack(int resultCode, String strResult);
+    }
+
+    public static void wechatGetUploadInfo(
+            final WechatGetUploadInfo wechatGetUploadInfo, final UserBean userBean
+    ) {
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatGetUploadInfo.onBack(msg.arg1, resultHolder.get("result"));
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        wechatGetUploadInfo.onBack(msg.arg1, "timeOut");
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatGetUploadInfo.onBack(msg.arg1, "other");
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+                headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+                        + userBean.getSlaveSid() + "; " + "slave_user="
+                        + userBean.getSlaveUser()));
+
+                String referer = "https://mp.weixin.qq.com/cgi-bin/appmsg?begin=0&count=10&t=media/appmsg_list&type=10&action=list&token="
+                        + userBean.getToken() + "&lang=zh_CN";
+                headerList.add(new BasicNameValuePair("Referer", referer));
+                headerList.add(new BasicNameValuePair("Content-Type",
+                        "text/html; charset=utf-8"));
+                /*
+
+                begin	0
+                count	10
+                lang	zh_CN
+                t	media/list
+                token	1402799954
+                type	2
+                     */
+                ArrayList<NameValuePair> paramList = new ArrayList<NameValuePair>();
+                paramList.add(new BasicNameValuePair("token", userBean.getToken()));
+                paramList.add(new BasicNameValuePair("lang", "zh_CN"));
+                paramList.add(new BasicNameValuePair("begin", "0"));
+                paramList.add(new BasicNameValuePair("count", "10"));
+                paramList.add(new BasicNameValuePair("t", "media/list"));
+                paramList.add(new BasicNameValuePair("type", "2"));
+                String targetUrl = WECHAT_URL_GET_UPLOAD_INFO;
+
+                ResponseHolder responseHolder = httpGet(targetUrl, paramList, headerList);
+
+
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+
+                            message.obj = resultHolder;
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
+                }
+
+
+                loadHandler.sendMessage(message);
+
+            }
+
+        }.start();
+
+    }
+
+
+    public interface WechatUploadFileCallBack {
+        public void onBack(int resultCode, String result);
+    }
+
+    public static void wechatUploadFile(
+            final WechatUploadFileCallBack wechatUploadFileCallBack,
+            final String filePath, final UserBean userBean,  final String ticket) {
+        final Handler loadHandler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                switch (msg.arg1) {
+                    case WECHAT_RESULT_MESSAGE_OK:
+                        // 此处可以更新UI
+                        ResultHolder resultHolder = (ResultHolder) msg.obj;
+                        wechatUploadFileCallBack.onBack(msg.arg1, resultHolder.get("result")
+                        );
+
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        wechatUploadFileCallBack.onBack(msg.arg1, "timeOut");
+                        break;
+                    case WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        wechatUploadFileCallBack.onBack(msg.arg1, "other");
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                ArrayList<NameValuePair> headerList = new ArrayList<NameValuePair>();
+
+                String referer = "https://mp.weixin.qq.com/cgi-bin/filepage?type=2&begin=0&count=10&t=media/list&token=" + userBean.getToken() + "&lang=zh_CN";
+
+                headerList
+                        .add(new BasicNameValuePair("Referer",
+                                referer));
+
+                headerList.add(new BasicNameValuePair("Cookie", "slave_sid="
+                        + userBean.getSlaveSid() + "; " + "slave_user="
+                        + userBean.getSlaveUser()));
+
+                ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+/*
+                "https://mp.weixin.qq.com/cgi-bin/filetransfer?
+                action=upload_material
+                &f=json
+                &ticket_id=redbot
+                &ticket=a8332dff44d8d48172847c152e2d05c6c5e75997
+                &token=1402799954
+                &lang=zh_CN"*/
+
+                params.add(new BasicNameValuePair("action", "upload_material"));
+                params.add(new BasicNameValuePair("f", "json"));
+                params.add(new BasicNameValuePair("ticket_id", userBean.getUserName()));
+                params.add(new BasicNameValuePair("ticket", ticket));
+                params.add(new BasicNameValuePair("token", userBean.getToken()));
+                params.add(new BasicNameValuePair("lang", "zh_CN"));
+
+                ResponseHolder responseHolder = httpUploadFile(WECHAT_URL_UPLOAD_FILE, filePath, headerList,
+                        params);
+                Message message = new Message();
+                ResultHolder resultHolder = new ResultHolder();
+
+                switch (responseHolder.responseType) {
+                    case ResponseHolder.RESPONSE_TYPE_OK:
+
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_OK;
+                        try {
+
+
+                            String strResult = EntityUtils.toString(responseHolder.response
+                                    .getEntity());
+                            resultHolder.put("result", strResult);
+                            message.obj = resultHolder;
+
+
+                        } catch (Exception exception) {
+
+                            message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+                        }
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT;
+                        break;
+                    case ResponseHolder.RESPONSE_TYPE_ERROR_OTHER:
+
+                        message.arg1 = WECHAT_RESULT_MESSAGE_ERROR_OTHER;
+
+                        break;
+                }
+
+
+                loadHandler.sendMessage(message);
+
+
+            }
+
+        }.start();
+
+    }
+
+
+    private static ResponseHolder httpUploadFile(String targetUrl, String filePath,
+                                                 ArrayList<NameValuePair> headerArrayList,
+                                                 ArrayList<NameValuePair> paramsArrayList) {
+        //about url
+        for (int i = 0; i < paramsArrayList.size(); i++) {
+            NameValuePair nowPair = paramsArrayList.get(i);
+            if (i == 0) {
+                targetUrl += ("?" + nowPair.getName() + "=" + nowPair.getValue());
+            } else {
+                targetUrl += ("&" + nowPair.getName() + "=" + nowPair.getValue());
+            }
+        }
+
+        /* 建立HTTP Post联机 */
+        HttpPost httpRequest = new HttpPost(targetUrl);
+        /*
+         * Post运作传送变量必须用NameValuePair[]数组储存
+		 */
+
+        try {
+            //set entity
+            MultipartEntity multipartEntity = new MultipartEntity();
+
+            File uploadFile = new File(filePath);
+            FileBody fileBody = new FileBody(uploadFile);
+
+            String fileName = uploadFile.getName();
+            Log.e("upload file name", "" + fileName);
+            multipartEntity.addPart("Filename", new StringBody(fileName));
+            multipartEntity.addPart("folder", new StringBody("/cgi-bin/uploads"));
+            multipartEntity.addPart("file", fileBody);
+            multipartEntity.addPart("Upload", new StringBody("Submit Query"));
+            httpRequest.setEntity(multipartEntity);
+
+
+            for (int i = 0; i < headerArrayList.size(); i++) {
+
+                httpRequest.addHeader(headerArrayList.get(i).getName(),
+                        headerArrayList.get(i).getValue());
+
+            }
+
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 100000);
+            HttpConnectionParams.setSoTimeout(httpParams, 30000);
+            HttpClient httpClient = new DefaultHttpClient(httpParams);
+
+			/* 取得HTTP response */
+            HttpResponse httpResponse = httpClient
+                    .execute(httpRequest);
+
+			/* 若状态码为200 ok */
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                /* 取出响应字符串 */
+
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_OK, httpResponse);
+
+            } else {
+                Log.e("errorcode", httpResponse.getStatusLine().toString());
+            }
+        } catch (ClientProtocolException e) {
+            Log.e("upload client pro",""+e);
+
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            Log.e("upload io",""+e);
+            e.printStackTrace();
+            if (e instanceof SocketTimeoutException || e instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT, null);
+            }
+        } catch (Exception e) {
+
+            Log.e("upload ex",""+e);
+            e.printStackTrace();
+        }
+
+        return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_OTHER, null);
+
+    }
+
+    private static ResponseHolder httpPost(String targetUrl,
+                                           ArrayList<NameValuePair> headerArrayList,
+                                           ArrayList<NameValuePair> paramsArrayList) {
         /* 声明网址字符串 */
         /* 建立HTTP Post联机 */
         HttpPost httpRequest = new HttpPost(targetUrl);
@@ -1796,6 +2719,7 @@ public class WeChatLoader {
             httpRequest.setEntity(new UrlEncodedFormEntity(paramsArrayList,
                     HTTP.UTF_8));
 
+
             for (int i = 0; i < headerArrayList.size(); i++) {
 
                 httpRequest.addHeader(headerArrayList.get(i).getName(),
@@ -1803,31 +2727,45 @@ public class WeChatLoader {
 
             }
 
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+            HttpConnectionParams.setSoTimeout(httpParams, 10000);
+            HttpClient httpClient = new DefaultHttpClient(httpParams);
+
 			/* 取得HTTP response */
-            HttpResponse httpResponse = new DefaultHttpClient()
+            HttpResponse httpResponse = httpClient
                     .execute(httpRequest);
 
 			/* 若状态码为200 ok */
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 /* 取出响应字符串 */
 
-                return httpResponse;
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_OK, httpResponse);
+
             } else {
                 Log.e("errorcode", httpResponse.getStatusLine().toString());
             }
         } catch (ClientProtocolException e) {
+
             e.printStackTrace();
         } catch (IOException e) {
+
             e.printStackTrace();
+            if (e instanceof SocketTimeoutException || e instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT, null);
+            }
         } catch (Exception e) {
+
             e.printStackTrace();
         }
-        return null;
+
+        return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_OTHER, null);
 
     }
 
-    private static HttpResponse httpGet(String targetUrl, ArrayList<NameValuePair> paramList,
-                                        ArrayList<NameValuePair> headerArrayList) {
+    private static ResponseHolder httpGet(String targetUrl, ArrayList<NameValuePair> paramList,
+                                          ArrayList<NameValuePair> headerArrayList) {
 
         for (int i = 0; i < paramList.size(); i++) {
             NameValuePair nowPair = paramList.get(i);
@@ -1856,8 +2794,8 @@ public class WeChatLoader {
 
             }
             HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, 60000);
-            HttpConnectionParams.setSoTimeout(httpParams, 50000);
+            HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+            HttpConnectionParams.setSoTimeout(httpParams, 10000);
             /* 取得HTTP response */
             HttpClient httpClient = new DefaultHttpClient(httpParams);
 
@@ -1865,20 +2803,27 @@ public class WeChatLoader {
 
 			/* 若状态码为200 ok */
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				/* 取出响应字符串 */
+                /* 取出响应字符串 */
 
-                return httpResponse;
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_OK, httpResponse);
             } else {
                 Log.e("errorcode", httpResponse.getStatusLine().toString());
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
+
             e.printStackTrace();
+            if (e instanceof SocketTimeoutException || e instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+
+                return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_TIME_OUT, null);
+            }
         } catch (Exception e) {
+
             e.printStackTrace();
         }
-        return null;
+
+        return new ResponseHolder(ResponseHolder.RESPONSE_TYPE_ERROR_OTHER, null);
 
     }
 
@@ -1913,7 +2858,22 @@ public class WeChatLoader {
         return md5StrBuff.toString();
     }
 
-    public static class ContentHolder {
+    public static class ResponseHolder {
+        public static final int RESPONSE_TYPE_OK = 2;
+        public static final int RESPONSE_TYPE_ERROR_TIME_OUT = 3;
+        public static final int RESPONSE_TYPE_ERROR_OTHER = 4;
+        int responseType;
+        HttpResponse response;
+
+        public ResponseHolder(int responseType, HttpResponse response) {
+
+            this.responseType = responseType;
+            this.response = response;
+
+        }
+    }
+
+    public static class ResultHolder {
         private Map<String, String> content = new HashMap<String, String>();
         private Map<String, Object> extra = new HashMap<String, Object>();
 

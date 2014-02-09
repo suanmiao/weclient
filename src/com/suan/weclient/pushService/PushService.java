@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.util.GlobalContext;
@@ -135,8 +136,10 @@ public class PushService extends Service {
             //try it,just get profile
 
             justGetNewMessage(mDatamanager, index, lastMsgId, new WechatManager.OnActionFinishListener() {
+
                 @Override
                 public void onFinish(int code, Object object) {
+
                     if (code == WechatManager.ACTION_SUCCESS) {
                         int newMessageCount = (Integer) object;
                         logic(newMessageCount, userHolder, index);
@@ -157,6 +160,7 @@ public class PushService extends Service {
                                     justGetNewMessage(mDatamanager, index, lastMsgId, new WechatManager.OnActionFinishListener() {
                                         @Override
                                         public void onFinish(int code, Object object) {
+
                                             if (code == WechatManager.ACTION_SUCCESS) {
 
                                                 int newMessageCount = (Integer) object;
@@ -166,6 +170,18 @@ public class PushService extends Service {
 
                                         }
                                     });
+
+                                } else {
+                                    switch (code) {
+                                        case WechatManager.ACTION_TIME_OUT:
+
+                                            Toast.makeText(PushService.this, "连接异常:连接超时", Toast.LENGTH_LONG).show();
+                                            break;
+                                        case WechatManager.ACTION_OTHER:
+
+                                            Toast.makeText(PushService.this, "连接异常:连接失败", Toast.LENGTH_LONG).show();
+                                            break;
+                                    }
 
                                 }
 
@@ -188,7 +204,7 @@ public class PushService extends Service {
     }
 
     private void getNewMessageAfterLogin(DataManager mDatamanager, int userIndex, WechatManager.OnActionFinishListener onActionFinishListener) {
-        mDatamanager.getWechatManager().login(userIndex, WechatManager.DIALOG_POP_NO, false, onActionFinishListener);
+        mDatamanager.getWechatManager().login(userIndex, WechatManager.DIALOG_POP_NO, onActionFinishListener);
 
     }
 
@@ -239,9 +255,10 @@ public class PushService extends Service {
     private void showNotification(int amount, String accountName, int index) {
 
         boolean activityRunning = SharedPreferenceManager.getActivityRunning(this);
+
         if (!activityRunning) {
 
-            messageNotification.createNotification(amount, accountName,index);
+            messageNotification.createNotification(amount, accountName, index);
 
             //update notify time
 

@@ -35,6 +35,7 @@ import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.MessageBean;
+import com.suan.weclient.util.data.MessageHolder;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -70,10 +71,18 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
         this.mDataManager = dataManager;
         this.mContext = context;
         this.mListCacheManager = new ListCacheManager();
+
+        //when user index change
+        mDataManager.addUserIndexChangeListener(new DataManager.UserIndexChangeListener() {
+            @Override
+            public void onChange(int oldIndex, int nowIndex) {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     private ArrayList<MessageBean> getMessageItems() {
-        if (mDataManager.getUserGroup().size() == 0) {
+       if (mDataManager.getUserGroup().size() == 0) {
             ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
             return blankArrayList;
         }
@@ -275,7 +284,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                 case MessageBean.MESSAGE_TYPE_EMPTY:
 
-
                     break;
 
                 default:
@@ -453,13 +461,12 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     private void setVoiceMessageContent(final ItemViewHolder holder,
                                         final int position) {
 
-
         boolean voiceLoaded = false;
         if (holder.voicePlayLayout.getTag() != null) {
             voiceLoaded = true;
         }
 
-        if (!mBusy && !voiceLoaded) {
+        if (!mBusy || !voiceLoaded) {
             mDataManager.getWechatManager().getMessageVoice(
                     mDataManager.getCurrentPosition(),
                     getMessageItems().get(position).getId(),
@@ -470,29 +477,29 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         @Override
                         public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
-                            try {
+                            if (code == WechatManager.ACTION_SUCCESS) {
+                                if (object != null) {
+                                    byte[] bytes = (byte[]) object;
+                                    VoiceHolder voiceHolder = new VoiceHolder(
+                                            bytes, getMessageItems().get(position)
+                                            .getPlayLength(),
+                                            getMessageItems().get(position)
+                                                    .getLength());
+                                    int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                                    int seconds = playLength / 1000;
+                                    int minutes = seconds / 60;
+                                    int leaveSecond = seconds % 60;
+                                    String info = "";
+                                    if (minutes != 0) {
+                                        info += minutes + "'";
 
-                                byte[] bytes = (byte[]) object;
-                                VoiceHolder voiceHolder = new VoiceHolder(
-                                        bytes, getMessageItems().get(position)
-                                        .getPlayLength(),
-                                        getMessageItems().get(position)
-                                                .getLength());
-                                int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
-                                int seconds = playLength / 1000;
-                                int minutes = seconds / 60;
-                                int leaveSecond = seconds % 60;
-                                String info = "";
-                                if (minutes != 0) {
-                                    info += minutes + "'";
+                                    }
+                                    info += " " + leaveSecond + "'";
+                                    holder.voiceInfoTextView.setText(info);
+
+                                    holder.voicePlayLayout.setTag(voiceHolder);
 
                                 }
-                                info += " " + leaveSecond + "'";
-                                holder.voiceInfoTextView.setText(info);
-
-                                holder.voicePlayLayout.setTag(voiceHolder);
-
-                            } catch (Exception exception) {
 
                             }
 
@@ -565,8 +572,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                 // TODO Auto-generated method stub
                 Intent jumbIntent = new Intent();
                 jumbIntent.setClass(mContext, ShowImgActivity.class);
-                mDataManager.createImgHolder(getMessageItems().get(position),mDataManager.getCurrentUser());
-               mContext.startActivity(jumbIntent);
+                mDataManager.createImgHolder(getMessageItems().get(position), mDataManager.getCurrentUser());
+                mContext.startActivity(jumbIntent);
 
             }
         });
@@ -591,13 +598,19 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                             @Override
                             public void onFinish(int code, Object object) {
                                 // TODO Auto-generated method stub
-                                holder.contentImageView.setTag(true);
-                                Bitmap bitmap = (Bitmap) object;
-                                mDataManager.getCacheManager().putBitmap(
-                                        ImageCacheManager.CACHE_MESSAGE_CONTENT
-                                                + getMessageItems().get(
-                                                position).getId(),
-                                        bitmap, true);
+                                if (code == WechatManager.ACTION_SUCCESS) {
+                                    if (object != null) {
+                                        holder.contentImageView.setTag(true);
+                                        Bitmap bitmap = (Bitmap) object;
+                                        mDataManager.getCacheManager().putBitmap(
+                                                ImageCacheManager.CACHE_MESSAGE_CONTENT
+                                                        + getMessageItems().get(
+                                                        position).getId(),
+                                                bitmap, true);
+
+                                    }
+
+                                }
 
                             }
                         });
@@ -615,16 +628,15 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             imgLoaded = (Boolean) holder.profileImageView.getTag();
         }
 
-        if (!mBusy || !imgLoaded) {
+        Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
+                ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
+                        + getMessageItems().get(position).getFakeId());
+        if (headBitmap != null) {
+            holder.profileImageView.setImageBitmap(headBitmap);
 
-            Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
-                    ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                            + getMessageItems().get(position).getFakeId());
-            if (headBitmap != null) {
-               holder.profileImageView.setImageBitmap(headBitmap);
-
-            } else {
-               mDataManager.getWechatManager().getMessageHeadImg(
+        } else {
+            if (!mBusy || !imgLoaded) {
+                mDataManager.getWechatManager().getMessageHeadImg(
                         mDataManager.getCurrentPosition(),
                         getMessageItems().get(position).getFakeId(),
                         getMessageItems().get(position).getReferer(),
@@ -635,25 +647,26 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         // TODO Auto-generated method stub
 
                         if (code == WechatManager.ACTION_SUCCESS) {
-                            Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap)object,
-                                    Util.dipToPx(30, mContext.getResources()), 10,
-                                    Color.parseColor("#c6c6c6"));
-                            holder.profileImageView.setImageBitmap(roundBitmap);
-                            holder.profileImageView.setTag(true);
+                            if (object != null) {
+                                Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
+                                        Util.dipToPx(30, mContext.getResources()), 10,
+                                        Color.parseColor("#c6c6c6"));
+                                holder.profileImageView.setImageBitmap(roundBitmap);
+                                holder.profileImageView.setTag(true);
 
-                            mDataManager.getCacheManager().putBitmap(
-                                    ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                                            + getMessageItems().get(
-                                            position).getFakeId(),
-                                    roundBitmap, true);
+                                mDataManager.getCacheManager().putBitmap(
+                                        ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
+                                                + getMessageItems().get(
+                                                position).getFakeId(),
+                                        roundBitmap, true);
+
+                            }
 
                         }
                     }
                 });
 
             }
-        }else{
-
         }
     }
 
@@ -665,7 +678,12 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v;
-        if (!mListCacheManager.containView(getMessageId(position))) {
+/*        if(getMessageItems().get(position).getType()==MessageBean.MESSAGE_TYPE_VOICE){
+
+            Log.e("contain",""+mListCacheManager.containView(getMessageId(position)));
+
+        }
+ */       if (!mListCacheManager.containView(getMessageId(position))) {
             v = newView(position);
             mListCacheManager.putView(v, getMessageId(position));
         } else {

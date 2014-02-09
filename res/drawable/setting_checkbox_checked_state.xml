@@ -3,7 +3,7 @@
 	
 	<item>
         <shape  android:shape="oval" >
-            <gradient android:startColor="#4f9acf" android:endColor="#4f9acf"
+            <gradient android:startColor="@color/setting_checkbox_pressed" android:endColor="@color/setting_checkbox_pressed"
                 android:angle="270"/>
         </shape>
 

@@ -12,45 +12,44 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.FansListAdapter;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.FansListChangeListener;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomFansActionView;
+import com.suan.weclient.view.ptr.PTRListview;
 
 public class FansListActivity extends SherlockActivity implements
-		OnRefreshListener<ListView> {
+        PTRListview.OnLoadListener, PTRListview.OnRefreshListener {
 
     private ActionBar actionBar;
-	private PullToRefreshListView mRefreshListView;
-	private FansListAdapter fansListAdapter;
-	private DataManager mDataManager;
-	private FansHandler fansHandler;
-	private static final int PAGE_FANS = 10;
+    private PTRListview ptrListview;
+    private FansListAdapter fansListAdapter;
+    private DataManager mDataManager;
+    private FansHandler fansHandler;
+    private static final int PAGE_FANS = 10;
 
-	public void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
-		setContentView(R.layout.fans_list_layout);
+    public void onCreate(Bundle arg0) {
+        super.onCreate(arg0);
+        setContentView(R.layout.fans_list_layout);
         initWidgets();
         initData();
-        actionBar = getSupportActionBar();
         initActionBar();
-		initListener();
+        initListener();
 
-	}
+    }
 
-	private void initWidgets() {
+    private void initWidgets() {
 
-		mRefreshListView = (PullToRefreshListView) findViewById(R.id.fans_list);
+        ptrListview = (PTRListview) findViewById(R.id.fans_list);
 
-	}
+    }
 
 
     private void initActionBar() {
@@ -61,172 +60,202 @@ public class FansListActivity extends SherlockActivity implements
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayUseLogoEnabled(false);
 
-
         CustomFansActionView customFansActionView = new CustomFansActionView(this);
-       customFansActionView.init(mDataManager,this);
+        customFansActionView.init(mDataManager, this);
 
-       ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(ActionMenuView.LayoutParams.MATCH_PARENT,
                 ActionMenuView.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(customFansActionView, layoutParams);
 
 
     }
 
-	private void initData() {
+    private void initData() {
 
 
-		GlobalContext globalContext = (GlobalContext) getApplicationContext();
-		mDataManager = globalContext.getDataManager();
-		fansListAdapter = new FansListAdapter(this, mDataManager);
-		mRefreshListView.setAdapter(fansListAdapter);
-		mRefreshListView.setOnRefreshListener(this);
-		fansHandler = new FansHandler();
+        GlobalContext globalContext = (GlobalContext) getApplicationContext();
+        mDataManager = globalContext.getDataManager();
+        fansListAdapter = new FansListAdapter(this, mDataManager);
+        ptrListview.setAdapter(fansListAdapter);
+        ptrListview.setonRefreshListener(this);
+        ptrListview.setOnLoadListener(this);
+        ptrListview.onRefreshStart();
+        fansHandler = new FansHandler();
 
-		mDataManager.getWechatManager().getFansList(0,
-				mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
-				new OnActionFinishListener() {
+        mDataManager.getWechatManager().getFansList(0,
+                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                new OnActionFinishListener() {
 
-					@Override
-					public void onFinish(int code,Object object) {
-						// TODO Auto-generated method stub
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        // TODO Auto-generated method stub
 
-						Message message = new Message();
-						message.obj = object;
+                        Message message = new Message();
+                        message.obj = object;
+                        message.arg1 = PTRListview.PTR_MODE_REFRESH;
 
-						fansHandler.sendMessage(message);
+                        fansHandler.sendMessage(message);
 
-					}
-				});
+                    }
+                });
 
-	}
+    }
 
-	private void initListener() {
-		mDataManager.addFansListChangeListener(new FansListChangeListener() {
+    private void initListener() {
+        mDataManager.addFansListChangeListener(new FansListChangeListener() {
 
-			@Override
-			public void onFansGet(boolean changed) {
-				// TODO Auto-generated method stub
-                Log.e("fans get",""+mDataManager.getCurrentFansHolder().getCurrentGroupIndex());
-				if (changed) {
-					fansListAdapter.updateCache();
-					fansListAdapter.notifyDataSetChanged();
-				} else {
-					Toast.makeText(FansListActivity.this, "没有新粉丝", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onFansGet(int mode) {
+                // TODO Auto-generated method stub
 
-				}
+                switch (mode) {
+                    case PTRListview.PTR_MODE_LOAD:
+                        ptrListview.onLoadComplete();
+                        break;
+                    case PTRListview.PTR_MODE_REFRESH:
 
-			}
-		});
+                        ptrListview.onRefreshComplete();
+                        break;
+                }
+                fansListAdapter.notifyDataSetChanged();
 
-	}
+            }
+        });
 
-	public class FansHandler extends Handler {
+    }
 
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
+    @Override
+    public void onLoad() {
 
-			super.handleMessage(msg);
-			Boolean changed = (Boolean) msg.obj;
-			mDataManager.doFansGet(changed);
+        new GetDataTask(ptrListview, GetDataTask.PTR_MODE_LOAD).execute();
+    }
 
-		}
-	}
+    @Override
+    public void onRefresh() {
 
-	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		// TODO Auto-generated method stub
+        new GetDataTask(ptrListview, GetDataTask.PTR_MODE_REFRESH).execute();
+    }
 
-		new GetDataTask(refreshView).execute();
+    public class FansHandler extends Handler {
 
-	}
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
 
-	private class GetDataTask extends AsyncTask<Void, Void, Void> {
+            super.handleMessage(msg);
+            mDataManager.doFansGet(msg.arg1);
 
-		PullToRefreshBase<?> mRefreshedView;
-		private boolean end = false;
+        }
+    }
 
-		public GetDataTask(PullToRefreshBase<?> refreshedView) {
-			mRefreshedView = refreshedView;
-			end = false;
-			if (mDataManager.getCurrentFansHolder() == null) {
-				end = true;
-				return;
-			}
+    private class GetDataTask extends AsyncTask<Void, Void, Void> {
 
-			try {
-				if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_END) {
+        PTRListview mRefreshedView;
+        private boolean end = false;
+        private int mode;
 
-					if (mDataManager.getCurrentFansHolder().getFansBeans()
-							.size()
-							% PAGE_FANS != 0) {
-						end = true;
-					} else {
-						int page = mDataManager.getCurrentFansHolder()
-								.getFansBeans().size() / 10;
+        public static final int PTR_MODE_REFRESH = 2;
+        public static final int PTR_MODE_LOAD = 3;
 
-						mDataManager.getWechatManager().getFansList(page,
-								mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
-								new OnActionFinishListener() {
+        public GetDataTask(PTRListview refreshedView, int mode) {
+            this.mode = mode;
+            mRefreshedView = refreshedView;
+            end = false;
+            if (mDataManager.getCurrentFansHolder() == null) {
+                end = true;
+                ptrListview.onLoadComplete();
 
-									@Override
-									public void onFinish(int code,Object object) {
-										// TODO Auto-generated method stub
-										Message message = new Message();
-										message.obj = object;
+                return;
+            }
 
-										fansHandler.sendMessage(message);
-										end = true;
+            try {
+                if (mode == PTR_MODE_LOAD) {
 
-									}
-								});
+                    if (mDataManager.getCurrentFansHolder().getFansBeans()
+                            .size()
+                            % PAGE_FANS != 0) {
+                        end = true;
+                        mRefreshedView.onLoadComplete();
+                    } else {
+                        int page = mDataManager.getCurrentFansHolder()
+                                .getFansBeans().size() / 10;
 
-					}
-				} else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
-					mDataManager.getWechatManager().getFansList(0,
-							mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                        mDataManager.getWechatManager().getFansList(page,
+                                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                                new OnActionFinishListener() {
 
-							new OnActionFinishListener() {
+                                    @Override
+                                    public void onFinish(int code, Object object) {
+                                        // TODO Auto-generated method stub
+                                        Message message = new Message();
+                                        message.obj = object;
+                                        message.arg1 = PTRListview.PTR_MODE_LOAD;
+
+                                        fansHandler.sendMessage(message);
+                                        end = true;
+
+                                    }
+                                });
+
+                    }
+                } else if (mode == PTR_MODE_REFRESH) {
+                    mDataManager.getWechatManager().getFansList(0,
+                            mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+
+                            new OnActionFinishListener() {
 
 
-								@Override
-								public void onFinish(int code,Object object) {
-									// TODO Auto-generated method stub
-									Message message = new Message();
-									message.obj = object;
+                                @Override
+                                public void onFinish(int code, Object object) {
+                                    // TODO Auto-generated method stub
+                                    Message message = new Message();
+                                    message.obj = object;
+                                    message.arg1 = PTRListview.PTR_MODE_REFRESH;
 
-									fansHandler.sendMessage(message);
-									end = true;
+                                    fansHandler.sendMessage(message);
+                                    end = true;
 
-								}
-							});
+                                }
+                            });
 
-				}
-			} catch (Exception e) {
+                }
+            } catch (Exception e) {
 
-			}
-		}
+            }
+        }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			// Simulates a background job.
-			try {
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
 
-				while (!end) {
-					Thread.sleep(50);
-				}
+                while (!end) {
+                    Thread.sleep(50);
+                }
 
-			} catch (Exception exception) {
+            } catch (Exception exception) {
 
-			}
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		@Override
-		protected void onPostExecute(Void result) {
-			mRefreshedView.onRefreshComplete();
-			super.onPostExecute(result);
-		}
-	}
+        @Override
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+            switch (mode) {
+                case PTRListview.PTR_MODE_LOAD:
+                    mRefreshedView.onLoadComplete();
+
+                    break;
+                case PTRListview.PTR_MODE_REFRESH:
+                    mRefreshedView.onRefreshComplete();
+
+                    break;
+
+            }
+
+        }
+    }
 }

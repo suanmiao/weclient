@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +40,9 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
+import com.suan.weclient.util.net.DataParser;
+import com.suan.weclient.util.net.UploadHelper;
+import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.text.EmotionHandler;
@@ -62,6 +66,10 @@ public class MassFragment extends Fragment {
     private Button sendButton;
     private View view;
     private EmotionHandler emotionHandler;
+
+    public MassFragment() {
+
+    }
 
     public MassFragment(DataManager dataManager) {
 
@@ -199,12 +207,17 @@ public class MassFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-/*
-                emotionHandler.insert("/::~");
-                String unspanned = SpanUtil.getUnspannedContentString(contentEditText);
-                Log.e("content", "" + unspanned);
-*/
 
+                mDataManager.getWechatManager().getUploadInfo(mDataManager.getCurrentPosition(), new OnActionFinishListener() {
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        if (code == WechatManager.ACTION_SUCCESS) {
+                            Log.e("get info success", "" + mDataManager.getCurrentMessageHolder().getUploadHelper().getTicket());
+
+                        }
+
+                    }
+                });
 
                 if (mDataManager.getUserGroup().size() == 0) {
                     sendButton.setSelected(true);
@@ -337,7 +350,7 @@ public class MassFragment extends Fragment {
 
                 contentEditText.setText("");
 
-                mDataManager.doPopEnsureDialog(false, true,"恭喜", "群发成功",
+                mDataManager.doPopEnsureDialog(false, true, "恭喜", "群发成功",
                         new DialogSureClickListener() {
 
                             @Override

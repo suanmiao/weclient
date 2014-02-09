@@ -12,6 +12,7 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.FansGroupBean;
 import com.suan.weclient.util.data.FansHolder;
 import com.suan.weclient.util.net.WechatManager;
+import com.suan.weclient.view.ptr.PTRListview;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class SFansDropListWindow extends PopupWindow {
     private void initListener(){
         mDataManager.addFansListChangeListener(new DataManager.FansListChangeListener() {
             @Override
-            public void onFansGet(boolean changed) {
+            public void onFansGet(int mode) {
                 getData();
 
             }
@@ -60,8 +61,7 @@ public class SFansDropListWindow extends PopupWindow {
                 mDataManager.getWechatManager().getFansList(0,mDataManager.getCurrentPosition(),mDataManager.getCurrentFansHolder().getCurrentGroupId(),new WechatManager.OnActionFinishListener() {
                     @Override
                     public void onFinish(int code,Object object) {
-                        Boolean change = (Boolean)object;
-                        mDataManager.doFansGet(change);
+                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
 
                     }
                 });
@@ -72,8 +72,7 @@ public class SFansDropListWindow extends PopupWindow {
                      @Override
                      public void onFinish(int code,Object object) {
 
-                        Boolean change = (Boolean)object;
-                        mDataManager.doFansGet(change);
+                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
                      }
                  });
 

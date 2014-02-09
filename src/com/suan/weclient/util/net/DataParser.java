@@ -1,8 +1,5 @@
 package com.suan.weclient.util.net;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,14 +12,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.data.AppItemBean;
+import com.suan.weclient.util.data.AppItemHolder;
 import com.suan.weclient.util.data.ChatHolder;
 import com.suan.weclient.util.data.FansBean;
 import com.suan.weclient.util.data.FansGroupBean;
@@ -33,11 +29,9 @@ import com.suan.weclient.util.data.UserBean;
 
 public class DataParser {
 
-    public static final int PARSE_LOGIN_SUCCESS = 1;
-    public static final int PARSE_LOGIN_FAILED = 0;
+    public static final int PARSE_SUCCESS = 1;
+    public static final int PARSE_FAILED = 2;
     public static final int RET_LOGIN_SUCCESS = 302;
-    public static final int GET_MESSAGE_SUCCESS = 1;
-    public static final int GET_MESSAGE_FAILED = 0;
 
     public static final int GET_USER_PROFILE_SUCCESS = 1;
     public static final int GET_USER_PROFILE_FAILED = 0;
@@ -238,17 +232,13 @@ public class DataParser {
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
 
-
-                                if (!(messageHolder.getLatestMsgId().equals(latestMsgId) && messageHolder.getContentMessageMode() == messageHolder.getNowMessageMode())) {
-                                    // when the message is list changed
-                                    messageHolder.setMessage(getMessageList);
-                                    messageHolder.setLatestMsgId(latestMsgId);
-                                    messageHolder.getUserBean().setLastMsgId(latestMsgId);
-                                    messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
-                                } else {
-
-                                }
-
+                                /*
+                                remove the compare of old and new message list
+                                 */
+                                messageHolder.setMessage(getMessageList);
+                                messageHolder.setLatestMsgId(latestMsgId);
+                                messageHolder.getUserBean().setLastMsgId(latestMsgId);
+                                messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
 
                                 if (getMessageList.size() == 0) {
                                     MessageBean emptyMessage = new MessageBean();
@@ -321,6 +311,7 @@ public class DataParser {
                         JSONObject contentObject = getMessageArray(nowElement.html());
                         if (contentObject != null) {
                             try {
+                                Log.e("parse next ", "" + messageHolder.getNowMessageMode());
                                 JSONArray getArray = contentObject.getJSONArray("messageArray");
                                 ArrayList<MessageBean> getMessageList = getMessageItems(
                                         getArray, userBean, referer);
@@ -346,6 +337,174 @@ public class DataParser {
                     }
                 }
             }
+        }.start();
+
+    }
+
+
+    public interface AppMsgListParseCallBack {
+        public void onBack(int code, AppItemHolder appItemHolder);
+    }
+
+    public static void parseAppMsgList(
+            final AppMsgListParseCallBack messageListParseCallBack,
+            final String source, final UserBean userBean,
+            final String referer) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        messageListParseCallBack.onBack(msg.arg1, (AppItemHolder) msg.obj);
+                        break;
+                    case PARSE_FAILED:
+
+                        messageListParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                try {
+                    JSONObject contentObject = new JSONObject(source);
+                    JSONObject appContentObject = contentObject.getJSONObject("app_msg_info");
+                    JSONArray appItemArray = appContentObject.getJSONArray("item");
+                    JSONObject appInfoObject = appContentObject.getJSONObject("file_cnt");
+
+
+                    AppItemHolder appItemHolder = new AppItemHolder();
+
+                    Gson gson = new Gson();
+                    appItemHolder = (AppItemHolder) gson.fromJson(appInfoObject.toString(), AppItemHolder.class);
+                    ArrayList<AppItemBean> appItemBeans = new ArrayList<AppItemBean>();
+                    for (int i = 0; i < appItemArray.length(); i++) {
+                        JSONObject nowItemObject = appItemArray.getJSONObject(i);
+
+                        AppItemBean nowItemBean = gson.fromJson(nowItemObject.toString(), AppItemBean.class);
+                        appItemBeans.add(nowItemBean);
+
+                    }
+                    appItemHolder.setAppItemBeans(appItemBeans);
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = appItemHolder;
+
+
+                } catch (Exception e) {
+                    Log.e("app list parse error", "" + e);
+                    message.arg1 = PARSE_FAILED;
+
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+
+        }.start();
+
+    }
+
+
+    public interface UploadInfoParseCallBack {
+        public void onBack(int code);
+    }
+
+    public static void parseUploadInfo(
+            final UploadInfoParseCallBack uploadInfoParseCallBack,
+            final String source,  final UploadHelper uploadHelper) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        uploadInfoParseCallBack.onBack(msg.arg1);
+                        break;
+                    case PARSE_FAILED:
+
+                        uploadInfoParseCallBack.onBack(msg.arg1);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                try {
+
+                    String ticket = getTickets(source);
+                    Log.e("get ticket",""+ticket);
+                    if (ticket != null) {
+                        uploadHelper.setTicket(ticket);
+
+                        message.arg1 = PARSE_SUCCESS;
+                    } else {
+                        message.arg1 = PARSE_FAILED;
+
+                    }
+
+                } catch (Exception e) {
+                    Log.e("upload info parse error", "" + e);
+                    message.arg1 = PARSE_FAILED;
+
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+            private String getTickets(String source) {
+                String result = null;
+                String regx = "data:(\\{[^\\}]*)";
+
+                Pattern pattern = Pattern.compile(regx);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+
+                    String dataString = matcher.group(1);
+                    Log.e("get data",""+dataString);
+                    if (dataString != null) {
+                        regx = "ticket:\"([^\"]*)\"";
+                        pattern = Pattern.compile(regx);
+                        matcher = pattern.matcher(dataString);
+                        while (matcher.find()) {
+                            String ticket = matcher.group(1);
+                            return ticket;
+
+                        }
+
+                    }
+
+
+                }
+
+
+                return result;
+            }
+
         }.start();
 
     }
@@ -386,7 +545,7 @@ public class DataParser {
             if (ret != RET_LOGIN_SUCCESS) {
                 Log.e("login failed", strResult);
 
-                return PARSE_LOGIN_FAILED;
+                return PARSE_FAILED;
 
             }
 
@@ -396,10 +555,10 @@ public class DataParser {
             }
         } catch (Exception exception) {
             Log.e("login exception fuck", exception + "");
-            return PARSE_LOGIN_FAILED;
+            return PARSE_FAILED;
 
         }
-        return PARSE_LOGIN_SUCCESS;
+        return PARSE_SUCCESS;
 
     }
 

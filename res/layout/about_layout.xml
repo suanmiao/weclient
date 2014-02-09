@@ -1,57 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#dbdbdb"
-	android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededed"
+    android:orientation="vertical">
 
-	<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		 >
-		<LinearLayout
-            android:background="#dbdbdb"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" >
-			<RelativeLayout
-				android:layout_width="fill_parent"
-				android:layout_height="90dip" >
-				<ImageView
-					android:id="@+id/about_img_title"
-					android:layout_width="70dip"
-					android:layout_height="70dip"
-					android:layout_centerInParent="true"
-					android:background="@drawable/icon" />
-			</RelativeLayout>
-			<RelativeLayout
-				android:layout_marginTop="1dip"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" >
-				<TextView
-					android:id="@+id/about_text_version"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_centerInParent="true"
-					android:textSize="10dip" />
-			</RelativeLayout>
-			<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
-				<TextView
-					android:id="@+id/about_text_intro"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginBottom="10dip"
-					android:layout_marginLeft="15dip"
-					android:layout_marginRight="15dip"
-					android:layout_marginTop="20dip"
-					android:gravity="top|left"
-					android:text="@string/feedback_text"
-					android:textColor="#6f6f6f"
-					android:textSize="15dip" />
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <LinearLayout
+            android:id="@+id/fuck_scroll"
+            android:background="#ededed"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <LinearLayout
+                android:id="@+id/fuck_red_bg"
+                android:background="#ededed"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="90dip">
+
+                    <ImageView
+                        android:id="@+id/about_img_title"
+                        android:layout_width="70dip"
+                        android:layout_height="70dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="1dip"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/about_text_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="10dip" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/about_text_intro"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dip"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="15dip"
+                        android:layout_marginTop="20dip"
+                        android:gravity="top|left"
+                        android:text="@string/feedback_text"
+                        android:textColor="#6f6f6f"
+                        android:textSize="15dip" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

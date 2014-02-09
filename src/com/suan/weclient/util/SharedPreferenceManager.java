@@ -131,7 +131,7 @@ public class SharedPreferenceManager {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 PUSH_STATE_SHAREDPREF, Context.MODE_MULTI_PROCESS);
-        return sharedPreferences.getBoolean(PUSH_NOTIFY_WHOLE_GROUP, true);
+        return sharedPreferences.getBoolean(PUSH_NOTIFY_WHOLE_GROUP, false);
     }
 
     public static boolean putPushNotifyWholeGroup(Context context, boolean close) {

@@ -55,6 +55,10 @@ public class LeftFragment extends Fragment {
     private ImageView showListView;
     private DataManager mDataManager;
 
+    public LeftFragment() {
+
+    }
+
     public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
         mFragmentManager = fragmentManager;
         mDataManager = dataManager;
@@ -76,7 +80,7 @@ public class LeftFragment extends Fragment {
         userListFragment = new UserListFragment(mDataManager);
 
 
-        FragmentTransaction t = mFragmentManager
+        FragmentTransaction t = getActivity().getSupportFragmentManager()
                 .beginTransaction();
 
         t.replace(R.id.left_layout_profile, profileFragment);
@@ -126,7 +130,7 @@ public class LeftFragment extends Fragment {
             @Override
             public void onGet(UserBean userBean) {
 
-                String nickName = Util.getShortString(userBean.getNickname(),10,3);
+                String nickName = Util.getShortString(userBean.getNickname(), 10, 3);
                 headTextView.setText(nickName);
 
 
@@ -138,19 +142,26 @@ public class LeftFragment extends Fragment {
                     headImageView.setImageBitmap(imgBitmap);
 
                 } else {
-                    mDataManager.getWechatManager().getUserImgDirectly(WechatManager.DIALOG_POP_NO, false,
+                    mDataManager.getWechatManager().getUserImgDirectly(WechatManager.DIALOG_POP_NO,
                             mDataManager.getCurrentPosition(), headImageView, new OnActionFinishListener() {
 
                         @Override
                         public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
-                            Bitmap nowUserBitmap = (Bitmap) object;
-                            mDataManager.getCacheManager().putBitmap(
-                                    ImageCacheManager.CACHE_USER_PROFILE
-                                            + mDataManager.getUserGroup()
-                                            .get(mDataManager.getCurrentPosition())
-                                            .getUserName(),
-                                    nowUserBitmap, true);
+                            if (code == WechatManager.ACTION_SUCCESS) {
+                                if (object != null) {
+                                    Bitmap nowUserBitmap = (Bitmap) object;
+                                    mDataManager.getCacheManager().putBitmap(
+                                            ImageCacheManager.CACHE_USER_PROFILE
+                                                    + mDataManager.getUserGroup()
+                                                    .get(mDataManager.getCurrentPosition())
+                                                    .getUserName(),
+                                            nowUserBitmap, true);
+
+                                }
+
+
+                            }
 
                         }
                     });

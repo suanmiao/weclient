@@ -13,6 +13,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
+import com.suan.weclient.view.ptr.PTRListview;
 
 public class SMainDropListWindow extends PopupWindow {
 
@@ -46,72 +47,68 @@ public class SMainDropListWindow extends PopupWindow {
             switch (position) {
                 case 0:
 
-                        mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_ALL);
-                        mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                            @Override
-                            public void onFinish(int code,Object object) {
-                                mDataManager
-                                        .doMessageGet();
-                                mDataManager
-                                        .doAutoLoginEnd();
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_ALL);
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            mDataManager
+                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                            mDataManager
+                                    .doAutoLoginEnd();
 
-                            }
-                        });
+                        }
+                    });
 
                     break;
 
                 case 1:
 
-                        mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_TODAY);
-                        mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                            @Override
-                            public void onFinish(int code,Object object) {
-                                mDataManager
-                                        .doMessageGet();
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_TODAY);
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            mDataManager
+                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
 
-                            }
-                        });
+                        }
+                    });
 
                     break;
 
                 case 2:
 
-                        mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_YESTERDAY);
-                        mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                            @Override
-                            public void onFinish(int code,Object object) {
-                                mDataManager
-                                        .doMessageGet();
-
-                            }
-                        });
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_YESTERDAY);
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            mDataManager
+                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                        }
+                    });
 
                     break;
                 case 3:
 
-                        mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_OLDER);
-                        mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                            @Override
-                            public void onFinish(int code,Object object) {
-                                mDataManager
-                                        .doMessageGet();
-
-                            }
-                        });
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_OLDER);
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            mDataManager
+                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                        }
+                    });
 
                     break;
                 case 4:
 
-
-                        mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_STAR);
-                        mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                            @Override
-                            public void onFinish(int code,Object object) {
-                                mDataManager
-                                        .doMessageGet();
-
-                            }
-                        });
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_STAR);
+                    mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
+                        @Override
+                        public void onFinish(int code, Object object) {
+                            mDataManager
+                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                        }
+                    });
 
 
                     break;

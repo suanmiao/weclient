@@ -63,7 +63,7 @@ public class CustomFansActionView extends LinearLayout {
     private void initListener() {
         mDataManager.addFansListChangeListener(new DataManager.FansListChangeListener() {
             @Override
-            public void onFansGet(boolean changed) {
+            public void onFansGet(int mode) {
                 if (mDataManager.getCurrentFansHolder().getFansGroupBeans().size() > 0) {
                     FansHolder currentFansHolder = mDataManager.getCurrentFansHolder();
                     int currentGroupIndex = currentFansHolder.getCurrentGroupIndex();

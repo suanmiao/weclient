@@ -33,6 +33,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.FansBean;
 import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
@@ -437,16 +438,22 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
-                                Util.dipToPx(30, mContext.getResources()), 10,
-                                Color.parseColor("#c6c6c6"));
+                        if (code == WechatManager.ACTION_SUCCESS) {
+                            if (object != null) {
+                                Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
+                                        Util.dipToPx(30, mContext.getResources()), 10,
+                                        Color.parseColor("#c6c6c6"));
 
-                        mDataManager.getCacheManager().putBitmap(
-                                ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                                        + getFansItems().get(position)
-                                        .getFansId(), roundBitmap, true);
-                        holder.profileImageView.setImageBitmap(roundBitmap);
-                        holder.profileImageView.setTag(roundBitmap);
+                                mDataManager.getCacheManager().putBitmap(
+                                        ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
+                                                + getFansItems().get(position)
+                                                .getFansId(), roundBitmap, true);
+                                holder.profileImageView.setImageBitmap(roundBitmap);
+                                holder.profileImageView.setTag(roundBitmap);
+
+                            }
+
+                        }
 
                     }
                 });

@@ -41,6 +41,10 @@ public class ContentFragment extends Fragment implements
 
     private DataManager mDataChangeListener;
 
+    public ContentFragment(){
+
+    }
+
     public ContentFragment(DataManager dataManager) {
         initListener(dataManager);
     }

@@ -82,9 +82,9 @@ public class CustomMainActionView extends LinearLayout {
 
             }
         });
-        mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
+        mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
             @Override
-            public void onMessageGet() {
+            public void onMessageGet(int mode) {
                 dismissDropDownWindow();
                 switch (mDataManager.getCurrentMessageHolder().getNowMessageMode()) {
                     case WeChatLoader.GET_MESSAGE_ALL:

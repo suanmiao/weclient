@@ -404,6 +404,7 @@
 
 
 <!--
+
             <RelativeLayout
                 android:clickable="true"
                 android:id="@+id/setting_layout_share_text"
@@ -534,6 +535,7 @@
                     android:background="@drawable/wechat_friend" />
 
             </RelativeLayout>
+
 -->
 
 

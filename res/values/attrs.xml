@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ptr">
+        <attr name="refresh_enable" format="boolean"></attr>
+        <attr name="load_enable" format="boolean"></attr>
+        <attr name="header_bg_color" format="color|reference"></attr>
+        <attr name="footer_bg_color" format="color|reference"></attr>
+
+    </declare-styleable>
+</resources>

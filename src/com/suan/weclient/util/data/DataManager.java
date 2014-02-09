@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View.OnClickListener;
 
 import com.suan.weclient.fragment.ProfileFragment;
@@ -17,8 +16,6 @@ import com.suan.weclient.view.SViewPager;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 
-import org.json.JSONArray;
-
 public class DataManager {
 
 
@@ -27,7 +24,7 @@ public class DataManager {
     private ArrayList<UserBean> userBeans;
 
     ArrayList<AutoLoginListener> autoLoginListeners;
-    ArrayList<MessageChangeListener> messageChangeListeners;
+    ArrayList<MessageGetListener> messageGetListeners;
     ArrayList<ChatItemChangeListener> chatItemChangeListeners;
     ArrayList<FansListChangeListener> fansListChangeListeners;
     ArrayList<ProfileGetListener> profileGetListeners;
@@ -37,10 +34,11 @@ public class DataManager {
     ArrayList<UserGroupListener> userGroupListeners;
 
     ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
+    ArrayList<UserIndexChangeListener > userIndexChangeListeners;
 
-    private IWXAPI api;
 
     private ContentFragmentChangeListener contentFragmentChangeListener;
+
 
 
     /*
@@ -95,13 +93,14 @@ public class DataManager {
 
     public DataManager(Context context) {
         autoLoginListeners = new ArrayList<DataManager.AutoLoginListener>();
-        messageChangeListeners = new ArrayList<DataManager.MessageChangeListener>();
+        messageGetListeners = new ArrayList<MessageGetListener>();
         chatItemChangeListeners = new ArrayList<DataManager.ChatItemChangeListener>();
         fansListChangeListeners = new ArrayList<DataManager.FansListChangeListener>();
         profileGetListeners = new ArrayList<DataManager.ProfileGetListener>();
         massDataGetListeners = new ArrayList<MassDataGetListener>();
         loginListeners = new ArrayList<DataManager.LoginListener>();
         userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
+        userIndexChangeListeners = new ArrayList<UserIndexChangeListener>();
         mContext = context;
         mWechatManager = new WechatManager(this, context);
         mVoiceManager = new VoiceManager(context);
@@ -110,7 +109,7 @@ public class DataManager {
         messageHolders = new ArrayList<MessageHolder>();
         fansHolders = new ArrayList<FansHolder>();
         for (int i = 0; i < userBeans.size(); i++) {
-            messageHolders.add(new MessageHolder(userBeans.get(i)));
+            messageHolders.add(new MessageHolder(userBeans.get(i),i));
             fansHolders.add(new FansHolder(userBeans.get(i)));
         }
 
@@ -134,7 +133,7 @@ public class DataManager {
                 if (!exist) {
                     UserBean newBean = newGroupArrayList.get(i);
                     //add the user to the head
-                    messageHolders.add(0, new MessageHolder(newBean));
+                    messageHolders.add(0, new MessageHolder(newBean,0));
                     fansHolders.add(0, new FansHolder(newBean));
                     userBeans.add(0, newBean);
                     //must reset the index to zero ,to login the new user
@@ -289,9 +288,14 @@ public class DataManager {
     }
 
     public boolean setCurrentPosition(int position) {
+        int oldPosition = getCurrentPosition();
         if(position>=0&&position<userBeans.size()){
 
             SharedPreferenceManager.putCurrentIndex(mContext, position);
+            for(UserIndexChangeListener nowListener:userIndexChangeListeners){
+                nowListener.onChange(oldPosition,position);
+
+            }
             return true;
         }
         return false;
@@ -304,8 +308,8 @@ public class DataManager {
     }
 
     public void addMessageChangeListener(
-            MessageChangeListener messageChangeListener) {
-        this.messageChangeListeners.add(messageChangeListener);
+            MessageGetListener messageGetListener) {
+        this.messageGetListeners.add(messageGetListener);
     }
 
     public void addChatItemChangeListenr(ChatItemChangeListener changeListener) {
@@ -340,6 +344,10 @@ public class DataManager {
 
     public void addUserGroupListener(UserGroupListener userGroupListener) {
         this.userGroupListeners.add(userGroupListener);
+    }
+
+    public void addUserIndexChangeListener(UserIndexChangeListener userIndexChangeListener){
+        this.userIndexChangeListeners.add(userIndexChangeListener);
     }
 
 
@@ -379,9 +387,9 @@ public class DataManager {
         }
     }
 
-    public void doMessageGet() {
-        for (int i = 0; i < messageChangeListeners.size(); i++) {
-            messageChangeListeners.get(i).onMessageGet();
+    public void doMessageGet(int mode) {
+        for (int i = 0; i < messageGetListeners.size(); i++) {
+            messageGetListeners.get(i).onMessageGet( mode);
         }
     }
 
@@ -398,9 +406,9 @@ public class DataManager {
     }
 
 
-    public void doFansGet(boolean changed) {
+    public void doFansGet(int mode) {
         for (int i = 0; i < fansListChangeListeners.size(); i++) {
-            fansListChangeListeners.get(i).onFansGet(changed);
+            fansListChangeListeners.get(i).onFansGet(mode);
         }
     }
 
@@ -472,8 +480,9 @@ public class DataManager {
         public void onAutoLoginEnd();
     }
 
-    public interface MessageChangeListener {
-        public void onMessageGet();
+    public interface MessageGetListener {
+
+        public void onMessageGet(int loadMode);
     }
 
     public interface ChatItemChangeListener {
@@ -485,7 +494,7 @@ public class DataManager {
     }
 
     public interface FansListChangeListener {
-        public void onFansGet(boolean changed);
+        public void onFansGet(int mode);
     }
 
 
@@ -510,14 +519,8 @@ public class DataManager {
         public void onAddUser();
     }
 
-
-    public void setWechatShareApi(IWXAPI api) {
-        this.api = api;
-
-    }
-
-    public IWXAPI getWechatShareApi() {
-        return this.api;
+    public interface UserIndexChangeListener{
+        public void onChange(int oldIndex,int nowIndex);
     }
 
     public interface ContentFragmentChangeListener {

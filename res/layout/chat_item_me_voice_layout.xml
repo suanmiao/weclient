@@ -46,7 +46,7 @@
                         android:layout_width="22dip"
                         android:layout_marginLeft="20dip"
                         android:layout_centerVertical="true"
-                        android:background="@drawable/message_item_voice_button_bg"
+                        android:background="@drawable/message_item_voice_blue_button_bg"
                         android:id="@+id/chat_item_me_voice_button_play" />
 
                     <TextView
@@ -54,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/chat_item_me_voice_text_info"
                         android:textSize="15dip"
-                        android:textColor="#ffffff"
+                        android:textColor="@color/chat_text_content"
                         android:layout_toRightOf="@+id/chat_item_me_voice_button_play"
                         android:layout_marginLeft="40dip"
                         android:text="0' 0''"

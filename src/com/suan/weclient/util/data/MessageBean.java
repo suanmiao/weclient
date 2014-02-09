@@ -317,20 +317,15 @@ public class MessageBean {
         });
     }
 
-
     private void getChatNewItem() {
 
-        WeChatLoader.wechatGetChatNewItems(new WeChatLoader.WechatExceptionListener() {
-                                               @Override
-                                               public void onError() {
+        WeChatLoader.wechatGetChatNewItems(
+                new WeChatLoader.WechatGetChatNewItems() {
+                    @Override
+                    public void onBack(int resultCode,String strResult) {
 
-                                               }
-                                           }, new WeChatLoader.WechatGetChatNewItems() {
-                                               @Override
-                                               public void onBack(String strResult) {
-
-                                               }
-                                           }, userBean, this, lastMsgId, createTime, toFakeId
+                    }
+                }, userBean, this, lastMsgId, createTime, toFakeId
         );
 
 

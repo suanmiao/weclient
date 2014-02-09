@@ -23,7 +23,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +48,8 @@ import com.suan.weclient.util.data.UserGoupPushHelper;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
+import com.suan.weclient.view.ptr.PTRListview;
+import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
@@ -70,21 +71,11 @@ public class MainActivity extends SlidingFragmentActivity {
     SlidingMenu mSlidingMenu;
     private ActionBar actionBar;
 
-
     /*
     about broadcast
      */
 
     private BroadcastReceiver mReceiver;
-
-    /*
-     * about pop dialog
-     */
-    private TextView popContentTextView;
-    private TextView popTitleTextView;
-    private EditText popContentEditText;
-    private TextView popTextAmountTextView;
-    private Button popCancelButton, popSureButton;
 
     private FeedbackAgent agent;
     private Conversation defaultConversation;
@@ -92,6 +83,7 @@ public class MainActivity extends SlidingFragmentActivity {
     private DataManager mDataManager;
     private Dialog popDialog;
     private Dialog replyDialog;
+
 
 
     @Override
@@ -114,7 +106,6 @@ public class MainActivity extends SlidingFragmentActivity {
             startLoad();
         }
 
-
     }
 
     private void initReceiver() {
@@ -126,7 +117,7 @@ public class MainActivity extends SlidingFragmentActivity {
                 receive the broadcast ,
                 refresh the profile to show new message count
                  */
-                mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO, false, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
+                mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
                     @Override
                     public void onFinish(int code, Object object) {
 
@@ -331,132 +322,48 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     public void dialogShowDevReply(String content) {
+        replyDialog = Util.createDevReplyDialog(MainActivity.this, "开发者回复:", content, new DialogSureClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        replyDialog.dismiss();
+                        popFeedback();
 
-        LayoutInflater inflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.dialog_dev_reply_layout,
-                null);
-        popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_dev_reply_text_title);
+                    }
+                }, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        replyDialog.dismiss();
 
-        popSureButton = (Button) dialogView
-                .findViewById(R.id.dialog_dev_reply_button_reply);
-        popCancelButton = (Button) dialogView
-                .findViewById(R.id.dialog_dev_reply_button_o);
+                    }
+                }
+        );
 
-        popContentTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_dev_reply_text_content);
-        popContentTextView.setText(content);
-
-        popTitleTextView.setText("开发者回复:");
-        popSureButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                replyDialog.dismiss();
-                popFeedback();
-            }
-        });
-        popCancelButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                replyDialog.dismiss();
-
-            }
-        });
-
-        replyDialog = new Dialog(this, R.style.dialog);
-
-        replyDialog.setContentView(dialogView);
         replyDialog.show();
     }
 
     private void popFeedback() {
+        replyDialog = Util.createFeedbackDialog(MainActivity.this, new DialogSureClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-        LayoutInflater inflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.dialog_feedback_layout, null);
-        popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_feedback_text_title);
+                        String content = Util.popContentEditText.getEditableText()
+                                .toString();
+                        defaultConversation.addUserReply(content);
+                        replyDialog.dismiss();
 
-        popContentEditText = (EditText) dialogView
-                .findViewById(R.id.dialog_feedback_edit_text);
-        popSureButton = (Button) dialogView
-                .findViewById(R.id.dialog_feedback_button_sure);
-        popCancelButton = (Button) dialogView
-                .findViewById(R.id.dialog_feedback_button_cancel);
+                        mDataManager.doLoadingStart("反馈发送中...", WechatManager.DIALOG_POP_CANCELABLE);
 
-        popTextAmountTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_feedback_text_num);
-        popTextAmountTextView.setOnClickListener(new OnClickListener() {
+                        sync();
+                    }
+                }, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        replyDialog.dismiss();
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                popContentEditText.setText("");
+                    }
+                }
+        );
 
-            }
-        });
-
-        popContentEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                // TODO Auto-generated method stub
-                popTextAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-                popTextAmountTextView.setText(popContentEditText.getText()
-                        .length() + " x");
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-
-        popTitleTextView.setText("反馈");
-        popSureButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                String content = popContentEditText.getEditableText()
-                        .toString();
-                defaultConversation.addUserReply(content);
-                replyDialog.dismiss();
-
-                mDataManager.doLoadingStart("反馈发送中...", WechatManager.DIALOG_POP_CANCELABLE);
-
-                sync();
-            }
-        });
-        popCancelButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                replyDialog.cancel();
-
-            }
-        });
-
-        replyDialog = new Dialog(this, R.style.dialog);
-
-        replyDialog.setContentView(dialogView);
         replyDialog.show();
 
     }
@@ -466,7 +373,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
             @Override
             public void onSendUserReply(List<Reply> replyList) {
-                popContentEditText.setText("");
                 mDataManager.doLoadingEnd();
 
                 Toast.makeText(MainActivity.this, "反馈发送成功!", Toast.LENGTH_SHORT)
@@ -516,7 +422,6 @@ public class MainActivity extends SlidingFragmentActivity {
             }
         }, 500);
 
-
     }
 
     private void startLoad() {
@@ -531,7 +436,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
     public void onResume() {
 
-        SharedPreferenceManager.putActivityRunning(this, false);
+        SharedPreferenceManager.putActivityRunning(this, true);
         super.onResume();
         MobclickAgent.onResume(this);
     }
@@ -610,9 +515,9 @@ public class MainActivity extends SlidingFragmentActivity {
 
             }
         });
-        mDataManager.addMessageChangeListener(new DataManager.MessageChangeListener() {
+        mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
             @Override
-            public void onMessageGet() {
+            public void onMessageGet(int mode) {
 
                 UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(MainActivity.this));
                 userGoupPushHelper.updateUserGroup(mDataManager);
@@ -696,26 +601,9 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void popLoginEnsure() {
-
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
-        popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_ensure_text_title);
-        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
-
-        popSureButton = (Button) dialogView
-                .findViewById(R.id.dialog_ensure_button_sure);
-        popCancelButton = (Button) dialogView
-                .findViewById(R.id.dialog_ensure_button_cancel);
-
-        popTitleTextView.setText("跳转到登录");
-        popContentTextView.setText("你的账户列表目前为空，跳转到登录页面？");
-        popSureButton.setOnClickListener(new OnClickListener() {
-
+        popDialog = Util.createEnsureDialog(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
 
                 popDialog.cancel();
                 Intent jumbIntent = new Intent();
@@ -723,22 +611,9 @@ public class MainActivity extends SlidingFragmentActivity {
                 startActivityForResult(jumbIntent,
                         UserListFragment.START_ACTIVITY_LOGIN);
 
-
             }
-        });
-        popCancelButton.setOnClickListener(new OnClickListener() {
+        }, true, MainActivity.this, "跳转到登录", "你的账户列表目前为空，跳转到登录页面？", false);
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                popDialog.cancel();
-
-            }
-        });
-
-        popDialog = new Dialog(MainActivity.this, R.style.dialog);
-
-        popDialog.setContentView(dialogView);
         popDialog.show();
 
     }
@@ -775,20 +650,48 @@ public class MainActivity extends SlidingFragmentActivity {
         }
 
         mDataManager.getWechatManager().login(
-                mDataManager.getCurrentPosition(), WechatManager.DIALOG_POP_NOT_CANCELABLE, true,
+                mDataManager.getCurrentPosition(), WechatManager.DIALOG_POP_NOT_CANCELABLE,
                 new OnActionFinishListener() {
 
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
-                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE, true,
+
+                        mDataManager
+                                .getWechatManager()
+                                .getNewMessageList(
+                                        WechatManager.DIALOG_POP_CANCELABLE,
+                                        mDataManager
+                                                .getCurrentPosition(),
+                                        new OnActionFinishListener() {
+
+
+                                            @Override
+                                            public void onFinish(
+                                                    int code, Object object) {
+                                                // TODO
+                                                // Auto-generated
+                                                // method
+                                                // stub
+                                                if (code == WechatManager.ACTION_SUCCESS) {
+                                                    mDataManager
+                                                            .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+
+                                                }
+
+                                            }
+                                        });
+
+                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE,
                                 mDataManager.getCurrentPosition(),
                                 new OnActionFinishListener() {
 
                                     @Override
                                     public void onFinish(int code, Object object) {
                                         // TODO Auto-generated method stub
+
+
                                         String referer = (String) object;
 
                                         mDataManager
@@ -828,30 +731,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
                                                                 mDataManager.doMassDataGet(mDataManager.getCurrentUser());
 
-
-                                                                mDataManager
-                                                                        .getWechatManager()
-                                                                        .getNewMessageList(
-                                                                                WechatManager.DIALOG_POP_CANCELABLE,
-                                                                                mDataManager
-                                                                                        .getCurrentPosition(),
-                                                                                new OnActionFinishListener() {
-
-
-                                                                                    @Override
-                                                                                    public void onFinish(
-                                                                                            int code, Object object) {
-                                                                                        // TODO
-                                                                                        // Auto-generated
-                                                                                        // method
-                                                                                        // stub
-                                                                                        mDataManager
-                                                                                                .doMessageGet();
-                                                                                        mDataManager
-                                                                                                .doAutoLoginEnd();
-
-                                                                                    }
-                                                                                });
                                                             }
                                                         });
 
@@ -882,5 +761,6 @@ public class MainActivity extends SlidingFragmentActivity {
         public void showRightMenu();
 
     }
+
 
 }

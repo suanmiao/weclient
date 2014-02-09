@@ -9,33 +9,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.MessageListAdapter;
-import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.DataManager.MessageChangeListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
+import com.suan.weclient.view.ptr.PTRListview;
 
 public class MessageFragment extends Fragment implements
-        OnRefreshListener<ListView> {
+        PTRListview.OnRefreshListener, PTRListview.OnLoadListener {
     View view;
     private DataManager mDataManager;
-    private PullToRefreshListView pullToRefreshListView;
+    private PTRListview ptrListview;
     private MessageListAdapter messageListAdapter;
     private MessageHandler mHandler;
 
     private static final int PAGE_MESSAGE_AMOUNT = 20;
+
+    public MessageFragment() {
+
+    }
 
     public MessageFragment(DataManager dataManager) {
 
@@ -51,26 +46,15 @@ public class MessageFragment extends Fragment implements
         initListener();
         initData();
 
-
         return view;
     }
 
     private void initWidgets() {
-        pullToRefreshListView = (PullToRefreshListView) view
-                .findViewById(R.id.reply_list);
-        pullToRefreshListView.setClickable(true);
+        ptrListview = (PTRListview) view.findViewById(R.id.reply_list);
 
-        pullToRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                // TODO Auto-generated method stub
-
-            }
-        });
 
     }
+
 
     private void initData() {
 
@@ -78,8 +62,13 @@ public class MessageFragment extends Fragment implements
 
             messageListAdapter = new MessageListAdapter(getActivity(),
                     mDataManager);
-            pullToRefreshListView.setAdapter(messageListAdapter);
-            pullToRefreshListView.setOnRefreshListener(MessageFragment.this);
+            ptrListview.setAdapter(messageListAdapter);
+            ptrListview.setOnScrollListener(messageListAdapter);
+
+            ptrListview.setonRefreshListener(MessageFragment.this);
+            ptrListview.setOnLoadListener(MessageFragment.this);
+            //indecate loading
+            ptrListview.onRefreshStart();
 
         }
 
@@ -115,28 +104,43 @@ public class MessageFragment extends Fragment implements
 
             }
         });
-        mDataManager.addMessageChangeListener(new MessageChangeListener() {
+        mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
 
             @Override
-            public void onMessageGet() {
+            public void onMessageGet(int mode) {
                 // TODO Auto-generated method stub
-                messageListAdapter.updateCache();
+
+                ptrListview.requestLayout();
+                switch (mode) {
+                    case PTRListview.PTR_MODE_REFRESH:
+
+                        messageListAdapter.updateCache();
+                        ptrListview.onRefreshComplete();
+                        break;
+
+                    case PTRListview.PTR_MODE_LOAD:
+                        ptrListview.onLoadComplete();
+
+                        break;
+                }
 
                 messageListAdapter.notifyDataSetChanged();
-
-
             }
         });
 
     }
 
-    public DataManager getMessageChangeListener() {
-        return mDataManager;
+    @Override
+    public void onRefresh() {
+
+        new GetDataTask(ptrListview, PTRListview.PTR_MODE_REFRESH).execute();
+
     }
 
     @Override
-    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-        new GetDataTask(refreshView).execute();
+    public void onLoad() {
+
+        new GetDataTask(ptrListview, PTRListview.PTR_MODE_LOAD).execute();
 
     }
 
@@ -148,26 +152,28 @@ public class MessageFragment extends Fragment implements
 
             super.handleMessage(msg);
 
-            mDataManager.doMessageGet();
+            mDataManager.doMessageGet(msg.arg1);
 
         }
     }
 
     private class GetDataTask extends AsyncTask<Void, Void, Void> {
 
-        PullToRefreshBase<?> mRefreshedView;
+        private PTRListview mRefreshedView;
         private boolean end = false;
+        private int mode;
 
-        public GetDataTask(PullToRefreshBase<?> refreshedView) {
+        public GetDataTask(PTRListview refreshedView, int mode) {
             mRefreshedView = refreshedView;
+            this.mode = mode;
             end = false;
             if (mDataManager.getCurrentMessageHolder() == null) {
                 end = true;
+                mRefreshedView.onLoadComplete();
                 return;
             }
-
             try {
-                if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_END) {
+                if (mode == PTRListview.PTR_MODE_LOAD) {
 
                     int size = mDataManager.getCurrentMessageHolder()
                             .getMessageList().size();
@@ -190,6 +196,7 @@ public class MessageFragment extends Fragment implements
                                         // TODO Auto-generated method stub
                                         Message message = new Message();
                                         message.obj = object;
+                                        message.arg1 = PTRListview.PTR_MODE_LOAD;
                                         mHandler.sendMessage(message);
 
                                         end = true;
@@ -198,10 +205,14 @@ public class MessageFragment extends Fragment implements
                                 });
 
                     } else {
+
+                        ptrListview.onLoadComplete();
                         end = true;
                     }
 
-                } else if (mRefreshedView.getCurrentMode() == Mode.PULL_FROM_START) {
+                } else if (mode == PTRListview.PTR_MODE_REFRESH) {
+
+                    Log.e("now message mode",""+mDataManager.getCurrentMessageHolder().getNowMessageMode());
 
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO,
                             mDataManager.getCurrentPosition(),
@@ -210,15 +221,17 @@ public class MessageFragment extends Fragment implements
                                 @Override
                                 public void onFinish(int code, Object object) {
                                     // TODO Auto-generated method stub
+                                    Log.e("get message", "" + code);
 
                                     Message message = new Message();
                                     message.obj = object;
+                                    message.arg1 = PTRListview.PTR_MODE_REFRESH;
                                     mHandler.sendMessage(message);
                                     end = true;
                                     mDataManager
                                             .getWechatManager()
                                             .getUserProfile(
-                                                    WechatManager.DIALOG_POP_NO, false,
+                                                    WechatManager.DIALOG_POP_NO,
                                                     mDataManager
                                                             .getCurrentPosition(),
                                                     new OnActionFinishListener() {
@@ -259,8 +272,18 @@ public class MessageFragment extends Fragment implements
 
         @Override
         protected void onPostExecute(Void result) {
-            mRefreshedView.onRefreshComplete();
             super.onPostExecute(result);
+            switch(mode){
+                case PTRListview.PTR_MODE_LOAD:
+                    mRefreshedView.onLoadComplete();
+
+                    break;
+                case PTRListview.PTR_MODE_REFRESH:
+                    mRefreshedView.onRefreshComplete();
+
+                    break;
+
+            }
         }
     }
 

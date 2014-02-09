@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +42,8 @@ import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
+import com.suan.weclient.activity.MainActivity;
+import com.suan.weclient.adapter.UserListAdapter;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
@@ -51,8 +54,7 @@ import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
-public class UserListFragment extends Fragment implements OnItemClickListener,
-        OnItemLongClickListener {
+public class UserListFragment extends Fragment {
 
     public static int START_ACTIVITY_LOGIN = 0;
 
@@ -60,9 +62,8 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
     private ListView mListView;
     private RelativeLayout addUserButton;
 
-    private MyAdapter myAdapter;
+    private UserListAdapter userListAdapter;
     private DataManager mDataManager;
-    private ImageView profileImageView;
 
 
     /*
@@ -76,6 +77,9 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
     private TextView popTextAmountTextView;
     private Button popCancelButton, popSureButton;
 
+    public UserListFragment() {
+
+    }
 
     public UserListFragment(DataManager dataManager) {
         mDataManager = dataManager;
@@ -116,7 +120,7 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
             public void onGroupChangeEnd() {
                 // TODO Auto-generated method stub
 
-                updateList();
+                userListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -138,12 +142,11 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
 
         mListView = (ListView) view.findViewById(R.id.left_listview);
 
-        myAdapter = new MyAdapter();
-        mListView.setAdapter(myAdapter);
-        mListView.setOnItemClickListener(this);
-        mListView.setOnItemLongClickListener(this);
+        userListAdapter = new UserListAdapter(getActivity(),mDataManager);
+        mListView.setAdapter(userListAdapter);
+        mListView.setOnItemClickListener(userListAdapter);
+        mListView.setOnItemLongClickListener(userListAdapter);
 
-        myAdapter.setSelectPosition(0);
 
         addUserButton = (RelativeLayout) view
                 .findViewById(R.id.left_button_add_user);
@@ -162,257 +165,9 @@ public class UserListFragment extends Fragment implements OnItemClickListener,
         });
     }
 
-    public void updateList() {
-        myAdapter.notifyDataSetChanged();
-
-    }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    private class MyAdapter extends BaseAdapter {
-
-        private int selectPosition;
-
-        @Override
-        public int getCount() {
-            return mDataManager.getUserGroup().size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mDataManager.getUserGroup().get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public void setSelectPosition(int position) {
-            selectPosition = position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView,
-                            ViewGroup parent) {
-            View row = LayoutInflater.from(getActivity()).inflate(
-                    R.layout.user_group_item, null);
-            TextView nowUserNickname = (TextView) row
-                    .findViewById(R.id.user_group_text_user_name);
-            ImageView nowUserImg = (ImageView) row
-                    .findViewById(R.id.user_group_img_profile);
-
-            Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
-                    ImageCacheManager.CACHE_USER_PROFILE
-                            + mDataManager.getUserGroup().get(position)
-                            .getUserName());
-            if (imgBitmap != null) {
-                nowUserImg.setImageBitmap(imgBitmap);
-
-            } else {
-                mDataManager.getWechatManager().getUserImgDirectly(WechatManager.DIALOG_POP_NO, false,
-                        position, nowUserImg, new OnActionFinishListener() {
-
-                    @Override
-                    public void onFinish(int code, Object object) {
-                        // TODO Auto-generated method stub
-                        Bitmap nowUserBitmap = (Bitmap) object;
-                        mDataManager.getCacheManager().putBitmap(
-                                ImageCacheManager.CACHE_USER_PROFILE
-                                        + mDataManager.getUserGroup()
-                                        .get(position)
-                                        .getUserName(),
-                                nowUserBitmap, true);
-
-                    }
-                });
-            }
-            String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
-                    .getNickname(), 13, 3);
-
-            nowUserNickname.setText(shortedName
-            );
-            if (position == selectPosition) {
-                // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
-                nowUserNickname.setSelected(true);
-            }
-            return row;
-        }
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view,
-                            final int position, long id) {
-        profileImageView = (ImageView) view
-                .findViewById(R.id.user_group_img_profile);
-
-        mDataManager.getUserListControlListener().onUserListDismiss();
-        mDataManager.setCurrentPosition(position);
-        UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(getActivity()));
-        userGoupPushHelper.updateUserGroup(mDataManager);
-        SharedPreferenceManager.putPushUserGroup(getActivity(),userGoupPushHelper.getString());
-
-        mDataManager.doLoadingStart("登录...",WechatManager.DIALOG_POP_NOT_CANCELABLE);
-
-        mDataManager.getWechatManager().login(position, WechatManager.DIALOG_POP_NOT_CANCELABLE, true,
-                new OnActionFinishListener() {
-
-                    @Override
-                    public void onFinish(int code, Object object) {
-                        // TODO Auto-generated method stub
-                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE, true,
-                                position, new OnActionFinishListener() {
-
-                            @Override
-                            public void onFinish(int code, Object object) {
-                                // TODO Auto-generated method stub
-                                String referer = (String) object;
-
-                                mDataManager
-                                        .getWechatManager()
-                                        .getUserImgWithReferer(
-                                                position,
-                                                WechatManager.DIALOG_POP_CANCELABLE,
-                                                profileImageView,
-                                                new OnActionFinishListener() {
-
-                                                    @Override
-                                                    public void onFinish(
-                                                            int code, Object object) {
-                                                        // TODO
-                                                        // Auto-generated
-                                                        // method stub
-
-                                                        mDataManager
-                                                                .getWechatManager()
-                                                                .getMassData(
-                                                                        position,
-                                                                        WechatManager.DIALOG_POP_CANCELABLE,
-                                                                        new OnActionFinishListener() {
-
-                                                                            @Override
-                                                                            public void onFinish(
-                                                                                    int code, Object object) {
-                                                                                // TODO
-                                                                                // Auto-generated
-                                                                                // method
-                                                                                // stub
-
-                                                                                mDataManager
-                                                                                        .getWechatManager()
-                                                                                        .getNewMessageList(
-                                                                                                WechatManager.DIALOG_POP_CANCELABLE,
-                                                                                                position,
-                                                                                                new OnActionFinishListener() {
-
-                                                                                                    @Override
-                                                                                                    public void onFinish(
-                                                                                                            int code, Object object) {
-                                                                                                        // TODO
-                                                                                                        // Auto-generated
-                                                                                                        // method
-                                                                                                        // stub
-                                                                                                        mDataManager.doMessageGet();
-
-                                                                                                    }
-                                                                                                });
-                                                                            }
-                                                                        });
-
-                                                    }
-                                                }, referer);
-
-                            }
-                        });
-
-                    }
-                });
-
-    }
-
-    private void popDeleteUser(final int position) {
-
-
-        LayoutInflater inflater = (LayoutInflater)
-                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
-        popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_ensure_text_title);
-        popContentTextView = (TextView) dialogView.findViewById(R.id.dialog_ensure_text_content);
-
-        popSureButton = (Button) dialogView
-                .findViewById(R.id.dialog_ensure_button_sure);
-        popCancelButton = (Button) dialogView
-                .findViewById(R.id.dialog_ensure_button_cancel);
-
-        popTitleTextView.setText("删除账户");
-        popContentTextView.setText("删除账户将删除账户相关的所有数据，确认删除？");
-        popSureButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                SharedPreferenceManager.deleteUser(getActivity(),
-                        mDataManager.getUserGroup().get(position)
-                                .getUserName());
-                mDataManager.updateUserGroup();
-                updateList();
-                popDialog.dismiss();
-
-
-            }
-        });
-        popCancelButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                popDialog.cancel();
-
-            }
-        });
-
-        popDialog = new Dialog(getActivity(), R.style.dialog);
-
-        popDialog.setContentView(dialogView);
-        popDialog.show();
-
-
-
-       /*
-         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-				.setTitle("删除该用户？")
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated
-						// method stub
-				}
-				})
-				.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-		builder.show();
-*/
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> arg0, View view,
-                                   final int position, long id) {
-        // TODO Auto-generated method stub
-        popDeleteUser(position);
-
-
-        return false;
     }
 
 }

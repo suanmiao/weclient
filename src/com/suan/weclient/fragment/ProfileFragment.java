@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,11 +25,17 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.FansListActivity;
 import com.suan.weclient.activity.SettingActivity;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.data.Constants;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.net.WechatManager;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.SendMessageToWX;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.sdk.openapi.WXMediaMessage;
+import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;
@@ -60,6 +67,14 @@ public class ProfileFragment extends Fragment {
     private FeedbackAgent agent;
     private Conversation defaultConversation;
 
+
+    private IWXAPI api;
+
+
+    public ProfileFragment(){
+
+    }
+
     public ProfileFragment(DataManager dataManager) {
 
         mDataManager = dataManager;
@@ -88,6 +103,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+                sharetofriend();
+               /*
+
+
                 if (mDataManager.getUserGroup().size() > 0) {
                     mDataManager.getCurrentUser().setNewPeople(0 + "");
                     refreshUserLayout(mDataManager.getCurrentUser());
@@ -97,7 +117,7 @@ public class ProfileFragment extends Fragment {
                     getActivity().startActivity(jumbIntent);
 
                 }
-
+*/
             }
 
         });
@@ -142,6 +162,36 @@ public class ProfileFragment extends Fragment {
 
         newUserTextView = (TextView) view.findViewById(R.id.profile_text_new_user);
         versionTextView = (TextView) view.findViewById(R.id.profile_text_version);
+
+    }
+
+    private void sharetofriend(){
+
+        //reg to wx
+        api = WXAPIFactory.createWXAPI(getActivity(), Constants.WECHAT_APPID, false);
+        api.registerApp(Constants.WECHAT_APPID);
+                String description = "分享小助手到您的朋友圈 ^_^";
+        String title = "从此在手机上就能管理公众平台";
+        String url = "http://www.wandoujia.com/apps/com.suan.weclient";
+
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = description;
+
+/*
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.thumb);
+        msg.thumbData = bmpToByteArray(thumb, false);
+*/
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        boolean result = api.sendReq(req);
+        Log.e("share result", "" + result);
 
     }
 

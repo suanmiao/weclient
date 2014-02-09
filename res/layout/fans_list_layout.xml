@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ptr="http://schemas.android.com/apk/res/com.suan.weclient"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="#dbdbdb"
 	android:orientation="vertical" >
 
-	<com.handmark.pulltorefresh.library.PullToRefreshListView
-		xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.suan.weclient.view.ptr.PTRListview
 		android:id="@+id/fans_list"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
-		android:background="#dbdbdb"
-		ptr:ptrHeaderBackground="#dbdbdb"
-		ptr:ptrMode="both" />
+		android:background="#e0e0e0"
+		ptr:refresh_enable="true"
+        ptr:load_enable="true"/>
 </LinearLayout>

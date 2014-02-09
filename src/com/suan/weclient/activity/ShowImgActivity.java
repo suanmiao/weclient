@@ -21,7 +21,6 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
-import com.suan.weclient.util.net.WeChatLoader.WechatExceptionListener;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;

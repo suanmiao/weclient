@@ -60,9 +60,11 @@ public class SettingActivity extends SherlockActivity {
     private RelativeLayout hideKeyWordCheckbox;
     private TextView pushFrequentTextView;
 
+
 /*
     private RelativeLayout shareTextlayout, shareImglayout, shareWebLayout;
 */
+
 
     /*
  * about pop dialog
@@ -97,6 +99,47 @@ public class SettingActivity extends SherlockActivity {
 
     }
 
+
+
+
+    private void initWechat() {
+
+        //reg to wx
+        api = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APPID, false);
+        api.registerApp(Constants.WECHAT_APPID);
+
+
+    }
+
+    private void shareToFriends() {
+
+        String description = "分享小助手到您的朋友圈 ^_^";
+        String title = "从此在手机上就能管理公众平台";
+        String url = "http://www.wandoujia.com/apps/com.suan.weclient";
+
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = description;
+
+
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.thumb);
+        msg.thumbData = bmpToByteArray(thumb, false);
+
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        boolean result = api.sendReq(req);
+        Log.e("share result", "" + result);
+
+
+    }
+
+
 /*
     private void fuckShare() {
         shareTextlayout = (RelativeLayout) findViewById(R.id.setting_layout_share_text);
@@ -122,8 +165,9 @@ public class SettingActivity extends SherlockActivity {
                 SendMessageToWX.Req req = new SendMessageToWX.Req();
                 req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
                 req.message = msg;
-                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+                req.scene = SendMessageToWX.Req.WXSceneSession;
+//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                boolean result = api.sendReq(req);
                 Log.e("share text result", "" + result);
             }
         });
@@ -150,8 +194,10 @@ public class SettingActivity extends SherlockActivity {
                 SendMessageToWX.Req req = new SendMessageToWX.Req();
                 req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
                 req.message = msg;
-                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+
+                req.scene = SendMessageToWX.Req.WXSceneSession;
+//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                boolean result = api.sendReq(req);
                 Log.e("share img result", "" + result);
             }
         });
@@ -175,19 +221,25 @@ public class SettingActivity extends SherlockActivity {
                 msg.title = title;
                 msg.description = description;
 
+*/
+/*
                 Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                 msg.thumbData = bmpToByteArray(thumb, false);
+*//*
+
 
                 SendMessageToWX.Req req = new SendMessageToWX.Req();
                 req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
                 req.message = msg;
-                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                boolean result = mDataManager.getWechatShareApi().sendReq(req);
+//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
+                req.scene = SendMessageToWX.Req.WXSceneSession;
+                boolean result = api.sendReq(req);
                 Log.e("share web result", "" + result);
             }
         });
     }
 */
+
 
     private void initWidgets() {
         pushEnableLayout = (RelativeLayout) findViewById(R.id.setting_layout_push);
@@ -348,7 +400,7 @@ public class SettingActivity extends SherlockActivity {
             public void onClick(View v) {
 
                 boolean hideKeyWordMessage = SharedPreferenceManager.getHideKeyWordMessage(SettingActivity.this);
-                SharedPreferenceManager.putHideKeyWordMessage(SettingActivity.this,!hideKeyWordMessage);
+                SharedPreferenceManager.putHideKeyWordMessage(SettingActivity.this, !hideKeyWordMessage);
                 setHideKeyWordLayout();
             }
         });
@@ -362,16 +414,6 @@ public class SettingActivity extends SherlockActivity {
         hideKeyWordCheckbox.setSelected(hideKeyWordMessage);
     }
 
-
-    private void initWechat() {
-
-        //reg to wx
-        api = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APPID, true);
-        api.registerApp(Constants.WECHAT_APPID);
-        mDataManager.setWechatShareApi(api);
-
-
-    }
 
     private void setPushLayout() {
 
@@ -623,30 +665,6 @@ public class SettingActivity extends SherlockActivity {
         defaultConversation.sync(listener);
     }
 
-    private void shareToFriends() {
-        String description = "分享小助手到您的朋友圈 ^_^";
-        String title = "从此在手机上就能管理公众平台";
-        String url = "http://www.wandoujia.com/apps/com.suan.weclient";
-
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
-
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = title;
-        msg.description = description;
-
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-        msg.thumbData = bmpToByteArray(thumb, false);
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
-        req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        boolean result = mDataManager.getWechatShareApi().sendReq(req);
-        Log.e("share result", "" + result);
-
-
-    }
 
 
     private byte[] bmpToByteArray(final Bitmap bmp, boolean needRecycle) {
