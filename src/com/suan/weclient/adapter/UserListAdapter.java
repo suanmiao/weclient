@@ -1,12 +1,10 @@
 package com.suan.weclient.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,40 +15,30 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.activity.ChatActivity;
-import com.suan.weclient.activity.ShowImgActivity;
+import com.suan.weclient.activity.LoginActivity;
+import com.suan.weclient.fragment.UserListFragment;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.data.UserBean;
 import com.suan.weclient.util.data.UserGoupPushHelper;
-import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.data.UserListItem;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
-import com.suan.weclient.util.text.SpanUtil;
-import com.suan.weclient.util.voice.VoiceHolder;
-import com.suan.weclient.util.voice.VoiceManager.AudioPlayListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class UserListAdapter extends BaseAdapter implements OnScrollListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private LayoutInflater mInflater;
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
-    private Context mContext;
+    private Activity mActivity;
 
     private int selectPosition;
 
@@ -72,27 +60,38 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     private TextView popTitleTextView;
     private TextView popTextAmountTextView;
     private Button popCancelButton, popSureButton;
+    private ArrayList<UserListItem> userListItems;
 
-    public UserListAdapter(Context context, DataManager dataManager) {
-        this.mInflater = LayoutInflater.from(context);
+
+    public UserListAdapter(Activity mActivity, DataManager dataManager) {
+        this.mInflater = LayoutInflater.from(mActivity);
         this.mDataManager = dataManager;
-        this.mContext = context;
+        this.mActivity = mActivity;
+        this.userListItems = new ArrayList<UserListItem>();
         this.mListCacheManager = new ListCacheManager();
     }
 
-    private ArrayList<UserBean> getUserItems() {
+    private ArrayList<UserListItem> getUserItems() {
+        if (userListItems.size() != mDataManager.getUserGroup().size() + 1) {
+            userListItems = new ArrayList<UserListItem>();
+            ArrayList<UserBean> userBeans = mDataManager.getUserGroup();
+            for (int i = 0; i < userBeans.size(); i++) {
+                userListItems.add(new UserListItem(userBeans.get(i), UserListItem.TYPE_USER));
+            }
+            userListItems.add(new UserListItem(null, UserListItem.TYPE_ADD));
 
-        return mDataManager.getUserGroup();
+        }
+        return userListItems;
     }
 
     @Override
     public int getCount() {
-        return mDataManager.getUserGroup().size();
+        return getUserItems().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mDataManager.getUserGroup().get(position);
+        return getUserItems().get(position);
     }
 
     @Override
@@ -111,9 +110,20 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     public View newView(final int position) {
 
         View convertView = null;
+        switch (getUserItems().get(position).getItemType()) {
+            case UserListItem.TYPE_USER:
 
-        convertView = LayoutInflater.from(mContext).inflate(
-                R.layout.user_group_item, null);
+                convertView = LayoutInflater.from(mActivity).inflate(
+                        R.layout.user_group_user_item, null);
+
+                break;
+            case UserListItem.TYPE_ADD:
+
+                convertView = LayoutInflater.from(mActivity).inflate(
+                        R.layout.user_group_add_item, null);
+
+                break;
+        }
 
         return convertView;
 
@@ -133,11 +143,11 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mDataManager.getUserListControlListener().onUserListDismiss();
         mDataManager.setCurrentPosition(position);
-        UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(mContext));
+        UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(mActivity));
         userGoupPushHelper.updateUserGroup(mDataManager);
 
 
-        SharedPreferenceManager.putPushUserGroup(mContext, userGoupPushHelper.getString());
+        SharedPreferenceManager.putPushUserGroup(mActivity, userGoupPushHelper.getString());
 
         mDataManager.doAutoLogin();
 
@@ -156,15 +166,25 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
         private ImageView profileImageView;
         private TextView profileTextView;
+        private ImageView indexImageView;
 
         public ItemViewHolder(View parentView, final int position) {
 
             this.parentView = parentView;
+            switch (getUserItems().get(position).getItemType()) {
+                case UserListItem.TYPE_USER:
 
-            profileTextView = (TextView) parentView
-                    .findViewById(R.id.user_group_text_user_name);
-            profileImageView = (ImageView) parentView
-                    .findViewById(R.id.user_group_img_profile);
+                    profileTextView = (TextView) parentView
+                            .findViewById(R.id.user_group_text_user_name);
+                    profileImageView = (ImageView) parentView
+                            .findViewById(R.id.user_group_img_profile);
+                    indexImageView = (ImageView) parentView.findViewById(R.id.user_group_img_index);
+
+                    break;
+                case UserListItem.TYPE_ADD:
+
+                    break;
+            }
 
         }
 
@@ -175,29 +195,44 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
         ItemViewHolder holder = getHolder(view, position);
 
-/*
-            holder.parentView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        switch (getUserItems().get(position).getItemType()) {
+            case UserListItem.TYPE_USER:
+                String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
+                        .getNickname(), 13, 3);
 
+                holder.profileTextView.setText(shortedName
+                );
+                if (position == selectPosition) {
+                    // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
+                    holder.profileTextView.setSelected(true);
                 }
-            });
-            holder.parentView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return false;
-                }
-            });*/
-        String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
-                .getNickname(), 13, 3);
+                setHeadImg(holder, position);
+                if (position == mDataManager.getCurrentPosition()) {
+                    holder.indexImageView.setVisibility(View.VISIBLE);
 
-        holder.profileTextView.setText(shortedName
-        );
-        if (position == selectPosition) {
-            // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
-            holder.profileTextView.setSelected(true);
+                } else {
+
+                    holder.indexImageView.setVisibility(View.INVISIBLE);
+                }
+
+                break;
+            case UserListItem.TYPE_ADD:
+                holder.parentView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        mDataManager.getUserListControlListener().onUserListDismiss();
+                        Intent jumbIntent = new Intent();
+                        jumbIntent.setClass(mActivity, LoginActivity.class);
+                        mActivity.startActivityForResult(jumbIntent,
+                                UserListFragment.START_ACTIVITY_LOGIN);
+
+                    }
+                });
+
+                break;
         }
-        setHeadImg(holder, position);
 
     }
 
@@ -241,7 +276,6 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
                             }
 
                         } else {
-                            Log.e("get user list img failed", "" + code);
 
                         }
 
@@ -260,12 +294,17 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v;
-        if (!mListCacheManager.containView(getUserItems().get(position).getFakeId())) {
+
+
+        if (getUserItems().get(position).getItemType() == UserListItem.TYPE_ADD || !mListCacheManager.containView(getUserItems().get(position).getUserBean().getFakeId())) {
             v = newView(position);
-            mListCacheManager.putView(v, getUserItems().get(position).getFakeId());
+            if (getUserItems().get(position).getItemType() == UserListItem.TYPE_USER) {
+
+                mListCacheManager.putView(v, getUserItems().get(position).getUserBean().getFakeId());
+            }
         } else {
 
-            v = mListCacheManager.getView(getUserItems().get(position).getFakeId());
+            v = mListCacheManager.getView(getUserItems().get(position).getUserBean().getFakeId());
 
         }
         bindView(v, position);
@@ -277,7 +316,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
 
         LayoutInflater inflater = (LayoutInflater)
-                mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.dialog_ensure_layout, null);
         popTitleTextView = (TextView) dialogView
                 .findViewById(R.id.dialog_ensure_text_title);
@@ -295,7 +334,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                SharedPreferenceManager.deleteUser(mContext,
+                SharedPreferenceManager.deleteUser(mActivity,
                         mDataManager.getUserGroup().get(position)
                                 .getUserName());
                 mDataManager.updateUserGroup();
@@ -315,7 +354,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
             }
         });
 
-        popDialog = new Dialog(mContext, R.style.dialog);
+        popDialog = new Dialog(mActivity, R.style.dialog);
 
         popDialog.setContentView(dialogView);
         popDialog.show();

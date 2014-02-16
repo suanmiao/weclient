@@ -10,8 +10,8 @@ public class MessageHolder {
     private String latestMsgId = "";
     private ArrayList<MessageBean> messageBeans;
     private UserBean nowBean;
-    private int nowMessageMode = WeChatLoader.GET_MESSAGE_ALL;
-    private int contentMessageMode = WeChatLoader.GET_MESSAGE_ALL;
+    private int nowMessageMode = WeChatLoader.GET_MESSAGE_MODE_ALL;
+    private int contentMessageMode = WeChatLoader.GET_MESSAGE_MODE_ALL;
 
     private boolean holderEmpty = true;
     private int index = -1;
@@ -31,11 +31,19 @@ public class MessageHolder {
 
     }
 
+    public void clearMessage(boolean addEmptyMessage) {
+        messageBeans.clear();
+        if (addEmptyMessage) {
+            addEmptyMessage();
+        }
+
+    }
 
     private void addEmptyMessage() {
         MessageBean emptyMessage = new MessageBean();
         emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
-        messageBeans.add(emptyMessage);  }
+        messageBeans.add(emptyMessage);
+    }
 
     public void setNowMessageMode(int mode) {
         nowMessageMode = mode;
@@ -95,7 +103,7 @@ public class MessageHolder {
     }
 
 
-    public UploadHelper getUploadHelper(){
+    public UploadHelper getUploadHelper() {
         return uploadHelper;
     }
 

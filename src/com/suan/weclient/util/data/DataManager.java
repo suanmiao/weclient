@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
+import android.os.Message;
 import android.view.View.OnClickListener;
 
 import com.suan.weclient.fragment.ProfileFragment;
@@ -23,6 +24,8 @@ public class DataManager {
     private ArrayList<FansHolder> fansHolders;
     private ArrayList<UserBean> userBeans;
 
+    private MessageHolder searchMessageHolder;
+
     ArrayList<AutoLoginListener> autoLoginListeners;
     ArrayList<MessageGetListener> messageGetListeners;
     ArrayList<ChatItemChangeListener> chatItemChangeListeners;
@@ -35,7 +38,6 @@ public class DataManager {
 
     ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
     ArrayList<UserIndexChangeListener > userIndexChangeListeners;
-
 
     private ContentFragmentChangeListener contentFragmentChangeListener;
 
@@ -276,6 +278,15 @@ public class DataManager {
     public void createChat(UserBean userBean, String toFakeId, String toNickname) {
         chatHolder = new ChatHolder(userBean, toFakeId, toNickname);
         chatNewItemGetListeners = new ArrayList<ChatNewItemGetListener>();
+    }
+
+    public void createSearch(UserBean userBean){
+        searchMessageHolder = new MessageHolder(userBean,getCurrentPosition());
+
+    }
+
+    public MessageHolder getSearchMessageHolder(){
+        return searchMessageHolder;
     }
 
     public void createImgHolder(MessageBean messageBean,UserBean userBean){

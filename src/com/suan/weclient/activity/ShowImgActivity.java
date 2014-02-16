@@ -137,8 +137,9 @@ public class ShowImgActivity extends Activity {
 
             }
         });
+
         bgLayout = (RelativeLayout) findViewById(R.id.show_img_bg_layout);
-        bgLayout.setBackgroundColor(Color.argb(220, 0, 0, 0));
+//        bgLayout.setBackgroundColor(Color.argb(220, 0, 0, 0));
 
         contentImageView = (ImageView) findViewById(R.id.show_img_img_content);
 

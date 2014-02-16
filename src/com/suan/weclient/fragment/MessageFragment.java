@@ -86,7 +86,11 @@ public class MessageFragment extends Fragment implements
             public void onGroupChangeEnd() {
                 // TODO Auto-generated method stub
                 if (mDataManager.getUserGroup().size() == 0) {
-                    messageListAdapter.notifyDataSetChanged();
+
+
+                    Message message = new Message();
+                    message.arg1 = PTRListview.PTR_MODE_LOAD;
+                    mHandler.sendMessage(message);
 
                 }
 
@@ -110,7 +114,10 @@ public class MessageFragment extends Fragment implements
             public void onMessageGet(int mode) {
                 // TODO Auto-generated method stub
 
-                ptrListview.requestLayout();
+                Message message = new Message();
+                message.arg1 = PTRListview.PTR_MODE_LOAD;
+                mHandler.sendMessage(message);
+
                 switch (mode) {
                     case PTRListview.PTR_MODE_REFRESH:
 
@@ -124,7 +131,6 @@ public class MessageFragment extends Fragment implements
                         break;
                 }
 
-                messageListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -152,7 +158,8 @@ public class MessageFragment extends Fragment implements
 
             super.handleMessage(msg);
 
-            mDataManager.doMessageGet(msg.arg1);
+            ptrListview.requestLayout();
+            messageListAdapter.notifyDataSetChanged();
 
         }
     }
@@ -194,10 +201,8 @@ public class MessageFragment extends Fragment implements
                                     @Override
                                     public void onFinish(int code, Object object) {
                                         // TODO Auto-generated method stub
-                                        Message message = new Message();
-                                        message.obj = object;
-                                        message.arg1 = PTRListview.PTR_MODE_LOAD;
-                                        mHandler.sendMessage(message);
+
+                                        mDataManager.doMessageGet(PTRListview.PTR_MODE_LOAD);
 
                                         end = true;
 
@@ -212,7 +217,6 @@ public class MessageFragment extends Fragment implements
 
                 } else if (mode == PTRListview.PTR_MODE_REFRESH) {
 
-                    Log.e("now message mode",""+mDataManager.getCurrentMessageHolder().getNowMessageMode());
 
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO,
                             mDataManager.getCurrentPosition(),
@@ -221,12 +225,9 @@ public class MessageFragment extends Fragment implements
                                 @Override
                                 public void onFinish(int code, Object object) {
                                     // TODO Auto-generated method stub
-                                    Log.e("get message", "" + code);
 
-                                    Message message = new Message();
-                                    message.obj = object;
-                                    message.arg1 = PTRListview.PTR_MODE_REFRESH;
-                                    mHandler.sendMessage(message);
+                                    mDataManager.doMessageGet(PTRListview.PTR_MODE_REFRESH);
+
                                     end = true;
                                     mDataManager
                                             .getWechatManager()
@@ -273,7 +274,7 @@ public class MessageFragment extends Fragment implements
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            switch(mode){
+            switch (mode) {
                 case PTRListview.PTR_MODE_LOAD:
                     mRefreshedView.onLoadComplete();
 

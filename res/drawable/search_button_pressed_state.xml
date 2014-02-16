@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape>
+            <padding
+                android:bottom="6dip"
+                android:left="6dip"
+                android:right="6dip"
+                android:top="6dip" />
+            <solid android:color="@color/search_button_pressed_bg" />
+            <stroke android:color="@color/search_button_border" android:width="1dip"/>
+            <corners android:radius="6dip" />
+        </shape>
+    </item>
+
+</layer-list>

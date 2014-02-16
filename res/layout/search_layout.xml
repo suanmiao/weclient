@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ptr="http://schemas.android.com/apk/res/com.suan.weclient"
+    android:id="@+id/search_layout_parent"
+    android:background="#80000000"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:background="@color/search_title_bg"
+        android:layout_height="50dip"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:id="@+id/search_edit_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:layout_marginRight="15dip"
+            android:paddingLeft="10dip"
+            android:background="@drawable/search_edit_bg"
+            android:textSize="15dip"
+            android:textColor="#ffffff"
+            android:gravity="center_vertical|left"
+            android:layout_height="fill_parent"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+
+            android:id="@+id/search_layout_search"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/search_button_bg"
+            android:layout_height="fill_parent"
+            android:layout_width="60dip">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_height="35dip"
+                android:layout_width="35dip"
+                android:paddingBottom="4dip"
+                android:paddingLeft="4dip"
+                android:paddingRight="4dip"
+                android:paddingTop="4dip"
+                android:src="@drawable/search" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.suan.weclient.view.ptr.PTRListview
+        android:id="@+id/search_list"
+        android:visibility="invisible"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#e7e7e7"
+        android:divider="@null"
+        ptr:load_enable="true"
+        ptr:refresh_enable="true" />
+
+</LinearLayout>

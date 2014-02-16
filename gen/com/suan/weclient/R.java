@@ -1805,7 +1805,7 @@ containing a value of this type.
         public static final int umeng_fb_list_item=0x7f030047;
         public static final int umeng_fb_new_reply_alert_dialog=0x7f030048;
         public static final int umeng_update_dialog=0x7f030049;
-        public static final int user_group_item=0x7f03004a;
+        public static final int user_group_user_item =0x7f03004a;
         public static final int user_group_layout=0x7f03004b;
     }
     public static final class string {

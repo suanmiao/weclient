@@ -13,16 +13,35 @@
     <color name="black_half">#50000000</color>
     <color name="transparent_background">#00000000</color>
 
+    <color name="drop_window_background_color">#1a6294</color>
+    <color name="drop_item_divider_color">#19557a</color>
+
+
+    <color name="actionbar_bg_color">#1a6294</color>
+    <color name="actionbar_bg_pressed_color">#3787b8</color>
+
+
+
     <color name="setting_checkbox_normal">#b4b4b4</color>
     <color name="setting_checkbox_pressed">#4f9acf</color>
 
     <color name="chat_text_content">#4f9acf</color>
     <color name="setting_item_normal">#ffffff</color>
+
+    <color name="setting_text_color_selected">#3787b8</color>
+    <color name="setting_text_color">#ffffff</color>
     <color name="setting_item_pressed">#d4d4d4</color>
     <color name="setting_item_selected">#c4c4c4</color>
-    <color name="setting_text_color">#3787b8</color>
 
-    <color name="drop_item_divider_color">#ffffff</color>
+    <color name="search_title_bg">#2a2a2a</color>
+
+    <color name="search_edit_bg">#333333</color>
+    <color name="search_edit_border">#202020</color>
+
+    <color name="search_button_bg">#242424</color>
+    <color name="search_button_pressed_bg">#404040</color>
+    <color name="search_button_border">#181818</color>
+
      <!-- selected tab text -->
     <color name="selected_tabtext">#bb000000</color>
     

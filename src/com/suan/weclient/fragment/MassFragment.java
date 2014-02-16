@@ -208,17 +208,6 @@ public class MassFragment extends Fragment {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                mDataManager.getWechatManager().getUploadInfo(mDataManager.getCurrentPosition(), new OnActionFinishListener() {
-                    @Override
-                    public void onFinish(int code, Object object) {
-                        if (code == WechatManager.ACTION_SUCCESS) {
-                            Log.e("get info success", "" + mDataManager.getCurrentMessageHolder().getUploadHelper().getTicket());
-
-                        }
-
-                    }
-                });
-
                 if (mDataManager.getUserGroup().size() == 0) {
                     sendButton.setSelected(true);
 

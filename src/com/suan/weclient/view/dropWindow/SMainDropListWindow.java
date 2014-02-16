@@ -47,7 +47,7 @@ public class SMainDropListWindow extends PopupWindow {
             switch (position) {
                 case 0:
 
-                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_ALL);
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_MODE_ALL);
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
@@ -63,7 +63,7 @@ public class SMainDropListWindow extends PopupWindow {
 
                 case 1:
 
-                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_TODAY);
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_MODE_TODAY);
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
@@ -77,7 +77,7 @@ public class SMainDropListWindow extends PopupWindow {
 
                 case 2:
 
-                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_YESTERDAY);
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_MODE_YESTERDAY);
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
@@ -89,7 +89,7 @@ public class SMainDropListWindow extends PopupWindow {
                     break;
                 case 3:
 
-                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_OLDER);
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_MODE_OLDER);
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
@@ -101,7 +101,7 @@ public class SMainDropListWindow extends PopupWindow {
                     break;
                 case 4:
 
-                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_STAR);
+                    mDataManager.getCurrentMessageHolder().setNowMessageMode(WeChatLoader.GET_MESSAGE_MODE_STAR);
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {

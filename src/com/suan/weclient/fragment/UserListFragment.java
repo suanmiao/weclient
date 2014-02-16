@@ -60,22 +60,11 @@ public class UserListFragment extends Fragment {
 
     private View view;
     private ListView mListView;
-    private RelativeLayout addUserButton;
 
     private UserListAdapter userListAdapter;
     private DataManager mDataManager;
 
 
-    /*
-    about dialog
-     */
-
-    private Dialog popDialog;
-
-    private TextView popContentTextView;
-    private TextView popTitleTextView;
-    private TextView popTextAmountTextView;
-    private Button popCancelButton, popSureButton;
 
     public UserListFragment() {
 
@@ -147,23 +136,7 @@ public class UserListFragment extends Fragment {
         mListView.setOnItemClickListener(userListAdapter);
         mListView.setOnItemLongClickListener(userListAdapter);
 
-
-        addUserButton = (RelativeLayout) view
-                .findViewById(R.id.left_button_add_user);
-        addUserButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                mDataManager.getUserListControlListener().onUserListDismiss();
-                Intent jumbIntent = new Intent();
-                jumbIntent.setClass(getActivity(), LoginActivity.class);
-                getActivity().startActivityForResult(jumbIntent,
-                        START_ACTIVITY_LOGIN);
-            }
-        });
-    }
+   }
 
 
     public void onActivityCreated(Bundle savedInstanceState) {

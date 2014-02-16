@@ -72,13 +72,13 @@ public class WeChatLoader {
         url1+url3+token+url5
      */
 
-    public static final int GET_MESSAGE_ALL = 0;
-    public static final int GET_MESSAGE_TODAY = 1;
-    public static final int GET_MESSAGE_YESTERDAY = 2;
-    public static final int GET_MESSAGE_DAY_BEFORE = 3;
-    public static final int GET_MESSAGE_OLDER = 4;
-
-    public static final int GET_MESSAGE_STAR = 5;
+    public static final int GET_MESSAGE_MODE_ALL = 0;
+    public static final int GET_MESSAGE_MODE_TODAY = 1;
+    public static final int GET_MESSAGE_MODE_YESTERDAY = 2;
+    public static final int GET_MESSAGE_MODE_DAY_BEFORE = 3;
+    public static final int GET_MESSAGE_MODE_OLDER = 4;
+    public static final int GET_MESSAGE_MODE_STAR = 5;
+    public static final int GET_MESSAGE_MODE_SEARCH = 6;
 
     private static final String WECHAT_URL_GET_MESSAGE_LIST = "https://mp.weixin.qq.com/cgi-bin/message";
 
@@ -306,7 +306,6 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
                 String targetUrl = WECHAT_URL_GET_USER_PROFILE;
-                Log.e("get intkeljljlkfj", "lskjdflkjsdlfk");
 
                /* PROFILE = "https://mp.weixin.qq.com/cgi-bin/home?t=home/index&lang=zh_CN&token=";
                 */
@@ -368,7 +367,7 @@ public class WeChatLoader {
 
     public static void wechatGetMessageList(
             final WechatMessageListCallBack messageListCallBack,
-            final UserBean userBean, final int mode, final boolean hideKeyWordMessage) {
+            final UserBean userBean, final int mode,final String keyword, final boolean hideKeyWordMessage) {
         final Handler loadHandler = new Handler() {
 
             // 子类必须重写此方法,接受数据
@@ -434,46 +433,56 @@ public class WeChatLoader {
                 paramList.add(new BasicNameValuePair("t", "message/list"));
                 paramList.add(new BasicNameValuePair("count", "20"));
 
-                paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
 
-                Log.e("message mode", "" + mode);
 
                 String targetUrl = WECHAT_URL_GET_MESSAGE_LIST;
 
                 switch (mode) {
-                    case GET_MESSAGE_ALL:
+                    case GET_MESSAGE_MODE_ALL:
 
+                        paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("day", "7"));
                         ;
 
                         break;
-                    case GET_MESSAGE_TODAY:
+                    case GET_MESSAGE_MODE_TODAY:
 
+                        paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("day", "0"));
 
 
                         break;
 
-                    case GET_MESSAGE_YESTERDAY:
+                    case GET_MESSAGE_MODE_YESTERDAY:
 
+                        paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("day", "1"));
                         break;
 
-                    case GET_MESSAGE_DAY_BEFORE:
+                    case GET_MESSAGE_MODE_DAY_BEFORE:
 
+                        paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("day", "2"));
 
                         break;
 
-                    case GET_MESSAGE_OLDER:
+                    case GET_MESSAGE_MODE_OLDER:
 
                         paramList.add(new BasicNameValuePair("day", "3"));
 
                         break;
 
-                    case GET_MESSAGE_STAR:
+                    case GET_MESSAGE_MODE_STAR:
 
+                        paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("action", "star"));
+
+                        break;
+
+                    case GET_MESSAGE_MODE_SEARCH:
+
+                        paramList.add(new BasicNameValuePair("action", "search"));
+                        paramList.add(new BasicNameValuePair("keyword", keyword));
 
                         break;
                 }
@@ -521,6 +530,7 @@ public class WeChatLoader {
 
     }
 
+
     public interface WechatMessagePageCallBack {
         public void onBack(int resultCode, String strResult, String referer);
     }
@@ -538,7 +548,6 @@ public class WeChatLoader {
                 super.handleMessage(msg);
                 switch (msg.arg1) {
                     case WECHAT_RESULT_MESSAGE_OK:
-
 
                         // 此处可以更新UI
                         ResultHolder resultHolder = (ResultHolder) msg.obj;
@@ -592,36 +601,36 @@ public class WeChatLoader {
 
 
                 switch (mode) {
-                    case GET_MESSAGE_ALL:
+                    case GET_MESSAGE_MODE_ALL:
 
                         paramList.add(new BasicNameValuePair("day", "7"));
                         ;
                         break;
-                    case GET_MESSAGE_TODAY:
+                    case GET_MESSAGE_MODE_TODAY:
 
                         paramList.add(new BasicNameValuePair("day", "0"));
 
 
                         break;
 
-                    case GET_MESSAGE_YESTERDAY:
+                    case GET_MESSAGE_MODE_YESTERDAY:
 
                         paramList.add(new BasicNameValuePair("day", "1"));
                         break;
 
-                    case GET_MESSAGE_DAY_BEFORE:
+                    case GET_MESSAGE_MODE_DAY_BEFORE:
 
                         paramList.add(new BasicNameValuePair("day", "2"));
 
                         break;
 
-                    case GET_MESSAGE_OLDER:
+                    case GET_MESSAGE_MODE_OLDER:
 
                         paramList.add(new BasicNameValuePair("day", "3"));
 
                         break;
 
-                    case GET_MESSAGE_STAR:
+                    case GET_MESSAGE_MODE_STAR:
 
                         paramList.add(new BasicNameValuePair("action", "star"));
 
@@ -741,7 +750,6 @@ public class WeChatLoader {
                 String targetUrl = WECHAT_URL_MESSAGE_REPLY;
                 ResponseHolder responseHolder = httpPost(targetUrl, headerList,
                         paramArrayList);
-
 
                 Message message = new Message();
                 ResultHolder resultHolder = new ResultHolder();

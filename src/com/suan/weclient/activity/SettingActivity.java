@@ -58,12 +58,8 @@ public class SettingActivity extends SherlockActivity {
     private RelativeLayout pushFreFastCheckboxLayout, pushFreNormalCheckboxLayout, pushFreSlowCheckboxLayout;
     private RelativeLayout hideKeyWordLayout;
     private RelativeLayout hideKeyWordCheckbox;
-    private TextView pushFrequentTextView;
+    private TextView pushFrequentTextView, pushCloseNightTextView;
 
-
-/*
-    private RelativeLayout shareTextlayout, shareImglayout, shareWebLayout;
-*/
 
 
     /*
@@ -98,8 +94,6 @@ public class SettingActivity extends SherlockActivity {
         initListener();
 
     }
-
-
 
 
     private void initWechat() {
@@ -140,107 +134,6 @@ public class SettingActivity extends SherlockActivity {
     }
 
 
-/*
-    private void fuckShare() {
-        shareTextlayout = (RelativeLayout) findViewById(R.id.setting_layout_share_text);
-        shareImglayout = (RelativeLayout) findViewById(R.id.setting_layout_share_img);
-        shareWebLayout = (RelativeLayout) findViewById(R.id.setting_layout_share_web);
-
-        shareTextlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String description = "分享小助手到您的朋友圈 ^_^";
-                String title = "从此在手机上就能管理公众平台";
-                String text = "just a text";
-
-                WXTextObject textObject = new WXTextObject();
-                textObject.text = text;
-
-                WXMediaMessage msg = new WXMediaMessage();
-                msg.mediaObject = textObject;
-                msg.title = title;
-                msg.description = description;
-
-                SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
-                req.message = msg;
-                req.scene = SendMessageToWX.Req.WXSceneSession;
-//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                boolean result = api.sendReq(req);
-                Log.e("share text result", "" + result);
-            }
-        });
-
-
-        shareImglayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String description = "分享小助手到您的朋友圈 ^_^";
-                String title = "从此在手机上就能管理公众平台";
-                String text = "just a text";
-
-
-                Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-                WXImageObject imageObject = new WXImageObject();
-                imageObject.imageData = bmpToByteArray(thumb, false);
-
-                WXMediaMessage msg = new WXMediaMessage();
-                msg.mediaObject = imageObject;
-                msg.title = title;
-                msg.description = description;
-
-                SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
-                req.message = msg;
-
-                req.scene = SendMessageToWX.Req.WXSceneSession;
-//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                boolean result = api.sendReq(req);
-                Log.e("share img result", "" + result);
-            }
-        });
-
-
-        shareWebLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String text = "just a text";
-
-
-                String description = "分享小助手到您的朋友圈 ^_^";
-                String title = "从此在手机上就能管理公众平台";
-                String url = "http://www.wandoujia.com/apps/com.suan.weclient";
-
-                WXWebpageObject webpage = new WXWebpageObject();
-                webpage.webpageUrl = url;
-
-                WXMediaMessage msg = new WXMediaMessage(webpage);
-                msg.title = title;
-                msg.description = description;
-
-*/
-/*
-                Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-                msg.thumbData = bmpToByteArray(thumb, false);
-*//*
-
-
-                SendMessageToWX.Req req = new SendMessageToWX.Req();
-                req.transaction = String.valueOf(System.currentTimeMillis() + "weclient");
-                req.message = msg;
-//                req.scene = SendMessageToWX.Req.WXSceneTimeline;
-                req.scene = SendMessageToWX.Req.WXSceneSession;
-                boolean result = api.sendReq(req);
-                Log.e("share web result", "" + result);
-            }
-        });
-    }
-*/
-
-
     private void initWidgets() {
         pushEnableLayout = (RelativeLayout) findViewById(R.id.setting_layout_push);
         pushFrequentLayout = (RelativeLayout) findViewById(R.id.setting_layout_push_frequent);
@@ -251,6 +144,10 @@ public class SettingActivity extends SherlockActivity {
         pushCloseNightCheckbox = (RelativeLayout) findViewById(R.id.setting_layout_close_night_checkbox);
 
 
+        pushFrequentTextView = (TextView) findViewById(R.id.setting_text_push_frequent_title);
+        pushCloseNightTextView = (TextView) findViewById(R.id.setting_text_close_night);
+
+
         pushCloseNightLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,11 +156,8 @@ public class SettingActivity extends SherlockActivity {
                 SharedPreferenceManager.putPustCloseNight(SettingActivity.this, !pushNight);
                 setPushLayout();
 
-
             }
         });
-
-        pushFrequentTextView = (TextView) findViewById(R.id.setting_text_push_frequent);
 
 
         pushFreFastCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_fast);
@@ -271,7 +165,6 @@ public class SettingActivity extends SherlockActivity {
         pushFreNormalCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_normal);
 
         pushFreSlowCheckboxLayout = (RelativeLayout) findViewById(R.id.setting_layout_checkbox_slow);
-        setPushLayout();
 
         pushEnableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -417,6 +310,12 @@ public class SettingActivity extends SherlockActivity {
 
     private void setPushLayout() {
 
+        pushFrequentTextView.setSelected(SharedPreferenceManager.getPushEnable(SettingActivity.this));
+        pushCloseNightTextView.setSelected(SharedPreferenceManager.getPushEnable(SettingActivity.this));
+
+        Log.e("push","has set"+pushFrequentTextView.isSelected());
+
+
         int pushFrequent = SharedPreferenceManager.getPushFrequent(SettingActivity.this);
         if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
 
@@ -428,13 +327,12 @@ public class SettingActivity extends SherlockActivity {
             pushFreFastCheckboxLayout.setSelected(false);
             pushFreNormalCheckboxLayout.setSelected(false);
             pushFreSlowCheckboxLayout.setSelected(false);
-
             pushEnableCheckboxLayout.setSelected(false);
-
 
             return;
 
         }
+
 
         pushFrequentLayout.setSelected(false);
         pushCloseNightLayout.setSelected(false);
@@ -464,6 +362,7 @@ public class SettingActivity extends SherlockActivity {
 
                 break;
         }
+
 
     }
 
@@ -664,7 +563,6 @@ public class SettingActivity extends SherlockActivity {
         };
         defaultConversation.sync(listener);
     }
-
 
 
     private byte[] bmpToByteArray(final Bitmap bmp, boolean needRecycle) {

@@ -180,9 +180,7 @@ public class DataParser {
     }
 
     public static class MessageResultHolder {
-        public MessageHolder messageHolder;
         public ArrayList<MessageBean> messageBeans;
-        public String lastMsgId = "";
 
     }
 
@@ -196,6 +194,8 @@ public class DataParser {
             final String source, final UserBean userBean,
             final MessageHolder messageHolder, final String referer) {
 
+        removeEmptyMessage(messageHolder.getMessageList());
+
         final Handler loadHandler = new Handler() {
 
             // 子类必须重写此方法,接受数据
@@ -204,8 +204,12 @@ public class DataParser {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
                 MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+
+                ArrayList<MessageBean> messageList = messageResultHolder.messageBeans;
+
+                messageHolder.setMessage(messageList);
+
                 boolean dataChanged = false;
                 if (msg.arg1 == 1) {
                     dataChanged = true;
@@ -215,6 +219,7 @@ public class DataParser {
 
             }
         };
+
 
         new Thread() {
             public void run() {
@@ -226,32 +231,32 @@ public class DataParser {
                         JSONObject contentObject = getMessageArray(nowElement.html());
                         if (contentObject != null) {
                             try {
-                                removeEmptyMessage(messageHolder.getMessageList());
+
                                 JSONArray getArray = contentObject.getJSONArray("messageArray");
-                                ArrayList<MessageBean> getMessageList = getMessageItems(
+                                ArrayList<MessageBean> resultMessageList = getMessageItems(
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
 
-                                /*
-                                remove the compare of old and new message list
-                                 */
-                                messageHolder.setMessage(getMessageList);
+
                                 messageHolder.setLatestMsgId(latestMsgId);
                                 messageHolder.getUserBean().setLastMsgId(latestMsgId);
                                 messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
 
-                                if (getMessageList.size() == 0) {
+
+                                if (resultMessageList.size() == 0) {
                                     MessageBean emptyMessage = new MessageBean();
                                     emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
-                                    messageHolder.getMessageList().add(emptyMessage);
+                                    resultMessageList.add(emptyMessage);
 
                                 }
 
                                 Message message = new Message();
+
                                 MessageResultHolder messageResultHolder = new MessageResultHolder();
-                                messageResultHolder.lastMsgId = latestMsgId;
-                                messageResultHolder.messageHolder = messageHolder;
-                                messageResultHolder.messageBeans = getMessageList;
+                                /*
+                                send the messagelist to ui thread to change
+                                 */
+                                messageResultHolder.messageBeans = resultMessageList;
                                 message.obj = messageResultHolder;
 
                                 loadHandler.sendMessage(message);
@@ -269,15 +274,6 @@ public class DataParser {
             }
 
 
-            private void removeEmptyMessage(ArrayList<MessageBean> messageBeans) {
-                for (int i = 0; i < messageBeans.size(); i++) {
-                    if (messageBeans.get(i).getType() == MessageBean.MESSAGE_TYPE_EMPTY) {
-                        messageBeans.remove(i);
-                    }
-
-                }
-
-            }
         }.start();
 
     }
@@ -297,6 +293,9 @@ public class DataParser {
                 super.handleMessage(msg);
                 // 此处可以更新UI
                 MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+
+
+                messageHolder.addMessage(messageResultHolder.messageBeans);
                 messageListParseCallBack.onBack(messageResultHolder, true);
 
             }
@@ -311,19 +310,16 @@ public class DataParser {
                         JSONObject contentObject = getMessageArray(nowElement.html());
                         if (contentObject != null) {
                             try {
-                                Log.e("parse next ", "" + messageHolder.getNowMessageMode());
                                 JSONArray getArray = contentObject.getJSONArray("messageArray");
-                                ArrayList<MessageBean> getMessageList = getMessageItems(
+                                ArrayList<MessageBean> resultMessageList = getMessageItems(
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
-                                messageHolder.addMessage(getMessageList);
+
                                 messageHolder.setLatestMsgId(latestMsgId);
 
                                 Message message = new Message();
                                 MessageResultHolder messageResultHolder = new MessageResultHolder();
-                                messageResultHolder.lastMsgId = latestMsgId;
-                                messageResultHolder.messageHolder = messageHolder;
-                                messageResultHolder.messageBeans = getMessageList;
+                                messageResultHolder.messageBeans = resultMessageList;
                                 message.obj = messageResultHolder;
 
                                 loadHandler.sendMessage(message);
@@ -424,7 +420,7 @@ public class DataParser {
 
     public static void parseUploadInfo(
             final UploadInfoParseCallBack uploadInfoParseCallBack,
-            final String source,  final UploadHelper uploadHelper) {
+            final String source, final UploadHelper uploadHelper) {
 
         final Handler loadHandler = new Handler() {
 
@@ -456,7 +452,7 @@ public class DataParser {
                 try {
 
                     String ticket = getTickets(source);
-                    Log.e("get ticket",""+ticket);
+                    Log.e("get ticket", "" + ticket);
                     if (ticket != null) {
                         uploadHelper.setTicket(ticket);
 
@@ -485,7 +481,7 @@ public class DataParser {
                 while (matcher.find()) {
 
                     String dataString = matcher.group(1);
-                    Log.e("get data",""+dataString);
+                    Log.e("get data", "" + dataString);
                     if (dataString != null) {
                         regx = "ticket:\"([^\"]*)\"";
                         pattern = Pattern.compile(regx);
@@ -874,6 +870,17 @@ public class DataParser {
 
 
         return GET_RET_NONE;
+    }
+
+
+    private static void removeEmptyMessage(ArrayList<MessageBean> messageBeans) {
+        for (int i = 0; i < messageBeans.size(); i++) {
+            if (messageBeans.get(i).getType() == MessageBean.MESSAGE_TYPE_EMPTY) {
+                messageBeans.remove(i);
+            }
+
+        }
+
     }
 
     public static final int GET_RET_NONE = -1;

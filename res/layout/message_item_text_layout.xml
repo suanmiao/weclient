@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e9e9e9"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +22,7 @@
             android:layout_marginLeft="15dip"
             android:layout_marginTop="10dip"
             android:layout_marginBottom="10dip"
-            android:src="@drawable/head_default" />
+            android:src="@drawable/profile_head_default" />
 
         <LinearLayout
             android:layout_width="fill_parent"

@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/../SlidingMenu-project/abs-library/abs-library.iml" filepath="$PROJECT_DIR$/../SlidingMenu-project/abs-library/abs-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/../SlidingMenu-project/library/library.iml" filepath="$PROJECT_DIR$/../SlidingMenu-project/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/library/library1.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/library/library1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Android-PullToRefresh-master/sample/sample.iml" filepath="$PROJECT_DIR$/../Android-PullToRefresh-master/sample/sample.iml" />
     </modules>
   </component>
 </project>

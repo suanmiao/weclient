@@ -62,6 +62,12 @@
             android:name=".activity.ShowImgActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"></activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"></activity>
+
+
         <!-- Caution! Do not change this app key. It is only for demo usage. -->
         <meta-data
             android:name="UMENG_APPKEY"

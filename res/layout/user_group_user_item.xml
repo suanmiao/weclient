@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/user_list_item_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_height="50dip"
+        android:layout_width="fill_parent">
+
+        <RelativeLayout
+            android:layout_alignParentLeft="true"
+            android:id="@+id/user_item_img"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="5dip"
+            android:layout_width="40dip"
+            android:layout_height="40dip">
+
+            <ImageView
+                android:id="@+id/user_group_img_profile"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_centerInParent="true"
+                android:src="@drawable/profile_head_default" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/user_group_text_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/user_item_img"
+            android:layout_marginLeft="10dip"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#c7c7c7"
+            android:textSize="18dip" />
+
+        <ImageView
+            android:id="@+id/user_group_img_index"
+            android:layout_height="30dip"
+            android:layout_width="30dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/user_item_selected_index"
+            />
+
+    </RelativeLayout>
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_marginTop="3dip"
+        layout="@layout/profile_item_divider" />
+</LinearLayout>

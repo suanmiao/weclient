@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/push_enable"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_color_selected"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true"
@@ -69,11 +69,11 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/push_close_night_enable"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@drawable/setting_push_text_color"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true"
-                    android:id="@+id/setting_text_push" />
+                    android:id="@+id/setting_text_close_night" />
 
                 <RelativeLayout
                     android:id="@+id/setting_layout_close_night_checkbox"
@@ -108,14 +108,15 @@
                 android:layout_width="fill_parent">
 
                 <TextView
-                    android:id="@+id/setting_text_push_frequent_title"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/push_frequent"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@drawable/setting_push_text_color"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:id="@+id/setting_text_push_frequent_title"
+                    />
 
 
                 <TextView
@@ -262,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/hide_key_word_message"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_color_selected"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true"
@@ -298,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/about_us"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_color_selected"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true" />
@@ -341,7 +342,7 @@
                     android:layout_width="wrap_content"
                     android:text="@string/feedback"
                     android:textSize="15dip"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_color_selected"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true" />
 
@@ -374,7 +375,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/share_to_friends"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_color_selected"
                     android:textSize="15dip"
                     android:layout_marginLeft="25dip"
                     android:layout_centerVertical="true" />

@@ -207,7 +207,7 @@ public class MainActivity extends SlidingFragmentActivity {
         actionBar.setDisplayUseLogoEnabled(false);
 
         CustomMainActionView customMainActionView = new CustomMainActionView(this);
-        customMainActionView.init(mDataManager);
+        customMainActionView.init(MainActivity.this,mDataManager);
 
         customMainActionView.setShowMenuListener(new ShowMenuListener() {
 
@@ -666,7 +666,6 @@ public class MainActivity extends SlidingFragmentActivity {
                                                 .getCurrentPosition(),
                                         new OnActionFinishListener() {
 
-
                                             @Override
                                             public void onFinish(
                                                     int code, Object object) {
@@ -690,7 +689,6 @@ public class MainActivity extends SlidingFragmentActivity {
                                     @Override
                                     public void onFinish(int code, Object object) {
                                         // TODO Auto-generated method stub
-
 
                                         String referer = (String) object;
 

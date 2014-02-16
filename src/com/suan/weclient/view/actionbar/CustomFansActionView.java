@@ -152,7 +152,7 @@ public class CustomFansActionView extends LinearLayout {
     }
 
     private void showDropDownWindow(View view) {
-        sFansDropListWindow.showAsDropDown(view, 0, 0);
+        sFansDropListWindow.showAsDropDown(view, 0, (int)Util.dipToPx(8,getResources()));
 
     }
 

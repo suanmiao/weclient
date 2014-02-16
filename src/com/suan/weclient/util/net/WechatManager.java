@@ -500,6 +500,11 @@ public class WechatManager {
                                 if (imageView != null) {
                                     imageView.setImageBitmap(bitmap);
                                 }
+
+                                if (popDialog > DIALOG_POP_NO) {
+
+                                    mDataManager.doDismissAllDialog();
+                                }
                                 onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
                                 break;
 
@@ -608,12 +613,11 @@ public class WechatManager {
 
                             case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
 
+
                                 try {
                                     if (popLoadingDialog > DIALOG_POP_NO) {
-
                                         mDataManager.doDismissAllDialog();
                                         mDataManager.doLoadingStart("解析消息数据...", popLoadingDialog);
-
                                     }
 
                                     DataParser.parseNewMessage(new MessageListParseCallBack() {
@@ -670,9 +674,71 @@ public class WechatManager {
 
                         }
                     }
-                }, mDataManager.getUserGroup().get(userIndex), mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(), SharedPreferenceManager.getHideKeyWordMessage(mContext)
+                }, mDataManager.getUserGroup().get(userIndex), mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(), "", SharedPreferenceManager.getHideKeyWordMessage(mContext)
         );
     }
+
+
+    public void getSearchMessageList(final String keyword,
+                                     final int userIndex,
+                                     final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetMessageList(
+
+                new WechatMessageListCallBack() {
+                    @Override
+                    public void onBack(int resultCode, String strResult, String referer) {
+                        // TODO Auto-generated method
+                        // stub
+
+                        switch (resultCode) {
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+
+                                try {
+
+                                    DataParser.parseNewMessage(new MessageListParseCallBack() {
+
+                                        @Override
+                                        public void onBack(
+                                                MessageResultHolder messageResultHolder,
+                                                boolean dataChanged) {
+                                            // TODO
+                                            // Auto-generated
+                                            // method
+                                            // stub
+                                            onActionFinishListener.onFinish(ACTION_SUCCESS, dataChanged);
+                                            mDataManager.doLoadingEnd();
+
+                                        }
+                                    }, strResult, mDataManager.getUserGroup().get(userIndex),
+                                            mDataManager.getSearchMessageHolder(),
+                                            referer);
+
+                                } catch (Exception exception) {
+                                    onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                                }
+                                break;
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+
+                               onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                                break;
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                                onActionFinishListener.onFinish(ACTION_OTHER, null);
+                                break;
+
+                        }
+                    }
+                }, mDataManager.getUserGroup().get(userIndex), WeChatLoader.GET_MESSAGE_MODE_SEARCH, keyword, SharedPreferenceManager.getHideKeyWordMessage(mContext)
+        );
+    }
+
 
     public void getFansList(final int page, final int userIndex,
                             final String groupId,
@@ -1304,7 +1370,7 @@ public class WechatManager {
                                 Gson gson = new Gson();
                                 UploadHelper.NowUploadBean nowUploadBean = (UploadHelper.NowUploadBean) gson.fromJson(result, UploadHelper.NowUploadBean.class);
                                 mDataManager.getMessageHolders().get(userIndex).getUploadHelper().setNowUploadBean(nowUploadBean);
-                                onActionFinishListener.onFinish(ACTION_SUCCESS,null);
+                                onActionFinishListener.onFinish(ACTION_SUCCESS, null);
 
 
                             }
