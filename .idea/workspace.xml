@@ -37,31 +37,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67ebde4e-aaf1-417c-b44b-63fb9875324b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/IntroActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFifthFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroForthFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroSecondFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroThirdFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_right_anim.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_right_anim.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_contact_us_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_login_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_save_us_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/intro_but_enter_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_fifth_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_first_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_forth_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_second_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_third_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_white_bottom.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/jl1.0.1.jar" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/head_default.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/img_loading.png" afterPath="" />
@@ -94,87 +69,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WeChatLoader.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WechatManager.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SlidingMenu.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/radius_border_pop_bottom.xml" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_gray_bottom.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/radius_border_pop_title.xml" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_gray_title.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/AppItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/AppItemHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/AppItemHolder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/ChatHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ChatHolder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansGroupBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansGroupBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/FansHolder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/ImgHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ImgHolder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MessageBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MultiItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MultiItemBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/UserBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserGoupPushHelper.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/UserGoupPushHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/attrs.xml" afterPath="$PROJECT_DIR$/res/values/attrs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_feedback_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_feedback_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/left_layout.xml" afterPath="$PROJECT_DIR$/res/layout/left_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" afterPath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/setting_layout.xml" afterPath="$PROJECT_DIR$/res/layout/setting_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/show_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/show_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/splash_layout.xml" afterPath="$PROJECT_DIR$/res/layout/splash_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/user_group_user_item.xml" afterPath="$PROJECT_DIR$/res/layout/user_group_user_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="WeClient.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -408,7 +303,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1985" />
-    <option name="y" value="24" />
+    <option name="y" value="-1056" />
     <option name="width" value="1855" />
     <option name="height" value="1056" />
   </component>
@@ -1228,7 +1123,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="1985" y="-1056" width="1855" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
