@@ -1,5 +1,6 @@
 package com.suan.weclient.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.suan.weclient.pushService.AlarmReceiver;
 import com.suan.weclient.pushService.PushService;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.Constants;
 import com.suan.weclient.util.data.DataManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -60,6 +63,7 @@ public class SettingActivity extends SherlockActivity {
     private RelativeLayout hideKeyWordCheckbox;
     private TextView pushFrequentTextView, pushCloseNightTextView;
 
+    private RelativeLayout saveUsLayout, contactUsLayout;
 
 
     /*
@@ -86,7 +90,6 @@ public class SettingActivity extends SherlockActivity {
         setContentView(R.layout.setting_layout);
 
         initWidgets();
-//        fuckShare();
         initData();
         initUmeng();
         initWechat();
@@ -128,7 +131,6 @@ public class SettingActivity extends SherlockActivity {
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;
         boolean result = api.sendReq(req);
-        Log.e("share result", "" + result);
 
 
     }
@@ -203,6 +205,7 @@ public class SettingActivity extends SherlockActivity {
 
             }
         });
+
         pushFreFastCheckboxLayout.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -296,8 +299,32 @@ public class SettingActivity extends SherlockActivity {
                 SharedPreferenceManager.putHideKeyWordMessage(SettingActivity.this, !hideKeyWordMessage);
                 setHideKeyWordLayout();
             }
+
         });
 
+
+        saveUsLayout = (RelativeLayout) findViewById(R.id.setting_layout_save_me);
+        contactUsLayout = (RelativeLayout) findViewById(R.id.setting_layout_contact_us);
+
+
+        saveUsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popDialog = Util.createSaveUsDialog(SettingActivity.this, "打赏一杯咖啡吧~");
+                popDialog.show();
+
+
+            }
+        });
+
+        contactUsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                popDialog = Util.createContactUsDialog(SettingActivity.this, "联系我们");
+                popDialog.show();
+            }
+        });
 
     }
 
@@ -310,14 +337,13 @@ public class SettingActivity extends SherlockActivity {
 
     private void setPushLayout() {
 
-        pushFrequentTextView.setSelected(SharedPreferenceManager.getPushEnable(SettingActivity.this));
-        pushCloseNightTextView.setSelected(SharedPreferenceManager.getPushEnable(SettingActivity.this));
-
-        Log.e("push","has set"+pushFrequentTextView.isSelected());
+        boolean pushEnable = SharedPreferenceManager.getPushEnable(SettingActivity.this);
+        pushFrequentTextView.setSelected(!pushEnable);
+        pushCloseNightTextView.setSelected(!pushEnable);
 
 
         int pushFrequent = SharedPreferenceManager.getPushFrequent(SettingActivity.this);
-        if (!SharedPreferenceManager.getPushEnable(SettingActivity.this)) {
+        if (!pushEnable) {
 
             pushCloseNightLayout.setSelected(true);
             pushCloseNightCheckbox.setSelected(false);
@@ -431,7 +457,7 @@ public class SettingActivity extends SherlockActivity {
         popTitleTextView.setText("开启新消息提醒");
         popContentTextView.setText("此功能处于测试阶段。温馨提示：\n" +
                 "1.请确保应用后台未被xxx手机助手限制。\n" +
-                "2.您可以选择消息的请求频率以及在 11：00 -7：00期间是否提醒。"
+                "2.您可以选择消息的请求频率以及在 11：00 -7：00期间是否提醒。\n"
         );
         popSureButton.setOnClickListener(new View.OnClickListener() {
 
@@ -521,6 +547,13 @@ public class SettingActivity extends SherlockActivity {
 
                 String content = popContentEditText.getEditableText()
                         .toString();
+
+                if (content.length() == 0) {
+                    Toast.makeText(SettingActivity.this, "请输入内容", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
                 defaultConversation.addUserReply(content);
                 replyDialog.dismiss();
 
@@ -580,4 +613,18 @@ public class SettingActivity extends SherlockActivity {
         }
         return result;
     }
+
+    @SuppressLint("ShowToast")
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 按下键盘上返回按钮
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+
 }

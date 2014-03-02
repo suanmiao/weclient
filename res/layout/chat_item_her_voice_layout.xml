@@ -23,7 +23,7 @@
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginTop="10dip"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/profile_head_default" />
         </RelativeLayout>
 

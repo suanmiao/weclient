@@ -30,18 +30,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
+import com.suan.weclient.activity.MainActivity;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
+import com.suan.weclient.util.data.holder.MaterialHolder;
 import com.suan.weclient.util.net.DataParser;
-import com.suan.weclient.util.net.UploadHelper;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -71,14 +72,16 @@ public class MassFragment extends Fragment {
 
     }
 
-    public MassFragment(DataManager dataManager) {
-
-        mDataManager = dataManager;
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.mass_layout, null);
+        /*
+        init data
+         */
+        MainActivity mainActivity = (MainActivity)getActivity();
+
+        mDataManager =((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
+
         initWidgets();
         initWidgetsEvent();
         initListener();
@@ -207,6 +210,17 @@ public class MassFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+/*
+
+                mDataManager.createMaterialHolder(mDataManager.getCurrentUser());
+                mDataManager.getWechatManager().getMaterialList(3,0,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+                    @Override
+                    public void onFinish(int code, Object object) {
+
+                    }
+                });
+*/
+
 
                 if (mDataManager.getUserGroup().size() == 0) {
                     sendButton.setSelected(true);

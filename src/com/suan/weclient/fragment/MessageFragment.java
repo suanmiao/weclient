@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.suan.weclient.R;
+import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.adapter.MessageListAdapter;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.net.WechatManager;
@@ -32,14 +34,16 @@ public class MessageFragment extends Fragment implements
 
     }
 
-    public MessageFragment(DataManager dataManager) {
-
-        mDataManager = dataManager;
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.message_fragment, null);
+
+        /*
+        init data
+         */
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mDataManager =((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
 
         mHandler = new MessageHandler();
         initWidgets();
@@ -51,7 +55,6 @@ public class MessageFragment extends Fragment implements
 
     private void initWidgets() {
         ptrListview = (PTRListview) view.findViewById(R.id.reply_list);
-
 
     }
 
@@ -67,8 +70,6 @@ public class MessageFragment extends Fragment implements
 
             ptrListview.setonRefreshListener(MessageFragment.this);
             ptrListview.setOnLoadListener(MessageFragment.this);
-            //indecate loading
-            ptrListview.onRefreshStart();
 
         }
 
@@ -117,12 +118,15 @@ public class MessageFragment extends Fragment implements
                 Message message = new Message();
                 message.arg1 = PTRListview.PTR_MODE_LOAD;
                 mHandler.sendMessage(message);
+                Log.e("message get",""+mode);
 
                 switch (mode) {
                     case PTRListview.PTR_MODE_REFRESH:
 
                         messageListAdapter.updateCache();
                         ptrListview.onRefreshComplete();
+                        ptrListview.setSelection(1);
+
                         break;
 
                     case PTRListview.PTR_MODE_LOAD:
@@ -130,6 +134,25 @@ public class MessageFragment extends Fragment implements
 
                         break;
                 }
+
+                int size = mDataManager.getCurrentMessageHolder().getMessageList().size();
+                ptrListview.setLoadEnable(size%PAGE_MESSAGE_AMOUNT==0);
+
+
+            }
+
+        });
+
+        mDataManager.setListLoadingListener(new DataManager.ListLoadingListener() {
+            @Override
+            public void onLoadStart() {
+                ptrListview.onRefreshStart();
+
+            }
+
+            @Override
+            public void onLoadFinish() {
+                ptrListview.onRefreshComplete();
 
             }
         });
@@ -172,6 +195,7 @@ public class MessageFragment extends Fragment implements
 
         public GetDataTask(PTRListview refreshedView, int mode) {
             mRefreshedView = refreshedView;
+
             this.mode = mode;
             end = false;
             if (mDataManager.getCurrentMessageHolder() == null) {
@@ -202,6 +226,29 @@ public class MessageFragment extends Fragment implements
                                     public void onFinish(int code, Object object) {
                                         // TODO Auto-generated method stub
 
+                                        switch (code) {
+                                            case WechatManager.ACTION_SUCCESS:
+
+                                                break;
+                                            case WechatManager.ACTION_TIME_OUT:
+
+                                                break;
+                                            case WechatManager.ACTION_OTHER:
+
+                                                break;
+                                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                                mDataManager.doPopEnsureDialog(true, true, "登录超时", "登录超时", new DataManager.DialogSureClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+
+                                                        mDataManager.doAutoLogin();
+
+                                                    }
+                                                });
+
+                                                break;
+                                        }
                                         mDataManager.doMessageGet(PTRListview.PTR_MODE_LOAD);
 
                                         end = true;
@@ -225,6 +272,19 @@ public class MessageFragment extends Fragment implements
                                 @Override
                                 public void onFinish(int code, Object object) {
                                     // TODO Auto-generated method stub
+                                    switch (code) {
+                                        case WechatManager.ACTION_SPECIFICED_ERROR:
+                                            mDataManager.doPopEnsureDialog(true, true, "登录超时", "登录超时", new DataManager.DialogSureClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+
+                                                    mDataManager.doAutoLogin();
+
+                                                }
+                                            });
+
+                                            break;
+                                    }
 
                                     mDataManager.doMessageGet(PTRListview.PTR_MODE_REFRESH);
 

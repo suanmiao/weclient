@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +19,16 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 import com.suan.weclient.R;
+import com.suan.weclient.activity.MainActivity;
+import com.suan.weclient.adapter.SFragmentPagerAdapter;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ContentFragmentChangeListener;
 import com.suan.weclient.util.data.DataManager.LoginListener;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.TabListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.view.SViewPager;
 
 public class ContentFragment extends Fragment implements
@@ -32,7 +37,7 @@ public class ContentFragment extends Fragment implements
     private View mView;
 
 
-    private MyAdapter mAdapter;
+    private SFragmentPagerAdapter mAdapter;
     private SViewPager mPager;
     private ArrayList<Fragment> pagerItemList = null;
 
@@ -45,9 +50,54 @@ public class ContentFragment extends Fragment implements
 
     }
 
-    public ContentFragment(DataManager dataManager) {
-        initListener(dataManager);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mDataChangeListener = ((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
+
+        initListener(mDataChangeListener);
+
+        mView = inflater.inflate(R.layout.content_layout, null);
+        initWidgets();
+
+        return mView;
+    }
+
+    private void initWidgets() {
+
+        mPager = (SViewPager) mView.findViewById(R.id.vp_list);
+        mPager.init(mDataChangeListener);
+
+        pagerItemList = new ArrayList<Fragment>();
+        messageFragment = new MessageFragment();
+        massFragment = new MassFragment();
+        pagerItemList.add(messageFragment);
+        pagerItemList.add(massFragment);
+
+        MainActivity mainActivity = (MainActivity)getActivity();
+
+        mAdapter = new SFragmentPagerAdapter(mainActivity.getSupportFragmentManager(),pagerItemList);
+
+        mPager.setAdapter(mAdapter);
+
+        mPager.setPageMargin(10);
+        mPager.setPageMarginDrawable(R.color.pageDivider);
+
+        mPager.setOnPageChangeListener(this);
+
+    }
+
 
     private void initListener(DataManager dataManager) {
 
@@ -118,45 +168,6 @@ public class ContentFragment extends Fragment implements
 
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.content_layout, null);
-        initWidgets();
-
-        return mView;
-    }
-
-    private void initWidgets() {
-
-        mPager = (SViewPager) mView.findViewById(R.id.vp_list);
-        mPager.init(mDataChangeListener);
-
-        pagerItemList = new ArrayList<Fragment>();
-        messageFragment = new MessageFragment(mDataChangeListener);
-        massFragment = new MassFragment(mDataChangeListener);
-        pagerItemList.add(messageFragment);
-        pagerItemList.add(massFragment);
-        mAdapter = new MyAdapter(getFragmentManager());
-
-        mPager.setAdapter(mAdapter);
-        mPager.setPageMargin(10);
-        mPager.setPageMarginDrawable(R.color.pageDivider);
-
-
-        mPager.setOnPageChangeListener(this);
-    }
-
-
     public ViewPager getViewPage() {
         return mPager;
     }
@@ -182,29 +193,6 @@ public class ContentFragment extends Fragment implements
             return false;
     }
 
-    public class MyAdapter extends FragmentPagerAdapter {
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return pagerItemList.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            Fragment fragment = null;
-            if (position < pagerItemList.size())
-                fragment = pagerItemList.get(position);
-            else
-                fragment = pagerItemList.get(0);
-
-            return fragment;
-
-        }
-    }
 
     private MyPageChangeListener myPageChangeListener;
 
@@ -275,12 +263,14 @@ public class ContentFragment extends Fragment implements
 
     }
 
+/*
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         pagerItemList.clear();
         pagerItemList = null;
     }
+*/
 
 
 }

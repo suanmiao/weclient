@@ -7,17 +7,17 @@ import org.json.JSONObject;
 
 import com.suan.weclient.pushService.PushService;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class SharedPreferenceManager {
 
     private static final String USER_GROUP_SHAREDPREF = "userGroup";
     private static final String USER_GROUP_CONTENT = "content";
+    private static final String USER_ENTER_TIME = "enterTime";
     private static final String USER_GROUP_CURRENT_INDEX = "currentIndex";
     private static final String USER_HIDE_KEY_WORD_MESSAGE = "hideKeyWordMessage";
 
@@ -37,6 +37,29 @@ public class SharedPreferenceManager {
 
     public static final int ENTER_STATE_FIRST_TIME = -1;
     public static final int ENTER_STATE_OTHER_TIME = 1;
+
+
+    public static int getUserEnterTime(Context context) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getInt(USER_ENTER_TIME, 0);
+    }
+
+    public static boolean putUserEnterTime(Context context, int time) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                USER_GROUP_SHAREDPREF, Context.MODE_MULTI_PROCESS);
+        Editor editor = sharedPreferences.edit();
+        editor.putInt(USER_ENTER_TIME, time);
+
+        return editor.commit();
+    }
+
+
+
+
+
+
 
     public static boolean getActivityRunning(Context context) {
 

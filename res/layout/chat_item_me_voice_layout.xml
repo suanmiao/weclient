@@ -93,7 +93,7 @@
                 android:id="@+id/chat_item_me_voice_img_profile"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:layout_marginTop="10dip"
                 android:src="@drawable/profile_head_default" />
         </RelativeLayout>

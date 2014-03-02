@@ -1,10 +1,12 @@
 package com.suan.weclient.activity;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class FansListActivity extends SherlockActivity implements
         initData();
         initActionBar();
         initListener();
+        loadData();
 
     }
 
@@ -72,16 +75,20 @@ public class FansListActivity extends SherlockActivity implements
 
     private void initData() {
 
-
         GlobalContext globalContext = (GlobalContext) getApplicationContext();
         mDataManager = globalContext.getDataManager();
         fansListAdapter = new FansListAdapter(this, mDataManager);
         ptrListview.setAdapter(fansListAdapter);
         ptrListview.setonRefreshListener(this);
         ptrListview.setOnLoadListener(this);
-        ptrListview.onRefreshStart();
         fansHandler = new FansHandler();
 
+
+    }
+
+    private void loadData() {
+
+        mDataManager.doListLoadStart();
         mDataManager.getWechatManager().getFansList(0,
                 mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
                 new OnActionFinishListener() {
@@ -99,6 +106,11 @@ public class FansListActivity extends SherlockActivity implements
                     }
                 });
 
+    }
+
+    public void onPause() {
+        super.onPause();
+        mDataManager.clearListLoadingListner();
     }
 
     private void initListener() {
@@ -122,7 +134,21 @@ public class FansListActivity extends SherlockActivity implements
             }
         });
 
+
+        mDataManager.setListLoadingListener(new DataManager.ListLoadingListener() {
+            @Override
+            public void onLoadStart() {
+                ptrListview.onRefreshStart();
+            }
+
+            @Override
+            public void onLoadFinish() {
+                ptrListview.onRefreshComplete();
+
+            }
+        });
     }
+
 
     @Override
     public void onLoad() {
@@ -143,6 +169,7 @@ public class FansListActivity extends SherlockActivity implements
             // TODO Auto-generated method stub
 
             super.handleMessage(msg);
+            mDataManager.doListLoadEnd();
             mDataManager.doFansGet(msg.arg1);
 
         }
@@ -258,4 +285,19 @@ public class FansListActivity extends SherlockActivity implements
 
         }
     }
+
+    @SuppressLint("ShowToast")
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 按下键盘上返回按钮
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+
+
 }

@@ -9,21 +9,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -44,12 +39,12 @@ import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.data.UserGoupPushHelper;
+import com.suan.weclient.util.data.holder.UserGoupPushHelper;
+import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
 import com.suan.weclient.view.ptr.PTRListview;
-import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
@@ -83,7 +78,6 @@ public class MainActivity extends SlidingFragmentActivity {
     private DataManager mDataManager;
     private Dialog popDialog;
     private Dialog replyDialog;
-
 
 
     @Override
@@ -138,12 +132,22 @@ public class MainActivity extends SlidingFragmentActivity {
         //analyse intent
         int getCurrentIndex = intent.getIntExtra("currentIndex", -1);
         if (getCurrentIndex != -1) {
+
             //get the current value
             if (getCurrentIndex != mDataManager.getCurrentPosition()) {
                 if (mDataManager.setCurrentPosition(getCurrentIndex)) {
                     autoLogin();
                 }
             }
+
+            mDataManager.doListLoadStart();
+            mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+                @Override
+                public void onFinish(int code, Object object) {
+                    mDataManager.doMessageGet(PTRListview.PTR_MODE_REFRESH);
+
+                }
+            });
 
         }
         super.onNewIntent(intent);
@@ -183,12 +187,11 @@ public class MainActivity extends SlidingFragmentActivity {
         FragmentTransaction t = this.getSupportFragmentManager()
                 .beginTransaction();
 
-        leftFragment = new LeftFragment(this.getSupportFragmentManager(),
-                mDataManager);
+        leftFragment = new LeftFragment();
 
         t.replace(R.id.left_frame, leftFragment);
 
-        contentFragment = new ContentFragment(mDataManager);
+        contentFragment = new ContentFragment();
         t.replace(R.id.content_layout, contentFragment);
 
         t.commit();
@@ -207,7 +210,7 @@ public class MainActivity extends SlidingFragmentActivity {
         actionBar.setDisplayUseLogoEnabled(false);
 
         CustomMainActionView customMainActionView = new CustomMainActionView(this);
-        customMainActionView.init(MainActivity.this,mDataManager);
+        customMainActionView.init(MainActivity.this, mDataManager);
 
         customMainActionView.setShowMenuListener(new ShowMenuListener() {
 
@@ -444,6 +447,7 @@ public class MainActivity extends SlidingFragmentActivity {
     public void onPause() {
 
         SharedPreferenceManager.putActivityRunning(this, false);
+        mDataManager.clearListLoadingListner();
         super.onPause();
         MobclickAgent.onPause(this);
     }
@@ -657,83 +661,154 @@ public class MainActivity extends SlidingFragmentActivity {
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
+                                getDataAfterLogin();
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                mDataManager.doPopEnsureDialog(true, false, "登录失败", "账户名或密码出错，重新登录？", new DialogSureClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        mDataManager.doDismissAllDialog();
+
+                                        popDialog = Util.createLoginDialog(MainActivity.this, "登录", new OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        EditText userIdEdit = (EditText) popDialog.findViewById(R.id.dialog_login_edit_user_id);
+                                                        EditText pwdEdit = (EditText) popDialog.findViewById(R.id.dialog_login_edit_pass_word);
+                                                        String userId = userIdEdit.getText().toString();
+                                                        String pwd = WeChatLoader
+                                                                .getMD5Str(pwdEdit.getText().toString());
+                                                        mDataManager.getCurrentUser().setUserName(userId);
+                                                        mDataManager.getCurrentUser().setPwd(pwd);
+                                                        SharedPreferenceManager.updateUser(MainActivity.this,mDataManager);
+                                                        popDialog.dismiss();
+
+                                                        autoLogin();
+
+
+                                                    }
+                                                }, new OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+
+
+                                                        popDialog.dismiss();
+                                                    }
+                                                }
+                                        );
+
+                                        popDialog.show();
+
+
+                                    }
+                                });
+
+
+                                break;
+                        }
+
+                    }
+                });
+
+    }
+
+    private void getDataAfterLogin() {
+
+        mDataManager.doListLoadStart();
+        mDataManager
+                .getWechatManager()
+                .getNewMessageList(
+                        WechatManager.DIALOG_POP_CANCELABLE,
+                        mDataManager
+                                .getCurrentPosition(),
+                        new OnActionFinishListener() {
+
+                            @Override
+                            public void onFinish(
+                                    int code, Object object) {
+                                // TODO
+                                // Auto-generated
+                                // method
+                                // stub
+                                switch (code) {
+                                    case WechatManager.ACTION_SUCCESS:
+                                        mDataManager
+                                                .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+
+                                        break;
+                                    case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                        mDataManager
+                                                .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+
+                                        autoLogin();
+
+                                        break;
+                                    default:
+
+
+                                        break;
+                                }
+
+                            }
+                        });
+
+        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE,
+                mDataManager.getCurrentPosition(),
+                new OnActionFinishListener() {
+
+                    @Override
+                    public void onFinish(int code, Object object) {
+                        // TODO Auto-generated method stub
+
+                        String referer = (String) object;
 
                         mDataManager
                                 .getWechatManager()
-                                .getNewMessageList(
-                                        WechatManager.DIALOG_POP_CANCELABLE,
+                                .getUserImgWithReferer(
                                         mDataManager
                                                 .getCurrentPosition(),
+                                        WechatManager.DIALOG_POP_CANCELABLE,
+                                        null,
                                         new OnActionFinishListener() {
+
 
                                             @Override
                                             public void onFinish(
                                                     int code, Object object) {
                                                 // TODO
                                                 // Auto-generated
-                                                // method
-                                                // stub
-                                                if (code == WechatManager.ACTION_SUCCESS) {
-                                                    mDataManager
-                                                            .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                                                // method stub
 
-                                                }
+                                            }
+                                        }, referer);
+                        mDataManager
+                                .getWechatManager()
+                                .getMassData(
+                                        mDataManager
+                                                .getCurrentPosition(),
+                                        WechatManager.DIALOG_POP_CANCELABLE,
+                                        new OnActionFinishListener() {
+
+
+                                            @Override
+                                            public void onFinish(
+                                                    int code, Object object) {
+                                                // TODO
+                                                // Auto-generated
+                                                // method stub
+
+                                                mDataManager.doMassDataGet(mDataManager.getCurrentUser());
 
                                             }
                                         });
-
-                        mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE,
-                                mDataManager.getCurrentPosition(),
-                                new OnActionFinishListener() {
-
-                                    @Override
-                                    public void onFinish(int code, Object object) {
-                                        // TODO Auto-generated method stub
-
-                                        String referer = (String) object;
-
-                                        mDataManager
-                                                .getWechatManager()
-                                                .getUserImgWithReferer(
-                                                        mDataManager
-                                                                .getCurrentPosition(),
-                                                        WechatManager.DIALOG_POP_CANCELABLE,
-                                                        null,
-                                                        new OnActionFinishListener() {
-
-
-                                                            @Override
-                                                            public void onFinish(
-                                                                    int code, Object object) {
-                                                                // TODO
-                                                                // Auto-generated
-                                                                // method stub
-
-                                                            }
-                                                        }, referer);
-                                        mDataManager
-                                                .getWechatManager()
-                                                .getMassData(
-                                                        mDataManager
-                                                                .getCurrentPosition(),
-                                                        WechatManager.DIALOG_POP_CANCELABLE,
-                                                        new OnActionFinishListener() {
-
-
-                                                            @Override
-                                                            public void onFinish(
-                                                                    int code, Object object) {
-                                                                // TODO
-                                                                // Auto-generated
-                                                                // method stub
-
-                                                                mDataManager.doMassDataGet(mDataManager.getCurrentUser());
-
-                                                            }
-                                                        });
-
-                                    }
-                                });
 
                     }
                 });

@@ -24,7 +24,7 @@
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginTop="10dip"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/profile_head_default" />
         </RelativeLayout>
 
@@ -47,17 +47,24 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#ffffff"
                     android:padding="3px">
+
+
+                    <ImageView
+                        android:layout_width="80dip"
+                        android:layout_height="80dip"
+                        android:background="@drawable/pic_default"
+                        android:layout_centerInParent="true" />
 
                     <ImageView
                         android:id="@+id/chat_item_her_img_img_content"
                         android:layout_width="200dip"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
+                        android:minHeight="150dip"
                         android:maxHeight="250dip"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pic_default" />
+                         />
                 </RelativeLayout>
             </RelativeLayout>
 

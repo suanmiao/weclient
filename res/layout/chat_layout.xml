@@ -5,10 +5,9 @@
     android:background="#efefef"
     android:orientation="vertical">
 
-    <ListView
+    <com.suan.weclient.view.ptr.PTRListview
         android:id="@+id/chat_layout_list"
         android:layout_width="fill_parent"
-        android:paddingTop="5dip"
         android:layout_height="0dip"
         android:layout_weight="1"
         android:background="#e4e4e4"

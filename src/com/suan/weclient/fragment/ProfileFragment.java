@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,19 +22,15 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.FansListActivity;
+import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.activity.SettingActivity;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.data.Constants;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.ProfileGetListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.net.WechatManager;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.SendMessageToWX;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.tencent.mm.sdk.openapi.WXMediaMessage;
-import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.fb.model.Conversation;
 import com.umeng.fb.model.DevReply;
@@ -72,15 +67,21 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
 
     }
-
+/*
     public ProfileFragment(DataManager dataManager) {
 
         mDataManager = dataManager;
-    }
+    }*/
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_layout, null);
+        /*
+        init data
+         */
+        MainActivity mainActivity = (MainActivity)getActivity();
+
+        mDataManager =((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
         initWidgets();
         initAgent();
         initListener();
@@ -109,6 +110,7 @@ public class ProfileFragment extends Fragment {
                     Intent jumbIntent = new Intent();
                     jumbIntent.setClass(getActivity(), FansListActivity.class);
                     getActivity().startActivity(jumbIntent);
+                    getActivity().overridePendingTransition(R.anim.activity_movein_from_left_anim,R.anim.activity_moveout_to_right_anim);
 
                 }
             }
@@ -121,6 +123,7 @@ public class ProfileFragment extends Fragment {
                 Intent jumbIntent = new Intent();
                 jumbIntent.setClass(getActivity(), SettingActivity.class);
                 getActivity().startActivity(jumbIntent);
+                getActivity().overridePendingTransition(R.anim.activity_movein_from_left_anim,R.anim.activity_moveout_to_right_anim);
 
             }
         });

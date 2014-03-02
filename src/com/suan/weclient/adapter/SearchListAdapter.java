@@ -1,10 +1,12 @@
 package com.suan.weclient.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,7 +31,7 @@ import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.MessageBean;
+import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -46,15 +48,13 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
     private LayoutInflater mInflater;
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
-    private Context mContext;
+    private Activity mActivity;
 
-    private EditText popContentEditText;
-    private TextView popTitleTextView;
-    private TextView textAmountTextView;
-    private Button popCancelButton, popSureButton;
     private Dialog dialog;
     private static final int MAX_TEXT_LENGTH = 140;
     private String canceledReplyContent = "";
+
+
     /*
      * whether the scroll is busy
      */
@@ -64,10 +64,10 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
      */
     private boolean lastReplyCanceled = false;
 
-    public SearchListAdapter(Context context, DataManager dataManager) {
-        this.mInflater = LayoutInflater.from(context);
+    public SearchListAdapter(Activity activity, DataManager dataManager) {
+        this.mInflater = LayoutInflater.from(activity);
         this.mDataManager = dataManager;
-        this.mContext = context;
+        this.mActivity = activity;
         this.mListCacheManager = new ListCacheManager();
 
         //when user index change
@@ -77,15 +77,14 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                 notifyDataSetChanged();
             }
         });
-
-
     }
 
     private ArrayList<MessageBean> getMessageItems() {
-       if (mDataManager.getUserGroup().size() == 0||mDataManager.getSearchMessageHolder()==null) {
+        if (mDataManager.getUserGroup().size() == 0) {
             ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
             return blankArrayList;
         }
+
         return mDataManager.getSearchMessageHolder().getMessageList();
     }
 
@@ -130,7 +129,6 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                 convertView = mInflater.inflate(R.layout.message_item_voice_layout,
                         null);
 
-
                 break;
 
             case MessageBean.MESSAGE_TYPE_EMPTY:
@@ -171,6 +169,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         private ImageView profileImageView;
         private TextView profileTextView;
         private TextView timeTextView;
+        private TextView hasReplyTextView;
 
         private ImageView contentImageView;
         private TextView contentTextView;
@@ -180,18 +179,53 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
         private LinearLayout longClickLayout;
 
+
         private RelativeLayout copyLayout, shareLayout, downloadLayout;
         private ImageView copyButton, shareButton, downloadButton;
 
         private RelativeLayout replyLayout, starLayout;
         private ImageView replyButton, starImageButton;
 
+
+        /*
+        about data
+         */
+        private MessageBean contentBean;
+        private boolean dataLoaded = false;
+        private Object data;
+
+
+        public boolean getDataLoaded() {
+            return dataLoaded;
+        }
+
+        public void setDataLoaded(boolean dataLoaded) {
+            this.dataLoaded = dataLoaded;
+        }
+
+        public Object getData() {
+            return data;
+        }
+
+        public void setData(Object data) {
+            this.data = data;
+        }
+
+        public MessageBean getMessageBean() {
+            return contentBean;
+
+        }
+
         public ItemViewHolder(View parentView, final int position) {
 
             this.parentView = parentView;
 
-            switch (getMessageItems().get(position).getType()) {
+            this.contentBean = getMessageItems().get(position);
+
+            switch (contentBean.getType()) {
                 case MessageBean.MESSAGE_TYPE_TEXT:
+
+                    dataLoaded = true;
 
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_text_img_profile);
@@ -199,6 +233,9 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.message_item_text_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_time);
+
+                    hasReplyTextView = (TextView) parentView.findViewById(R.id.message_item_text_text_has_reply);
+
 
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_content);
@@ -219,7 +256,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                     replyButton = (ImageView) parentView.findViewById(R.id.message_item_text_button_reply);
                     String content = getMessageItems().get(position)
                             .getContent();
-                    SpanUtil.setHtmlSpanAndImgSpan(contentTextView, content, mContext);
+                    SpanUtil.setHtmlSpanAndImgSpan(contentTextView, content, mActivity);
                     break;
 
                 case MessageBean.MESSAGE_TYPE_IMG:
@@ -230,6 +267,8 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.message_item_img_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.message_item_img_text_time);
+
+                    hasReplyTextView = (TextView) parentView.findViewById(R.id.message_item_img_text_has_reply);
                     contentImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_img_img_content);
 
@@ -258,6 +297,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.message_item_voi_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.message_item_voi_text_time);
+                    hasReplyTextView = (TextView) parentView.findViewById(R.id.message_item_voi_text_has_reply);
 
                     voiceInfoTextView = (TextView) parentView.findViewById(R.id.message_item_voi_text_info);
                     voicePlayLayout = (RelativeLayout) parentView.findViewById(R.id.message_item_voi_layout_play);
@@ -295,6 +335,8 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                             .findViewById(R.id.message_item_text_text_profile);
                     timeTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_time);
+
+                    hasReplyTextView = (TextView) parentView.findViewById(R.id.message_item_text_text_has_reply);
 
                     contentTextView = (TextView) parentView
                             .findViewById(R.id.message_item_text_text_content);
@@ -350,17 +392,31 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         switch (getMessageItems().get(position).getType()) {
             case MessageBean.MESSAGE_TYPE_TEXT:
 
+
+                holder.contentTextView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDataManager.createChat(mDataManager.getCurrentUser(),
+                                getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
+                        Intent jumbIntent = new Intent();
+                        jumbIntent.setClass(mActivity, ChatActivity.class);
+                        mActivity.startActivity(jumbIntent);
+                        mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+                    }
+                });
+
                 break;
 
             case MessageBean.MESSAGE_TYPE_IMG:
 
-                setImgMessageContent(holder, position);
+                setImgMessageContent(holder);
 
                 break;
 
             case MessageBean.MESSAGE_TYPE_VOICE:
 
-                setVoiceMessageContent(holder, position);
+                setVoiceMessageContent(holder);
 
                 break;
 
@@ -374,15 +430,18 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
         }
 
-        if (getMessageItems().get(position).getType() != MessageBean.MESSAGE_TYPE_EMPTY) {
+        MessageBean currentBean = getMessageItems().get(position);
+
+        if (currentBean.getType() != MessageBean.MESSAGE_TYPE_EMPTY) {
             holder.parentView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDataManager.createChat(mDataManager.getCurrentUser(),
                             getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
                     Intent jumbIntent = new Intent();
-                    jumbIntent.setClass(mContext, ChatActivity.class);
-                    mContext.startActivity(jumbIntent);
+                    jumbIntent.setClass(mActivity, ChatActivity.class);
+                    mActivity.startActivity(jumbIntent);
+                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
 
                 }
             });
@@ -396,7 +455,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
                     } else {
 
-                        popReply(position);
+                        popReply(getMessageItems().get(position));
 
                     }
 
@@ -418,22 +477,25 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                         public void onFinish(int code, Object object) {
                             // TODO Auto-generated method stub
 
-                            setStarBackground(v, position);
+                            setStarBackground(v, getMessageItems().get(position));
                         }
                     });
 
                 }
             });
 
-            setStarBackground(holder.starImageButton, position);
+            setStarBackground(holder.starImageButton, holder.getMessageBean());
 
-            long time = Long.parseLong(getMessageItems().get(position)
+            long time = Long.parseLong(currentBean
                     .getDateTime());
             Date date = new Date(time * 1000);
             SimpleDateFormat format = new SimpleDateFormat("MM.dd HH:mm ");
             String timeString = "" + format.format(date);
 
             holder.timeTextView.setText(timeString);
+
+            holder.hasReplyTextView.setVisibility((Integer.parseInt(currentBean.getHasReply()) == 1) ? View.VISIBLE : View.GONE);
+
 
             holder.profileImageView.setOnClickListener(new OnClickListener() {
 
@@ -443,14 +505,14 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                     mDataManager.createChat(mDataManager.getCurrentUser(),
                             getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
                     Intent jumbIntent = new Intent();
-                    jumbIntent.setClass(mContext, ChatActivity.class);
-                    mContext.startActivity(jumbIntent);
+                    jumbIntent.setClass(mActivity, ChatActivity.class);
+                    mActivity.startActivity(jumbIntent);
 
                 }
             });
 
             holder.profileTextView.setText(""
-                    + getMessageItems().get(position).getNickName());
+                    + currentBean.getNickName());
 
             setHeadImg(holder, position);
 
@@ -458,19 +520,14 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
     }
 
-    private void setVoiceMessageContent(final ItemViewHolder holder,
-                                        final int position) {
+    private void setVoiceMessageContent(final ItemViewHolder holder) {
 
-        boolean voiceLoaded = false;
-        if (holder.voicePlayLayout.getTag() != null) {
-            voiceLoaded = true;
-        }
+        if (!mBusy && !holder.getDataLoaded()) {
 
-        if (!mBusy || !voiceLoaded) {
             mDataManager.getWechatManager().getMessageVoice(
                     mDataManager.getCurrentPosition(),
-                    getMessageItems().get(position).getId(),
-                    Integer.parseInt(getMessageItems().get(position)
+                    holder.getMessageBean(),
+                    Integer.parseInt(holder.getMessageBean()
                             .getLength()), mDataManager.getCurrentUser(),
                     new OnActionFinishListener() {
 
@@ -481,11 +538,11 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                                 if (object != null) {
                                     byte[] bytes = (byte[]) object;
                                     VoiceHolder voiceHolder = new VoiceHolder(
-                                            bytes, getMessageItems().get(position)
+                                            bytes, holder.getMessageBean()
                                             .getPlayLength(),
-                                            getMessageItems().get(position)
+                                            holder.getMessageBean()
                                                     .getLength());
-                                    int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                                    int playLength = Integer.parseInt(holder.getMessageBean().getPlayLength());
                                     int seconds = playLength / 1000;
                                     int minutes = seconds / 60;
                                     int leaveSecond = seconds % 60;
@@ -494,10 +551,12 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                                         info += minutes + "'";
 
                                     }
+
                                     info += " " + leaveSecond + "'";
                                     holder.voiceInfoTextView.setText(info);
 
-                                    holder.voicePlayLayout.setTag(voiceHolder);
+                                    holder.setData(voiceHolder);
+                                    holder.setDataLoaded(true);
 
                                 }
 
@@ -513,10 +572,9 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                if (holder.voicePlayLayout.getTag() != null) {
+                if (holder.getDataLoaded()) {
 
-                    final VoiceHolder voiceHolder = (VoiceHolder) holder.voicePlayLayout
-                            .getTag();
+                    final VoiceHolder voiceHolder = (VoiceHolder) holder.getData();
                     if (voiceHolder.getPlaying()) {
                         mDataManager.getVoiceManager().stopMusic();
 
@@ -562,8 +620,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         });
     }
 
-    private void setImgMessageContent(final ItemViewHolder holder,
-                                      final int position) {
+    private void setImgMessageContent(final ItemViewHolder holder) {
 
         holder.contentImageView.setOnClickListener(new OnClickListener() {
 
@@ -571,26 +628,24 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Intent jumbIntent = new Intent();
-                jumbIntent.setClass(mContext, ShowImgActivity.class);
-                mDataManager.createImgHolder(getMessageItems().get(position), mDataManager.getCurrentUser());
-                mContext.startActivity(jumbIntent);
+                jumbIntent.setClass(mActivity, ShowImgActivity.class);
+                mDataManager.createImgHolder(holder.getMessageBean(), mDataManager.getCurrentUser());
+                mActivity.startActivity(jumbIntent);
+                mActivity.overridePendingTransition(R.anim.search_activity_fly_in, R.anim.search_activity_fly_out);
 
             }
-        });
-        boolean imgLoaded = false;
-        if (holder.contentImageView.getTag() != null) {
-            imgLoaded = (Boolean) holder.contentImageView.getTag();
-        }
 
-        if (!mBusy || !imgLoaded) {
+        });
+
+        if (!mBusy && !holder.getDataLoaded()) {
 
             Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
                     ImageCacheManager.CACHE_MESSAGE_CONTENT
-                            + getMessageItems().get(position).getId());
+                            + holder.getMessageBean().getId());
             if (contentBitmap == null) {
                 mDataManager.getWechatManager().getMessageImg(
                         mDataManager.getCurrentPosition(),
-                        getMessageItems().get(position),
+                        holder.getMessageBean(),
                         holder.contentImageView,
                         WeChatLoader.WECHAT_URL_MESSAGE_IMG_SMALL,
                         new OnActionFinishListener() {
@@ -600,13 +655,15 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                                 // TODO Auto-generated method stub
                                 if (code == WechatManager.ACTION_SUCCESS) {
                                     if (object != null) {
-                                        holder.contentImageView.setTag(true);
                                         Bitmap bitmap = (Bitmap) object;
                                         mDataManager.getCacheManager().putBitmap(
                                                 ImageCacheManager.CACHE_MESSAGE_CONTENT
-                                                        + getMessageItems().get(
-                                                        position).getId(),
+                                                        + holder.getMessageBean(),
                                                 bitmap, true);
+
+
+                                        holder.setData(bitmap);
+                                        holder.setDataLoaded(true);
 
                                     }
 
@@ -617,6 +674,8 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
             } else {
                 holder.contentImageView.setImageBitmap(contentBitmap);
+                holder.setData(contentBitmap);
+                holder.setDataLoaded(true);
             }
         }
     }
@@ -649,7 +708,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                         if (code == WechatManager.ACTION_SUCCESS) {
                             if (object != null) {
                                 Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
-                                        Util.dipToPx(30, mContext.getResources()), 10,
+                                        holder.profileImageView.getWidth(), 10,
                                         Color.parseColor("#c6c6c6"));
                                 holder.profileImageView.setImageBitmap(roundBitmap);
                                 holder.profileImageView.setTag(true);
@@ -678,12 +737,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v;
-/*        if(getMessageItems().get(position).getType()==MessageBean.MESSAGE_TYPE_VOICE){
-
-            Log.e("contain",""+mListCacheManager.containView(getMessageId(position)));
-
-        }
- */       if (!mListCacheManager.containView(getMessageId(position))) {
+        if (!mListCacheManager.containView(getMessageId(position))) {
             v = newView(position);
             mListCacheManager.putView(v, getMessageId(position));
         } else {
@@ -696,107 +750,36 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         return v;
     }
 
-    public void popReply(final int position) {
+    public void popReply(final MessageBean messageBean) {
+        dialog = Util.createReplyDialog(mActivity, messageBean.getNickName(), lastReplyCanceled, canceledReplyContent, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lastReplyCanceled = false;
+                        String replyContent = ((EditText) dialog.findViewById(R.id.dialog_edit_edit_text)).getText().toString();
+                        reply(messageBean, replyContent);
+                        dialog.cancel();
 
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.dialog_edit_layout, null);
-        popTitleTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_edit_text_title);
+                    }
+                }, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-        popContentEditText = (EditText) dialogView
-                .findViewById(R.id.dialog_edit_edit_text);
-        popSureButton = (Button) dialogView
-                .findViewById(R.id.dialog_edit_button_sure);
-        popCancelButton = (Button) dialogView
-                .findViewById(R.id.dialog_edit_button_cancel);
-
-        textAmountTextView = (TextView) dialogView
-                .findViewById(R.id.dialog_edit_text_num);
-        textAmountTextView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                popContentEditText.setText("");
-
-            }
-        });
-
-        if (lastReplyCanceled) {
-            popContentEditText.setText(canceledReplyContent);
-        }
-
-        popContentEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                // TODO Auto-generated method stub
-                int remainTextAmount = MAX_TEXT_LENGTH - s.length();
-                if (remainTextAmount >= 0) {
-                    textAmountTextView.setTextColor(Color.rgb(0, 0, 0));
-                } else {
-                    textAmountTextView.setTextColor(Color.RED);
+                        String replyContent = ((EditText) dialog.findViewById(R.id.dialog_edit_edit_text)).getText().toString();
+                        lastReplyCanceled = true;
+                        canceledReplyContent = replyContent;
+                        dialog.cancel();
+                    }
                 }
-                textAmountTextView.setText(remainTextAmount + " x");
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-
-        popTitleTextView.setText(mContext.getResources().getString(R.string.reply) + ":"
-                + mDataManager.getCurrentMessageHolder().getMessageList()
-                .get(position).getNickName());
-        popSureButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                lastReplyCanceled = false;
-
-                reply(position);
-
-            }
-        });
-        popCancelButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                lastReplyCanceled = true;
-                canceledReplyContent = popContentEditText.getText().toString();
-                dialog.cancel();
-
-            }
-        });
-
-        dialog = new Dialog(mContext, R.style.dialog);
-
-        dialog.setContentView(dialogView);
+        );
         dialog.show();
-
     }
 
-    private void setStarBackground(View view, int position) {
-        boolean star = mDataManager.getCurrentMessageHolder().getMessageList()
-                .get(position).getStarred();
+    private void setStarBackground(View view, MessageBean messageBean) {
+        boolean star = messageBean.getStarred();
 
         View starView = null;
 
-        switch (getMessageItems().get(position).getType()) {
+        switch (messageBean.getType()) {
             case MessageBean.MESSAGE_TYPE_TEXT:
                 starView = view.findViewById(R.id.message_item_text_button_star);
 
@@ -828,28 +811,29 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
     }
 
-    private void reply(int position) {
+    private void reply(final MessageBean messageBean, String replyContent) {
 
-        String replyContent = popContentEditText.getText().toString();
         if (replyContent.length() > MAX_TEXT_LENGTH) {
 
-            Toast.makeText(mContext, "字数超过限制", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "字数超过限制", Toast.LENGTH_LONG).show();
 
             return;
         } else if (replyContent.length() == 0) {
 
-            Toast.makeText(mContext, "请输入内容", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "请输入内容", Toast.LENGTH_LONG).show();
 
             return;
         }
         dialog.dismiss();
         mDataManager.getWechatManager().reply(
-                mDataManager.getCurrentPosition(), position, replyContent,
+                mDataManager.getCurrentPosition(), messageBean, replyContent,
                 new OnActionFinishListener() {
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
+                        messageBean.setHasReply("1");
+
 
                     }
                 });
@@ -866,12 +850,47 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         // TODO Auto-generated method stub
         if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) { // 滑动停止
+
             mBusy = false;
+            loadData(view);
+
 
         } else if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {// 滑动手未松开
             mBusy = true;
         } else if (scrollState == OnScrollListener.SCROLL_STATE_FLING) {// 滑动中手已松开
             mBusy = true;
+        }
+
+    }
+
+
+    private void loadData(AbsListView fatherView) {
+
+        for (int i = 0; i < fatherView.getChildCount(); i++) {
+            View nowView = fatherView.getChildAt(i);
+            if (nowView.getTag() != null) {
+                ItemViewHolder holder = (ItemViewHolder) nowView.getTag();
+                if (!holder.getDataLoaded()) {
+
+                    MessageBean contentBean = holder.getMessageBean();
+                    switch (contentBean.getType()) {
+                        case MessageBean.MESSAGE_TYPE_IMG:
+                            setImgMessageContent(holder);
+
+                            break;
+
+                        case MessageBean.MESSAGE_TYPE_VOICE:
+
+                            setVoiceMessageContent(holder);
+
+                            break;
+                    }
+
+
+                }
+
+            }
+
         }
     }
 

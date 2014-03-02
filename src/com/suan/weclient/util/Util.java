@@ -2,7 +2,9 @@ package com.suan.weclient.util;
 
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -16,6 +18,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -39,6 +42,9 @@ import android.widget.Toast;
 import com.suan.weclient.R;
 import com.suan.weclient.util.net.WechatManager;
 
+import org.apache.http.HeaderIterator;
+
+import java.io.FilePermission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,22 +54,29 @@ public class Util {
     /*
      * about pop dialog
      */
-    private static TextView popContentTextView;
+
     private static TextView popTitleTextView;
+
+    private static TextView popContentTextView;
     public static EditText popContentEditText;
     private static TextView popTextAmountTextView;
+
+    private static EditText loginUserEdit, loginPwdEdit;
+
+    private static Button copyBitAddrButton, goToPayButton;
+
     private static Button popCancelButton, popSureButton;
+
+
     private static Dialog popDialog;
     private static Dialog replyDialog;
 
-    public static Bitmap roundCorner(Bitmap src, float round) {
+    public static Bitmap roundCorner(Bitmap src, int width) {
 
-        // image size
-        int width = src.getWidth();
-        int height = src.getHeight();
+        src = Bitmap.createScaledBitmap(src, width, width, false);
 
         // create bitmap output
-        Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(width, width, Config.ARGB_8888);
 
         // set canvas for painting
         Canvas canvas = new Canvas(result);
@@ -75,12 +88,12 @@ public class Util {
         paint.setAntiAlias(true);
 
         // config rectangle for embedding
-        final Rect srcRect = new Rect(0, 0, width, height);
-        final Rect desRect = new Rect(0, 0, width, height);
+        final Rect srcRect = new Rect(0, 0, width, width);
+        final Rect desRect = new Rect(0, 0, width, width);
 
         // draw rect to canvas
         paint.setColor(Color.RED);
-        canvas.drawCircle(width / 2, height / 2, round, paint);
+        canvas.drawCircle(width / 2, width / 2, width / 2, paint);
 
         // create Xfer mode
         paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
@@ -91,14 +104,12 @@ public class Util {
         return result;
     }
 
-    public static Bitmap roundCornerWithBorder(Bitmap src, float round, float borderWidth, int borderColor) {
+    public static Bitmap roundCornerWithBorder(Bitmap src, int width, float borderWidth, int borderColor) {
 
-        // image size
-        int width = src.getWidth();
-        int height = src.getHeight();
+        src = Bitmap.createScaledBitmap(src, width, width, false);
 
         // create bitmap output
-        Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(width, width, Config.ARGB_8888);
 
         // set canvas for painting
         Canvas canvas = new Canvas(result);
@@ -110,12 +121,12 @@ public class Util {
         paint.setAntiAlias(true);
 
         // config rectangle for embedding
-        final Rect srcRect = new Rect(0, 0, width, height);
-        final Rect desRect = new Rect(0, 0, width, height);
+        final Rect srcRect = new Rect(0, 0, width, width);
+        final Rect desRect = new Rect(0, 0, width, width);
 
         // draw rect to canvas
         paint.setColor(Color.RED);
-        canvas.drawCircle(width / 2, height / 2, round, paint);
+        canvas.drawCircle(width / 2, width / 2, width / 2, paint);
 
         // create Xfer mode
         paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
@@ -125,7 +136,7 @@ public class Util {
         paint.setColor(borderColor);
         paint.setStyle(Style.STROKE);
         paint.setStrokeWidth(borderWidth);
-        canvas.drawCircle(width / 2, height / 2, round, paint);
+        canvas.drawCircle(width / 2, width / 2, width, paint);
 
         // return final image
         return result;
@@ -222,7 +233,166 @@ public class Util {
 
     }
 
-    public static Dialog createFeedbackDialog(Context context,OnClickListener sureClickListener,OnClickListener cancelClickListener) {
+
+    public static Dialog createSaveUsDialog(final Context context, String title) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_save_us_layout,
+                null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_save_us_text_title);
+
+        copyBitAddrButton = (Button)dialogView.findViewById(R.id.dialog_save_us_button_copy_bit_addr);
+        goToPayButton = (Button)dialogView.findViewById(R.id.dialog_save_us_button_go_to_pay);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_save_us_button_sure);
+
+        popContentTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_dev_reply_text_content);
+
+
+        popTitleTextView.setText(title);
+
+        copyBitAddrButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setText(context.getResources().getString(R.string.bit_adder));
+                Toast.makeText(context,context.getResources().getString(R.string.has_copyed),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        goToPayButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String url = "http://me.alipay.com/suanmiao";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                context.startActivity(i);
+            }
+        });
+
+        popSureButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    popDialog.dismiss();
+
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
+
+        popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
+
+
+
+
+
+
+
+    public static Dialog createContactUsDialog(final Context context, String title) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_contact_us_layout,
+                null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_contact_us_text_title);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_contact_us_button_send_mail);
+
+
+        popTitleTextView.setText(title);
+
+        popSureButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/html");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getResources().getString(R.string.xiaohong_mail),
+                            context.getResources().getString(R.string.xiaoshou_mail),
+                            context.getResources().getString(R.string.my_mail)});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.mail_title));
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+
+                    context.startActivity(Intent.createChooser(intent, "Send Email"));
+
+                    popDialog.dismiss();
+
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
+
+        popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
+
+
+
+    public static Dialog createLoginDialog(Context context, String title,
+                                           OnClickListener sureClickListener,
+                                           OnClickListener cancelClickListener) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_login_layout,
+                null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_login_text_title);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_login_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_login_button_cancel);
+
+
+        loginUserEdit = (EditText) dialogView.findViewById(R.id.dialog_login_edit_user_id);
+        loginPwdEdit = (EditText) dialogView.findViewById(R.id.dialog_login_edit_pass_word);
+
+        popTitleTextView.setText(title);
+        popSureButton.setOnClickListener(sureClickListener);
+        popCancelButton.setOnClickListener(cancelClickListener);
+
+        popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
+    public static Dialog createFeedbackDialog(Context context, OnClickListener sureClickListener, OnClickListener cancelClickListener) {
 
 
         LayoutInflater inflater = (LayoutInflater) context
@@ -294,7 +464,7 @@ public class Util {
                 resources.getDisplayMetrics());
     }
 
-    public static int getScreenHeight(Resources resources){
+    public static int getScreenHeight(Resources resources) {
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
 
         return displayMetrics.heightPixels;
@@ -352,6 +522,86 @@ public class Util {
     }
 
 
+    public static Dialog createReplyDialog(Context context,String nickname,boolean lastReplyCanceled,String canceledReplyContent
+            ,OnClickListener sureClickListener,OnClickListener cancelClickListener){
+
+
+        LayoutInflater inflater = (LayoutInflater)context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_edit_layout, null);
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_edit_text_title);
+
+        popContentEditText = (EditText) dialogView
+                .findViewById(R.id.dialog_edit_edit_text);
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_edit_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_edit_button_cancel);
+
+        popContentTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_edit_text_num);
+        popContentTextView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popContentEditText.setText("");
+
+            }
+        });
+
+        if (lastReplyCanceled) {
+            popContentEditText.setText(canceledReplyContent);
+        }
+
+        popContentEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                // TODO Auto-generated method stub
+                int remainTextAmount = 140 - s.length();
+                if (remainTextAmount >= 0) {
+                    popContentTextView.setTextColor(Color.rgb(0, 0, 0));
+                } else {
+                    popContentTextView.setTextColor(Color.RED);
+                }
+                popContentTextView.setText(remainTextAmount + " x");
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+        popTitleTextView.setText(context.getResources().getString(R.string.reply) + ":"
+                + nickname);
+
+        popSureButton.setOnClickListener(sureClickListener);
+
+        popCancelButton.setOnClickListener(cancelClickListener);
+
+        popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+
+    }
+
+
     public static boolean isServiceRunning(Context ctx, String filePath) {
         ActivityManager manager = (ActivityManager) ctx.getSystemService(ctx.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -359,6 +609,7 @@ public class Util {
                 return true;
             }
         }
+
         return false;
     }
 

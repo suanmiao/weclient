@@ -25,18 +25,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.internal.nineoldandroids.animation.ObjectAnimator;
 import com.actionbarsherlock.internal.nineoldandroids.animation.ValueAnimator;
+import com.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.suan.weclient.R;
+import com.suan.weclient.activity.MainActivity;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
@@ -58,14 +61,50 @@ public class LeftFragment extends Fragment {
     public LeftFragment() {
 
     }
+/*
 
     public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
         mFragmentManager = fragmentManager;
         mDataManager = dataManager;
+
     }
+
+    public void onResume() {
+        super.onResume();
+        Log.e("left ", "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("left", "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("left", "onStop");
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle toSave) {
+
+        super.onSaveInstanceState(toSave);
+
+        Log.e("left fragment", "onSaveinstanceState");
+    }
+*/
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        /*
+        init the data
+         */
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mDataManager = ((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
+        mFragmentManager = mainActivity.getSupportFragmentManager();
 
         view = inflater.inflate(R.layout.left_layout, null);
         initFragments();
@@ -76,8 +115,8 @@ public class LeftFragment extends Fragment {
     }
 
     private void initFragments() {
-        profileFragment = new ProfileFragment(mDataManager);
-        userListFragment = new UserListFragment(mDataManager);
+        profileFragment = new ProfileFragment();
+        userListFragment = new UserListFragment();
 
 
         FragmentTransaction t = getActivity().getSupportFragmentManager()
@@ -130,14 +169,14 @@ public class LeftFragment extends Fragment {
             @Override
             public void onGet(UserBean userBean) {
 
-                String nickName = Util.getShortString(userBean.getNickname(), 10, 3);
+                String nickName = Util.getShortString(userBean.getNickname(), 9, 3);
                 headTextView.setText(nickName);
-
 
                 Bitmap imgBitmap = mDataManager.getCacheManager().getBitmap(
                         ImageCacheManager.CACHE_USER_PROFILE
                                 + mDataManager.getUserGroup().get(mDataManager.getCurrentPosition())
                                 .getUserName());
+
                 if (imgBitmap != null) {
                     headImageView.setImageBitmap(imgBitmap);
 

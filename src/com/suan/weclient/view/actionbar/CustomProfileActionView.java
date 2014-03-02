@@ -5,15 +5,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.suan.weclient.R;
-import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.FansHolder;
 
 public class CustomProfileActionView extends LinearLayout {
 

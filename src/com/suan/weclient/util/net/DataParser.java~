@@ -1,0 +1,1043 @@
+package com.suan.weclient.util.net;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.suan.weclient.util.data.bean.AppItemBean;
+import com.suan.weclient.util.data.bean.MaterialBean;
+import com.suan.weclient.util.data.holder.AppItemHolder;
+import com.suan.weclient.util.data.holder.ChatHolder;
+import com.suan.weclient.util.data.bean.FansBean;
+import com.suan.weclient.util.data.bean.FansGroupBean;
+import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.bean.MessageBean;
+import com.suan.weclient.util.data.holder.MaterialHolder;
+import com.suan.weclient.util.data.holder.MessageHolder;
+import com.suan.weclient.util.data.bean.UserBean;
+
+public class DataParser {
+
+    public static final int PARSE_SUCCESS = 1;
+    public static final int PARSE_FAILED = 2;
+    public static final int PARSE_SPECIFIC_ERROR = 3;
+
+    private static final String login_timeout = "登录超时";
+
+    public static final int RET_LOGIN_SUCCESS = 302;
+
+    public static final int GET_USER_PROFILE_SUCCESS = 1;
+    public static final int GET_USER_PROFILE_FAILED = 0;
+
+
+    public static final String today = "今天";
+
+    public static int parseUserProfile(String source, UserBean userBean) {
+
+        Document document = Jsoup.parse(source);
+        Elements numElements = document.getElementsByClass("number");
+        for (int i = 0; i < numElements.size(); i++) {
+            if (numElements.size() == 3) {
+
+                if (i == 0) {
+                    int newMessage = Integer
+                            .parseInt(numElements.get(i).html());
+                    userBean.setNewMessage(newMessage + "");
+
+                }
+                if (i == 1) {
+
+                    int newPeople = Integer.parseInt(numElements.get(i).html());
+                    userBean.setNewPeople(newPeople + "");
+                }
+                if (i == 2) {
+
+                    int totalPeople = Integer.parseInt(numElements.get(i)
+                            .html());
+                    userBean.setTotalPeople(totalPeople + "");
+                }
+            }
+        }
+
+        Elements avataElements = document.getElementsByClass("avatar");
+
+        for (int i = 0; i < avataElements.size(); i++) {
+            String fakeId = getProfileFakeId(avataElements.get(i).attr("src"));
+            if (!fakeId.equals("")) {
+                userBean.setFakeId(fakeId);
+
+            }
+
+        }
+
+        Elements nickNameElements = document.getElementsByClass("nickname");
+
+        for (int i = 0; i < nickNameElements.size(); i++) {
+            String nickNameString = nickNameElements.get(i).html();
+
+            if (nickNameString != "") {
+
+                userBean.setNickname(nickNameString);
+
+                return GET_USER_PROFILE_SUCCESS;
+            }
+        }
+
+        return GET_USER_PROFILE_FAILED;
+    }
+
+    public interface ParseMassDataCallBack {
+        public void onBack(int code, UserBean userBean);
+    }
+
+    public static void parseMassData(final String source,
+                                     final UserBean userBean,
+                                     final ParseMassDataCallBack parseMassDataCallBack) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        UserBean getBean = (UserBean) msg.obj;
+                        parseMassDataCallBack.onBack(msg.arg1, getBean);
+
+                        break;
+                    case PARSE_FAILED:
+
+                        parseMassDataCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                boolean first = getUserType();
+                boolean second = getMassLeft();
+
+
+                Message message = new Message();
+                if (first && second) {
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = userBean;
+
+                } else {
+
+                    if (source.contains(login_timeout)) {
+                        message.arg1 = PARSE_SPECIFIC_ERROR;
+                    } else {
+                        message.arg1 = PARSE_FAILED;
+                    }
+
+                }
+                loadHandler.sendMessage(message);
+            }
+
+            private boolean getUserType() {
+
+                Document document = Jsoup.parse(source);
+                Elements typeElements = document
+                        .getElementsByClass("mass_send_tips");
+
+                if (typeElements.size() > 0) {
+
+                    String userType = typeElements.get(0).html();
+                    if (userType.contains(today)) {
+                        userBean.setUserType(UserBean.USER_TYPE_SUBSTRICTION);
+                    } else {
+                        userBean.setUserType(UserBean.USER_TYPE_SERVICE);
+
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+
+            private boolean getMassLeft() {
+
+                String result = "";
+                Pattern pattern = Pattern
+                        .compile("can_verify_apply\\s\\?\\s\\'(\\d*)\\'\\*");
+
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+                    result = matcher.group(1);
+                    userBean.setMassLeft(Integer.parseInt(result));
+                    return true;
+
+                }
+
+                return false;
+            }
+
+        }.start();
+
+    }
+
+    private static String getProfileFakeId(String source) {
+
+        String result = "";
+        Pattern pattern = Pattern.compile("fakeid=(\\d*)");
+
+        Matcher matcher = pattern.matcher(source);
+        while (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return result;
+    }
+
+    public static class MessageResultHolder {
+        public ArrayList<MessageBean> messageBeans;
+
+    }
+
+    public interface MessageListParseCallBack {
+        public void onBack(MessageResultHolder messageResultHolder,
+                           int code);
+    }
+
+    public static void parseNewMessage(
+            final MessageListParseCallBack messageListParseCallBack,
+            final String source, final UserBean userBean,
+            final MessageHolder messageHolder, final String referer) {
+
+        removeEmptyMessage(messageHolder.getMessageList());
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+
+                        ArrayList<MessageBean> messageList = messageResultHolder.messageBeans;
+
+                        messageHolder.setMessage(messageList);
+
+                        messageListParseCallBack.onBack(messageResultHolder,
+                                msg.arg1);
+
+                        break;
+                    default:
+
+                        messageListParseCallBack.onBack(null,
+                                msg.arg1);
+
+                        break;
+                }
+
+            }
+        };
+
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
+                Document document = Jsoup.parse(source);
+                Elements scriptElements = document.getElementsByTag("script");
+                for (Element nowElement : scriptElements) {
+
+                    if (nowElement.html().contains("wx.cgiData ")) {
+                        Log.e("parse message", "contain");
+                        JSONObject contentObject = getMessageArray(nowElement.html());
+                        if (contentObject != null) {
+                            try {
+
+                                JSONArray getArray = contentObject.getJSONArray("messageArray");
+                                ArrayList<MessageBean> resultMessageList = getMessageItems(
+                                        getArray, userBean, referer);
+                                String latestMsgId = contentObject.get("lastMsgId").toString();
+
+
+                                messageHolder.setLatestMsgId(latestMsgId);
+                                messageHolder.getUserBean().setLastMsgId(latestMsgId);
+                                messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
+
+
+                                if (resultMessageList.size() == 0) {
+                                    MessageBean emptyMessage = new MessageBean();
+                                    emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
+                                    resultMessageList.add(emptyMessage);
+
+                                }
+
+
+                                MessageResultHolder messageResultHolder = new MessageResultHolder();
+                                /*
+                                send the messagelist to ui thread to change
+                                 */
+                                messageResultHolder.messageBeans = resultMessageList;
+                                message.obj = messageResultHolder;
+                                message.arg1 = PARSE_SUCCESS;
+
+                            } catch (Exception e) {
+                                Log.e("parse excepti9on", "" + e);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+
+                loadHandler.sendMessage(message);
+
+            }
+
+        }.start();
+
+    }
+
+    public static void parseNextMessage(
+            final MessageListParseCallBack messageListParseCallBack,
+            final String source, final UserBean userBean,
+            final MessageHolder messageHolder, final String referer) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+                        messageHolder.addMessage(messageResultHolder.messageBeans);
+                        messageListParseCallBack.onBack(messageResultHolder, msg.arg1);
+
+                        break;
+                    default:
+
+                        messageListParseCallBack.onBack(null, msg.arg1);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
+
+                Document document = Jsoup.parse(source);
+                Elements scriptElements = document.getElementsByTag("script");
+                for (Element nowElement : scriptElements) {
+                    if (nowElement.html().contains("wx.cgiData ")) {
+                        JSONObject contentObject = getMessageArray(nowElement.html());
+                        if (contentObject != null) {
+                            try {
+                                JSONArray getArray = contentObject.getJSONArray("messageArray");
+                                ArrayList<MessageBean> resultMessageList = getMessageItems(
+                                        getArray, userBean, referer);
+                                String latestMsgId = contentObject.get("lastMsgId").toString();
+
+                                messageHolder.setLatestMsgId(latestMsgId);
+
+                                MessageResultHolder messageResultHolder = new MessageResultHolder();
+                                messageResultHolder.messageBeans = resultMessageList;
+                                message.obj = messageResultHolder;
+                                message.arg1 = PARSE_SUCCESS;
+
+
+                            } catch (Exception e) {
+
+                            }
+
+                        }
+
+                    }
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+
+                loadHandler.sendMessage(message);
+            }
+        }.start();
+
+    }
+
+
+    public interface MaterialListParseCallBack {
+        public void onBack(int code, MaterialHolder materialHolder);
+    }
+
+    public static void parseMaterialList(
+            final MaterialListParseCallBack materialListParseCallBack,
+            final String source, final UserBean userBean, final MaterialHolder materialHolder,
+            final String referer) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        ArrayList<MaterialBean> getList = (ArrayList<MaterialBean>) msg.obj;
+                        materialHolder.setMaterialList(getList);
+
+                        materialListParseCallBack.onBack(msg.arg1, materialHolder);
+                        break;
+                    default:
+
+                        materialListParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
+                try {
+                    JSONObject contentObject = new JSONObject(source);
+                    JSONObject resultObject = contentObject.getJSONObject("base_resp");
+                    if (getRet(resultObject) == 0) {
+                        JSONObject fileContentObject = contentObject.getJSONObject("page_info");
+                        JSONArray materialArray = fileContentObject.getJSONArray("file_item");
+                        Gson gson = new Gson();
+
+                        ArrayList<MaterialBean> getList = new ArrayList<MaterialBean>();
+                        for (int i = 0; i < materialArray.length(); i++) {
+                            JSONObject nowItemObject = materialArray.getJSONObject(i);
+
+                            MaterialBean nowItemBean = gson.fromJson(nowItemObject.toString(), MaterialBean.class);
+                            getList.add(nowItemBean);
+
+                        }
+                        message.arg1 = PARSE_SUCCESS;
+                        message.obj = getList;
+
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("material list parse error", "" + e);
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+
+                }
+
+                loadHandler.sendMessage(message);
+
+
+            }
+
+
+        }.start();
+
+    }
+
+
+    public interface AppMsgListParseCallBack {
+        public void onBack(int code, AppItemHolder appItemHolder);
+    }
+
+    public static void parseAppMsgList(
+            final AppMsgListParseCallBack messageListParseCallBack,
+            final String source, final UserBean userBean,
+            final String referer) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        messageListParseCallBack.onBack(msg.arg1, (AppItemHolder) msg.obj);
+                        break;
+                    default:
+
+                        messageListParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
+                try {
+                    JSONObject contentObject = new JSONObject(source);
+                    JSONObject appContentObject = contentObject.getJSONObject("app_msg_info");
+                    JSONArray appItemArray = appContentObject.getJSONArray("item");
+                    JSONObject appInfoObject = appContentObject.getJSONObject("file_cnt");
+
+
+                    AppItemHolder appItemHolder = new AppItemHolder();
+
+                    Gson gson = new Gson();
+                    appItemHolder = (AppItemHolder) gson.fromJson(appInfoObject.toString(), AppItemHolder.class);
+                    ArrayList<AppItemBean> appItemBeans = new ArrayList<AppItemBean>();
+                    for (int i = 0; i < appItemArray.length(); i++) {
+                        JSONObject nowItemObject = appItemArray.getJSONObject(i);
+
+                        AppItemBean nowItemBean = gson.fromJson(nowItemObject.toString(), AppItemBean.class);
+                        appItemBeans.add(nowItemBean);
+
+                    }
+                    appItemHolder.setAppItemBeans(appItemBeans);
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = appItemHolder;
+
+
+                } catch (Exception e) {
+                    Log.e("app list parse error", "" + e);
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+
+        }.start();
+
+    }
+
+
+    public interface UploadInfoParseCallBack {
+        public void onBack(int code);
+    }
+
+    public static void parseUploadInfo(
+            final UploadInfoParseCallBack uploadInfoParseCallBack,
+            final String source, final UploadHelper uploadHelper) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        uploadInfoParseCallBack.onBack(msg.arg1);
+                        break;
+                    default:
+
+                        uploadInfoParseCallBack.onBack(msg.arg1);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
+                try {
+
+                    String ticket = getTickets(source);
+                    Log.e("get ticket", "" + ticket);
+                    if (ticket != null) {
+                        uploadHelper.setTicket(ticket);
+
+                        message.arg1 = PARSE_SUCCESS;
+                    }
+                } catch (Exception e) {
+                    Log.e("upload info parse error", "" + e);
+
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+            private String getTickets(String source) {
+                String result = null;
+                String regx = "data:(\\{[^\\}]*)";
+
+                Pattern pattern = Pattern.compile(regx);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+
+                    String dataString = matcher.group(1);
+                    Log.e("get data", "" + dataString);
+                    if (dataString != null) {
+                        regx = "ticket:\"([^\"]*)\"";
+                        pattern = Pattern.compile(regx);
+                        matcher = pattern.matcher(dataString);
+                        while (matcher.find()) {
+                            String ticket = matcher.group(1);
+                            return ticket;
+
+                        }
+
+                    }
+
+
+                }
+
+
+                return result;
+            }
+
+        }.start();
+
+    }
+
+    public static int parseLogin(UserBean nowBean, String strResult,
+                                 String slaveSid, String slaveUser, Context context) {
+
+        JSONObject resultJsonObject = null;
+
+        try {
+
+            resultJsonObject = new JSONObject(strResult);
+            int ret = getRet(resultJsonObject);
+
+            if (ret != RET_LOGIN_SUCCESS) {
+                Log.e("login failed", strResult);
+
+                return PARSE_FAILED;
+
+            }
+
+            if (strResult.contains("token")) {
+                String tokenString = getToken(resultJsonObject);
+                nowBean.setToken(tokenString);
+            }
+        } catch (Exception exception) {
+            Log.e("login exception fuck", exception + "");
+            return PARSE_FAILED;
+
+        }
+        return PARSE_SUCCESS;
+
+    }
+
+    private static String getToken(JSONObject resultJsonObject) {
+        String tokenString = "";
+        try {
+            String contentString = resultJsonObject.getString("ErrMsg");
+            String regex = "token=(\\d*)";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(contentString);
+            while (matcher.find()) {
+                String getToken = matcher.group(1);
+                if (getToken != null) {
+                    tokenString = getToken;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return tokenString;
+    }
+
+    private static JSONObject getMessageArray(String source) {
+
+        if (source != null) {
+            String code = "wx.cgiData = {\n" +
+                    "            total_count : 32,\n" +
+                    "            latest_msg_id : '200018957',\n" +
+                    "            count : \"20\"*1 || 20,\n" +
+                    "            day : \"7\",\n" +
+                    "            frommsgid : \"\",\n" +
+                    "            can_search_msg : \"1\",\n" +
+                    "            offset : \"\",\n" +
+                    "            action : \"\",\n" +
+                    "            keyword : \"\",\n" +
+                    "            list : ({\"msg_item\":[{\"id\":200018957,\"type\":1,\"fakeid\":\"2720150540\",\"nick_name\":\"给饭盒买奶粉\",\"date_time\":1393507713,\"content\":\"卧槽明天吧……\",\"source\":\"\",\"msg_status\":4,\"remark_name\":\"卡纳克纳\",\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200018876,\"type\":2,\"fakeid\":\"2720150540\",\"nick_name\":\"给饭盒买奶粉\",\"date_time\":1393500708,\"source\":\"\",\"msg_status\":4,\"remark_name\":\"卡纳克纳\",\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200018874,\"type\":3,\"fakeid\":\"2720150540\",\"nick_name\":\"给饭盒买奶粉\",\"date_time\":1393500621,\"play_length\":1580,\"length\":924,\"source\":\"\",\"msg_status\":4,\"remark_name\":\"卡纳克纳\",\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017563,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393334983,\"content\":\"后来哦哦哦\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017560,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393334981,\"content\":\"测得的\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017558,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393334979,\"content\":\"后来就哦哦哦\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017534,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393333246,\"content\":\"近几年陌陌\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017532,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393333244,\"content\":\"寂寞难耐\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017530,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393333109,\"content\":\"都拖\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017528,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393333107,\"content\":\"分陌陌\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017526,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393333105,\"content\":\"咯莫宁\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017514,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393332526,\"content\":\"囖民gong\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017512,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393332523,\"content\":\"龙图回\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017510,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393332521,\"content\":\"哦哦哦哦哦哦\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017497,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330823,\"content\":\"急急忙忙摸\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017495,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330820,\"content\":\"摩羯么的\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017493,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330819,\"content\":\"too哦哦哦\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017490,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330690,\"content\":\"too哦哦\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017488,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330687,\"content\":\"农民和\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320},{\"id\":200017486,\"type\":1,\"fakeid\":\"355421075\",\"nick_name\":\"蒜苗白菜\",\"date_time\":1393330683,\"content\":\"的浓密\",\"source\":\"\",\"msg_status\":4,\"has_reply\":0,\"refuse_reason\":\"\",\"multi_item\":[],\"to_uin\":2390620320}]}).msg_item,\n" +
+                    "            filterivrmsg: \"\"\n" +
+                    "        }";
+
+            String reg = "latest_msg_id\\s:\\s'(\\d*)',[^\\(]*\\(\\{\"msg_item\":(\\[.*(?=}\\).msg_item))";
+	    reg = "latest_msg_id\\s:\\s'(\\d*)',[\\^\\(]*\\(\\{\"msg_item\":(\\[.*(?=}\\).msg_item))";
+
+            Pattern pattern = Pattern.compile(reg);
+            Matcher matcher = pattern.matcher(code);
+            while (matcher.find()) {
+                String lastMsgId = matcher.group(1);
+                String messageArray = matcher.group(2);
+                Log.e("test", lastMsgId);
+                Log.e("mes", messageArray.length() + "|" + messageArray);
+            }
+
+
+        }
+
+
+        try {
+
+            String reg = "latest_msg_id\\s:\\s'(\\d*)',[^\\(]*\\(\\{\"msg_item\":(\\[.*(?=}\\).msg_item))";
+            Pattern pattern = Pattern.compile(reg);
+            Matcher matcher = pattern.matcher(source);
+
+
+            while (matcher.find()) {
+                String lastMsgId = matcher.group(1);
+                String messageArray = matcher.group(2);
+                Log.e("result", messageArray.length() + "|" + messageArray);
+                if (lastMsgId != null && messageArray != null) {
+                    JSONObject contentObject = new JSONObject();
+                    contentObject.put("lastMsgId", lastMsgId);
+                    contentObject.put("messageArray", new JSONArray(messageArray));
+
+
+                    return contentObject;
+                }
+
+            }
+
+
+        } catch (Exception exception) {
+            Log.e("get message array exception", "" + exception);
+
+        }
+
+        return null;
+
+    }
+
+    private static ArrayList<MessageBean> getMessageItems(JSONArray jsonArray,
+                                                          UserBean userBean, String referer) {
+        ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
+        Gson gson = new Gson();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject nowJsonObject = jsonArray.getJSONObject(i);
+                nowJsonObject.put("token", userBean.getToken());
+                nowJsonObject.put("slave_sid", userBean.getSlaveSid());
+                nowJsonObject.put("slave_user", userBean.getSlaveUser());
+                nowJsonObject.put("referer", referer);
+
+                MessageBean nowItem = (MessageBean) gson.fromJson(
+                        nowJsonObject.toString(), MessageBean.class);
+
+                messageBeans.add(nowItem);
+            } catch (Exception exception) {
+                Log.e("parse errror", exception + "");
+            }
+        }
+
+        return messageBeans;
+    }
+
+    public interface FansListParseCallback {
+        public void onBack(FansHolder fansHolder, boolean dataChanged);
+    }
+
+    public static void parseFansList(final String source, final String referer,
+                                     final FansHolder fansHolder, final UserBean userBean,
+                                     final boolean refresh,
+                                     final FansListParseCallback fansListParseCallback) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                boolean dataChanged = false;
+                if (msg.arg1 == 1) {
+                    dataChanged = true;
+                }
+                fansListParseCallback.onBack(fansHolder, dataChanged);
+
+            }
+        };
+
+        new Thread() {
+
+            public void run() {
+
+
+                JSONObject fansContentObject = getFansContentObject(source);
+                if (fansContentObject != null) {
+
+                    try {
+
+                        String fansTypeString = fansContentObject.get("fansType").toString();
+                        String fansContentString = fansContentObject.get("fansContent").toString();
+                        Gson gson = new Gson();
+                        JSONArray fansTypeArray = new JSONArray(fansTypeString);
+                        ArrayList<FansGroupBean> fansGroupBeans = new ArrayList<FansGroupBean>();
+                        for (int i = 0; i < fansTypeArray.length(); i++) {
+                            JSONObject nowJsonObject = fansTypeArray
+                                    .getJSONObject(i);
+                            FansGroupBean nowGroupBean = (FansGroupBean) gson
+                                    .fromJson(nowJsonObject.toString(),
+                                            FansGroupBean.class);
+                            fansGroupBeans.add(nowGroupBean);
+                        }
+                        fansHolder.setFansGroup(fansGroupBeans);
+
+                        JSONArray fansArray = new JSONArray(fansContentString);
+
+                        ArrayList<FansBean> fansBeans = new ArrayList<FansBean>();
+                        for (int i = 0; i < fansArray.length(); i++) {
+                            JSONObject nowJsonObject = fansArray.getJSONObject(i);
+                            FansBean nowFansBean = (FansBean) gson.fromJson(
+                                    nowJsonObject.toString(), FansBean.class);
+                            nowFansBean.setReferer(referer);
+                            fansBeans.add(nowFansBean);
+                        }
+
+                        boolean dataChanged = false;
+                        if (refresh) {
+
+                            dataChanged = true;
+                            fansHolder.setFans(fansBeans);
+
+                        } else {
+                            dataChanged = true;
+                            fansHolder.addFans(fansBeans);
+                        }
+
+                        Message nowMessage = new Message();
+                        nowMessage.arg1 = dataChanged ? 1 : 0;
+
+                        loadHandler.sendMessage(nowMessage);
+
+                    } catch (Exception exception) {
+                        Log.e("fans parse errror", "" + exception);
+                    }
+
+                }
+
+
+            }
+
+            private JSONObject getFansContentObject(String source) {
+
+                String regex = "groupsList\\s*:\\s*\\(\\{\"groups\":(\\[[^\\]]*\\])[^\\[]*(\\[[^\\]]*])";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+                    String fansType = matcher.group(1);
+                    String fansContent = matcher.group(2);
+                    JSONObject fansContentObject = new JSONObject();
+                    try {
+                        fansContentObject.put("fansType", fansType);
+                        fansContentObject.put("fansContent", fansContent);
+
+                        return fansContentObject;
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                }
+
+
+                return null;
+            }
+
+
+        }.start();
+
+    }
+
+    public interface ChatListParseCallback {
+        public void onBack(ChatHolder chatHolder, boolean dataChanged);
+    }
+
+    public static void parseChatList(final String source,
+                                     final ChatHolder chatHolder,
+                                     final ChatListParseCallback chatListParseCallback) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                boolean dataChanged = false;
+                if (msg.arg1 == 1) {
+                    dataChanged = true;
+                }
+                chatListParseCallback.onBack(chatHolder, dataChanged);
+
+            }
+        };
+
+        new Thread() {
+
+            public void run() {
+
+                JSONObject chatContentObject = getChatContentObject(source);
+                if (chatContentObject != null) {
+
+                    try {
+
+                        String messageContent = chatContentObject.get("messageContent").toString();
+                        Gson gson = new Gson();
+                        JSONArray messageArray = new JSONArray(messageContent);
+                        ArrayList<MessageBean> messageBeans = new ArrayList<MessageBean>();
+                        for (int i = 0; i < messageArray.length(); i++) {
+                            JSONObject nowJsonObject = messageArray
+                                    .getJSONObject(i);
+
+                            MessageBean nowMessageBean = (MessageBean) gson
+                                    .fromJson(nowJsonObject.toString(),
+                                            MessageBean.class);
+                            if (nowMessageBean.getFakeId().equals(chatHolder.getToFakeId())) {
+                                nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_HER);
+                            } else {
+                                nowMessageBean.setOwner(MessageBean.MESSAGE_OWNER_ME);
+                            }
+                            //reverse
+                            messageBeans.add(0, nowMessageBean);
+                        }
+
+                        chatHolder.setMessage(messageBeans);
+
+
+                        Message nowMessage = new Message();
+                        nowMessage.arg1 = 1;
+
+                        loadHandler.sendMessage(nowMessage);
+
+                    } catch (Exception exception) {
+                        Log.e("chat parse errror", "" + exception);
+                    }
+                }
+
+            }
+
+
+            private JSONObject getChatContentObject(String source) {
+
+                String regex = "msg_item\":(\\[[^\\]]*\\])[^\\d]*(\\d*)";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(source);
+                while (matcher.find()) {
+                    String messageContent = matcher.group(1);
+                    JSONObject chatContentObject = new JSONObject();
+                    try {
+                        chatContentObject.put("messageContent", messageContent);
+
+                        return chatContentObject;
+
+                    } catch (Exception e) {
+
+                    }
+
+
+                }
+
+
+                return null;
+            }
+        }.start();
+
+    }
+
+
+    public static int getRet(JSONObject resultObject) {
+        try {
+            if (resultObject.get("Ret") != null) {
+                return Integer.parseInt("" + resultObject.get("Ret"));
+
+            }
+
+        } catch (Exception e) {
+
+        }
+        try {
+
+            if (resultObject.get("ret") != null) {
+                return Integer.parseInt("" + resultObject.get("ret"));
+            }
+        } catch (Exception e) {
+
+        }
+
+
+        return GET_RET_NONE;
+    }
+
+
+    private static void removeEmptyMessage(ArrayList<MessageBean> messageBeans) {
+        for (int i = 0; i < messageBeans.size(); i++) {
+            if (messageBeans.get(i).getType() == MessageBean.MESSAGE_TYPE_EMPTY) {
+                messageBeans.remove(i);
+            }
+
+        }
+
+    }
+
+    public static final int GET_RET_NONE = -1;
+}

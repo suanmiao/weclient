@@ -9,8 +9,8 @@ import android.widget.PopupWindow;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.FansGroupBean;
-import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.bean.FansGroupBean;
+import com.suan.weclient.util.data.holder.FansHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.view.ptr.PTRListview;
 

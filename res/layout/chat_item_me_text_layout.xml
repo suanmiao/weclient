@@ -31,10 +31,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dip"
-                    android:paddingRight="15dip"
+                    android:paddingRight="18dip"
                     android:paddingTop="6dip"
                     android:paddingBottom="6dip"
-                    android:layout_marginLeft="50dip"
+                    android:layout_marginLeft="80dip"
                     android:layout_marginRight="10dip"
                     android:layout_marginTop="15dip"
                     android:background="@drawable/chat_me_content_bg">
@@ -43,11 +43,8 @@
                         android:id="@+id/chat_item_me_text_text_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dip"
-                        android:minLines="2"
-                        android:minWidth="100dip"
                         android:textColor="@color/chat_text_color"
-                        android:textSize="13dip" />
+                        android:textSize="15dip" />
 
 
                 </RelativeLayout>
@@ -82,7 +79,7 @@
                 android:id="@+id/chat_item_me_text_img_profile"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:layout_marginTop="10dip"
                 android:src="@drawable/profile_head_default" />
         </RelativeLayout>

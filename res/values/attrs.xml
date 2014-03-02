@@ -6,5 +6,20 @@
         <attr name="header_bg_color" format="color|reference"></attr>
         <attr name="footer_bg_color" format="color|reference"></attr>
 
+
     </declare-styleable>
+
+
+    <declare-styleable name="Indecator">
+
+        <attr name="dot_amount" format="integer"></attr>
+        <attr name="dot_default_index" format="integer"></attr>
+        <attr name="dot_width" format="dimension"></attr>
+        <attr name="dot_color" format="color"></attr>
+
+
+
+    </declare-styleable>
+
+
 </resources>

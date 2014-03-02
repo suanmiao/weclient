@@ -27,9 +27,11 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/left_img_profile"
-                android:text=""
+                android:text="Loading..."
                 android:textColor="#ffffff"
                 android:textSize="18dip"
+                android:maxLines="1"
+                android:gravity="center_vertical|left"
                 android:layout_marginLeft="8dip"
                 android:layout_centerVertical="true"
                 android:id="@+id/left_text_profile" />

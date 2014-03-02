@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,8 @@ import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
-import com.suan.weclient.util.data.UserGoupPushHelper;
+import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.UserGoupPushHelper;
 import com.suan.weclient.util.data.UserListItem;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -49,7 +50,6 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     /*
      * whether the user cancel the last reply if so ,we will save it
      */
-
     /*
     about dialog
      */
@@ -73,6 +73,8 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
     private ArrayList<UserListItem> getUserItems() {
         if (userListItems.size() != mDataManager.getUserGroup().size() + 1) {
+
+
             userListItems = new ArrayList<UserListItem>();
             ArrayList<UserBean> userBeans = mDataManager.getUserGroup();
             for (int i = 0; i < userBeans.size(); i++) {
@@ -141,15 +143,38 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+        switch (getUserItems().get(position).getItemType()) {
+            case UserListItem.TYPE_USER:
+
+                mDataManager.setCurrentPosition(position);
+                UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(mActivity));
+                userGoupPushHelper.updateUserGroup(mDataManager);
+                SharedPreferenceManager.putPushUserGroup(mActivity, userGoupPushHelper.getString());
+
+                mDataManager.doAutoLogin();
+
+
+                break;
+            case UserListItem.TYPE_ADD:
+
+                Intent jumbIntent = new Intent();
+                jumbIntent.setClass(mActivity, LoginActivity.class);
+                mActivity.startActivityForResult(jumbIntent,
+                        UserListFragment.START_ACTIVITY_LOGIN);
+                break;
+        }
+
         mDataManager.getUserListControlListener().onUserListDismiss();
-        mDataManager.setCurrentPosition(position);
-        UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(mActivity));
-        userGoupPushHelper.updateUserGroup(mDataManager);
 
 
-        SharedPreferenceManager.putPushUserGroup(mActivity, userGoupPushHelper.getString());
+        /*
+        funny things ,if not do this,the user index icon will not change
+         */
 
-        mDataManager.doAutoLogin();
+        notifyDataSetChanged();
+
 
     }
 
@@ -157,6 +182,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
         popDeleteUser(position);
+        notifyDataSetChanged();
         return false;
     }
 
@@ -191,52 +217,6 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     }
 
 
-    public void bindView(View view, final int position) {
-
-        ItemViewHolder holder = getHolder(view, position);
-
-        switch (getUserItems().get(position).getItemType()) {
-            case UserListItem.TYPE_USER:
-                String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
-                        .getNickname(), 13, 3);
-
-                holder.profileTextView.setText(shortedName
-                );
-                if (position == selectPosition) {
-                    // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
-                    holder.profileTextView.setSelected(true);
-                }
-                setHeadImg(holder, position);
-                if (position == mDataManager.getCurrentPosition()) {
-                    holder.indexImageView.setVisibility(View.VISIBLE);
-
-                } else {
-
-                    holder.indexImageView.setVisibility(View.INVISIBLE);
-                }
-
-                break;
-            case UserListItem.TYPE_ADD:
-                holder.parentView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-
-                        mDataManager.getUserListControlListener().onUserListDismiss();
-                        Intent jumbIntent = new Intent();
-                        jumbIntent.setClass(mActivity, LoginActivity.class);
-                        mActivity.startActivityForResult(jumbIntent,
-                                UserListFragment.START_ACTIVITY_LOGIN);
-
-                    }
-                });
-
-                break;
-        }
-
-    }
-
-
     private void setHeadImg(final ItemViewHolder holder, final int position) {
 
         boolean imgLoaded = false;
@@ -251,6 +231,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
                             + mDataManager.getUserGroup().get(position)
                             .getUserName());
             if (headBitmap != null) {
+
                 holder.profileImageView.setImageBitmap(headBitmap);
 
             } else {
@@ -295,22 +276,60 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
         View v;
 
-
-        if (getUserItems().get(position).getItemType() == UserListItem.TYPE_ADD || !mListCacheManager.containView(getUserItems().get(position).getUserBean().getFakeId())) {
+        if (!mListCacheManager.containView(position + "|" + userListItems.get(position).getItemType())) {
             v = newView(position);
-            if (getUserItems().get(position).getItemType() == UserListItem.TYPE_USER) {
+            mListCacheManager.putView(v, position + "|" + userListItems.get(position).getItemType());
 
-                mListCacheManager.putView(v, getUserItems().get(position).getUserBean().getFakeId());
-            }
         } else {
 
-            v = mListCacheManager.getView(getUserItems().get(position).getUserBean().getFakeId());
+            v = mListCacheManager.getView(position + "|" + userListItems.get(position).getItemType());
 
         }
+
         bindView(v, position);
 
         return v;
     }
+
+
+    public void bindView(View view, final int position) {
+
+        ItemViewHolder holder = getHolder(view, position);
+
+        switch (getUserItems().get(position).getItemType()) {
+            case UserListItem.TYPE_USER:
+
+
+                String shortedName = Util.getShortString(mDataManager.getUserGroup().get(position)
+                        .getNickname(), 6, 3);
+
+                holder.profileTextView.setText(shortedName
+                );
+
+                if (position == selectPosition) {
+                    // row.setBackgroundResource(R.drawable.biz_navigation_tab_bg_pressed);
+                    holder.profileTextView.setSelected(true);
+                }
+
+                setHeadImg(holder, position);
+                if (position == mDataManager.getCurrentPosition()) {
+
+                    holder.indexImageView.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    holder.indexImageView.setVisibility(View.INVISIBLE);
+
+                }
+
+                break;
+            case UserListItem.TYPE_ADD:
+
+                break;
+        }
+
+    }
+
 
     private void popDeleteUser(final int position) {
 
@@ -338,7 +357,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
                         mDataManager.getUserGroup().get(position)
                                 .getUserName());
                 mDataManager.updateUserGroup();
-                UserListAdapter.this.notifyDataSetChanged();
+                mDataManager.doGroupChangeEnd();
                 popDialog.dismiss();
 
 

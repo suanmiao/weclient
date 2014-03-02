@@ -24,7 +24,7 @@
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:layout_marginTop="10dip"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:src="@drawable/profile_head_default" />
         </RelativeLayout>
 
@@ -39,23 +39,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dip"
-                android:layout_marginRight="50dip"
-                android:paddingLeft="15dip"
+                android:layout_marginRight="80dip"
+                android:paddingLeft="18dip"
                 android:paddingRight="6dip"
                 android:paddingTop="6dip"
                 android:paddingBottom="6dip"
                 android:background="@drawable/chat_her_content_bg">
 
-
                 <TextView
                     android:id="@+id/chat_item_her_text_text_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dip"
-                    android:minLines="2"
-                    android:minWidth="100dip"
                     android:textColor="@color/chat_text_color"
-                    android:textSize="13dip" />
+                    android:textSize="15dip" />
             </RelativeLayout>
 
             <RelativeLayout

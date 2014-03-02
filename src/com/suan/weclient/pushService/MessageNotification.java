@@ -22,6 +22,7 @@ public class MessageNotification {
     private Context mContext;
 
 
+
     private MessageNotification(Context context) {
         mContext = context;
         mNotificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
@@ -36,7 +37,7 @@ public class MessageNotification {
 
     public void createNotification( int amount, String accountName,int userIndex) {
         Notification mNotification = new Notification();
-        mNotification.icon = R.drawable.icon;
+        mNotification.icon = R.drawable.icon_notification;
         mNotification.defaults |= Notification.DEFAULT_SOUND;
         mNotification.defaults |= Notification.DEFAULT_VIBRATE;
         mNotification.defaults |= Notification.DEFAULT_LIGHTS;
@@ -44,8 +45,10 @@ public class MessageNotification {
         mNotification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         Intent intent = new Intent(mContext, MainActivity.class);
+/*
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+*/
 
         intent.putExtra("currentIndex",userIndex);
 

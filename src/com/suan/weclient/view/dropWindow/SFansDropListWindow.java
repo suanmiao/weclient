@@ -9,8 +9,8 @@ import android.widget.PopupWindow;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.FansGroupBean;
-import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.bean.FansGroupBean;
+import com.suan.weclient.util.data.holder.FansHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.view.ptr.PTRListview;
 
@@ -55,8 +55,10 @@ public class SFansDropListWindow extends PopupWindow {
     public class ItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             if(position==0){
                 //all
+                mDataManager.doListLoadStart();
                 mDataManager.getCurrentFansHolder().setCurrentGroupIndex(-1);
                 mDataManager.getWechatManager().getFansList(0,mDataManager.getCurrentPosition(),mDataManager.getCurrentFansHolder().getCurrentGroupId(),new WechatManager.OnActionFinishListener() {
                     @Override
@@ -67,6 +69,7 @@ public class SFansDropListWindow extends PopupWindow {
                 });
 
             }else{
+                mDataManager.doListLoadStart();
                 mDataManager.getCurrentFansHolder().setCurrentGroupIndex(position-1);
                  mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(), new WechatManager.OnActionFinishListener() {
                      @Override
@@ -77,6 +80,8 @@ public class SFansDropListWindow extends PopupWindow {
                  });
 
             }
+
+            dismiss();
 
 
         }

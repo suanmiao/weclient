@@ -3,6 +3,7 @@
 	android:id="@+id/show_img_layout"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
+    android:background="#d0000000"
 	android:orientation="vertical" >
 	<RelativeLayout
 		android:layout_width="fill_parent"

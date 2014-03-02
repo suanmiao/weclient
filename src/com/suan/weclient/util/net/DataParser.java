@@ -17,28 +17,31 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.suan.weclient.util.data.AppItemBean;
-import com.suan.weclient.util.data.AppItemHolder;
-import com.suan.weclient.util.data.ChatHolder;
-import com.suan.weclient.util.data.FansBean;
-import com.suan.weclient.util.data.FansGroupBean;
-import com.suan.weclient.util.data.FansHolder;
-import com.suan.weclient.util.data.MessageBean;
-import com.suan.weclient.util.data.MessageHolder;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.AppItemBean;
+import com.suan.weclient.util.data.bean.MaterialBean;
+import com.suan.weclient.util.data.holder.AppItemHolder;
+import com.suan.weclient.util.data.holder.ChatHolder;
+import com.suan.weclient.util.data.bean.FansBean;
+import com.suan.weclient.util.data.bean.FansGroupBean;
+import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.bean.MessageBean;
+import com.suan.weclient.util.data.holder.MaterialHolder;
+import com.suan.weclient.util.data.holder.MessageHolder;
+import com.suan.weclient.util.data.bean.UserBean;
 
 public class DataParser {
 
     public static final int PARSE_SUCCESS = 1;
     public static final int PARSE_FAILED = 2;
+    public static final int PARSE_SPECIFIC_ERROR = 3;
+
+    private static final String login_timeout = "登录超时";
+
     public static final int RET_LOGIN_SUCCESS = 302;
 
     public static final int GET_USER_PROFILE_SUCCESS = 1;
     public static final int GET_USER_PROFILE_FAILED = 0;
 
-    public static final int GET_MASS_DATA_SUCCESS = 1;
-
-    public static final int GET_MASS_DATA_FAILED = 0;
 
     public static final String today = "今天";
 
@@ -97,7 +100,7 @@ public class DataParser {
     }
 
     public interface ParseMassDataCallBack {
-        public void onBack(UserBean userBean);
+        public void onBack(int code, UserBean userBean);
     }
 
     public static void parseMassData(final String source,
@@ -113,8 +116,17 @@ public class DataParser {
 
                 super.handleMessage(msg);
                 // 此处可以更新UI
-                UserBean getBean = (UserBean) msg.obj;
-                parseMassDataCallBack.onBack(getBean);
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        UserBean getBean = (UserBean) msg.obj;
+                        parseMassDataCallBack.onBack(msg.arg1, getBean);
+
+                        break;
+                    case PARSE_FAILED:
+
+                        parseMassDataCallBack.onBack(msg.arg1, null);
+                        break;
+                }
 
             }
         };
@@ -122,12 +134,28 @@ public class DataParser {
         new Thread() {
             public void run() {
 
-                getUserType();
-                getMassLeft();
+                boolean first = getUserType();
+                boolean second = getMassLeft();
 
+
+                Message message = new Message();
+                if (first && second) {
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = userBean;
+
+                } else {
+
+                    if (source.contains(login_timeout)) {
+                        message.arg1 = PARSE_SPECIFIC_ERROR;
+                    } else {
+                        message.arg1 = PARSE_FAILED;
+                    }
+
+                }
+                loadHandler.sendMessage(message);
             }
 
-            private void getUserType() {
+            private boolean getUserType() {
 
                 Document document = Jsoup.parse(source);
                 Elements typeElements = document
@@ -142,10 +170,13 @@ public class DataParser {
                         userBean.setUserType(UserBean.USER_TYPE_SERVICE);
 
                     }
+                    return true;
                 }
+
+                return false;
             }
 
-            private void getMassLeft() {
+            private boolean getMassLeft() {
 
                 String result = "";
                 Pattern pattern = Pattern
@@ -155,11 +186,11 @@ public class DataParser {
                 while (matcher.find()) {
                     result = matcher.group(1);
                     userBean.setMassLeft(Integer.parseInt(result));
-                    Message message = new Message();
-                    message.obj = userBean;
-                    loadHandler.sendMessage(message);
+                    return true;
 
                 }
+
+                return false;
             }
 
         }.start();
@@ -186,7 +217,7 @@ public class DataParser {
 
     public interface MessageListParseCallBack {
         public void onBack(MessageResultHolder messageResultHolder,
-                           boolean dataChanged);
+                           int code);
     }
 
     public static void parseNewMessage(
@@ -204,18 +235,25 @@ public class DataParser {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
 
-                ArrayList<MessageBean> messageList = messageResultHolder.messageBeans;
+                        ArrayList<MessageBean> messageList = messageResultHolder.messageBeans;
 
-                messageHolder.setMessage(messageList);
+                        messageHolder.setMessage(messageList);
 
-                boolean dataChanged = false;
-                if (msg.arg1 == 1) {
-                    dataChanged = true;
+                        messageListParseCallBack.onBack(messageResultHolder,
+                                msg.arg1);
+
+                        break;
+                    default:
+
+                        messageListParseCallBack.onBack(null,
+                                msg.arg1);
+
+                        break;
                 }
-                messageListParseCallBack.onBack(messageResultHolder,
-                        dataChanged);
 
             }
         };
@@ -223,6 +261,9 @@ public class DataParser {
 
         new Thread() {
             public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
                 Document document = Jsoup.parse(source);
                 Elements scriptElements = document.getElementsByTag("script");
                 for (Element nowElement : scriptElements) {
@@ -250,7 +291,6 @@ public class DataParser {
 
                                 }
 
-                                Message message = new Message();
 
                                 MessageResultHolder messageResultHolder = new MessageResultHolder();
                                 /*
@@ -258,10 +298,10 @@ public class DataParser {
                                  */
                                 messageResultHolder.messageBeans = resultMessageList;
                                 message.obj = messageResultHolder;
-
-                                loadHandler.sendMessage(message);
+                                message.arg1 = PARSE_SUCCESS;
 
                             } catch (Exception e) {
+                                Log.e("parse excepti9on", "" + e);
 
                             }
 
@@ -270,9 +310,13 @@ public class DataParser {
                     }
 
                 }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+
+                loadHandler.sendMessage(message);
 
             }
-
 
         }.start();
 
@@ -292,17 +336,29 @@ public class DataParser {
 
                 super.handleMessage(msg);
                 // 此处可以更新UI
-                MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
 
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+                        messageHolder.addMessage(messageResultHolder.messageBeans);
+                        messageListParseCallBack.onBack(messageResultHolder, msg.arg1);
 
-                messageHolder.addMessage(messageResultHolder.messageBeans);
-                messageListParseCallBack.onBack(messageResultHolder, true);
+                        break;
+                    default:
+
+                        messageListParseCallBack.onBack(null, msg.arg1);
+                        break;
+                }
 
             }
         };
 
         new Thread() {
             public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
+
                 Document document = Jsoup.parse(source);
                 Elements scriptElements = document.getElementsByTag("script");
                 for (Element nowElement : scriptElements) {
@@ -317,12 +373,11 @@ public class DataParser {
 
                                 messageHolder.setLatestMsgId(latestMsgId);
 
-                                Message message = new Message();
                                 MessageResultHolder messageResultHolder = new MessageResultHolder();
                                 messageResultHolder.messageBeans = resultMessageList;
                                 message.obj = messageResultHolder;
+                                message.arg1 = PARSE_SUCCESS;
 
-                                loadHandler.sendMessage(message);
 
                             } catch (Exception e) {
 
@@ -332,7 +387,93 @@ public class DataParser {
 
                     }
                 }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+
+                loadHandler.sendMessage(message);
             }
+        }.start();
+
+    }
+
+
+    public interface MaterialListParseCallBack {
+        public void onBack(int code, MaterialHolder materialHolder);
+    }
+
+    public static void parseMaterialList(
+            final MaterialListParseCallBack materialListParseCallBack,
+            final String source, final UserBean userBean, final MaterialHolder materialHolder,
+            final String referer) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        ArrayList<MaterialBean> getList = (ArrayList<MaterialBean>) msg.obj;
+                        materialHolder.setMaterialList(getList);
+
+                        materialListParseCallBack.onBack(msg.arg1, materialHolder);
+                        break;
+                    default:
+
+                        materialListParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+                message.arg1 = PARSE_FAILED;
+                try {
+                    JSONObject contentObject = new JSONObject(source);
+                    JSONObject resultObject = contentObject.getJSONObject("base_resp");
+                    if (getRet(resultObject) == 0) {
+                        JSONObject fileContentObject = contentObject.getJSONObject("page_info");
+                        JSONArray materialArray = fileContentObject.getJSONArray("file_item");
+                        Gson gson = new Gson();
+
+                        ArrayList<MaterialBean> getList = new ArrayList<MaterialBean>();
+                        for (int i = 0; i < materialArray.length(); i++) {
+                            JSONObject nowItemObject = materialArray.getJSONObject(i);
+
+                            MaterialBean nowItemBean = gson.fromJson(nowItemObject.toString(), MaterialBean.class);
+                            getList.add(nowItemBean);
+
+                        }
+                        message.arg1 = PARSE_SUCCESS;
+                        message.obj = getList;
+
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("material list parse error", "" + e);
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+
+                }
+
+                loadHandler.sendMessage(message);
+
+
+            }
+
+
         }.start();
 
     }
@@ -361,7 +502,7 @@ public class DataParser {
 
                         messageListParseCallBack.onBack(msg.arg1, (AppItemHolder) msg.obj);
                         break;
-                    case PARSE_FAILED:
+                    default:
 
                         messageListParseCallBack.onBack(msg.arg1, null);
                         break;
@@ -374,6 +515,8 @@ public class DataParser {
             public void run() {
 
                 Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
                 try {
                     JSONObject contentObject = new JSONObject(source);
                     JSONObject appContentObject = contentObject.getJSONObject("app_msg_info");
@@ -400,8 +543,10 @@ public class DataParser {
 
                 } catch (Exception e) {
                     Log.e("app list parse error", "" + e);
-                    message.arg1 = PARSE_FAILED;
 
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
                 }
                 loadHandler.sendMessage(message);
 
@@ -436,7 +581,7 @@ public class DataParser {
 
                         uploadInfoParseCallBack.onBack(msg.arg1);
                         break;
-                    case PARSE_FAILED:
+                    default:
 
                         uploadInfoParseCallBack.onBack(msg.arg1);
                         break;
@@ -449,6 +594,8 @@ public class DataParser {
             public void run() {
 
                 Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
                 try {
 
                     String ticket = getTickets(source);
@@ -457,14 +604,9 @@ public class DataParser {
                         uploadHelper.setTicket(ticket);
 
                         message.arg1 = PARSE_SUCCESS;
-                    } else {
-                        message.arg1 = PARSE_FAILED;
-
                     }
-
                 } catch (Exception e) {
                     Log.e("upload info parse error", "" + e);
-                    message.arg1 = PARSE_FAILED;
 
                 }
                 loadHandler.sendMessage(message);
@@ -514,29 +656,6 @@ public class DataParser {
 
             resultJsonObject = new JSONObject(strResult);
             int ret = getRet(resultJsonObject);
-/*
-            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
-            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
-            Toast.makeText(context, "" + ret, Toast.LENGTH_LONG).show();
-
-
-            try {
-                File file = new File(Environment.getExternalStorageDirectory() +
-                        File.separator + "weclient_test.txt");
-                file.createNewFile();
-                //write the bytes in file
-                if (file.exists()) {
-                    OutputStream fo = new FileOutputStream(file);
-
-                    fo.write(strResult.getBytes());
-                    fo.close();
-                }
-
-            } catch (Exception e) {
-
-            }
-
-*/
 
             if (ret != RET_LOGIN_SUCCESS) {
                 Log.e("login failed", strResult);
@@ -579,11 +698,13 @@ public class DataParser {
     }
 
     private static JSONObject getMessageArray(String source) {
-        try {
-            String regx = "latest_msg_id\\s:\\s'(\\d*)',[^\\(]*\\(\\{\"msg_item\":(\\[[^\\]]*\\])";
 
-            Pattern pattern = Pattern.compile(regx);
+        try {
+
+            String reg = "latest_msg_id\\s:\\s'(\\d*)',[^\\(]*\\(\\{\"msg_item\":(\\[.*(?=\\}\\).msg_item))";
+            Pattern pattern = Pattern.compile(reg);
             Matcher matcher = pattern.matcher(source);
+
             while (matcher.find()) {
                 String lastMsgId = matcher.group(1);
                 String messageArray = matcher.group(2);
@@ -600,6 +721,7 @@ public class DataParser {
 
 
         } catch (Exception exception) {
+            Log.e("get message array exception", "" + exception);
 
         }
 
@@ -823,7 +945,7 @@ public class DataParser {
 
             private JSONObject getChatContentObject(String source) {
 
-                String regex = "msg_item\":(\\[[^\\]]*\\])[^\\d]*(\\d*)";
+                String regex = "msg_item\":(\\[.*\\](?=\\}\\}))";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(source);
                 while (matcher.find()) {

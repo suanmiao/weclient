@@ -13,7 +13,7 @@
 		<RelativeLayout
 			android:layout_width="fill_parent"
 			android:layout_height="40dp"
-			android:background="@drawable/radius_border_pop_title" >
+			android:background="@drawable/radius_border_pop_gray_title" >
 			<ImageView
 				android:id="@+id/umeng_update_wifi_indicator"
 				android:layout_width="30dp"
@@ -72,7 +72,7 @@
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/radius_border_pop_bottom" >
+			android:background="@drawable/radius_border_pop_gray_bottom" >
 			<Button
 				android:id="@+id/umeng_update_id_ok"
 				android:layout_width="0dp"

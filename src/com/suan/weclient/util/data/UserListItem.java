@@ -1,5 +1,7 @@
 package com.suan.weclient.util.data;
 
+import com.suan.weclient.util.data.bean.UserBean;
+
 /**
  * Created by lhk on 2/15/14.
  */

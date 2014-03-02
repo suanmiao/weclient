@@ -28,8 +28,8 @@
     <color name="chat_text_content">#4f9acf</color>
     <color name="setting_item_normal">#ffffff</color>
 
-    <color name="setting_text_color_selected">#3787b8</color>
-    <color name="setting_text_color">#ffffff</color>
+    <color name="setting_text_color">#3787b8</color>
+    <color name="setting_text_color_selected">#ffffff</color>
     <color name="setting_item_pressed">#d4d4d4</color>
     <color name="setting_item_selected">#c4c4c4</color>
 

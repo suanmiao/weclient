@@ -8,7 +8,7 @@
 				android:left="0dip"
 				android:right="0dip"
 				android:top="0dip" />
-			<solid android:color="#dc7777" />
+			<solid android:color="#e89a9a" />
 			<corners android:radius="25dip"/>
 		</shape>
 	</item>

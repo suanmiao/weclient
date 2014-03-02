@@ -2,12 +2,9 @@ package com.suan.weclient.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,9 +16,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
-import com.suan.weclient.util.net.WeChatLoader.WechatGetMessageImgCallBack;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.umeng.analytics.MobclickAgent;
@@ -134,12 +129,12 @@ public class ShowImgActivity extends Activity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 finish();
+                overridePendingTransition(R.anim.search_activity_fly_in,R.anim.search_activity_fly_out);
 
             }
         });
 
         bgLayout = (RelativeLayout) findViewById(R.id.show_img_bg_layout);
-//        bgLayout.setBackgroundColor(Color.argb(220, 0, 0, 0));
 
         contentImageView = (ImageView) findViewById(R.id.show_img_img_content);
 

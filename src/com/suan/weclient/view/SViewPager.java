@@ -37,7 +37,6 @@ public class SViewPager extends ViewPager {
         int x = (int) event.getX();
         int y = (int) event.getY();
         if (childRect != null) {
-            Log.e("yes not null","lkjkl");
             if (childRect.contains(x, y)) {
                 return false;
 
@@ -55,7 +54,6 @@ public class SViewPager extends ViewPager {
        int x = (int) event.getX();
         int y = (int) event.getY();
         if (childRect != null) {
-            Log.e("yes not null","lkjkl");
             if (childRect.contains(x, y)) {
                 return true;
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/intro_fifth_bg">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dip"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="100dip"
+                android:layout_height="40dip"
+                android:textColor="#ffffff"
+                android:textSize="15dip"
+                android:text="@string/start_journey"
+                android:id="@+id/intro_but_enter"
+                android:background="@drawable/ensure_button_sure_bg" />
+<!--
+            <TextView
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/share_to_friends"
+                android:textColor="#ffffff"
+                />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_centerInParent="true"
+                    android:checked="true"
+                    android:id="@+id/intro_check_share" />
+
+            </RelativeLayout>-->
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

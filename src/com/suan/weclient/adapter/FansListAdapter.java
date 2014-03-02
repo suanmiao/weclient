@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.Editable;
@@ -28,10 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suan.weclient.R;
+import com.suan.weclient.activity.ChatActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.FansBean;
+import com.suan.weclient.util.data.bean.FansBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -413,6 +415,20 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     }
 
     private void setProfileImage(final ItemViewHolder holder, final int position) {
+
+        holder.profileImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDataManager.createChat(mDataManager.getCurrentUser(),
+                        getFansItems().get(position).getFansId(), getFansItems().get(position).getNickname());
+                Intent jumbIntent = new Intent();
+                jumbIntent.setClass(mContext, ChatActivity.class);
+                mContext.startActivity(jumbIntent);
+
+            }
+        });
+
+
         boolean imgLoaded = false;
         if (holder.profileImageView.getTag() != null) {
             imgLoaded = true;
@@ -441,7 +457,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
                         if (code == WechatManager.ACTION_SUCCESS) {
                             if (object != null) {
                                 Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
-                                        Util.dipToPx(30, mContext.getResources()), 10,
+                                        holder.profileImageView.getWidth(), 10,
                                         Color.parseColor("#c6c6c6"));
 
                                 mDataManager.getCacheManager().putBitmap(

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suan.weclient"
-    android:versionCode="2"
-    android:versionName="1.1">
+    android:versionCode="4"
+    android:versionName="2.0">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+         <activity
+            android:name=".activity.IntroActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+
+
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
@@ -35,7 +42,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.Sherlock.Light"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.suan.weclient.activity.MainActivity.BROADCAST_ACTION_REFRESH_MESSAGE">

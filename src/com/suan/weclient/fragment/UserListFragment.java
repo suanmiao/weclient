@@ -15,44 +15,21 @@
  */
 package com.suan.weclient.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.suan.weclient.R;
-import com.suan.weclient.activity.LoginActivity;
 import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.adapter.UserListAdapter;
-import com.suan.weclient.util.SharedPreferenceManager;
-import com.suan.weclient.util.Util;
+import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
-import com.suan.weclient.util.data.UserGoupPushHelper;
-import com.suan.weclient.util.net.WechatManager;
-import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
-import com.suan.weclient.util.net.images.ImageCacheManager;
 
 public class UserListFragment extends Fragment {
 
@@ -70,14 +47,17 @@ public class UserListFragment extends Fragment {
 
     }
 
-    public UserListFragment(DataManager dataManager) {
-        mDataManager = dataManager;
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.user_group_layout, null);
+                /*
+        init data
+         */
+        MainActivity mainActivity = (MainActivity)getActivity();
+
+        mDataManager =((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
+
         initWidgets();
         initListener();
 
@@ -110,6 +90,7 @@ public class UserListFragment extends Fragment {
                 // TODO Auto-generated method stub
 
                 userListAdapter.notifyDataSetChanged();
+
             }
 
             @Override

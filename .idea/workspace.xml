@@ -32,23 +32,36 @@
     <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.suan.weclient" />
   </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" line="177" mnemonic="0" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="67ebde4e-aaf1-417c-b44b-63fb9875324b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/action_search_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/search_activity_fly_in.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/search_activity_fly_out.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/search_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/search_button_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/search_edit_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/search_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/setting_push_text_color.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/user_group_add_item.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/user_group_user_item.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/user_list_item_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/IntroActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFifthFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroForthFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroSecondFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroThirdFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_right_anim.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_right_anim.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_contact_us_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_login_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_save_us_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/intro_but_enter_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_fifth_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_first_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_forth_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_second_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/intro_third_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_white_bottom.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/jl1.0.1.jar" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/head_default.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/img_loading.png" afterPath="" />
@@ -67,10 +80,10 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_pressed_state.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_selected_state.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/send_state.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/spash_bg.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_pause.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_play.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/layout/head_layout.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/layout/user_group_item.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ScrollingTabsAdapter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Constant.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/DataManager.java" afterPath="" />
@@ -81,46 +94,86 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WeChatLoader.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WechatManager.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SlidingMenu.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/radius_border_pop_bottom.xml" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_gray_bottom.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/radius_border_pop_title.xml" afterPath="$PROJECT_DIR$/res/drawable/radius_border_pop_gray_title.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/AppItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/AppItemHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/AppItemHolder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/ChatHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ChatHolder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansGroupBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansGroupBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/FansHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/FansHolder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/ImgHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ImgHolder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MessageBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MultiItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MultiItemBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/UserBean.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserGoupPushHelper.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/UserGoupPushHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WeClient.iml" afterPath="$PROJECT_DIR$/WeClient.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/attrs.xml" afterPath="$PROJECT_DIR$/res/values/attrs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_item.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/drop_down_window_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/drop_down_window_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fans_item_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_empty_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_empty_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_dev_reply_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_edit_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_ensure_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_feedback_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_feedback_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/left_layout.xml" afterPath="$PROJECT_DIR$/res/layout/left_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" afterPath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/setting_layout.xml" afterPath="$PROJECT_DIR$/res/layout/setting_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/user_group_layout.xml" afterPath="$PROJECT_DIR$/res/layout/user_group_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/show_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/show_img_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/splash_layout.xml" afterPath="$PROJECT_DIR$/res/layout/splash_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/user_group_user_item.xml" afterPath="$PROJECT_DIR$/res/layout/user_group_user_item.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WeClient.iws" />
@@ -177,7 +230,7 @@
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/UserGoupPushHelper.java" line="77" class="com.suan.weclient.util.data.UserGoupPushHelper" package="com.suan.weclient.util.data">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" line="27" class="com.suan.weclient.util.voice.VoiceManager" package="com.suan.weclient.util.voice">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -202,11 +255,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="user_group_user_item.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/user_group_user_item.xml">
+      <file leaf-file-name="intro_fifth_layout.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/intro_fifth_layout.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="43" selection-start="802" selection-end="802" vertical-scroll-proportion="0.0" vertical-offset="252" max-vertical-offset="1080">
-              <folding />
+            <state line="35" column="42" selection-start="1393" selection-end="1393" vertical-scroll-proportion="-4.6666665" vertical-offset="378" max-vertical-offset="1134">
+              <folding>
+                <element signature="e#931#954#0" expanded="true" />
+              </folding>
             </state>
           </provider>
           <provider editor-type-id="android-designer">
@@ -214,461 +269,62 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="message_item_empty_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/message_item_empty_layout.xml">
+      <file leaf-file-name="SharedPreferenceManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="46" selection-start="491" selection-end="491" vertical-scroll-proportion="0.6666667" vertical-offset="270" max-vertical-offset="1080">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="message_item_img_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/message_item_img_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3726">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="message_item_text_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/message_item_text_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3366">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="message_item_voice_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/message_item_voice_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3744">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageListAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="365" column="0" selection-start="14305" selection-end="14305" vertical-scroll-proportion="0.0" vertical-offset="6570" max-vertical-offset="15894">
+            <state line="41" column="37" selection-start="1487" selection-end="1487" vertical-scroll-proportion="-15.12" vertical-offset="162" max-vertical-offset="5616">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShowImgActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java">
+      <file leaf-file-name="IntroFifthFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFifthFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="141" column="1" selection-start="4653" selection-end="4653" vertical-scroll-proportion="0.0" vertical-offset="2538" max-vertical-offset="2772">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="styles.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="66" selection-start="3278" selection-end="3278" vertical-scroll-proportion="0.0" vertical-offset="1206" max-vertical-offset="1404">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="show_img_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/show_img_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="24" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="468">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_layout.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/search_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="41" selection-start="525" selection-end="525" vertical-scroll-proportion="0.14099216" vertical-offset="180" max-vertical-offset="1314">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_activity_fly_in.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_in.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="26" selection-start="266" selection-end="266" vertical-scroll-proportion="-5.76" vertical-offset="0" max-vertical-offset="396">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_activity_fly_out.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_out.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="26" selection-start="381" selection-end="381" vertical-scroll-proportion="-9.36" vertical-offset="0" max-vertical-offset="396">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_edit_bg.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/search_edit_bg.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="51" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="414">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="colors.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="1452" selection-end="1452" vertical-scroll-proportion="0.0" vertical-offset="738" max-vertical-offset="990">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_button_pressed_state.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="61" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="414">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_button_bg.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/search_button_bg.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="307" selection-end="307" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="234">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_button_state.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/search_button_state.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="85" selection-start="456" selection-end="456" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="414">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="action_search_bg.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/action_search_bg.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="200" selection-end="200" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="288">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomMainActionView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="197" column="37" selection-start="6824" selection-end="6824" vertical-scroll-proportion="-10.08" vertical-offset="2556" max-vertical-offset="5418">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SearchActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="133" column="0" selection-start="4379" selection-end="4379" vertical-scroll-proportion="-7.92" vertical-offset="2196" max-vertical-offset="4014">
+            <state line="58" column="0" selection-start="1773" selection-end="1773" vertical-scroll-proportion="-15.12" vertical-offset="414" max-vertical-offset="1332">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3945#4580#0" expanded="true" />
-                <element signature="e#4569#4570#0" expanded="true" />
-                <element signature="e#4712#5114#0" expanded="true" />
-                <element signature="e#5103#5104#0" expanded="true" />
-                <element signature="e#5157#5402#0" expanded="true" />
-                <element signature="e#5391#5392#0" expanded="true" />
-                <element signature="e#5792#6412#0" expanded="true" />
-                <element signature="e#6401#6402#0" expanded="true" />
+                <element signature="e#1679#2534#0" expanded="true" />
+                <element signature="e#2523#2524#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="custom_actionbar_main.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/custom_actionbar_main.xml">
+      <file leaf-file-name="IntroActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/IntroActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="199" column="46" selection-start="8279" selection-end="8279" vertical-scroll-proportion="-2.0" vertical-offset="3474" max-vertical-offset="4068">
+            <state line="93" column="0" selection-start="3032" selection-end="3032" vertical-scroll-proportion="-11.52" vertical-offset="990" max-vertical-offset="2016">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SplashActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="39" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.3857143" vertical-offset="234" max-vertical-offset="1656">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="splash_layout.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/splash_layout.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="35" selection-start="308" selection-end="308" vertical-scroll-proportion="-2.3333333" vertical-offset="0" max-vertical-offset="396">
               <folding />
             </state>
           </provider>
           <provider editor-type-id="android-designer">
             <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="622" column="0" selection-start="19507" selection-end="19507" vertical-scroll-proportion="-2.16" vertical-offset="9126" max-vertical-offset="11376">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomFansActionView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="154" column="55" selection-start="4745" selection-end="4745" vertical-scroll-proportion="-11.04" vertical-offset="1974" max-vertical-offset="2556">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user_group_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/user_group_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="38" selection-start="502" selection-end="502" vertical-scroll-proportion="1.3333334" vertical-offset="306" max-vertical-offset="936">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageHolder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="29" selection-start="988" selection-end="988" vertical-scroll-proportion="-10.8" vertical-offset="324" max-vertical-offset="1512">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WeChatLoader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="427" column="26" selection-start="16587" selection-end="16587" vertical-scroll-proportion="-5.76" vertical-offset="6822" max-vertical-offset="51696">
-              <folding>
-                <element signature="e#5891#6894#0" expanded="true" />
-                <element signature="e#6883#6884#0" expanded="true" />
-                <element signature="e#6905#10629#0" expanded="true" />
-                <element signature="e#7053#7068#0" expanded="true" />
-                <element signature="e#7452#7467#0" expanded="true" />
-                <element signature="e#10617#10618#0" expanded="true" />
-                <element signature="e#10969#11955#0" expanded="true" />
-                <element signature="e#11944#11945#0" expanded="true" />
-                <element signature="e#11966#14355#0" expanded="true" />
-                <element signature="e#12114#12129#0" expanded="true" />
-                <element signature="e#12710#12725#0" expanded="true" />
-                <element signature="e#14343#14344#0" expanded="true" />
-                <element signature="e#14763#15749#0" expanded="true" />
-                <element signature="e#15738#15739#0" expanded="true" />
-                <element signature="e#15760#20268#0" expanded="true" />
-                <element signature="e#15908#15923#0" expanded="true" />
-                <element signature="e#16719#16734#0" expanded="true" />
-                <element signature="e#20256#20257#0" expanded="true" />
-                <element signature="e#20682#21667#0" expanded="true" />
-                <element signature="e#21656#21657#0" expanded="true" />
-                <element signature="e#21678#25638#0" expanded="true" />
-                <element signature="e#21826#21841#0" expanded="true" />
-                <element signature="e#22530#22545#0" expanded="true" />
-                <element signature="e#25626#25627#0" expanded="true" />
-                <element signature="e#26029#26911#0" expanded="true" />
-                <element signature="e#26900#26901#0" expanded="true" />
-                <element signature="e#26922#29911#0" expanded="true" />
-                <element signature="e#27070#27085#0" expanded="true" />
-                <element signature="e#27605#27620#0" expanded="true" />
-                <element signature="e#29899#29900#0" expanded="true" />
-                <element signature="e#30291#31169#0" expanded="true" />
-                <element signature="e#31158#31159#0" expanded="true" />
-                <element signature="e#31180#33827#0" expanded="true" />
-                <element signature="e#31328#31343#0" expanded="true" />
-                <element signature="e#31863#31878#0" expanded="true" />
-                <element signature="e#33815#33816#0" expanded="true" />
-                <element signature="e#34139#34999#0" expanded="true" />
-                <element signature="e#34988#34989#0" expanded="true" />
-                <element signature="e#35010#38559#0" expanded="true" />
-                <element signature="e#35158#35173#0" expanded="true" />
-                <element signature="e#35804#35819#0" expanded="true" />
-                <element signature="e#38547#38548#0" expanded="true" />
-                <element signature="e#38989#40039#0" expanded="true" />
-                <element signature="e#40028#40029#0" expanded="true" />
-                <element signature="e#40050#42509#0" expanded="true" />
-                <element signature="e#40198#40213#0" expanded="true" />
-                <element signature="e#40862#40877#0" expanded="true" />
-                <element signature="e#42497#42498#0" expanded="true" />
-                <element signature="e#42945#43923#0" expanded="true" />
-                <element signature="e#43912#43913#0" expanded="true" />
-                <element signature="e#43934#46693#0" expanded="true" />
-                <element signature="e#44082#44097#0" expanded="true" />
-                <element signature="e#44778#44793#0" expanded="true" />
-                <element signature="e#46681#46682#0" expanded="true" />
-                <element signature="e#47045#47995#0" expanded="true" />
-                <element signature="e#47984#47985#0" expanded="true" />
-                <element signature="e#48006#50670#0" expanded="true" />
-                <element signature="e#48154#48169#0" expanded="true" />
-                <element signature="e#48896#48911#0" expanded="true" />
-                <element signature="e#50658#50659#0" expanded="true" />
-                <element signature="e#50994#51935#0" expanded="true" />
-                <element signature="e#51924#51925#0" expanded="true" />
-                <element signature="e#51946#55095#0" expanded="true" />
-                <element signature="e#52094#52109#0" expanded="true" />
-                <element signature="e#53086#53101#0" expanded="true" />
-                <element signature="e#55083#55084#0" expanded="true" />
-                <element signature="e#55384#56289#0" expanded="true" />
-                <element signature="e#56278#56279#0" expanded="true" />
-                <element signature="e#56300#58747#0" expanded="true" />
-                <element signature="e#56448#56463#0" expanded="true" />
-                <element signature="e#57171#57186#0" expanded="true" />
-                <element signature="e#58735#58736#0" expanded="true" />
-                <element signature="e#59101#60079#0" expanded="true" />
-                <element signature="e#60068#60069#0" expanded="true" />
-                <element signature="e#60090#63996#0" expanded="true" />
-                <element signature="e#60238#60253#0" expanded="true" />
-                <element signature="e#61932#61947#0" expanded="true" />
-                <element signature="e#63984#63985#0" expanded="true" />
-                <element signature="e#64443#65330#0" expanded="true" />
-                <element signature="e#65319#65320#0" expanded="true" />
-                <element signature="e#65341#69128#0" expanded="true" />
-                <element signature="e#65489#65504#0" expanded="true" />
-                <element signature="e#66186#66201#0" expanded="true" />
-                <element signature="e#69116#69117#0" expanded="true" />
-                <element signature="e#69497#70388#0" expanded="true" />
-                <element signature="e#70377#70378#0" expanded="true" />
-                <element signature="e#70399#73354#0" expanded="true" />
-                <element signature="e#70547#70562#0" expanded="true" />
-                <element signature="e#71217#71232#0" expanded="true" />
-                <element signature="e#73342#73343#0" expanded="true" />
-                <element signature="e#73677#74582#0" expanded="true" />
-                <element signature="e#74571#74572#0" expanded="true" />
-                <element signature="e#74593#77106#0" expanded="true" />
-                <element signature="e#74741#74756#0" expanded="true" />
-                <element signature="e#75314#75329#0" expanded="true" />
-                <element signature="e#77094#77095#0" expanded="true" />
-                <element signature="e#77479#78358#0" expanded="true" />
-                <element signature="e#78347#78348#0" expanded="true" />
-                <element signature="e#78369#81519#0" expanded="true" />
-                <element signature="e#78517#78532#0" expanded="true" />
-                <element signature="e#79275#79290#0" expanded="true" />
-                <element signature="e#81507#81508#0" expanded="true" />
-                <element signature="e#81976#82893#0" expanded="true" />
-                <element signature="e#82882#82883#0" expanded="true" />
-                <element signature="e#82904#86257#0" expanded="true" />
-                <element signature="e#83052#83067#0" expanded="true" />
-                <element signature="e#84056#84071#0" expanded="true" />
-                <element signature="e#86245#86246#0" expanded="true" />
-                <element signature="e#86610#87526#0" expanded="true" />
-                <element signature="e#87515#87516#0" expanded="true" />
-                <element signature="e#87537#90290#0" expanded="true" />
-                <element signature="e#87685#87700#0" expanded="true" />
-                <element signature="e#88381#88396#0" expanded="true" />
-                <element signature="e#90278#90279#0" expanded="true" />
-                <element signature="e#90592#91466#0" expanded="true" />
-                <element signature="e#91455#91456#0" expanded="true" />
-                <element signature="e#91477#94365#0" expanded="true" />
-                <element signature="e#91625#91640#0" expanded="true" />
-                <element signature="e#92520#92535#0" expanded="true" />
-                <element signature="e#94353#94354#0" expanded="true" />
-                <element signature="e#94728#95647#0" expanded="true" />
-                <element signature="e#95636#95637#0" expanded="true" />
-                <element signature="e#95658#98534#0" expanded="true" />
-                <element signature="e#95806#95821#0" expanded="true" />
-                <element signature="e#96387#96402#0" expanded="true" />
-                <element signature="e#98522#98523#0" expanded="true" />
-                <element signature="e#107373#107389#0" expanded="true" />
-                <element signature="e#107448#107464#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SearchListAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="0" selection-start="4337" selection-end="4337" vertical-scroll-proportion="-7.2" vertical-offset="1404" max-vertical-offset="14058">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataParser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="589" column="0" selection-start="19016" selection-end="19016" vertical-scroll-proportion="-7.92" vertical-offset="9324" max-vertical-offset="14814">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="288" column="34" selection-start="8730" selection-end="8730" vertical-scroll-proportion="0.0" vertical-offset="5184" max-vertical-offset="11034">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MessageFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="0" selection-start="1060" selection-end="1060" vertical-scroll-proportion="127.44" vertical-offset="3456" max-vertical-offset="4752">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WechatManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="682" column="36" selection-start="28008" selection-end="28008" vertical-scroll-proportion="-7.2" vertical-offset="10350" max-vertical-offset="22500">
-              <folding>
-                <element signature="e#24360#27719#0" expanded="true" />
-                <element signature="e#26750#27281#0" expanded="true" />
-                <element signature="e#27234#27235#0" expanded="true" />
-                <element signature="e#27700#27701#0" expanded="true" />
-                <element signature="e#28183#30338#0" expanded="true" />
-                <element signature="e#28648#29431#0" expanded="true" />
-                <element signature="e#29392#29393#0" expanded="true" />
-                <element signature="e#30319#30320#0" expanded="true" />
-              </folding>
-            </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="18" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0" vertical-offset="658" max-vertical-offset="1080">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserListFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="0" selection-start="4316" selection-end="4316" vertical-scroll-proportion="0.0" vertical-offset="2484" max-vertical-offset="2736">
+            <state line="24" column="36" selection-start="1032" selection-end="1032" vertical-scroll-proportion="-10.8" vertical-offset="162" max-vertical-offset="1404">
               <folding />
             </state>
           </provider>
@@ -696,39 +352,65 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" />
-        <option value="$PROJECT_DIR$/res/drawable/search_edit_bg.xml" />
-        <option value="$PROJECT_DIR$/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/search_button_bg.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" />
+        <option value="$PROJECT_DIR$/res/drawable/radius_border_pop_title.xml" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_save_us_layout.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" />
+        <option value="$PROJECT_DIR$/res/layout/setting_layout.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/radius_border_pop_white_bottom.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_contact_us_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/intro_first_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/intro_second_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/intro_third_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/intro_forth_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroForthFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroThirdFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroSecondFragment.java" />
+        <option value="$PROJECT_DIR$/res/drawable/intro_but_enter_bg.xml" />
+        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
+        <option value="$PROJECT_DIR$/res/layout/intro_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java" />
-        <option value="$PROJECT_DIR$/res/layout/user_group_layout.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
-        <option value="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
         <option value="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" />
+        <option value="$PROJECT_DIR$/res/anim/chat_movein_anim.xml" />
+        <option value="$PROJECT_DIR$/res/anim/activity_moveout_anim.xml" />
+        <option value="$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml" />
+        <option value="$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
         <option value="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/message_item_empty_layout.xml" />
-        <option value="$PROJECT_DIR$/res/anim/search_activity_fly_in.xml" />
-        <option value="$PROJECT_DIR$/res/anim/search_activity_fly_out.xml" />
-        <option value="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/search_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/IntroActivity.java" />
+        <option value="$PROJECT_DIR$/res/layout/intro_fifth_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFifthFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/splash_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1431" />
-    <option name="y" value="-744" />
-    <option name="width" value="1301" />
-    <option name="height" value="744" />
+    <option name="x" value="1985" />
+    <option name="y" value="24" />
+    <option name="width" value="1855" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -888,32 +570,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Face" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="dropWindow" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -988,7 +644,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="text" />
+              <option name="myItemId" value="voice" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1085,6 +741,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="fragment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WeClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="weclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fragment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="intro" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1294,11 +976,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.suan.weclient.adapter" />
+      <recent name="com.suan.weclient.fragment.intro" />
       <recent name="com.suan.weclient.activity" />
+      <recent name="com.suan.weclient.adapter" />
       <recent name="com.suan.weclient.view.ptr" />
       <recent name="com.suan.weclient.util.span" />
-      <recent name="com.suan.weclient.view" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res/anim" />
@@ -1307,6 +989,8 @@
       <recent name="$PROJECT_DIR$/res/drawable-hdpi" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.suan.weclient.util.data.holder" />
+      <recent name="com.suan.weclient.util.data.bean" />
       <recent name="com.suan.weclient.view.DropWindow" />
       <recent name="com.suan.weclient.view.actionbar" />
       <recent name="com.suan.weclient.util.span" />
@@ -1544,36 +1228,36 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1431" y="-744" width="1301" height="744" extended-state="6" />
+    <frame x="1985" y="24" width="1855" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39774558" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39764202" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2962963" sideWeight="0.5003997" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28019324" sideWeight="0.49961567" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.294686" sideWeight="0.49960032" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22629482" sideWeight="0.49880096" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33333334" sideWeight="0.49960032" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3268921" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18542336" sideWeight="0.49961567" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22186495" sideWeight="0.49960032" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1840796" sideWeight="0.49880096" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33333334" sideWeight="0.49960032" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32583067" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1620,648 +1304,81 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/user_group_user_item.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroForthFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="43" selection-start="802" selection-end="802" vertical-scroll-proportion="0.0" vertical-offset="252" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
+        <state line="35" column="51" selection-start="1133" selection-end="1133" vertical-scroll-proportion="0.3857143" vertical-offset="0" max-vertical-offset="700" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="365" column="0" selection-start="14305" selection-end="14305" vertical-scroll-proportion="0.0" vertical-offset="6570" max-vertical-offset="15894">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="1" selection-start="4653" selection-end="4653" vertical-scroll-proportion="0.0" vertical-offset="2538" max-vertical-offset="2772">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="66" selection-start="3278" selection-end="3278" vertical-scroll-proportion="0.0" vertical-offset="1206" max-vertical-offset="1404">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/show_img_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="24" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="468">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/search_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="0" selection-start="1814" selection-end="1814" vertical-scroll-proportion="0.0" vertical-offset="900" max-vertical-offset="1206">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_in.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="28" selection-start="383" selection-end="383" vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="396">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_out.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="28" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0" vertical-offset="144" max-vertical-offset="396">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/search_edit_bg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="51" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="1452" selection-end="1452" vertical-scroll-proportion="0.0" vertical-offset="738" max-vertical-offset="990">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="61" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/search_button_bg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="307" selection-end="307" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="234">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/search_button_state.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="85" selection-start="456" selection-end="456" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/action_search_bg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="200" selection-end="200" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="288">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="0" selection-start="6989" selection-end="6989" vertical-scroll-proportion="0.0" vertical-offset="3600" max-vertical-offset="6462">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="0" selection-start="3420" selection-end="3420" vertical-scroll-proportion="0.0" vertical-offset="2034" max-vertical-offset="2304">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3945#4580#0" expanded="true" />
-            <element signature="e#4569#4570#0" expanded="true" />
-            <element signature="e#4712#5114#0" expanded="true" />
-            <element signature="e#5103#5104#0" expanded="true" />
-            <element signature="e#5157#5402#0" expanded="true" />
-            <element signature="e#5391#5392#0" expanded="true" />
-            <element signature="e#5792#6412#0" expanded="true" />
-            <element signature="e#6401#6402#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="708" column="10" selection-start="26098" selection-end="26098" vertical-scroll-proportion="0.0" vertical-offset="12744" max-vertical-offset="51498">
-          <folding>
-            <element signature="e#5891#6894#0" expanded="true" />
-            <element signature="e#6883#6884#0" expanded="true" />
-            <element signature="e#6905#10629#0" expanded="true" />
-            <element signature="e#7053#7068#0" expanded="true" />
-            <element signature="e#7452#7467#0" expanded="true" />
-            <element signature="e#10617#10618#0" expanded="true" />
-            <element signature="e#10969#11955#0" expanded="true" />
-            <element signature="e#11944#11945#0" expanded="true" />
-            <element signature="e#11966#14355#0" expanded="true" />
-            <element signature="e#12114#12129#0" expanded="true" />
-            <element signature="e#12710#12725#0" expanded="true" />
-            <element signature="e#14343#14344#0" expanded="true" />
-            <element signature="e#14763#15749#0" expanded="true" />
-            <element signature="e#15738#15739#0" expanded="true" />
-            <element signature="e#15760#20268#0" expanded="true" />
-            <element signature="e#15908#15923#0" expanded="true" />
-            <element signature="e#16719#16734#0" expanded="true" />
-            <element signature="e#20256#20257#0" expanded="true" />
-            <element signature="e#20682#21667#0" expanded="true" />
-            <element signature="e#21656#21657#0" expanded="true" />
-            <element signature="e#21678#25638#0" expanded="true" />
-            <element signature="e#21826#21841#0" expanded="true" />
-            <element signature="e#22530#22545#0" expanded="true" />
-            <element signature="e#25626#25627#0" expanded="true" />
-            <element signature="e#26029#26911#0" expanded="true" />
-            <element signature="e#26900#26901#0" expanded="true" />
-            <element signature="e#26922#29911#0" expanded="true" />
-            <element signature="e#27070#27085#0" expanded="true" />
-            <element signature="e#27605#27620#0" expanded="true" />
-            <element signature="e#29899#29900#0" expanded="true" />
-            <element signature="e#30291#31169#0" expanded="true" />
-            <element signature="e#31158#31159#0" expanded="true" />
-            <element signature="e#31180#33827#0" expanded="true" />
-            <element signature="e#31328#31343#0" expanded="true" />
-            <element signature="e#31863#31878#0" expanded="true" />
-            <element signature="e#33815#33816#0" expanded="true" />
-            <element signature="e#34139#34999#0" expanded="true" />
-            <element signature="e#34988#34989#0" expanded="true" />
-            <element signature="e#35010#38559#0" expanded="true" />
-            <element signature="e#35158#35173#0" expanded="true" />
-            <element signature="e#35804#35819#0" expanded="true" />
-            <element signature="e#38547#38548#0" expanded="true" />
-            <element signature="e#38989#40039#0" expanded="true" />
-            <element signature="e#40028#40029#0" expanded="true" />
-            <element signature="e#40050#42509#0" expanded="true" />
-            <element signature="e#40198#40213#0" expanded="true" />
-            <element signature="e#40862#40877#0" expanded="true" />
-            <element signature="e#42497#42498#0" expanded="true" />
-            <element signature="e#42945#43923#0" expanded="true" />
-            <element signature="e#43912#43913#0" expanded="true" />
-            <element signature="e#43934#46693#0" expanded="true" />
-            <element signature="e#44082#44097#0" expanded="true" />
-            <element signature="e#44778#44793#0" expanded="true" />
-            <element signature="e#46681#46682#0" expanded="true" />
-            <element signature="e#47045#47995#0" expanded="true" />
-            <element signature="e#47984#47985#0" expanded="true" />
-            <element signature="e#48006#50670#0" expanded="true" />
-            <element signature="e#48154#48169#0" expanded="true" />
-            <element signature="e#48896#48911#0" expanded="true" />
-            <element signature="e#50658#50659#0" expanded="true" />
-            <element signature="e#50994#51935#0" expanded="true" />
-            <element signature="e#51924#51925#0" expanded="true" />
-            <element signature="e#51946#55095#0" expanded="true" />
-            <element signature="e#52094#52109#0" expanded="true" />
-            <element signature="e#53086#53101#0" expanded="true" />
-            <element signature="e#55083#55084#0" expanded="true" />
-            <element signature="e#55384#56289#0" expanded="true" />
-            <element signature="e#56278#56279#0" expanded="true" />
-            <element signature="e#56300#58747#0" expanded="true" />
-            <element signature="e#56448#56463#0" expanded="true" />
-            <element signature="e#57171#57186#0" expanded="true" />
-            <element signature="e#58735#58736#0" expanded="true" />
-            <element signature="e#59101#60079#0" expanded="true" />
-            <element signature="e#60068#60069#0" expanded="true" />
-            <element signature="e#60090#63996#0" expanded="true" />
-            <element signature="e#60238#60253#0" expanded="true" />
-            <element signature="e#61932#61947#0" expanded="true" />
-            <element signature="e#63984#63985#0" expanded="true" />
-            <element signature="e#64443#65330#0" expanded="true" />
-            <element signature="e#65319#65320#0" expanded="true" />
-            <element signature="e#65341#69128#0" expanded="true" />
-            <element signature="e#65489#65504#0" expanded="true" />
-            <element signature="e#66186#66201#0" expanded="true" />
-            <element signature="e#69116#69117#0" expanded="true" />
-            <element signature="e#69497#70388#0" expanded="true" />
-            <element signature="e#70377#70378#0" expanded="true" />
-            <element signature="e#70399#73354#0" expanded="true" />
-            <element signature="e#70547#70562#0" expanded="true" />
-            <element signature="e#71217#71232#0" expanded="true" />
-            <element signature="e#73342#73343#0" expanded="true" />
-            <element signature="e#73677#74582#0" expanded="true" />
-            <element signature="e#74571#74572#0" expanded="true" />
-            <element signature="e#74593#77106#0" expanded="true" />
-            <element signature="e#74741#74756#0" expanded="true" />
-            <element signature="e#75314#75329#0" expanded="true" />
-            <element signature="e#77094#77095#0" expanded="true" />
-            <element signature="e#77479#78358#0" expanded="true" />
-            <element signature="e#78347#78348#0" expanded="true" />
-            <element signature="e#78369#81519#0" expanded="true" />
-            <element signature="e#78517#78532#0" expanded="true" />
-            <element signature="e#79275#79290#0" expanded="true" />
-            <element signature="e#81507#81508#0" expanded="true" />
-            <element signature="e#81976#82893#0" expanded="true" />
-            <element signature="e#82882#82883#0" expanded="true" />
-            <element signature="e#82904#86257#0" expanded="true" />
-            <element signature="e#83052#83067#0" expanded="true" />
-            <element signature="e#84056#84071#0" expanded="true" />
-            <element signature="e#86245#86246#0" expanded="true" />
-            <element signature="e#86610#87526#0" expanded="true" />
-            <element signature="e#87515#87516#0" expanded="true" />
-            <element signature="e#87537#90290#0" expanded="true" />
-            <element signature="e#87685#87700#0" expanded="true" />
-            <element signature="e#88381#88396#0" expanded="true" />
-            <element signature="e#90278#90279#0" expanded="true" />
-            <element signature="e#90592#91466#0" expanded="true" />
-            <element signature="e#91455#91456#0" expanded="true" />
-            <element signature="e#91477#94365#0" expanded="true" />
-            <element signature="e#91625#91640#0" expanded="true" />
-            <element signature="e#92520#92535#0" expanded="true" />
-            <element signature="e#94353#94354#0" expanded="true" />
-            <element signature="e#94728#95647#0" expanded="true" />
-            <element signature="e#95636#95637#0" expanded="true" />
-            <element signature="e#95658#98534#0" expanded="true" />
-            <element signature="e#95806#95821#0" expanded="true" />
-            <element signature="e#96387#96402#0" expanded="true" />
-            <element signature="e#98522#98523#0" expanded="true" />
-            <element signature="e#107373#107389#0" expanded="true" />
-            <element signature="e#107448#107464#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="0" selection-start="2811" selection-end="2811" vertical-scroll-proportion="0.0" vertical-offset="1404" max-vertical-offset="15876">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="288" column="34" selection-start="8730" selection-end="8730" vertical-scroll-proportion="0.0" vertical-offset="5184" max-vertical-offset="11034">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="152" column="0" selection-start="4097" selection-end="4097" vertical-scroll-proportion="0.0" vertical-offset="2736" max-vertical-offset="5346">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="18" selection-start="3183" selection-end="3183" vertical-scroll-proportion="0.0" vertical-offset="658" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="0" selection-start="4316" selection-end="4316" vertical-scroll-proportion="0.0" vertical-offset="2484" max-vertical-offset="2736">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/setting_layout.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="419" column="24" selection-start="17352" selection-end="17352" vertical-scroll-proportion="-3.1034484" vertical-offset="7452" max-vertical-offset="9954">
-          <folding>
-            <element signature="e#1113#1134#0" expanded="false" />
-            <element signature="e#2779#2812#0" expanded="false" />
-            <element signature="e#4565#4588#0" expanded="false" />
-            <element signature="e#6295#6323#0" expanded="false" />
-            <element signature="e#7815#7845#0" expanded="false" />
-            <element signature="e#9339#9367#0" expanded="false" />
-            <element signature="e#12538#12556#0" expanded="false" />
-            <element signature="e#14238#14256#0" expanded="false" />
-            <element signature="e#15677#15703#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/chat_send_state.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="35" selection-start="264" selection-end="264" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/setting_push_text_color.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="10" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="252">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="317" column="0" selection-start="10872" selection-end="10872" vertical-scroll-proportion="0.0" vertical-offset="4590" max-vertical-offset="9288">
-          <folding>
-            <element signature="e#4885#5230#0" expanded="false" />
-            <element signature="e#5219#5220#0" expanded="false" />
-            <element signature="e#5592#6838#0" expanded="false" />
-            <element signature="e#6827#6828#0" expanded="false" />
-            <element signature="e#6894#7441#0" expanded="false" />
-            <element signature="e#7430#7431#0" expanded="false" />
-            <element signature="e#7501#8050#0" expanded="false" />
-            <element signature="e#8039#8040#0" expanded="false" />
-            <element signature="e#8108#8655#0" expanded="false" />
-            <element signature="e#8644#8645#0" expanded="false" />
-            <element signature="e#8811#9100#0" expanded="false" />
-            <element signature="e#9089#9090#0" expanded="false" />
-            <element signature="e#9503#9656#0" expanded="false" />
-            <element signature="e#9644#9645#0" expanded="false" />
-            <element signature="e#9952#10329#0" expanded="false" />
-            <element signature="e#10318#10319#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/search_edit_bg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="51" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="288" column="34" selection-start="8730" selection-end="8730" vertical-scroll-proportion="0.0" vertical-offset="4266" max-vertical-offset="10098">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="0" selection-start="4316" selection-end="4316" vertical-scroll-proportion="0.0" vertical-offset="2484" max-vertical-offset="2736">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="427" column="26" selection-start="16587" selection-end="16587" vertical-scroll-proportion="-5.76" vertical-offset="6822" max-vertical-offset="51696">
-          <folding>
-            <element signature="e#5891#6894#0" expanded="true" />
-            <element signature="e#6883#6884#0" expanded="true" />
-            <element signature="e#6905#10629#0" expanded="true" />
-            <element signature="e#7053#7068#0" expanded="true" />
-            <element signature="e#7452#7467#0" expanded="true" />
-            <element signature="e#10617#10618#0" expanded="true" />
-            <element signature="e#10969#11955#0" expanded="true" />
-            <element signature="e#11944#11945#0" expanded="true" />
-            <element signature="e#11966#14355#0" expanded="true" />
-            <element signature="e#12114#12129#0" expanded="true" />
-            <element signature="e#12710#12725#0" expanded="true" />
-            <element signature="e#14343#14344#0" expanded="true" />
-            <element signature="e#14763#15749#0" expanded="true" />
-            <element signature="e#15738#15739#0" expanded="true" />
-            <element signature="e#15760#20268#0" expanded="true" />
-            <element signature="e#15908#15923#0" expanded="true" />
-            <element signature="e#16719#16734#0" expanded="true" />
-            <element signature="e#20256#20257#0" expanded="true" />
-            <element signature="e#20682#21667#0" expanded="true" />
-            <element signature="e#21656#21657#0" expanded="true" />
-            <element signature="e#21678#25638#0" expanded="true" />
-            <element signature="e#21826#21841#0" expanded="true" />
-            <element signature="e#22530#22545#0" expanded="true" />
-            <element signature="e#25626#25627#0" expanded="true" />
-            <element signature="e#26029#26911#0" expanded="true" />
-            <element signature="e#26900#26901#0" expanded="true" />
-            <element signature="e#26922#29911#0" expanded="true" />
-            <element signature="e#27070#27085#0" expanded="true" />
-            <element signature="e#27605#27620#0" expanded="true" />
-            <element signature="e#29899#29900#0" expanded="true" />
-            <element signature="e#30291#31169#0" expanded="true" />
-            <element signature="e#31158#31159#0" expanded="true" />
-            <element signature="e#31180#33827#0" expanded="true" />
-            <element signature="e#31328#31343#0" expanded="true" />
-            <element signature="e#31863#31878#0" expanded="true" />
-            <element signature="e#33815#33816#0" expanded="true" />
-            <element signature="e#34139#34999#0" expanded="true" />
-            <element signature="e#34988#34989#0" expanded="true" />
-            <element signature="e#35010#38559#0" expanded="true" />
-            <element signature="e#35158#35173#0" expanded="true" />
-            <element signature="e#35804#35819#0" expanded="true" />
-            <element signature="e#38547#38548#0" expanded="true" />
-            <element signature="e#38989#40039#0" expanded="true" />
-            <element signature="e#40028#40029#0" expanded="true" />
-            <element signature="e#40050#42509#0" expanded="true" />
-            <element signature="e#40198#40213#0" expanded="true" />
-            <element signature="e#40862#40877#0" expanded="true" />
-            <element signature="e#42497#42498#0" expanded="true" />
-            <element signature="e#42945#43923#0" expanded="true" />
-            <element signature="e#43912#43913#0" expanded="true" />
-            <element signature="e#43934#46693#0" expanded="true" />
-            <element signature="e#44082#44097#0" expanded="true" />
-            <element signature="e#44778#44793#0" expanded="true" />
-            <element signature="e#46681#46682#0" expanded="true" />
-            <element signature="e#47045#47995#0" expanded="true" />
-            <element signature="e#47984#47985#0" expanded="true" />
-            <element signature="e#48006#50670#0" expanded="true" />
-            <element signature="e#48154#48169#0" expanded="true" />
-            <element signature="e#48896#48911#0" expanded="true" />
-            <element signature="e#50658#50659#0" expanded="true" />
-            <element signature="e#50994#51935#0" expanded="true" />
-            <element signature="e#51924#51925#0" expanded="true" />
-            <element signature="e#51946#55095#0" expanded="true" />
-            <element signature="e#52094#52109#0" expanded="true" />
-            <element signature="e#53086#53101#0" expanded="true" />
-            <element signature="e#55083#55084#0" expanded="true" />
-            <element signature="e#55384#56289#0" expanded="true" />
-            <element signature="e#56278#56279#0" expanded="true" />
-            <element signature="e#56300#58747#0" expanded="true" />
-            <element signature="e#56448#56463#0" expanded="true" />
-            <element signature="e#57171#57186#0" expanded="true" />
-            <element signature="e#58735#58736#0" expanded="true" />
-            <element signature="e#59101#60079#0" expanded="true" />
-            <element signature="e#60068#60069#0" expanded="true" />
-            <element signature="e#60090#63996#0" expanded="true" />
-            <element signature="e#60238#60253#0" expanded="true" />
-            <element signature="e#61932#61947#0" expanded="true" />
-            <element signature="e#63984#63985#0" expanded="true" />
-            <element signature="e#64443#65330#0" expanded="true" />
-            <element signature="e#65319#65320#0" expanded="true" />
-            <element signature="e#65341#69128#0" expanded="true" />
-            <element signature="e#65489#65504#0" expanded="true" />
-            <element signature="e#66186#66201#0" expanded="true" />
-            <element signature="e#69116#69117#0" expanded="true" />
-            <element signature="e#69497#70388#0" expanded="true" />
-            <element signature="e#70377#70378#0" expanded="true" />
-            <element signature="e#70399#73354#0" expanded="true" />
-            <element signature="e#70547#70562#0" expanded="true" />
-            <element signature="e#71217#71232#0" expanded="true" />
-            <element signature="e#73342#73343#0" expanded="true" />
-            <element signature="e#73677#74582#0" expanded="true" />
-            <element signature="e#74571#74572#0" expanded="true" />
-            <element signature="e#74593#77106#0" expanded="true" />
-            <element signature="e#74741#74756#0" expanded="true" />
-            <element signature="e#75314#75329#0" expanded="true" />
-            <element signature="e#77094#77095#0" expanded="true" />
-            <element signature="e#77479#78358#0" expanded="true" />
-            <element signature="e#78347#78348#0" expanded="true" />
-            <element signature="e#78369#81519#0" expanded="true" />
-            <element signature="e#78517#78532#0" expanded="true" />
-            <element signature="e#79275#79290#0" expanded="true" />
-            <element signature="e#81507#81508#0" expanded="true" />
-            <element signature="e#81976#82893#0" expanded="true" />
-            <element signature="e#82882#82883#0" expanded="true" />
-            <element signature="e#82904#86257#0" expanded="true" />
-            <element signature="e#83052#83067#0" expanded="true" />
-            <element signature="e#84056#84071#0" expanded="true" />
-            <element signature="e#86245#86246#0" expanded="true" />
-            <element signature="e#86610#87526#0" expanded="true" />
-            <element signature="e#87515#87516#0" expanded="true" />
-            <element signature="e#87537#90290#0" expanded="true" />
-            <element signature="e#87685#87700#0" expanded="true" />
-            <element signature="e#88381#88396#0" expanded="true" />
-            <element signature="e#90278#90279#0" expanded="true" />
-            <element signature="e#90592#91466#0" expanded="true" />
-            <element signature="e#91455#91456#0" expanded="true" />
-            <element signature="e#91477#94365#0" expanded="true" />
-            <element signature="e#91625#91640#0" expanded="true" />
-            <element signature="e#92520#92535#0" expanded="true" />
-            <element signature="e#94353#94354#0" expanded="true" />
-            <element signature="e#94728#95647#0" expanded="true" />
-            <element signature="e#95636#95637#0" expanded="true" />
-            <element signature="e#95658#98534#0" expanded="true" />
-            <element signature="e#95806#95821#0" expanded="true" />
-            <element signature="e#96387#96402#0" expanded="true" />
-            <element signature="e#98522#98523#0" expanded="true" />
-            <element signature="e#107373#107389#0" expanded="true" />
-            <element signature="e#107448#107464#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="1060" selection-end="1060" vertical-scroll-proportion="127.44" vertical-offset="3456" max-vertical-offset="4752">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="682" column="36" selection-start="28008" selection-end="28008" vertical-scroll-proportion="-7.2" vertical-offset="10350" max-vertical-offset="22500">
-          <folding>
-            <element signature="e#24360#27719#0" expanded="true" />
-            <element signature="e#26750#27281#0" expanded="true" />
-            <element signature="e#27234#27235#0" expanded="true" />
-            <element signature="e#27700#27701#0" expanded="true" />
-            <element signature="e#28183#30338#0" expanded="true" />
-            <element signature="e#28648#29431#0" expanded="true" />
-            <element signature="e#29392#29393#0" expanded="true" />
-            <element signature="e#30319#30320#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="0" selection-start="4337" selection-end="4337" vertical-scroll-proportion="-7.2" vertical-offset="1404" max-vertical-offset="14058">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="589" column="0" selection-start="19016" selection-end="19016" vertical-scroll-proportion="-7.92" vertical-offset="9324" max-vertical-offset="14814">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/MessageHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="29" selection-start="988" selection-end="988" vertical-scroll-proportion="-10.8" vertical-offset="324" max-vertical-offset="1512">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/user_group_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="38" selection-start="502" selection-end="502" vertical-scroll-proportion="1.3333334" vertical-offset="306" max-vertical-offset="936">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_voice_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3744">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_text_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3366">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_img_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="193" selection-end="193" vertical-scroll-proportion="-1.3333334" vertical-offset="0" max-vertical-offset="3726">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_empty_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="46" selection-start="491" selection-end="491" vertical-scroll-proportion="0.6666667" vertical-offset="270" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_in.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="26" selection-start="266" selection-end="266" vertical-scroll-proportion="-5.76" vertical-offset="0" max-vertical-offset="396">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/anim/search_activity_fly_out.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="26" selection-start="381" selection-end="381" vertical-scroll-proportion="-9.36" vertical-offset="0" max-vertical-offset="396">
+        <state line="33" column="13" selection-start="1315" selection-end="1315" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="5076">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="55" selection-start="4745" selection-end="4745" vertical-scroll-proportion="-11.04" vertical-offset="1974" max-vertical-offset="2556">
+        <state line="33" column="5" selection-start="997" selection-end="997" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="3024">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
+    <entry file="file://$PROJECT_DIR$/res/drawable/drop_down_indecator_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="197" column="37" selection-start="6824" selection-end="6824" vertical-scroll-proportion="-10.08" vertical-offset="2556" max-vertical-offset="5418">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/setting_checkbox_button_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/setting_checkbox_checked_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="88" selection-start="249" selection-end="249" vertical-scroll-proportion="0.12857144" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="45" selection-start="487" selection-end="487" vertical-scroll-proportion="0.30857143" vertical-offset="0" max-vertical-offset="2178">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1404">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/message_fragment.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="29" selection-start="141" selection-end="141" vertical-scroll-proportion="0.053651266" vertical-offset="0" max-vertical-offset="671">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="0" selection-start="5334" selection-end="5334" vertical-scroll-proportion="0.9514286" vertical-offset="2160" max-vertical-offset="7902">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="51" selection-start="524" selection-end="524" vertical-scroll-proportion="0.3857143" vertical-offset="0" max-vertical-offset="700">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/custom_actionbar_main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="46" selection-start="8279" selection-end="8279" vertical-scroll-proportion="-2.0" vertical-offset="3474" max-vertical-offset="4068">
+        <state line="202" column="52" selection-start="8369" selection-end="8369" vertical-scroll-proportion="0.4366617" vertical-offset="3343" max-vertical-offset="4068">
           <folding />
         </state>
       </provider>
@@ -2269,36 +1386,307 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="622" column="0" selection-start="19507" selection-end="19507" vertical-scroll-proportion="-2.16" vertical-offset="9126" max-vertical-offset="11376">
+        <state line="137" column="0" selection-start="4787" selection-end="4787" vertical-scroll-proportion="0.0" vertical-offset="2466" max-vertical-offset="6426" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/intro_but_enter_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="47" selection-start="235" selection-end="235" vertical-scroll-proportion="0.07714286" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="515" selection-end="515" vertical-scroll-proportion="0.22857143" vertical-offset="200" max-vertical-offset="900" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="0" selection-start="7178" selection-end="7178" vertical-scroll-proportion="0.0" vertical-offset="3150" max-vertical-offset="3870">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java">
+    <entry file="file://$PROJECT_DIR$/res/layout/intro_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="0" selection-start="4379" selection-end="4379" vertical-scroll-proportion="-7.92" vertical-offset="2196" max-vertical-offset="4014">
+        <state line="23" column="40" selection-start="822" selection-end="822" vertical-scroll-proportion="0.5633383" vertical-offset="36" max-vertical-offset="774">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2844" column="0" selection-start="106611" selection-end="106611" vertical-scroll-proportion="0.026200874" vertical-offset="47448" max-vertical-offset="50778">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="42" selection-start="3579" selection-end="3579" vertical-scroll-proportion="0.0" vertical-offset="2160" max-vertical-offset="6426">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="0" selection-start="2351" selection-end="2351" vertical-scroll-proportion="-0.44541484" vertical-offset="1602" max-vertical-offset="4482">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="199" selection-end="199" vertical-scroll-proportion="0.12857144" vertical-offset="0" max-vertical-offset="2196">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/work-soft/android-sdk-linux/sources/android-17/org/json/JSONObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="542" column="21" selection-start="19311" selection-end="19311" vertical-scroll-proportion="0.34428573" vertical-offset="9209" max-vertical-offset="12762" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="370" column="11" selection-start="12224" selection-end="12224" vertical-scroll-proportion="0.21571429" vertical-offset="4727" max-vertical-offset="5814">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="966" selection-end="966" vertical-scroll-proportion="-0.82285714" vertical-offset="648" max-vertical-offset="5922">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="272" column="38" selection-start="9522" selection-end="9522" vertical-scroll-proportion="0.49285713" vertical-offset="3633" max-vertical-offset="10854">
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3945#4580#0" expanded="true" />
-            <element signature="e#4569#4570#0" expanded="true" />
-            <element signature="e#4712#5114#0" expanded="true" />
-            <element signature="e#5103#5104#0" expanded="true" />
-            <element signature="e#5157#5402#0" expanded="true" />
-            <element signature="e#5391#5392#0" expanded="true" />
-            <element signature="e#5792#6412#0" expanded="true" />
-            <element signature="e#6401#6402#0" expanded="true" />
+            <element signature="e#18821#19033#0" expanded="true" />
+            <element signature="e#19022#19023#0" expanded="true" />
+            <element signature="e#20195#20243#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/search_layout.xml">
+    <entry file="file://$PROJECT_DIR$/res/anim/activity_movein_from_right_anim.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="289" selection-end="289" vertical-scroll-proportion="0.28285715" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="28" selection-start="149" selection-end="149" vertical-scroll-proportion="0.12857144" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/activity_moveout_to_right_anim.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="30" selection-start="183" selection-end="183" vertical-scroll-proportion="0.15428571" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="26" selection-start="179" selection-end="179" vertical-scroll-proportion="0.15428571" vertical-offset="0" max-vertical-offset="700" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="443" column="0" selection-start="16828" selection-end="16828" vertical-scroll-proportion="0.8742857" vertical-offset="6318" max-vertical-offset="14472">
+          <folding>
+            <element signature="e#2916#2929#0" expanded="true" />
+            <element signature="e#15082#15764#0" expanded="true" />
+            <element signature="e#15745#15746#0" expanded="true" />
+            <element signature="e#23761#24318#0" expanded="true" />
+            <element signature="e#24306#24307#0" expanded="true" />
+            <element signature="e#24925#25925#0" expanded="true" />
+            <element signature="e#25898#25899#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="626" column="0" selection-start="19746" selection-end="19746" vertical-scroll-proportion="0.37117904" vertical-offset="9033" max-vertical-offset="12582">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/message_item_text_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="197" column="11" selection-start="7239" selection-end="7239" vertical-scroll-proportion="0.6780924" vertical-offset="3091" max-vertical-offset="3780">
+          <folding />
+        </state>
+      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="41" selection-start="525" selection-end="525" vertical-scroll-proportion="0.14099216" vertical-offset="180" max-vertical-offset="1314">
+        <state line="113" column="0" selection-start="4124" selection-end="4124" vertical-scroll-proportion="0.5657143" vertical-offset="882" max-vertical-offset="6930">
+          <folding>
+            <element signature="e#4212#4640#0" expanded="false" />
+            <element signature="e#4629#4630#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="621" column="108" selection-start="20762" selection-end="20762" vertical-scroll-proportion="0.7457143" vertical-offset="8694" max-vertical-offset="9486">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="294" column="19" selection-start="9346" selection-end="9346" vertical-scroll-proportion="0.82" vertical-offset="4412" max-vertical-offset="5256">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="347" column="0" selection-start="11066" selection-end="11066" vertical-scroll-proportion="0.5914286" vertical-offset="4986" max-vertical-offset="5778" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="947" column="50" selection-start="31855" selection-end="31855" vertical-scroll-proportion="0.30714285" vertical-offset="15877" max-vertical-offset="17316">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#15148#15162#0" expanded="false" />
+            <element signature="e#17834#17847#0" expanded="false" />
+            <element signature="e#23844#23857#0" expanded="false" />
+            <element signature="e#26223#26238#0" expanded="false" />
+            <element signature="e#26961#26971#0" expanded="false" />
+            <element signature="e#30433#30446#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1099" column="50" selection-start="45647" selection-end="45647" vertical-scroll-proportion="0.47161573" vertical-offset="16794" max-vertical-offset="24174">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="447" column="16" selection-start="16700" selection-end="16700" vertical-scroll-proportion="0.60262007" vertical-offset="7578" max-vertical-offset="12510" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="618" column="0" selection-start="23701" selection-end="23701" vertical-scroll-proportion="0.15428571" vertical-offset="9414" max-vertical-offset="14490">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/message_item_img_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="99" column="0" selection-start="3567" selection-end="3567" vertical-scroll-proportion="0.42921013" vertical-offset="1494" max-vertical-offset="4266">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="0" selection-start="1946" selection-end="1946" vertical-scroll-proportion="0.0" vertical-offset="918" max-vertical-offset="1674">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="51" selection-start="1860" selection-end="1860" vertical-scroll-proportion="0.0" vertical-offset="792" max-vertical-offset="1926">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/umeng_common_strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="36" selection-start="1032" selection-end="1032" vertical-scroll-proportion="-10.8" vertical-offset="162" max-vertical-offset="1404">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/intro_fifth_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="42" selection-start="1393" selection-end="1393" vertical-scroll-proportion="-4.6666665" vertical-offset="378" max-vertical-offset="1134">
+          <folding>
+            <element signature="e#931#954#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="37" selection-start="1487" selection-end="1487" vertical-scroll-proportion="-15.12" vertical-offset="162" max-vertical-offset="5616">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/IntroActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="0" selection-start="3032" selection-end="3032" vertical-scroll-proportion="-11.52" vertical-offset="990" max-vertical-offset="2016">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFifthFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="0" selection-start="1773" selection-end="1773" vertical-scroll-proportion="-15.12" vertical-offset="414" max-vertical-offset="1332">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1679#2534#0" expanded="true" />
+            <element signature="e#2523#2524#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/splash_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="35" selection-start="308" selection-end="308" vertical-scroll-proportion="-2.3333333" vertical-offset="0" max-vertical-offset="396">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SplashActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="39" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.3857143" vertical-offset="234" max-vertical-offset="1656">
           <folding />
         </state>
       </provider>

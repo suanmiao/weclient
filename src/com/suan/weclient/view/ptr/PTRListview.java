@@ -430,9 +430,9 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
         int nowLastVisibileItem = firstVisibleItem + visibleItemCount;
         if (nowLastVisibileItem == totalItemCount
                 && lastLastVisibleItem != totalItemCount
-                && totalItemCount >= visibleItemCount) {
+                && totalItemCount >= visibleItemCount
+                &&totalItemCount>2) {
             if (loadEnable && !loading) {
-
                 prepareLoad();
             }
         }

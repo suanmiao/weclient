@@ -117,7 +117,6 @@ public class SMainDropListWindow extends PopupWindow {
 
             dismiss();
 
-
         }
 
     }

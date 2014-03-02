@@ -11,6 +11,7 @@
 	<string name="cancel">取消</string>
 	<string name="send">发送</string>
 	<string name="message">消息</string>
+    <string name="has_reply">已回复</string>
     <string name="no_message">一条消息也没有哦</string>
     <string name="message_all">全部消息</string>
     <string name="message_today">今天消息</string>
@@ -21,9 +22,26 @@
     <string name="new_message">条新消息</string>
     <string name="new_fans">个新用户</string>
 	<string name="mass">群   发</string>
+    <string name="start_journey">开启旅程</string>
     <string name="user">用户</string>
     <string name="chat">聊天</string>
     <string name="share_to_friends">分享到朋友圈</string>
+    <string name="save_me">打赏(支持比特币支付)</string>
+
+    <string name="bit_pay">比特币钱包地址</string>
+    <string name="alipay">支付宝支付地址</string>
+    <string name="bit_adder">19ECUpzBQLrocUGvR44LFr87ggqyfJgswN</string>
+    <string name="alipay_adder">suanmiaobaicai@foxmail.com</string>
+    <string name="xiaohong_mail">hongxiao@hustunique.com</string>
+    <string name="xiaoshou_mail">binfan@hustunique.com</string>
+    <string name="my_mail">suanmiaobaicai@foxmail.com</string>
+    <string name="mail_title">小助手用户反馈</string>
+    <string name="copy_bit_addr">复制地址</string>
+    <string name="has_copyed">已复制地址到剪贴板</string>
+    <string name="go_to_pay">打个赏</string>
+    <string name="contact_us">联系我们</string>
+    <string name="i_see">看到了</string>
+    <string name="send_mail">发邮件</string>
     <string name="from_account">来自帐号</string>
     <string name="setting">设置</string>
     <string name="all_user">全部用户</string>

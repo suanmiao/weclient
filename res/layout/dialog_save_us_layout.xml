@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dip"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_border_pop_gray_title"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_save_us_text_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginTop="10dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:gravity="center"
+            android:textColor="#698fb4"
+            android:textSize="16dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="280dip">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="280dip"
+                android:background="#f0f0f0">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:text="@string/bit_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dip"
+                        android:layout_marginLeft="5dip"
+                        android:gravity="left|center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip"
+                        android:paddingTop="5dip"
+                        android:textColor="#b3b3b3"
+                        android:layout_centerVertical="true"
+                        android:textSize="18dip" />
+
+
+                    <TextView
+                        android:text="@string/bit_adder"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|top"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip"
+                        android:paddingTop="5dip"
+                        android:textColor="#b3b3b3"
+                        android:textSize="16dip" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dip">
+
+                        <Button
+                            android:id="@+id/dialog_save_us_button_copy_bit_addr"
+                            android:layout_width="120dip"
+                            android:layout_height="35dip"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ensure_button_sure_bg"
+                            android:text="@string/copy_bit_addr"
+                            android:textColor="#ffffff"
+                            android:textSize="15dip" />
+
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:text="@string/alipay"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="8dip"
+                        android:layout_marginLeft="5dip"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip"
+                        android:paddingTop="5dip"
+                        android:textColor="#b3b3b3"
+                        android:textSize="18dip" />
+
+                    <TextView
+                        android:text="@string/alipay_adder"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="15dip"
+                        android:paddingRight="15dip"
+                        android:paddingTop="5dip"
+                        android:textColor="#b3b3b3"
+                        android:textSize="16dip" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dip">
+
+                        <Button
+
+                            android:id="@+id/dialog_save_us_button_go_to_pay"
+                            android:layout_width="120dip"
+                            android:layout_height="35dip"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/ensure_button_sure_bg"
+                            android:text="@string/go_to_pay"
+                            android:textColor="#ffffff"
+                            android:textSize="15dip" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="@drawable/radius_border_pop_gray_bottom"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <Button
+                android:layout_width="120dip"
+                android:id="@+id/dialog_save_us_button_sure"
+                android:layout_height="35dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ensure_button_cancel_bg"
+                android:text="@string/i_see"
+                android:textColor="#ffffff"
+                android:textSize="15dip" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

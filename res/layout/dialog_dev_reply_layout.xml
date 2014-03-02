@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/radius_border_pop_title"
+        android:background="@drawable/radius_border_pop_gray_title"
         android:orientation="horizontal">
 
         <TextView
@@ -61,7 +61,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="60dip"
-        android:background="@drawable/radius_border_pop_bottom"
+        android:background="@drawable/radius_border_pop_gray_bottom"
         android:orientation="horizontal">
 
         <RelativeLayout

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.suan.weclient.R;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.FansHolder;
+import com.suan.weclient.util.data.holder.FansHolder;
 import com.suan.weclient.view.dropWindow.SFansDropListWindow;
 
 public class CustomFansActionView extends LinearLayout {
@@ -106,8 +106,6 @@ public class CustomFansActionView extends LinearLayout {
 
 
 
-
-
         indexLayout = (RelativeLayout) customLayout.findViewById(R.id.actionbar_fans_left_layout);
         indexTextView = (TextView) customLayout.findViewById(R.id.actionbar_fans_left_text_first);
 
@@ -125,7 +123,6 @@ public class CustomFansActionView extends LinearLayout {
         });
 
         initDropDownWindow();
-
 
 		/*
          * interesting : I declare the match parent attribute in xml but it make

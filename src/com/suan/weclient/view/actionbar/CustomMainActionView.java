@@ -22,7 +22,7 @@ import com.suan.weclient.activity.SearchActivity;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
-import com.suan.weclient.util.data.UserBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.view.dropWindow.SMainDropListWindow;
 

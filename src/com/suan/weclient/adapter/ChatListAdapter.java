@@ -3,12 +3,12 @@ package com.suan.weclient.adapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,7 @@ import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.MessageBean;
+import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -40,6 +40,9 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
     private Context mContext;
+
+    private HashMap<String, VoiceHolder> voiceCache;
+
     /*
      * whether the scroll is busy
      */
@@ -50,6 +53,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
         this.mDataManager = dataManager;
         this.mContext = context;
         this.mListCacheManager = new ListCacheManager();
+        this.voiceCache = new HashMap<String, VoiceHolder>();
         initListener();
     }
 
@@ -107,6 +111,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
     public void updateCache() {
         mListCacheManager.clearData();
+
     }
 
     public View newView(final int position) {
@@ -163,12 +168,6 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         }
 
-        convertView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("click on", "item" + position);
-            }
-        });
 /*
 
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -433,47 +432,68 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
             voiceLoaded = true;
         }
 
-        if (!mBusy && !voiceLoaded) {
-            mDataManager.getWechatManager().getMessageVoice(
-                    mDataManager.getCurrentPosition(),
-                    getMessageItems().get(position).getId(),
-                    Integer.parseInt(getMessageItems().get(position)
-                            .getLength()), mDataManager.getCurrentUser(),
-                    new OnActionFinishListener() {
+        if (!mBusy || !voiceLoaded) {
 
-                        @Override
-                        public void onFinish(int code, Object object) {
-                            // TODO Auto-generated method stub
-                            try {
+            if (voiceCache.containsKey(getMessageId(position))) {
+                VoiceHolder voiceHolder = voiceCache.get(getMessageId(position));
 
-                                byte[] bytes = (byte[]) object;
-                                VoiceHolder voiceHolder = new VoiceHolder(
-                                        bytes, getMessageItems().get(position)
-                                        .getPlayLength(),
-                                        getMessageItems().get(position)
-                                                .getLength());
-                                int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
-                                int seconds = playLength / 1000;
-                                int minutes = seconds / 60;
-                                int leaveSecond = seconds % 60;
-                                String info = "";
-                                if (minutes != 0) {
-                                    info += minutes + "'";
+                int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                int seconds = playLength / 1000;
+                int minutes = seconds / 60;
+                int leaveSecond = seconds % 60;
+                String info = "";
+                if (minutes != 0) {
+                    info += minutes + "'";
+
+                }
+                info += " " + leaveSecond + "'";
+                holder.voiceInfoTextView.setText(info);
+                holder.contentLayout.setTag(voiceHolder);
+            } else {
+
+                mDataManager.getWechatManager().getMessageVoice(
+                        mDataManager.getCurrentPosition(),
+                        getMessageItems().get(position),
+                        Integer.parseInt(getMessageItems().get(position)
+                                .getLength()), mDataManager.getCurrentUser(),
+                        new OnActionFinishListener() {
+
+                            @Override
+                            public void onFinish(int code, Object object) {
+                                // TODO Auto-generated method stub
+                                try {
+
+                                    byte[] bytes = (byte[]) object;
+                                    VoiceHolder voiceHolder = new VoiceHolder(
+                                            bytes, getMessageItems().get(position)
+                                            .getPlayLength(),
+                                            getMessageItems().get(position)
+                                                    .getLength());
+                                    int playLength = Integer.parseInt(getMessageItems().get(position).getPlayLength());
+                                    int seconds = playLength / 1000;
+                                    int minutes = seconds / 60;
+                                    int leaveSecond = seconds % 60;
+                                    String info = "";
+                                    if (minutes != 0) {
+                                        info += minutes + "'";
+
+                                    }
+                                    info += " " + leaveSecond + "'";
+                                    holder.voiceInfoTextView.setText(info);
+
+                                    holder.contentLayout.setTag(voiceHolder);
+                                    voiceCache.put(getMessageId(position),voiceHolder);
+
+
+                                } catch (Exception exception) {
 
                                 }
-                                info += " " + leaveSecond + "'";
-                                holder.voiceInfoTextView.setText(info);
-
-
-                                holder.contentLayout.setTag(voiceHolder);
-
-
-                            } catch (Exception exception) {
 
                             }
+                        });
 
-                        }
-                    });
+            }
+
 
         }
         holder.contentLayout.setOnClickListener(new OnClickListener() {
@@ -601,12 +621,20 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                             + getMessageItems().get(position).getFakeId());
             if (headBitmap != null) {
 
+
                 if (getMessageItems().get(position).getOwner() == MessageBean.MESSAGE_OWNER_ME) {
+
+                    Bitmap bitmap = Util.roundCornerWithBorder(headBitmap,
+                            (int) Util.dipToPx(40, mContext.getResources()), 15,
+                            Color.parseColor("#ffffff"));
+
+                    holder.profileImageView.setImageBitmap(bitmap);
 
                 } else {
 
+                    holder.profileImageView.setImageBitmap(headBitmap);
                 }
-                holder.profileImageView.setImageBitmap(headBitmap);
+
 
             } else {
                 mDataManager.getWechatManager().getMessageHeadImg(
@@ -621,7 +649,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                         if (code == WechatManager.ACTION_SUCCESS) {
                             holder.profileImageView.setTag(true);
                             Bitmap roundBitmap = Util.roundCornerWithBorder((Bitmap) object,
-                                    Util.dipToPx(30, mContext.getResources()), 15, Color.parseColor("#ffffff"));
+                                    (int) Util.dipToPx(40, mContext.getResources()), 15, Color.parseColor("#ffffff"));
 
                             holder.profileImageView.setImageBitmap(roundBitmap);
 
@@ -649,17 +677,6 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
 
         View v;
         v = newView(position);
-        /*
-        can not use cache of this type ,or the display will be disorder
-         */
-/*        if (!mListCacheManager.containView(getMessageId(position))) {
-            mListCacheManager.putView(v, getMessageId(position));
-        } else {
-
-            v = mListCacheManager.getView(getMessageId(position));
-
-        }
- */
         bindView(v, position);
 
         return v;

@@ -1,7 +1,5 @@
 package com.suan.weclient.pushService;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -13,9 +11,8 @@ import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.UserBean;
-import com.suan.weclient.util.data.UserGoupPushHelper;
-import com.suan.weclient.util.net.WeChatLoader;
+import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.UserGoupPushHelper;
 import com.suan.weclient.util.net.WechatManager;
 
 import java.util.Date;

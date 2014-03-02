@@ -1408,8 +1408,8 @@ containing a value of this type.
         public static final int profile_first=0x7f0200af;
         public static final int profile_second=0x7f0200b0;
         public static final int profile_third=0x7f0200b1;
-        public static final int radius_border_pop_bottom=0x7f0200b2;
-        public static final int radius_border_pop_title=0x7f0200b3;
+        public static final int radius_border_pop_gray_bottom =0x7f0200b2;
+        public static final int radius_border_pop_gray_title =0x7f0200b3;
         public static final int send_pressed_state=0x7f0200b4;
         public static final int send_selected_state=0x7f0200b5;
         public static final int send_state=0x7f0200b6;

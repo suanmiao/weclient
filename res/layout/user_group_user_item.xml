@@ -31,7 +31,8 @@
             android:layout_gravity="center"
             android:layout_toRightOf="@+id/user_item_img"
             android:layout_marginLeft="10dip"
-            android:gravity="center"
+            android:gravity="center_vertical|left"
+            android:maxLines="1"
             android:text=""
             android:textColor="#c7c7c7"
             android:textSize="18dip" />

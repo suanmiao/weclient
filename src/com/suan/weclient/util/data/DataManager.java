@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
-import android.os.Message;
 import android.view.View.OnClickListener;
 
 import com.suan.weclient.fragment.ProfileFragment;
 import com.suan.weclient.util.SharedPreferenceManager;
+import com.suan.weclient.util.data.bean.MessageBean;
+import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.ChatHolder;
+import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.holder.ImgHolder;
+import com.suan.weclient.util.data.holder.MaterialHolder;
+import com.suan.weclient.util.data.holder.MessageHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceManager;
 import com.suan.weclient.view.SViewPager;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
-import com.tencent.mm.sdk.openapi.IWXAPI;
 
 public class DataManager {
 
@@ -25,6 +30,9 @@ public class DataManager {
     private ArrayList<UserBean> userBeans;
 
     private MessageHolder searchMessageHolder;
+    private MaterialHolder materialHolder;
+
+    private ListLoadingListener listLoadingListener;
 
     ArrayList<AutoLoginListener> autoLoginListeners;
     ArrayList<MessageGetListener> messageGetListeners;
@@ -40,7 +48,6 @@ public class DataManager {
     ArrayList<UserIndexChangeListener > userIndexChangeListeners;
 
     private ContentFragmentChangeListener contentFragmentChangeListener;
-
 
 
     /*
@@ -59,13 +66,10 @@ public class DataManager {
     private VoiceManager mVoiceManager;
     private Context mContext;
 
-    public CustomMainActionView customMainActionView;
-
     private PagerListener pagerListener;
     private TabListener tabListener;
 
     private SViewPager.ScrollEnableListener scrollEnableListener;
-
 
     private ProfileFragment.UserListControlListener userListControlListener;
 
@@ -73,10 +77,10 @@ public class DataManager {
     private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 10;
     private static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
     private static int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so
+
     // quality is ignored
     // but must be provided
     private ImageCacheManager mImageCacheManager;
-
 
     /**
      * * Create the image cache.
@@ -183,6 +187,7 @@ public class DataManager {
         return mWechatManager;
     }
 
+
     public VoiceManager getVoiceManager() {
         return mVoiceManager;
     }
@@ -287,6 +292,14 @@ public class DataManager {
 
     public MessageHolder getSearchMessageHolder(){
         return searchMessageHolder;
+    }
+
+    public void createMaterialHolder(UserBean userBean){
+        this.materialHolder = new MaterialHolder(userBean);
+    }
+
+    public MaterialHolder getMaterialHolder(){
+        return materialHolder;
     }
 
     public void createImgHolder(MessageBean messageBean,UserBean userBean){
@@ -404,9 +417,9 @@ public class DataManager {
         }
     }
 
-    public void doChatItemGet(boolean changed) {
+    public void doChatItemGet() {
         for (int i = 0; i < chatItemChangeListeners.size(); i++) {
-            chatItemChangeListeners.get(i).onItemGet(changed);
+            chatItemChangeListeners.get(i).onItemGet();
         }
     }
 
@@ -497,7 +510,7 @@ public class DataManager {
     }
 
     public interface ChatItemChangeListener {
-        public void onItemGet(boolean changed);
+        public void onItemGet();
     }
 
     public interface ChatNewItemGetListener {
@@ -553,7 +566,6 @@ public class DataManager {
 
     }
 
-
     public void setUserListControlListener(ProfileFragment.UserListControlListener userListControlListener) {
         this.userListControlListener = userListControlListener;
     }
@@ -604,4 +616,39 @@ public class DataManager {
         }
 
     }
+
+    public interface  ListLoadingListener{
+        public void onLoadStart();
+
+        public void onLoadFinish();
+    }
+
+    public void setListLoadingListener(ListLoadingListener listLoadingListener){
+        this.listLoadingListener = listLoadingListener;
+    }
+
+
+    public void clearListLoadingListner(){
+        this.listLoadingListener = null;
+    }
+
+
+    public void doListLoadStart(){
+        try{
+            this.listLoadingListener.onLoadStart();
+
+        }catch(Exception e){
+
+        }
+    }
+
+    public void doListLoadEnd(){
+        try{
+            this.listLoadingListener.onLoadFinish();
+
+        }catch(Exception e){
+
+        }
+    }
+
 }

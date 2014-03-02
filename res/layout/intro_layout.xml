@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/intro_pager" />
+
+        <com.suan.weclient.view.IndecatorView
+            xmlns:indecator="http://schemas.android.com/apk/res/com.suan.weclient"
+
+            android:visibility="gone"
+            android:id="@+id/intro_indecator"
+            android:layout_width="70dip"
+            android:layout_height="40dip"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dip"
+            indecator:dot_amount="5"
+            indecator:dot_width="5dip"
+            indecator:dot_color="#ffffff">
+
+        </com.suan.weclient.view.IndecatorView>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
