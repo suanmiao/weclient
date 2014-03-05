@@ -238,7 +238,6 @@ public class LoginActivity extends Activity {
                                                                     break;
                                                                 case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
 
-
                                                                     loginDialog.dismiss();
 
                                                                     loginDialog = Util.createEnsureDialog(
@@ -271,6 +270,7 @@ public class LoginActivity extends Activity {
                                                                                 loginDialog.dismiss();
                                                                                 switch (jumbState) {
                                                                                     case SplashActivity.JUMB_VALUE_INTENT_TO_LOGIN:
+                                                                                        Log.e("jumb value start main","login");
                                                                                         Intent jumbIntent = new Intent();
                                                                                         jumbIntent.setClass(
                                                                                                 LoginActivity.this,
@@ -281,6 +281,7 @@ public class LoginActivity extends Activity {
 
                                                                                     case SplashActivity.JUMB_VALUE_NONE:
 
+                                                                                        Log.e("jumb value none","login");
                                                                                         LoginActivity.this
                                                                                                 .setResult(RESULT_OK);
                                                                                         break;

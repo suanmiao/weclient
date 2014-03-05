@@ -1157,9 +1157,14 @@ public class WechatManager {
                                         return;
                                     } else if (ret == WeChatLoader.WECHAT_SINGLE_CHAT_OUT_OF_DATE) {
 
-                                        messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED);
+                                        messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_LIMIT_OF_TIME);
                                         onActionFinishListener.onFinish(ACTION_SUCCESS, false);
                                         return;
+                                    }else if(ret==WeChatLoader.WECHAT_SINGLE_CHAT_FANS_NOT_RECEIVE){
+                                         messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE);
+                                        onActionFinishListener.onFinish(ACTION_SUCCESS, false);
+                                        return;
+
                                     }
 
                                 } catch (Exception exception) {
@@ -1167,7 +1172,7 @@ public class WechatManager {
 
                                 }
 
-                                messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED);
+                                messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_LIMIT_OF_TIME);
                                 onActionFinishListener.onFinish(ACTION_OTHER, null);
                                 break;
 

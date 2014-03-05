@@ -16,11 +16,13 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.LoginActivity;
+import com.suan.weclient.activity.SplashActivity;
 import com.suan.weclient.fragment.UserListFragment;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.SharedPreferenceManager;
@@ -29,6 +31,8 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.data.holder.UserGoupPushHelper;
 import com.suan.weclient.util.data.UserListItem;
+import com.suan.weclient.util.net.DataParser;
+import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
@@ -40,6 +44,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
     private Activity mActivity;
+    private UserBean addBean;
 
     private int selectPosition;
 
@@ -155,14 +160,42 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
                 mDataManager.doAutoLogin();
 
-
                 break;
             case UserListItem.TYPE_ADD:
 
-                Intent jumbIntent = new Intent();
+
+                popDialog = Util.createLoginDialog(mActivity, "登录", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EditText userIdEdit = (EditText) popDialog.findViewById(R.id.dialog_login_edit_user_id);
+                                EditText pwdEdit = (EditText) popDialog.findViewById(R.id.dialog_login_edit_pass_word);
+                                String userId = userIdEdit.getText().toString();
+                                String pwd = pwdEdit.getText().toString();
+                                popDialog.dismiss();
+                                addUserAfterLogin(userId, pwd);
+
+
+                            }
+                        }, new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+                                popDialog.dismiss();
+                            }
+                        }
+                );
+
+                popDialog.show();
+
+
+
+               /* Intent jumbIntent = new Intent();
                 jumbIntent.setClass(mActivity, LoginActivity.class);
+                jumbIntent.putExtra(SplashActivity.JUMB_KEY_ENTER_STATE, SplashActivity.JUMB_VALUE_NONE);
                 mActivity.startActivityForResult(jumbIntent,
                         UserListFragment.START_ACTIVITY_LOGIN);
+*/
                 break;
         }
 
@@ -402,5 +435,113 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
             mBusy = true;
         }
     }
+
+
+    private void addUserAfterLogin(final String userName, final String pwd) {
+        WeChatLoader.wechatLogin(
+                new WeChatLoader.WechatLoginCallBack() {
+
+                    @Override
+                    public void onBack(int resultCode, String strResult, String slaveSid,
+                                       String slaveUser) {
+                        // TODO Auto-generated method stub
+                        switch (resultCode) {
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                                popDialog.dismiss();
+
+                                popDialog = Util.createEnsureDialog(
+                                        new DataManager.DialogSureClickListener() {
+
+                                            @Override
+                                            public void onClick(View v) {
+                                                // TODO Auto-generated method stub
+                                                popDialog.dismiss();
+                                                addUserAfterLogin(userName, pwd);
+
+                                            }
+                                        }, false, mActivity, "网络", "网络错误，重试？", true);
+                                popDialog.show();
+                                break;
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                                popDialog.dismiss();
+
+                                popDialog = Util.createEnsureDialog(
+                                        new DataManager.DialogSureClickListener() {
+
+                                            @Override
+                                            public void onClick(View v) {
+                                                // TODO Auto-generated method stub
+                                                addUserAfterLogin(userName, pwd);
+
+                                            }
+                                        }, false, mActivity, "网络", "网络错误，重试？", true);
+                                popDialog.show();
+                                break;
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+
+                                try {
+
+                                    addBean = new UserBean(userName, WeChatLoader
+                                            .getMD5Str(pwd));
+                                    addBean.setSlaveSid(slaveSid);
+                                    addBean.setSlaveUser(slaveUser);
+                                    int loginResult = DataParser.parseLogin(addBean,
+                                            strResult, slaveSid, slaveUser,
+                                            mActivity.getApplicationContext());
+                                    switch (loginResult) {
+                                        case DataParser.PARSE_SUCCESS:
+
+                                            SharedPreferenceManager
+                                                    .insertUser(
+                                                            mActivity,
+                                                            addBean);
+
+                                            mDataManager.updateUserGroup();
+                                            mDataManager.doAddUser();
+                                            mDataManager.doGroupChangeEnd();
+                                            mDataManager.doAutoLogin();
+
+                                            popDialog.dismiss();
+
+                                            break;
+
+                                        case DataParser.PARSE_FAILED:
+
+                                            popDialog.dismiss();
+
+                                            popDialog = Util.createEnsureDialog(
+                                                    new DataManager.DialogSureClickListener() {
+
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            // TODO Auto-generated method stub
+                                                            popDialog.dismiss();
+
+                                                        }
+                                                    }, false, mActivity, "错误", "登录失败，请检查账户名和密码",
+                                                    true);
+
+                                            popDialog.show();
+                                            break;
+                                    }
+
+                                } catch (Exception exception) {
+
+                                }
+
+                                break;
+
+                        }
+
+                    }
+                }, userName, WeChatLoader
+                .getMD5Str(pwd), "", "json"
+        );
+
+    }
+
 
 }

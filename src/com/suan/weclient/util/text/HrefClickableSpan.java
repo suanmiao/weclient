@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 
 public class HrefClickableSpan extends ClickableSpan {
@@ -27,16 +28,21 @@ public class HrefClickableSpan extends ClickableSpan {
     public void updateDrawState(TextPaint ds) {
         ds.setColor(mLinkColor); // 设置链接的文本颜色
         ds.setUnderlineText(false); // 去掉下划线
-        ds.setTypeface(Typeface.create(Typeface.SANS_SERIF,Typeface.BOLD));
+        ds.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
     }
 
     @Override
     public void onClick(View widget) {
         // TODO Auto-generated method stub
 
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        context.startActivity(i);
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            context.startActivity(i);
+
+        } catch (Exception e) {
+
+        }
     }
 
 }

@@ -191,7 +191,7 @@ public class SpanUtil {
             String url = getTargetUrlFromTag(foundString);
             String name = getContentFromTag(foundString);
 
-            spannableStringBuilder.setSpan(new HrefClickableSpan(url, context,hyperColor ), nowStart - nowDeleteLength, nowEnd - nowDeleteLength,
+            spannableStringBuilder.setSpan(new HrefClickableSpan(url, context, hyperColor), nowStart - nowDeleteLength, nowEnd - nowDeleteLength,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableStringBuilder.replace(nowStart - nowDeleteLength, nowEnd - nowDeleteLength, name);
             nowDeleteLength += foundString.length() - name.length();
@@ -221,6 +221,7 @@ public class SpanUtil {
             spannableStringBuilder.setSpan(new HrefClickableSpan(url, context, hyperColor), nowStart - nowDeleteLength, nowEnd - nowDeleteLength,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+
         }
 
         //find and analyse expressions
@@ -236,11 +237,11 @@ public class SpanUtil {
                 int start = source.indexOf(key, indexStart);
                 int end = start + key.length();
                 SImageSpan sImageSpan = getImgSpan(context, textView.getTextSize(), key);
-                if(sImageSpan!=null){
+                if (sImageSpan != null) {
 
                     spannableStringBuilder.setSpan(sImageSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }else{
-                    Log.e("null span","key"+key);
+                } else {
+                    Log.e("null span", "key" + key);
                 }
                 indexStart = start + 1;
             }
@@ -270,7 +271,7 @@ public class SpanUtil {
 
         int faceSize = (int) (Util.dipToPx((int) textSize, context.getResources()) * 1.2);
 
-        if(drawable==null){
+        if (drawable == null) {
             return null;
 
         }

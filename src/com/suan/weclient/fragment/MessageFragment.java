@@ -118,7 +118,6 @@ public class MessageFragment extends Fragment implements
                 Message message = new Message();
                 message.arg1 = PTRListview.PTR_MODE_LOAD;
                 mHandler.sendMessage(message);
-                Log.e("message get",""+mode);
 
                 switch (mode) {
                     case PTRListview.PTR_MODE_REFRESH:

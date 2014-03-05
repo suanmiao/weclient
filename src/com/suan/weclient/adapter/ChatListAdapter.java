@@ -386,7 +386,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                     holder.contentLayout.setSelected(false);
 
                     break;
-                case MessageBean.MESSAGE_SEND_FAILED:
+                default:
                     holder.contentLayout.setSelected(true);
 
                     break;
@@ -405,7 +405,7 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                             holder.contentLayout.setSelected(false);
 
                             break;
-                        case MessageBean.MESSAGE_SEND_FAILED:
+                        default:
                             holder.contentLayout.setSelected(true);
 
                             break;
@@ -414,7 +414,8 @@ public class ChatListAdapter extends BaseAdapter implements OnScrollListener {
                 }
             });
         }
-        if (getMessageItems().get(position).getSendState() == MessageBean.MESSAGE_SEND_FAILED) {
+        if (getMessageItems().get(position).getSendState() == MessageBean.MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE||
+                getMessageItems().get(position).getSendState()==MessageBean.MESSAGE_SEND_FAILED_LIMIT_OF_TIME) {
             holder.contentLayout.setSelected(true);
 
         }

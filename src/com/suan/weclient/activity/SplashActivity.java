@@ -41,10 +41,12 @@ public class SplashActivity extends Activity {
 
         enterTime = SharedPreferenceManager.getUserEnterTime(SplashActivity.this);
         int delay = 0;
-        if(enterTime<5){
+/*        if(enterTime<5){
             delay = 2000;
             wandoujiaImg.setVisibility(View.VISIBLE);
         }
+ */
+
         handler.postDelayed(new SplashHandler(), delay);
 
     }

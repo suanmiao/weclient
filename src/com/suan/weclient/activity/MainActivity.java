@@ -815,19 +815,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == UserListFragment.START_ACTIVITY_LOGIN) {
-            if (resultCode == RESULT_OK) {
-                mDataManager.updateUserGroup();
-                mDataManager.doAddUser();
-                mDataManager.doGroupChangeEnd();
-
-            } else if (resultCode == RESULT_CANCELED) {
-
-            }
-        }
-    }
-
     public interface ShowMenuListener {
         public void showLeftMenu();
 

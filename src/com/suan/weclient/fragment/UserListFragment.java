@@ -33,7 +33,7 @@ import com.suan.weclient.util.data.DataManager.UserGroupListener;
 
 public class UserListFragment extends Fragment {
 
-    public static int START_ACTIVITY_LOGIN = 0;
+    public static int START_ACTIVITY_LOGIN = 10;
 
     private View view;
     private ListView mListView;

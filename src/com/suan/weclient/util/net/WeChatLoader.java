@@ -56,6 +56,7 @@ public class WeChatLoader {
 
     public static final int WECHAT_SINGLE_CHAT_OK = 0;
     public static final int WECHAT_SINGLE_CHAT_OUT_OF_DATE = 10706;
+    public static final int WECHAT_SINGLE_CHAT_FANS_NOT_RECEIVE = 10703;
 
     private static final String WECHAT_URL_LOGIN = "http://mp.weixin.qq.com/cgi-bin/login?lang=zh_CN";
 

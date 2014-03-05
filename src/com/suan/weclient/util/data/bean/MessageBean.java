@@ -2,6 +2,7 @@ package com.suan.weclient.util.data.bean;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.suan.weclient.adapter.ChatListAdapter;
@@ -76,7 +77,8 @@ public class MessageBean {
     public static final int MESSAGE_SEND_PREPARE = 0;
     public static final int MESSAGE_SEND_ING = 1;
     public static final int MESSAGE_SEND_OK = 2;
-    public static final int MESSAGE_SEND_FAILED = 3;
+    public static final int MESSAGE_SEND_FAILED_LIMIT_OF_TIME = 3;
+    public static final int MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE = 4;
 
     public static final int MESSAGE_OWNER_ME = 1;
     public static final int MESSAGE_OWNER_HER = 2;
@@ -289,8 +291,13 @@ public class MessageBean {
                     if (result) {
                         getChatNewItem();
                     } else {
-                        //send out of date
-                        Toast.makeText(mContext, "该用户48小时未主动给您发送消息，无法与其聊天", Toast.LENGTH_LONG).show();
+                        if(getSendState()==MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE){
+
+                            Toast.makeText(mContext, "该用户主动屏蔽了您发送的消息，无法与其聊天", Toast.LENGTH_LONG).show();
+                        }else if(getSendState()==MESSAGE_SEND_FAILED_LIMIT_OF_TIME){
+
+                            Toast.makeText(mContext, "该用户48小时未主动给您发送消息，无法与其聊天", Toast.LENGTH_LONG).show();
+                        }
 
                     }
 
