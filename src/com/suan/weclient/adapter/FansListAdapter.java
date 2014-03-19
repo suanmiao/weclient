@@ -2,6 +2,7 @@ package com.suan.weclient.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,10 +31,12 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ChatActivity;
+import com.suan.weclient.activity.FansProfileActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.FansBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -43,7 +46,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     private LayoutInflater mInflater;
     private ListCacheManager mListCacheManager;
     private DataManager mDataManager;
-    Context mContext;
+    Activity mActivity;
     /*
     about dialog
      */
@@ -51,7 +54,6 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     private TextView popTitleTextView;
     private TextView textAmountTextView;
     private Button popCancelButton, popSureButton;
-
 
     private ListView popListView;
     private Dialog dialog;
@@ -66,10 +68,10 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
      * whether the user cancel the last editRemark if so ,we will save it
 	 */
 
-    public FansListAdapter(Context context, DataManager dataManager) {
-        this.mInflater = LayoutInflater.from(context);
+    public FansListAdapter(Activity mActivity, DataManager dataManager) {
+        this.mInflater = LayoutInflater.from(mActivity);
         this.mDataManager = dataManager;
-        this.mContext = context;
+        this.mActivity = mActivity;
         this.mListCacheManager = new ListCacheManager();
     }
 
@@ -107,7 +109,18 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     public View newView(final int position) {
 
         View convertView = null;
-        convertView = mInflater.inflate(R.layout.fans_item_layout, null);
+
+        switch (getFansItems().get(position).getBeanType()) {
+            case FansBean.BEAN_TYPE_USER:
+
+                convertView = mInflater.inflate(R.layout.fans_item_user_layout, null);
+                break;
+            case FansBean.BEAN_TYPE_DATA:
+                convertView = mInflater.inflate(R.layout.fans_item_data_layout, null);
+
+                break;
+        }
+
 
         return convertView;
 
@@ -117,13 +130,15 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
         ItemViewHolder holder = (ItemViewHolder) view.getTag();
         if (holder == null) {
-            holder = new ItemViewHolder(view);
+            holder = new ItemViewHolder(view, position);
             view.setTag(holder);
         }
         return holder;
     }
 
     public class ItemViewHolder {
+
+        private View parentLayout;
 
         private TextView profileTextView;
         private TextView nickNameTextView;
@@ -132,18 +147,44 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
         private TextView groupTextView;
         private ImageButton remarkButton;
 
-        public ItemViewHolder(View parentView) {
+        /*
+        about data
+         */
+        private TextView totalPeopleTextView;
+        private TextView newPeopleTextView;
 
-            profileImageView = (ImageView) parentView
-                    .findViewById(R.id.fans_item_img_profile);
-            profileTextView = (TextView) parentView
-                    .findViewById(R.id.fans_item_text_profile);
-            nickNameTextView = (TextView) parentView.findViewById(R.id.fans_item_text_nickname);
-            groupLayout = (LinearLayout) parentView.findViewById(R.id.fans_item_layout_group);
-            groupTextView = (TextView) parentView.findViewById(R.id.fans_item_text_group
-            );
-            remarkButton = (ImageButton) parentView
-                    .findViewById(R.id.fans_item_button_edit_remark);
+
+        private FansBean fansBean;
+
+        public FansBean getFansBean() {
+            return fansBean;
+        }
+
+        public ItemViewHolder(View parentView, int postion) {
+            fansBean = getFansItems().get(postion);
+            this.parentLayout = parentView;
+
+            switch (fansBean.getBeanType()) {
+                case FansBean.BEAN_TYPE_DATA:
+                    newPeopleTextView = (TextView) parentView.findViewById(R.id.fans_data_text_new);
+                    totalPeopleTextView = (TextView) parentView.findViewById(R.id.fans_data_text_total);
+
+                    break;
+                case FansBean.BEAN_TYPE_USER:
+
+                    profileImageView = (ImageView) parentView
+                            .findViewById(R.id.fans_item_img_profile);
+                    profileTextView = (TextView) parentView
+                            .findViewById(R.id.fans_item_text_profile);
+                    nickNameTextView = (TextView) parentView.findViewById(R.id.fans_item_text_nickname);
+                    groupLayout = (LinearLayout) parentView.findViewById(R.id.fans_item_layout_group);
+                    groupTextView = (TextView) parentView.findViewById(R.id.fans_item_text_group
+                    );
+                    remarkButton = (ImageButton) parentView
+                            .findViewById(R.id.fans_item_button_edit_remark);
+
+                    break;
+            }
 
         }
 
@@ -153,44 +194,90 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
         ItemViewHolder holder = getHolder(view, position);
 
-        if (getFansItems().get(position).getRemarkName().length() != 0) {
-            holder.profileTextView.setText(getFansItems().get(position).getRemarkName());
-            String nickNameString = Util.getShortString(getFansItems().get(position).getNickname(), 13, 3);
-            holder.nickNameTextView.setText(nickNameString);
+        switch (holder.getFansBean().getBeanType()) {
+            case FansBean.BEAN_TYPE_DATA:
+                if (mDataManager.getCurrentUser() != null) {
+                    UserBean currentUser = mDataManager.getCurrentUser();
+                    int newPeopleCount = 0;
+                    try {
+                        newPeopleCount = Integer.parseInt(currentUser.getNewPeople());
+                    } catch (Exception e) {
 
-        } else {
-            holder.profileTextView.setText(getFansItems().get(position).getNickname());
+                    }
+                    if (newPeopleCount == 0) {
+                        holder.newPeopleTextView.setVisibility(View.INVISIBLE);
 
+                    } else {
+                        holder.newPeopleTextView.setVisibility(View.VISIBLE);
+                        holder.newPeopleTextView.setText(mActivity.getResources().getString(R.string.new_fans).replace("...", newPeopleCount + ""));
+                    }
+
+                    holder.totalPeopleTextView.setText(": " + currentUser.getTotalPeople());
+                }
+
+                break;
+            case FansBean.BEAN_TYPE_USER:
+
+                holder.parentLayout.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+
+                        /*
+                        take care
+                        fansId and fakeId
+                        fansId is used in fans list
+                        fakeId is used in message list
+                         */
+
+                        mDataManager.setFansProfileFakeId(getFansItems().get(position).getFansId());
+                        Intent jumbIntent = new Intent();
+                        jumbIntent.setClass(mActivity, FansProfileActivity.class);
+                        mActivity.startActivity(jumbIntent);
+                        mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+                    }
+                });
+                if (holder.getFansBean().getRemarkName().length() != 0) {
+                    holder.profileTextView.setText(holder.getFansBean().getRemarkName());
+                    String nickNameString = Util.getShortString(holder.getFansBean().getNickname(), 13, 3);
+                    holder.nickNameTextView.setText(nickNameString);
+
+                } else {
+                    holder.profileTextView.setText(holder.getFansBean().getNickname());
+
+                }
+
+
+                holder.remarkButton.setOnClickListener(new ClickListener(holder));
+                setGroupSpinner(holder);
+
+                setProfileImage(holder);
+
+                break;
         }
-
-
-        holder.remarkButton.setOnClickListener(new ClickListener(holder, position));
-        setGroupSpinner(holder, position);
-
-        setProfileImage(holder, position);
 
     }
 
     public class ClickListener implements OnClickListener {
         private ItemViewHolder holder;
-        private int position;
 
-        public ClickListener(ItemViewHolder holder, int position) {
+        public ClickListener(ItemViewHolder holder) {
             this.holder = holder;
-            this.position = position;
 
         }
 
         @Override
         public void onClick(View v) {
 
-            popEditRemark(position, holder);
+            popEditRemark(holder);
         }
     }
 
-    public void popEditRemark(final int position, final ItemViewHolder holder) {
+    public void popEditRemark(final ItemViewHolder holder) {
 
-        LayoutInflater inflater = (LayoutInflater) mContext
+        LayoutInflater inflater = (LayoutInflater) mActivity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.dialog_edit_layout, null);
         popTitleTextView = (TextView) dialogView
@@ -243,7 +330,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
         });
 
         popTitleTextView.setText("修改备注名:"
-                + getFansItems().get(position).getNickname());
+                + holder.getFansBean().getNickname());
         popSureButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -251,11 +338,11 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
                 // TODO Auto-generated method stub
                 String editContent = popContentEditText.getText().toString();
                 if (editContent.length() == 0) {
-                    Toast.makeText(mContext, "备注名不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "备注名不能为空", Toast.LENGTH_SHORT).show();
 
                 } else {
 
-                    editRemark(position, editContent, holder);
+                    editRemark(editContent, holder);
                 }
 
 
@@ -271,7 +358,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
             }
         });
 
-        dialog = new Dialog(mContext, R.style.dialog);
+        dialog = new Dialog(mActivity, R.style.dialog);
 
         dialog.setContentView(dialogView);
         dialog.show();
@@ -279,23 +366,23 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     }
 
 
-    private void editRemark(final int position, final String replyContent, final ItemViewHolder holder) {
+    private void editRemark(final String replyContent, final ItemViewHolder holder) {
 
         if (replyContent.length() == 0) {
 
-            Toast.makeText(mContext, "请输入内容", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "请输入内容", Toast.LENGTH_LONG).show();
 
             return;
         }
         dialog.dismiss();
 
-        mDataManager.getWechatManager().modifyContacts(mDataManager.getCurrentPosition(), position, WeChatLoader.MODIFY_CONTACTS_ACTION_REMARK, getFansItems().get(position).getFansId(), "", replyContent, new OnActionFinishListener() {
+        mDataManager.getWechatManager().modifyContacts(mDataManager.getCurrentPosition(),
+                WeChatLoader.MODIFY_CONTACTS_ACTION_REMARK, holder.getFansBean().getFansId(), "", replyContent, new OnActionFinishListener() {
             @Override
             public void onFinish(int code, Object object) {
-                Log.e("edit remark", "ok");
-                getFansItems().get(position).setRemarkName(replyContent);
+                holder.getFansBean().setRemarkName(replyContent);
                 if (holder != null) {
-                    holder.profileTextView.setText(replyContent + "(" + getFansItems().get(position).getNickname() + ")");
+                    holder.profileTextView.setText(replyContent + "(" + holder.getFansBean().getNickname() + ")");
                 }
 
             }
@@ -304,24 +391,24 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     }
 
 
-    private void setGroupSpinner(final ItemViewHolder holder, final int position) {
+    private void setGroupSpinner(final ItemViewHolder holder) {
 
         String groupName = "";
-        groupName = getGroupNameData().get(getItemGroupIndex(position));
+        groupName = getGroupNameData().get(getItemGroupIndex(holder));
         holder.groupTextView.setText(groupName);
         holder.groupLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                popGroupList(position, holder);
+                popGroupList(holder);
             }
         });
 
 
     }
 
-    public void popGroupList(final int position, final ItemViewHolder holder) {
+    public void popGroupList(final ItemViewHolder holder) {
 
-        LayoutInflater inflater = (LayoutInflater) mContext
+        LayoutInflater inflater = (LayoutInflater) mActivity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.dialog_list_layout, null);
         popTitleTextView = (TextView) dialogView
@@ -329,14 +416,14 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
         popListView = (ListView) dialogView.findViewById(R.id.dialog_list_list_content);
 
         ArrayAdapter adapter = new ArrayAdapter<String>(
-                mContext,
+                mActivity,
                 R.layout.dialog_list_item, R.id.dialog_list_item_text, getGroupNameData());
         popListView.setAdapter(adapter);
-        popListView.setOnItemClickListener(new ItemClickListener(holder, position));
+        popListView.setOnItemClickListener(new ItemClickListener(holder));
 
         popTitleTextView.setText("Group:");
 
-        dialog = new Dialog(mContext, R.style.dialog);
+        dialog = new Dialog(mActivity, R.style.dialog);
 
         dialog.setContentView(dialogView);
         dialog.show();
@@ -345,11 +432,9 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
     public class ItemClickListener implements AdapterView.OnItemClickListener {
         private ItemViewHolder holder;
-        private int position;
 
-        public ItemClickListener(ItemViewHolder holder, int position) {
+        public ItemClickListener(ItemViewHolder holder) {
             this.holder = holder;
-            this.position = position;
 
         }
 
@@ -358,11 +443,12 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
             dialog.dismiss();
 
-            mDataManager.getWechatManager().modifyContacts(mDataManager.getCurrentPosition(), position, WeChatLoader.MODIFY_CONTACTS_ACTION_MODIFY, getFansItems().get(position).getFansId(), getGroupIdArray()[index], "", new OnActionFinishListener() {
+            mDataManager.getWechatManager().modifyContacts(mDataManager.getCurrentPosition(),
+                    WeChatLoader.MODIFY_CONTACTS_ACTION_MODIFY, holder.getFansBean().getFansId(),
+                    getGroupIdArray()[index] + "", "", new OnActionFinishListener() {
                 @Override
                 public void onFinish(int code, Object object) {
-                    Log.e("edit group", "ok");
-                    getFansItems().get(position).setGroupId(getGroupIdArray()[index]);
+                    holder.getFansBean().setGroupId(getGroupIdArray()[index]);
                     holder.groupTextView.setText(getGroupNameData().get(index));
 
 
@@ -384,13 +470,13 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
         return result;
     }
 
-    private int getItemGroupIndex(int position) {
-        String itemGroupIdString = getFansItems().get(position).getGoupId();
+    private int getItemGroupIndex(ItemViewHolder holder) {
+        int itemGroupId = holder.getFansBean().getGoupId();
         for (int i = 0; i < mDataManager.getCurrentFansHolder()
                 .getFansGroupBeans().size(); i++) {
-            String nowGroupIdString = mDataManager.getCurrentFansHolder()
+            int nowGroupId = mDataManager.getCurrentFansHolder()
                     .getFansGroupBeans().get(i).getGroupId();
-            if (itemGroupIdString.equals(nowGroupIdString)) {
+            if (itemGroupId == nowGroupId) {
                 return i;
 
             }
@@ -400,10 +486,10 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
     }
 
 
-    private String[] getGroupIdArray() {
+    private int[] getGroupIdArray() {
         int groupSize = mDataManager.getCurrentFansHolder().getFansGroupBeans()
                 .size();
-        String[] groupStrings = new String[groupSize];
+        int[] groupStrings = new int[groupSize];
         for (int i = 0; i < groupSize; i++) {
             groupStrings[i] = mDataManager.getCurrentFansHolder()
                     .getFansGroupBeans().get(i).getGroupId();
@@ -414,20 +500,19 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
     }
 
-    private void setProfileImage(final ItemViewHolder holder, final int position) {
+    private void setProfileImage(final ItemViewHolder holder) {
 
         holder.profileImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDataManager.createChat(mDataManager.getCurrentUser(),
-                        getFansItems().get(position).getFansId(), getFansItems().get(position).getNickname());
+                        holder.getFansBean().getFansId(), holder.getFansBean().getNickname());
                 Intent jumbIntent = new Intent();
-                jumbIntent.setClass(mContext, ChatActivity.class);
-                mContext.startActivity(jumbIntent);
+                jumbIntent.setClass(mActivity, ChatActivity.class);
+                mActivity.startActivity(jumbIntent);
 
             }
         });
-
 
         boolean imgLoaded = false;
         if (holder.profileImageView.getTag() != null) {
@@ -440,15 +525,15 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
             Bitmap contentBitmap = mDataManager.getCacheManager()
                     .getBitmap(
                             ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                                    + getFansItems().get(position).getFansId());
+                                    + holder.getFansBean().getFansId());
             if (contentBitmap != null) {
                 holder.profileImageView.setImageBitmap(contentBitmap);
             } else {
 
                 mDataManager.getWechatManager().getMessageHeadImg(
                         mDataManager.getCurrentPosition(),
-                        getFansItems().get(position).getFansId(),
-                        getFansItems().get(position).getReferer(),
+                        holder.getFansBean().getFansId(),
+                        holder.getFansBean().getReferer(),
                         holder.profileImageView, new OnActionFinishListener() {
 
                     @Override
@@ -462,7 +547,7 @@ public class FansListAdapter extends BaseAdapter implements OnScrollListener {
 
                                 mDataManager.getCacheManager().putBitmap(
                                         ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                                                + getFansItems().get(position)
+                                                + holder.getFansBean()
                                                 .getFansId(), roundBitmap, true);
                                 holder.profileImageView.setImageBitmap(roundBitmap);
                                 holder.profileImageView.setTag(roundBitmap);

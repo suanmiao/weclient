@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ChatActivity;
+import com.suan.weclient.activity.FansProfileActivity;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
@@ -137,6 +138,13 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                         null);
 
                 break;
+            case MessageBean.MESSAGE_TYPE_DATA:
+
+                convertView = mInflater.inflate(R.layout.message_item_data_layout,
+
+                        null);
+
+                break;
 
 
             default:
@@ -166,11 +174,13 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
         private View parentView;
 
+        private LinearLayout headerLayout;
         private ImageView profileImageView;
         private TextView profileTextView;
         private TextView timeTextView;
         private TextView hasReplyTextView;
 
+        private LinearLayout contentLayout;
         private ImageView contentImageView;
         private TextView contentTextView;
         private RelativeLayout voicePlayLayout;
@@ -186,6 +196,12 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         private RelativeLayout replyLayout, starLayout;
         private ImageView replyButton, starImageButton;
 
+        /*
+        about data layout
+         */
+        private TextView totalPeopleTextView, newMsgTextView, newPeopleTextView;
+        private LinearLayout userLayout;
+
 
         /*
         about data
@@ -193,6 +209,9 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         private MessageBean contentBean;
         private boolean dataLoaded = false;
         private Object data;
+
+        private boolean headImgLoaded = false;
+        private Bitmap headImgBitmap;
 
 
         public boolean getDataLoaded() {
@@ -203,12 +222,28 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             this.dataLoaded = dataLoaded;
         }
 
+        public boolean getHeadImgLoaded() {
+            return headImgLoaded;
+        }
+
+        public void setHeadImgLoaded(boolean headImgLoaded) {
+            this.headImgLoaded = headImgLoaded;
+        }
+
         public Object getData() {
             return data;
         }
 
         public void setData(Object data) {
             this.data = data;
+        }
+
+        public Bitmap getHeadImgBitmap() {
+            return headImgBitmap;
+        }
+
+        public void setHeadImgBitmap(Bitmap bitmap) {
+            this.headImgBitmap = bitmap;
         }
 
         public MessageBean getMessageBean() {
@@ -226,6 +261,9 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                 case MessageBean.MESSAGE_TYPE_TEXT:
 
                     dataLoaded = true;
+
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
 
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_text_img_profile);
@@ -261,6 +299,8 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
                 case MessageBean.MESSAGE_TYPE_IMG:
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_img_img_profile);
                     profileTextView = (TextView) parentView
@@ -291,6 +331,8 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
                 case MessageBean.MESSAGE_TYPE_VOICE:
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_voi_img_profile);
                     profileTextView = (TextView) parentView
@@ -326,9 +368,19 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
                     break;
 
+                case MessageBean.MESSAGE_TYPE_DATA:
+                    newPeopleTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_new_user);
+                    newMsgTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_new_message);
+                    totalPeopleTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_total_user);
+                    userLayout = (LinearLayout) parentView.findViewById(R.id.message_item_data_layout_user);
+
+                    break;
+
                 default:
 
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_text_img_profile);
                     profileTextView = (TextView) parentView
@@ -392,7 +444,6 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         switch (getMessageItems().get(position).getType()) {
             case MessageBean.MESSAGE_TYPE_TEXT:
 
-
                 holder.contentTextView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -407,6 +458,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                 });
 
                 break;
+
 
             case MessageBean.MESSAGE_TYPE_IMG:
 
@@ -423,6 +475,10 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             case MessageBean.MESSAGE_TYPE_EMPTY:
 
                 break;
+            case MessageBean.MESSAGE_TYPE_DATA:
+
+
+                break;
 
             default:
 
@@ -432,8 +488,25 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
         MessageBean currentBean = getMessageItems().get(position);
 
-        if (currentBean.getType() != MessageBean.MESSAGE_TYPE_EMPTY) {
-            holder.parentView.setOnClickListener(new OnClickListener() {
+        if (currentBean.getType() != MessageBean.MESSAGE_TYPE_EMPTY && currentBean.getType() != MessageBean.MESSAGE_TYPE_DATA) {
+
+            holder.headerLayout.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
+                    mDataManager.setFansProfileFakeId(getMessageItems().get(position).getFakeId());
+                    Intent jumbIntent = new Intent();
+                    jumbIntent.setClass(mActivity, FansProfileActivity.class);
+                    mActivity.startActivity(jumbIntent);
+                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+
+                }
+            });
+
+            holder.contentLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDataManager.createChat(mDataManager.getCurrentUser(),
@@ -445,6 +518,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
 
                 }
             });
+
 
             holder.replyLayout.setOnClickListener(new OnClickListener() {
 
@@ -497,24 +571,10 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             holder.hasReplyTextView.setVisibility((Integer.parseInt(currentBean.getHasReply()) == 1) ? View.VISIBLE : View.GONE);
 
 
-            holder.profileImageView.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    mDataManager.createChat(mDataManager.getCurrentUser(),
-                            getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
-                    Intent jumbIntent = new Intent();
-                    jumbIntent.setClass(mActivity, ChatActivity.class);
-                    mActivity.startActivity(jumbIntent);
-
-                }
-            });
-
             holder.profileTextView.setText(""
                     + currentBean.getNickName());
 
-            setHeadImg(holder, position);
+            setHeadImg(holder);
 
         }
 
@@ -680,25 +740,23 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
         }
     }
 
-    private void setHeadImg(final ItemViewHolder holder, final int position) {
+    private void setHeadImg(final ItemViewHolder holder) {
 
-        boolean imgLoaded = false;
-        if (holder.profileImageView.getTag() != null) {
-            imgLoaded = (Boolean) holder.profileImageView.getTag();
-        }
 
         Bitmap headBitmap = mDataManager.getCacheManager().getBitmap(
                 ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                        + getMessageItems().get(position).getFakeId());
+                        + holder.getMessageBean().getFakeId());
         if (headBitmap != null) {
             holder.profileImageView.setImageBitmap(headBitmap);
+            holder.setHeadImgBitmap(headBitmap);
+            holder.setHeadImgLoaded(true);
 
         } else {
-            if (!mBusy || !imgLoaded) {
+            if (!mBusy && !holder.getHeadImgLoaded()) {
                 mDataManager.getWechatManager().getMessageHeadImg(
                         mDataManager.getCurrentPosition(),
-                        getMessageItems().get(position).getFakeId(),
-                        getMessageItems().get(position).getReferer(),
+                        holder.getMessageBean().getFakeId(),
+                        holder.getMessageBean().getReferer(),
                         holder.profileImageView, new OnActionFinishListener() {
 
                     @Override
@@ -711,12 +769,12 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                                         holder.profileImageView.getWidth(), 10,
                                         Color.parseColor("#c6c6c6"));
                                 holder.profileImageView.setImageBitmap(roundBitmap);
-                                holder.profileImageView.setTag(true);
+                                holder.setHeadImgBitmap(roundBitmap);
+                                holder.setHeadImgLoaded(true);
 
                                 mDataManager.getCacheManager().putBitmap(
                                         ImageCacheManager.CACHE_MESSAGE_LIST_PROFILE
-                                                + getMessageItems().get(
-                                                position).getFakeId(),
+                                                + holder.getMessageBean().getFakeId(),
                                         roundBitmap, true);
 
                             }
@@ -861,6 +919,7 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             mBusy = true;
         }
 
+
     }
 
 
@@ -870,6 +929,9 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
             View nowView = fatherView.getChildAt(i);
             if (nowView.getTag() != null) {
                 ItemViewHolder holder = (ItemViewHolder) nowView.getTag();
+                if (!holder.getHeadImgLoaded()) {
+                    setHeadImg(holder);
+                }
                 if (!holder.getDataLoaded()) {
 
                     MessageBean contentBean = holder.getMessageBean();
@@ -880,7 +942,6 @@ public class SearchListAdapter extends BaseAdapter implements OnScrollListener {
                             break;
 
                         case MessageBean.MESSAGE_TYPE_VOICE:
-
                             setVoiceMessageContent(holder);
 
                             break;

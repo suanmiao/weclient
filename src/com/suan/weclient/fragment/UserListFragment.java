@@ -31,7 +31,7 @@ import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.AutoLoginListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 
-public class UserListFragment extends Fragment {
+public class UserListFragment extends BaseFragment {
 
     public static int START_ACTIVITY_LOGIN = 10;
 
@@ -42,10 +42,6 @@ public class UserListFragment extends Fragment {
     private DataManager mDataManager;
 
 
-
-    public UserListFragment() {
-
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.suan.weclient"
-    android:versionCode="4"
-    android:versionName="2.0">
+    android:versionCode="6"
+    android:versionName="2.0.2">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-         <activity
+        <activity
             android:name=".activity.IntroActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"></activity>
@@ -42,7 +42,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/Theme.Sherlock.Light"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.suan.weclient.activity.MainActivity.BROADCAST_ACTION_REFRESH_MESSAGE">
@@ -55,10 +55,16 @@
             android:name=".activity.FansListActivity"
             android:theme="@style/Theme.Sherlock.Light"
             android:screenOrientation="portrait"></activity>
+
         <activity
             android:name=".activity.SettingActivity"
             android:theme="@style/Theme.Sherlock.Light"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.FansProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Sherlock.Light"></activity>
+
 
         <activity
             android:name=".activity.ChatActivity"
@@ -111,6 +117,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.GET_TASKS"></uses-permission>

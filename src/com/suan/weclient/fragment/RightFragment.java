@@ -48,7 +48,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 
-public class RightFragment extends Fragment {
+public class RightFragment extends BaseFragment {
 	private RelativeLayout aboutLayout;
 	private RelativeLayout feedbackLayout;
 	private RelativeLayout checkUpdateLayout;
@@ -64,15 +64,6 @@ public class RightFragment extends Fragment {
 	private FeedbackAgent agent;
 	private Conversation defaultConversation;
 	private DataManager mDataManager;
-
-    public RightFragment(){
-
-    }
-
-	public RightFragment(DataManager dataManager){
-		mDataManager = dataManager;
-		
-	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

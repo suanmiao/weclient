@@ -11,6 +11,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.FansGroupBean;
 import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.view.ptr.PTRListview;
 
@@ -42,42 +43,75 @@ public class SFansDropListWindow extends PopupWindow {
 
     }
 
-    private void initListener(){
+    private void initListener() {
         mDataManager.addFansListChangeListener(new DataManager.FansListChangeListener() {
             @Override
-            public void onFansGet(int mode) {
+            public void onFansGet(FansResultHolder fansResultHolder) {
                 getData();
 
             }
         });
-   }
+    }
 
     public class ItemClickListener implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            if(position==0){
+            if (position == 0) {
                 //all
                 mDataManager.doListLoadStart();
                 mDataManager.getCurrentFansHolder().setCurrentGroupIndex(-1);
-                mDataManager.getWechatManager().getFansList(0,mDataManager.getCurrentPosition(),mDataManager.getCurrentFansHolder().getCurrentGroupId(),new WechatManager.OnActionFinishListener() {
+                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "", new WechatManager.OnActionFinishListener() {
                     @Override
-                    public void onFinish(int code,Object object) {
-                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
+                    public void onFinish(int code, Object object) {
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
+
+                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                break;
+                            case WechatManager.ACTION_TIME_OUT:
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                break;
+                        }
+
 
                     }
                 });
 
-            }else{
+            } else {
                 mDataManager.doListLoadStart();
-                mDataManager.getCurrentFansHolder().setCurrentGroupIndex(position-1);
-                 mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(), new WechatManager.OnActionFinishListener() {
-                     @Override
-                     public void onFinish(int code,Object object) {
+                mDataManager.getCurrentFansHolder().setCurrentGroupIndex(position - 1);
+                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "", new WechatManager.OnActionFinishListener() {
+                    @Override
+                    public void onFinish(int code, Object object) {
 
-                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
-                     }
-                 });
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
+
+                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                break;
+                            case WechatManager.ACTION_TIME_OUT:
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                break;
+                        }
+
+
+                    }
+                });
 
             }
 
@@ -92,12 +126,12 @@ public class SFansDropListWindow extends PopupWindow {
 
         list.clear();
         FansHolder currentFansHolder = mDataManager.getCurrentFansHolder();
-       ArrayList<FansGroupBean> fansGroupBeans = currentFansHolder.getFansGroupBeans();
+        ArrayList<FansGroupBean> fansGroupBeans = currentFansHolder.getFansGroupBeans();
         list.add(mContext.getResources().getString(R.string.all_user));
-       for(int i = 0;i<fansGroupBeans.size();i++){
+        for (int i = 0; i < fansGroupBeans.size(); i++) {
             list.add(fansGroupBeans.get(i).getGroupName());
         }
-       return list;
+        return list;
     }
 
 

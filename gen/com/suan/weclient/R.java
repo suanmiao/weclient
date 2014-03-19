@@ -1773,7 +1773,7 @@ containing a value of this type.
         public static final int divider_wbw=0x7f030027;
         public static final int drop_down_item=0x7f030028;
         public static final int drop_down_layout=0x7f030029;
-        public static final int fans_item_layout=0x7f03002a;
+        public static final int fans_item_user_layout =0x7f03002a;
         public static final int fans_list_layout=0x7f03002b;
         public static final int left_frame=0x7f03002c;
         public static final int line=0x7f03002d;

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#e7e7e7"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginRight="5dip"
+            android:clickable="true"
+            android:background="@drawable/message_data_bg">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="30dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_height="fill_parent">
+
+                    <ImageView
+                        android:layout_width="30dip"
+                        android:layout_height="30dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/data_msg" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:orientation="vertical"
+                    android:layout_height="fill_parent">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/message_item_data_text_new_message"
+                        android:textColor="#5097cb"
+                        android:textSize="15dip"
+                        android:text="1500"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dip"
+                        android:textColor="#bebebe"
+                        android:textSize="12dip"
+                        android:text="@string/new_message_count"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/message_item_data_layout_user"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:background="@drawable/message_data_bg"
+            android:clickable="true"
+
+            >
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="30dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_height="fill_parent">
+
+                    <ImageView
+                        android:layout_width="30dip"
+                        android:layout_height="30dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/data_total" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:orientation="vertical"
+                    android:layout_height="fill_parent">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#5097cb"
+                        android:textSize="15dip"
+                        android:id="@+id/message_item_data_text_total_user"
+                        android:text="1500"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#bebebe"
+                        android:textSize="12dip"
+                        android:text="@string/total_user_count"
+                        android:layout_marginTop="-2dip"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="30dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_height="fill_parent">
+
+                    <ImageView
+                        android:layout_width="30dip"
+                        android:layout_height="30dip"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/data_new_people" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginLeft="5dip"
+                    android:orientation="vertical"
+                    android:layout_height="fill_parent">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/message_item_data_text_new_user"
+                        android:textColor="#5097cb"
+                        android:textSize="15dip"
+                        android:text="1500"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dip"
+                        android:textColor="#bebebe"
+                        android:textSize="12dip"
+                        android:text="@string/new_user_count"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

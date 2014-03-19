@@ -18,7 +18,9 @@ import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -40,6 +42,7 @@ import com.suan.weclient.util.data.DataManager.DialogListener;
 import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.holder.UserGoupPushHelper;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -78,6 +81,17 @@ public class MainActivity extends SlidingFragmentActivity {
     private DataManager mDataManager;
     private Dialog popDialog;
     private Dialog replyDialog;
+
+    /*
+    about sms verify
+     */
+    private EditText smsTextView;
+    private Button verifyButton;
+    public static final int VERIFY_NONE = 2;
+    public static final int VERIFY_HAD_SENT = 3;
+    private int vefityState = VERIFY_NONE;
+
+    public static final int VERIFY_CODE_LENGTH = 6;
 
 
     @Override
@@ -141,10 +155,21 @@ public class MainActivity extends SlidingFragmentActivity {
             }
 
             mDataManager.doListLoadStart();
-            mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO,mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+            mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
                 @Override
                 public void onFinish(int code, Object object) {
-                    mDataManager.doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                    switch (code) {
+                        case WechatManager.ACTION_SUCCESS:
+
+                            mDataManager.doMessageGet((MessageResultHolder) object);
+                            break;
+                        case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                            break;
+                        default:
+
+                            break;
+                    }
 
                 }
             });
@@ -230,7 +255,6 @@ public class MainActivity extends SlidingFragmentActivity {
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(customMainActionView, layoutParams);
-
 
     }
 
@@ -390,21 +414,6 @@ public class MainActivity extends SlidingFragmentActivity {
         defaultConversation.sync(listener);
     }
 
-    public void onStart() {
-
-        initService();
-        boolean networkConnected = Util.isNetConnected(MainActivity.this);
-        if (networkConnected) {
-
-        } else {
-            gotoNetworkSetting();
-
-        }
-
-        super.onStart();
-
-    }
-
     private void gotoNetworkSetting() {
 
         Handler popHandler = new Handler();
@@ -430,6 +439,23 @@ public class MainActivity extends SlidingFragmentActivity {
     private void startLoad() {
 
         autoLogin();
+    }
+
+
+    @Override
+    public void onStart() {
+
+        initService();
+        boolean networkConnected = Util.isNetConnected(MainActivity.this);
+        if (networkConnected) {
+
+        } else {
+            gotoNetworkSetting();
+
+        }
+
+        super.onStart();
+
     }
 
     @Override
@@ -521,7 +547,7 @@ public class MainActivity extends SlidingFragmentActivity {
         });
         mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
             @Override
-            public void onMessageGet(int mode) {
+            public void onMessageGet(MessageResultHolder messageResultHolder) {
 
                 UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(MainActivity.this));
                 userGoupPushHelper.updateUserGroup(mDataManager);
@@ -544,6 +570,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
                 if (MainActivity.this != null
                         && !MainActivity.this.isFinishing()) {
+
 
                     if (popDialog != null) {
                         popDialog.dismiss();
@@ -605,20 +632,29 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void popLoginEnsure() {
-        popDialog = Util.createEnsureDialog(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                popDialog.cancel();
-                Intent jumbIntent = new Intent();
-                jumbIntent.setClass(MainActivity.this, LoginActivity.class);
-                startActivityForResult(jumbIntent,
-                        UserListFragment.START_ACTIVITY_LOGIN);
+        if (!MainActivity.this.isFinishing()) {
+            try {
+                popDialog = Util.createEnsureDialog(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        popDialog.cancel();
+                        Intent jumbIntent = new Intent();
+                        jumbIntent.setClass(MainActivity.this, LoginActivity.class);
+                        startActivityForResult(jumbIntent,
+                                UserListFragment.START_ACTIVITY_LOGIN);
+
+                    }
+                }, true, MainActivity.this, "跳转到登录", "你的账户列表目前为空，跳转到登录页面？", false);
+
+                popDialog.show();
+
+            } catch (Exception e) {
 
             }
-        }, true, MainActivity.this, "跳转到登录", "你的账户列表目前为空，跳转到登录页面？", false);
 
-        popDialog.show();
+        }
 
     }
 
@@ -666,9 +702,18 @@ public class MainActivity extends SlidingFragmentActivity {
                                 getDataAfterLogin();
 
                                 break;
-                            case WechatManager.ACTION_OTHER:
+
+                            case WechatManager.ACTION_SPECIFICED_SITUATION:
+                                mDataManager.getWechatManager().getVerifyPage(mDataManager.getCurrentPosition(),mDataManager.getCurrentUser().getPhone(),new OnActionFinishListener() {
+                                    @Override
+                                    public void onFinish(int code, Object object) {
+
+                                    }
+                                });
+                                popSMSVerify();
 
                                 break;
+
                             case WechatManager.ACTION_SPECIFICED_ERROR:
 
                                 mDataManager.doPopEnsureDialog(true, false, "登录失败", "账户名或密码出错，重新登录？", new DialogSureClickListener() {
@@ -687,7 +732,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                                                 .getMD5Str(pwdEdit.getText().toString());
                                                         mDataManager.getCurrentUser().setUserName(userId);
                                                         mDataManager.getCurrentUser().setPwd(pwd);
-                                                        SharedPreferenceManager.updateUser(MainActivity.this,mDataManager);
+                                                        SharedPreferenceManager.updateUser(MainActivity.this, mDataManager);
                                                         popDialog.dismiss();
 
                                                         autoLogin();
@@ -710,6 +755,9 @@ public class MainActivity extends SlidingFragmentActivity {
                                     }
                                 });
 
+                                break;
+
+                            case WechatManager.ACTION_OTHER:
 
                                 break;
                         }
@@ -719,46 +767,56 @@ public class MainActivity extends SlidingFragmentActivity {
 
     }
 
-    private void getDataAfterLogin() {
-
-        mDataManager.doListLoadStart();
-        mDataManager
-                .getWechatManager()
-                .getNewMessageList(
-                        WechatManager.DIALOG_POP_CANCELABLE,
-                        mDataManager
-                                .getCurrentPosition(),
-                        new OnActionFinishListener() {
-
+    private void popSMSVerify() {
+        popDialog = Util.createSMSVerifyDialog(MainActivity.this, getResources().getString(R.string.sms_verify), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (vefityState) {
+                    case VERIFY_NONE:
+                        mDataManager.getWechatManager().sendVefityCode(mDataManager.getCurrentPosition(),new OnActionFinishListener() {
                             @Override
-                            public void onFinish(
-                                    int code, Object object) {
-                                // TODO
-                                // Auto-generated
-                                // method
-                                // stub
-                                switch (code) {
+                            public void onFinish(int code, Object object) {
+                                switch(code){
                                     case WechatManager.ACTION_SUCCESS:
-                                        mDataManager
-                                                .doMessageGet(PTRListview.PTR_MODE_REFRESH);
-
-                                        break;
-                                    case WechatManager.ACTION_SPECIFICED_ERROR:
-
-                                        mDataManager
-                                                .doMessageGet(PTRListview.PTR_MODE_REFRESH);
-
-                                        autoLogin();
+                                        Log.e("send ","success");
 
                                         break;
                                     default:
-
 
                                         break;
                                 }
 
                             }
                         });
+
+                        break;
+                    case VERIFY_HAD_SENT:
+                        String verifyCode = smsTextView.getText().toString();
+                        if (verifyCode.length() == 0) {
+
+                            Toast.makeText(MainActivity.this, getResources().getString(R.string.null_code), Toast.LENGTH_SHORT).show();
+                        } else if (verifyCode.length() != VERIFY_CODE_LENGTH) {
+                            Toast.makeText(MainActivity.this, getResources().getString(R.string.invalide_length), Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                            Log.e("input length", "" + verifyCode);
+
+                        }
+
+                        break;
+                }
+
+            }
+        });
+        smsTextView = (EditText) popDialog.findViewById(R.id.dialog_sms_verify_edit_content);
+        verifyButton = (Button) popDialog.findViewById(R.id.dialog_sms_verify_button_sure);
+        popDialog.show();
+
+    }
+
+    private void getDataAfterLogin() {
+
 
         mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_CANCELABLE,
                 mDataManager.getCurrentPosition(),
@@ -789,36 +847,71 @@ public class MainActivity extends SlidingFragmentActivity {
 
                                             }
                                         }, referer);
-                        mDataManager
-                                .getWechatManager()
-                                .getMassData(
-                                        mDataManager
-                                                .getCurrentPosition(),
-                                        WechatManager.DIALOG_POP_CANCELABLE,
-                                        new OnActionFinishListener() {
-
-
-                                            @Override
-                                            public void onFinish(
-                                                    int code, Object object) {
-                                                // TODO
-                                                // Auto-generated
-                                                // method stub
-
-                                                mDataManager.doMassDataGet(mDataManager.getCurrentUser());
-
-                                            }
-                                        });
 
                     }
                 });
+
+        mDataManager
+                .getWechatManager()
+                .getMassData(
+                        mDataManager
+                                .getCurrentPosition(),
+                        WechatManager.DIALOG_POP_CANCELABLE,
+                        new OnActionFinishListener() {
+
+
+                            @Override
+                            public void onFinish(
+                                    int code, Object object) {
+                                // TODO
+                                // Auto-generated
+                                // method stub
+
+                                mDataManager.doMassDataGet(mDataManager.getCurrentUser());
+
+                            }
+                        });
+        mDataManager.doListLoadStart();
+        mDataManager
+                .getWechatManager()
+                .getNewMessageList(
+                        WechatManager.DIALOG_POP_CANCELABLE,
+                        mDataManager
+                                .getCurrentPosition(),
+                        new OnActionFinishListener() {
+
+                            @Override
+                            public void onFinish(
+                                    int code, Object object) {
+                                // TODO
+                                // Auto-generated
+                                // method
+                                // stub
+                                switch (code) {
+                                    case WechatManager.ACTION_SUCCESS:
+                                        mDataManager
+                                                .doMessageGet((MessageResultHolder) object);
+
+                                        break;
+                                    case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                        autoLogin();
+
+                                        break;
+                                    default:
+
+
+                                        break;
+                                }
+
+                            }
+                        });
 
     }
 
     public interface ShowMenuListener {
         public void showLeftMenu();
 
-        public void showRightMenu();
 
     }
 

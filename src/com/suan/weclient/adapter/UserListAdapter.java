@@ -37,6 +37,8 @@ import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
+import org.apache.http.Header;
+
 import java.util.ArrayList;
 
 public class UserListAdapter extends BaseAdapter implements OnScrollListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -442,8 +444,7 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
                 new WeChatLoader.WechatLoginCallBack() {
 
                     @Override
-                    public void onBack(int resultCode, String strResult, String slaveSid,
-                                       String slaveUser) {
+                    public void onBack(int resultCode, String strResult, Header[] headers) {
                         // TODO Auto-generated method stub
                         switch (resultCode) {
                             case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
@@ -486,47 +487,48 @@ public class UserListAdapter extends BaseAdapter implements OnScrollListener, Ad
 
                                     addBean = new UserBean(userName, WeChatLoader
                                             .getMD5Str(pwd));
-                                    addBean.setSlaveSid(slaveSid);
-                                    addBean.setSlaveUser(slaveUser);
-                                    int loginResult = DataParser.parseLogin(addBean,
-                                            strResult, slaveSid, slaveUser,
-                                            mActivity.getApplicationContext());
-                                    switch (loginResult) {
-                                        case DataParser.PARSE_SUCCESS:
+                                    DataParser.parseLogin(new DataParser.LoginParseCallBack() {
+                                        @Override
+                                        public void onBack(int code, UserBean userBean) {
+                                            switch (code) {
+                                                case DataParser.PARSE_SUCCESS:
 
-                                            SharedPreferenceManager
-                                                    .insertUser(
-                                                            mActivity,
-                                                            addBean);
+                                                    SharedPreferenceManager
+                                                            .insertUser(
+                                                                    mActivity,
+                                                                    addBean);
 
-                                            mDataManager.updateUserGroup();
-                                            mDataManager.doAddUser();
-                                            mDataManager.doGroupChangeEnd();
-                                            mDataManager.doAutoLogin();
+                                                    mDataManager.updateUserGroup();
+                                                    mDataManager.doAddUser();
+                                                    mDataManager.doGroupChangeEnd();
+                                                    mDataManager.doAutoLogin();
 
-                                            popDialog.dismiss();
+                                                    popDialog.dismiss();
 
-                                            break;
+                                                    break;
 
-                                        case DataParser.PARSE_FAILED:
+                                                case DataParser.PARSE_FAILED:
 
-                                            popDialog.dismiss();
+                                                    popDialog.dismiss();
 
-                                            popDialog = Util.createEnsureDialog(
-                                                    new DataManager.DialogSureClickListener() {
+                                                    popDialog = Util.createEnsureDialog(
+                                                            new DataManager.DialogSureClickListener() {
 
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            // TODO Auto-generated method stub
-                                                            popDialog.dismiss();
+                                                                @Override
+                                                                public void onClick(View v) {
+                                                                    // TODO Auto-generated method stub
+                                                                    popDialog.dismiss();
 
-                                                        }
-                                                    }, false, mActivity, "错误", "登录失败，请检查账户名和密码",
-                                                    true);
+                                                                }
+                                                            }, false, mActivity, "错误", "登录失败，请检查账户名和密码",
+                                                            true);
 
-                                            popDialog.show();
-                                            break;
-                                    }
+                                                    popDialog.show();
+                                                    break;
+                                            }
+
+                                        }
+                                    }, strResult, headers, addBean);
 
                                 } catch (Exception exception) {
 

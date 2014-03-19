@@ -16,6 +16,7 @@
 package com.suan.weclient.fragment.intro;
 
 import android.app.Dialog;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,24 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suan.weclient.R;
-import com.suan.weclient.activity.MainActivity;
-import com.suan.weclient.util.GlobalContext;
-import com.suan.weclient.util.data.DataManager;
-import com.suan.weclient.util.data.DataManager.DialogSureClickListener;
-import com.suan.weclient.util.data.DataManager.LoginListener;
-import com.suan.weclient.util.data.bean.UserBean;
-import com.suan.weclient.util.net.WechatManager;
-import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
-import com.suan.weclient.util.text.EmotionHandler;
-import com.suan.weclient.view.Face.FaceHolderView;
 
 public class IntroFirstFragment extends Fragment {
 

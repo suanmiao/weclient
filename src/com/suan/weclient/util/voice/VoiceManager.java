@@ -10,6 +10,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Environment;
 import android.util.Log;
 
+import com.suan.weclient.util.Util;
+
 public class VoiceManager {
 
     Context mContext;
@@ -33,7 +35,6 @@ public class VoiceManager {
             nowAudioPlayListener.onAudioStart();
 
             File audioFile = writeAudio(mData);
-            Log.e("length",dataLength+"|"+audioFile.length());
 
             mediaPlayer.setDataSource(audioFile.getAbsolutePath());
 
@@ -73,8 +74,8 @@ public class VoiceManager {
     private File writeAudio(byte[] mData) {
         try {
 
-            File file = new File(Environment.getExternalStorageDirectory(),
-                    "temp" + ".mp3");
+            String filePath = Util.getFilePath("temp.mp3");
+            File file = new File(filePath);
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(file));
             bos.write(mData);

@@ -32,15 +32,15 @@ public class UploadHelper {
         private String type = "";
         private String content = "";
 
-        private String getLocation() {
+        public String getLocation() {
             return location;
         }
 
-        private String getType() {
+       public String getType() {
             return type;
         }
 
-        private String getContent() {
+        public String getContent() {
             return content;
         }
 

@@ -37,22 +37,13 @@
                 android:background="#c5c5c5">
 
                 <LinearLayout
+                    android:id="@+id/dialog_preview_layout_content"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/dialog_preview_text_content"
-                        android:layout_width="fill_parent"
-                        android:layout_height="160dip"
-                        android:background="#c5c5c5"
-                        android:gravity="left|top"
-                        android:paddingBottom="5dip"
-                        android:paddingLeft="8dip"
-                        android:paddingRight="8dip"
-                        android:paddingTop="5dip"
-                        android:textColor="#333333"
-                        android:textSize="15dip" />
+
+
                 </LinearLayout>
             </ScrollView>
 

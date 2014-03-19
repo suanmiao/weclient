@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+
+ 	<item android:state_selected="false" android:drawable="@drawable/emoji"></item>
+
+	<item android:state_selected="true" android:drawable="@drawable/emoji_active"></item>
+
+	<item android:state_pressed="false" android:drawable="@drawable/emoji"></item>
+	
+	<item android:state_pressed="true" android:drawable="@drawable/emoji_active"></item>
+
+
+	<item android:drawable="@drawable/emoji"></item>
+</selector>

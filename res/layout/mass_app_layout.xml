@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:background="@drawable/shape_radius_mass_bottom_bg"
+            android:layout_width="fill_parent"
+            android:paddingLeft="1px"
+            android:paddingRight="1px"
+            android:layout_height="220dip">
+
+            <RelativeLayout
+
+                android:id="@+id/mass_app_layout_content"
+                android:layout_marginTop="10dip"
+                android:layout_centerHorizontal="true"
+                android:layout_width="300dip"
+                android:layout_height="wrap_content"
+                android:background="#909090"
+                android:padding="3px">
+
+                <ImageView
+                    android:layout_width="50dip"
+                    android:layout_height="50dip"
+                    android:background="@drawable/pic_default"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:id="@+id/mass_app_img_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:minHeight="100dip"
+                    android:maxHeight="150dip"
+                    android:scaleType="centerCrop" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/mass_app_layout_edit"
+                android:background="@drawable/fans_item_group_button_bg"
+                android:layout_width="150dip"
+                android:layout_height="40dip"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dip">
+
+                <ImageView
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:background="@drawable/remark_edit" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textColor="#ffffff"
+                    android:textSize="20dip"
+                    android:text="修改图片"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dip"
+                android:layout_width="70dip"
+                android:layout_height="30dip">
+
+                <Button
+                    android:id="@+id/mass_app_but_upload"
+                    android:layout_width="60dip"
+                    android:layout_height="30dip"
+                    android:background="@drawable/ensure_button_sure_bg"
+                    android:textColor="#ffffff"
+                    android:textSize="12dip"
+                    android:text="upload"/>
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="10dip"
+            android:layout_width="fill_parent"
+            android:layout_height="100dip">
+
+            <TextView
+                android:id="@+id/mass_text_left_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#9c584f"
+                android:textSize="13dip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:layout_below="@+id/mass_text_left_num"
+                android:text="@string/mass_declare"
+                android:textColor="#9c584f"
+                android:textSize="13dip" />
+
+            <Button
+                android:id="@+id/mass_button_send"
+                android:layout_width="100dip"
+                android:layout_height="40dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dip"
+                android:text="@string/send"
+                android:textColor="#ffffff"
+                android:background="@drawable/send_button_sure_bg" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

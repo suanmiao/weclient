@@ -17,6 +17,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
 import com.suan.weclient.view.dropWindow.SFansDropListWindow;
 
 public class CustomFansActionView extends LinearLayout {
@@ -63,7 +64,7 @@ public class CustomFansActionView extends LinearLayout {
     private void initListener() {
         mDataManager.addFansListChangeListener(new DataManager.FansListChangeListener() {
             @Override
-            public void onFansGet(int mode) {
+            public void onFansGet(FansResultHolder fansResultHolder) {
                 if (mDataManager.getCurrentFansHolder().getFansGroupBeans().size() > 0) {
                     FansHolder currentFansHolder = mDataManager.getCurrentFansHolder();
                     int currentGroupIndex = currentFansHolder.getCurrentGroupIndex();
@@ -100,6 +101,7 @@ public class CustomFansActionView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 activity.finish();
+                activity.overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
 
             }
         });

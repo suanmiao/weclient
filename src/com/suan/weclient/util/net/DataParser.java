@@ -1,9 +1,11 @@
 package com.suan.weclient.util.net;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -17,6 +19,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.AppItemBean;
 import com.suan.weclient.util.data.bean.MaterialBean;
 import com.suan.weclient.util.data.holder.AppItemHolder;
@@ -28,16 +31,22 @@ import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.data.holder.MaterialHolder;
 import com.suan.weclient.util.data.holder.MessageHolder;
 import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 
 public class DataParser {
 
     public static final int PARSE_SUCCESS = 1;
     public static final int PARSE_FAILED = 2;
     public static final int PARSE_SPECIFIC_ERROR = 3;
+    public static final int PARSE_SPECIFIC_STUATION = 4;
 
     private static final String login_timeout = "登录超时";
+    private static final String invalid_bizpay = "invalid bizpay url";
 
     public static final int RET_LOGIN_SUCCESS = 302;
+    public static final String LOGIN_NEEDS_VERIFY = "/cgi-bin/readtemplate?t=user/validate_phone_tmpl";
 
     public static final int GET_USER_PROFILE_SUCCESS = 1;
     public static final int GET_USER_PROFILE_FAILED = 0;
@@ -210,11 +219,6 @@ public class DataParser {
         return result;
     }
 
-    public static class MessageResultHolder {
-        public ArrayList<MessageBean> messageBeans;
-
-    }
-
     public interface MessageListParseCallBack {
         public void onBack(MessageResultHolder messageResultHolder,
                            int code);
@@ -223,9 +227,9 @@ public class DataParser {
     public static void parseNewMessage(
             final MessageListParseCallBack messageListParseCallBack,
             final String source, final UserBean userBean,
-            final MessageHolder messageHolder, final String referer) {
+            final int messageMode,
+            final String referer) {
 
-        removeEmptyMessage(messageHolder.getMessageList());
 
         final Handler loadHandler = new Handler() {
 
@@ -238,10 +242,6 @@ public class DataParser {
                 switch (msg.arg1) {
                     case PARSE_SUCCESS:
                         MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
-
-                        ArrayList<MessageBean> messageList = messageResultHolder.messageBeans;
-
-                        messageHolder.setMessage(messageList);
 
                         messageListParseCallBack.onBack(messageResultHolder,
                                 msg.arg1);
@@ -279,25 +279,22 @@ public class DataParser {
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
 
 
-                                messageHolder.setLatestMsgId(latestMsgId);
-                                messageHolder.getUserBean().setLastMsgId(latestMsgId);
-                                messageHolder.setContentMessageMode(messageHolder.getNowMessageMode());
-
-
                                 if (resultMessageList.size() == 0) {
                                     MessageBean emptyMessage = new MessageBean();
                                     emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
                                     resultMessageList.add(emptyMessage);
 
+                                } else {
+                                    MessageBean dataMessage = new MessageBean();
+                                    dataMessage.setType(MessageBean.MESSAGE_TYPE_DATA);
+                                    resultMessageList.add(0, dataMessage);
+
                                 }
 
-
-                                MessageResultHolder messageResultHolder = new MessageResultHolder();
-                                /*
-                                send the messagelist to ui thread to change
-                                 */
-                                messageResultHolder.messageBeans = resultMessageList;
+                                MessageResultHolder messageResultHolder = new MessageResultHolder(resultMessageList,
+                                        latestMsgId, messageMode, MessageResultHolder.RESULT_MODE_REFRESH);
                                 message.obj = messageResultHolder;
+
                                 message.arg1 = PARSE_SUCCESS;
 
                             } catch (Exception e) {
@@ -325,7 +322,7 @@ public class DataParser {
     public static void parseNextMessage(
             final MessageListParseCallBack messageListParseCallBack,
             final String source, final UserBean userBean,
-            final MessageHolder messageHolder, final String referer) {
+            final int messageMode, final String referer) {
 
         final Handler loadHandler = new Handler() {
 
@@ -340,7 +337,6 @@ public class DataParser {
                 switch (msg.arg1) {
                     case PARSE_SUCCESS:
                         MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
-                        messageHolder.addMessage(messageResultHolder.messageBeans);
                         messageListParseCallBack.onBack(messageResultHolder, msg.arg1);
 
                         break;
@@ -371,10 +367,7 @@ public class DataParser {
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
 
-                                messageHolder.setLatestMsgId(latestMsgId);
-
-                                MessageResultHolder messageResultHolder = new MessageResultHolder();
-                                messageResultHolder.messageBeans = resultMessageList;
+                                MessageResultHolder messageResultHolder = new MessageResultHolder(resultMessageList, latestMsgId, messageMode, MessageResultHolder.RESULT_MODE_ADD);
                                 message.obj = messageResultHolder;
                                 message.arg1 = PARSE_SUCCESS;
 
@@ -399,12 +392,13 @@ public class DataParser {
 
 
     public interface MaterialListParseCallBack {
-        public void onBack(int code, MaterialHolder materialHolder);
+        public void onBack(int code, MaterialResultHolder materialResultHolder);
     }
 
     public static void parseMaterialList(
             final MaterialListParseCallBack materialListParseCallBack,
-            final String source, final UserBean userBean, final MaterialHolder materialHolder,
+            final int begin,
+            final String source, final UserBean userBean,
             final String referer) {
 
         final Handler loadHandler = new Handler() {
@@ -418,10 +412,8 @@ public class DataParser {
                 // 此处可以更新UI
                 switch (msg.arg1) {
                     case PARSE_SUCCESS:
-                        ArrayList<MaterialBean> getList = (ArrayList<MaterialBean>) msg.obj;
-                        materialHolder.setMaterialList(getList);
 
-                        materialListParseCallBack.onBack(msg.arg1, materialHolder);
+                        materialListParseCallBack.onBack(msg.arg1, (MaterialResultHolder) msg.obj);
                         break;
                     default:
 
@@ -453,8 +445,9 @@ public class DataParser {
                             getList.add(nowItemBean);
 
                         }
+                        MaterialResultHolder materialResultHolder = new MaterialResultHolder(getList, (begin == 0) ? MaterialResultHolder.RESULT_MODE_REFRESH : MaterialResultHolder.RESULT_MODE_ADD);
                         message.arg1 = PARSE_SUCCESS;
-                        message.obj = getList;
+                        message.obj = materialResultHolder;
 
                     }
 
@@ -480,11 +473,12 @@ public class DataParser {
 
 
     public interface AppMsgListParseCallBack {
-        public void onBack(int code, AppItemHolder appItemHolder);
+        public void onBack(int code, MaterialResultHolder materialResultHolder);
     }
 
     public static void parseAppMsgList(
             final AppMsgListParseCallBack messageListParseCallBack,
+            final int begin,
             final String source, final UserBean userBean,
             final String referer) {
 
@@ -500,7 +494,7 @@ public class DataParser {
                 switch (msg.arg1) {
                     case PARSE_SUCCESS:
 
-                        messageListParseCallBack.onBack(msg.arg1, (AppItemHolder) msg.obj);
+                        messageListParseCallBack.onBack(msg.arg1, (MaterialResultHolder) msg.obj);
                         break;
                     default:
 
@@ -523,22 +517,26 @@ public class DataParser {
                     JSONArray appItemArray = appContentObject.getJSONArray("item");
                     JSONObject appInfoObject = appContentObject.getJSONObject("file_cnt");
 
-
+                    Gson gson = new Gson();
+/*
                     AppItemHolder appItemHolder = new AppItemHolder();
 
-                    Gson gson = new Gson();
                     appItemHolder = (AppItemHolder) gson.fromJson(appInfoObject.toString(), AppItemHolder.class);
-                    ArrayList<AppItemBean> appItemBeans = new ArrayList<AppItemBean>();
+                    */
+
+                    ArrayList<MaterialBean> materialBeans = new ArrayList<MaterialBean>();
                     for (int i = 0; i < appItemArray.length(); i++) {
                         JSONObject nowItemObject = appItemArray.getJSONObject(i);
 
                         AppItemBean nowItemBean = gson.fromJson(nowItemObject.toString(), AppItemBean.class);
-                        appItemBeans.add(nowItemBean);
+                        materialBeans.add(new MaterialBean(nowItemBean));
 
                     }
-                    appItemHolder.setAppItemBeans(appItemBeans);
+                    MaterialResultHolder materialResultHolder = new MaterialResultHolder(materialBeans,
+                            begin==0?MaterialResultHolder.RESULT_MODE_REFRESH:MaterialResultHolder.RESULT_MODE_ADD);
+
                     message.arg1 = PARSE_SUCCESS;
-                    message.obj = appItemHolder;
+                    message.obj = materialResultHolder;
 
 
                 } catch (Exception e) {
@@ -647,33 +645,283 @@ public class DataParser {
 
     }
 
-    public static int parseLogin(UserBean nowBean, String strResult,
-                                 String slaveSid, String slaveUser, Context context) {
 
-        JSONObject resultJsonObject = null;
+    public interface LoginParseCallBack {
+        public void onBack(int code, UserBean userBean);
+    }
 
+    public static void parseLogin(
+            final LoginParseCallBack loginParseCallBack,
+            final String source, final Header[] headers, final UserBean userBean) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        loginParseCallBack.onBack(msg.arg1, (UserBean) msg.obj);
+                        break;
+                    default:
+
+                        loginParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
+                try {
+
+
+                    JSONObject resultJsonObject = null;
+
+                    try {
+
+                        resultJsonObject = new JSONObject(source);
+                        int ret = getRet(resultJsonObject);
+
+
+                        if (ret == RET_LOGIN_SUCCESS) {
+
+                            if (source.contains("token")) {
+                                String tokenString = getToken(resultJsonObject);
+                                userBean.setToken(tokenString);
+                                initNormalLogin();
+
+                                message.arg1 = PARSE_SUCCESS;
+                                message.obj = userBean;
+
+                            } else {
+                                if (source.contains(LOGIN_NEEDS_VERIFY)) {
+
+                                    initVerify();
+                                    message.arg1 = PARSE_SPECIFIC_STUATION;
+                                    message.obj = userBean;
+                                }
+
+                            }
+                        }
+
+                    } catch (Exception exception) {
+                        Log.e("login exception fuck", exception + "");
+
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("app list parse error", "" + e);
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+            private void initNormalLogin() {
+
+                for (int i = 0; i < headers.length; i++) {
+
+
+                    if (headers[i].getName().contains(
+                            "Set-Cookie")) {
+                        String nowCookie = headers[i]
+                                .getValue();
+                        if (nowCookie.contains("slave_user")) {
+
+                            String slaveUser = nowCookie
+                                    .substring(
+                                            nowCookie
+                                                    .indexOf("slave_user") + 11,
+                                            nowCookie.indexOf(";"));
+                            userBean.setSlaveUser(slaveUser);
+                        }
+                        if (nowCookie.contains("slave_sid")) {
+
+                            String slaveSid = nowCookie
+                                    .substring(nowCookie
+                                            .indexOf("slave_sid") + 10,
+                                            nowCookie.indexOf(";"));
+                            userBean.setSlaveSid(slaveSid);
+                        }
+
+                    }
+
+                }
+            }
+
+            private void initVerify() {
+
+                try {
+                    JSONObject resultObject = new JSONObject(source);
+                    String errorMsg = resultObject.get("ErrMsg").toString();
+                    String regex = "phone=(.*)";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(errorMsg);
+                    while (matcher.find()) {
+                        String phone = matcher.group(1);
+                        if (phone != null) {
+                            userBean.setPhone(phone);
+                        }
+
+                    }
+
+
+                } catch (Exception e) {
+
+                }
+
+
+            }
+
+
+        }.start();
+
+    }
+
+
+    public interface VerifyPageParseCallBack {
+        public void onBack(int code, UserBean userBean);
+    }
+
+    public static void parseVerifyPage(
+            final VerifyPageParseCallBack verifyPageParseCallBack,
+            final String source, final Header[] headers, final UserBean userBean) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        verifyPageParseCallBack.onBack(msg.arg1, (UserBean) msg.obj);
+                        break;
+                    default:
+
+                        verifyPageParseCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                Message message = new Message();
+
+                message.arg1 = PARSE_FAILED;
+                try {
+                    Log.e("result", source);
+                    initNormalLogin();
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = userBean;
+
+                } catch (Exception e) {
+                    Log.e("app list parse error", "" + e);
+
+                }
+                if (message.arg1 == PARSE_FAILED && source.contains(login_timeout)) {
+                    message.arg1 = PARSE_SPECIFIC_ERROR;
+                }
+                loadHandler.sendMessage(message);
+
+
+            }
+
+            private void initNormalLogin() {
+
+                for (int i = 0; i < headers.length; i++) {
+
+                    Log.e("get verify page", "" + headers[i].getValue());
+                    if (headers[i].getName().contains(
+                            "Set-Cookie")) {
+
+                        String nowCookie = headers[i]
+                                .getValue();
+                        if (nowCookie.contains("ticket_id")) {
+                            Log.e("get ticket id", "" + headers[i].getValue());
+                        }
+                        if (nowCookie.contains("ticket")) {
+
+                            Log.e("get ticket", "" + headers[i].getValue());
+
+                        }
+
+                    }
+
+                }
+            }
+
+            private void initVerify() {
+
+
+                Log.e("start get verify", "start");
+                for (int i = 0; i < headers.length; i++) {
+
+                    if (headers[i].getName().contains(
+                            "Set-Cookie")) {
+
+                        Log.e("start get verify", "get cookie\n" + headers[i].getValue());
+                        String nowCookie = headers[i]
+                                .getValue();
+                        if (nowCookie.contains("verifysession")) {
+
+                            Log.e("start get verify", "get session");
+
+                            String regex = "verifysession=([^;]*);";
+                            Pattern pattern = Pattern.compile(regex);
+                            Matcher matcher = pattern.matcher(nowCookie);
+                            while (matcher.find()) {
+                                String verifySession = matcher.group(1);
+                                Log.e("get verify session", verifySession + "");
+                                userBean.setVerifySession(verifySession);
+                            }
+
+
+                        }
+
+                    }
+
+                }
+            }
+
+
+        }.start();
+
+    }
+
+
+    public static String getVerifyUrl(String source) {
         try {
 
-            resultJsonObject = new JSONObject(strResult);
-            int ret = getRet(resultJsonObject);
 
-            if (ret != RET_LOGIN_SUCCESS) {
-                Log.e("login failed", strResult);
-
-                return PARSE_FAILED;
-
-            }
-
-            if (strResult.contains("token")) {
-                String tokenString = getToken(resultJsonObject);
-                nowBean.setToken(tokenString);
-            }
-        } catch (Exception exception) {
-            Log.e("login exception fuck", exception + "");
-            return PARSE_FAILED;
+        } catch (Exception e) {
 
         }
-        return PARSE_SUCCESS;
+
+        return "";
 
     }
 
@@ -754,13 +1002,14 @@ public class DataParser {
     }
 
     public interface FansListParseCallback {
-        public void onBack(FansHolder fansHolder, boolean dataChanged);
+        public void onBack(FansResultHolder fansResultHolder, int code);
     }
 
-    public static void parseFansList(final String source, final String referer,
-                                     final FansHolder fansHolder, final UserBean userBean,
+    public static void parseFansList(final String source, final String referer, final int currentGroupIndex,
+                                     final UserBean userBean,
                                      final boolean refresh,
                                      final FansListParseCallback fansListParseCallback) {
+
 
         final Handler loadHandler = new Handler() {
 
@@ -770,12 +1019,18 @@ public class DataParser {
                 // TODO Auto-generated method stub
 
                 super.handleMessage(msg);
-                // 此处可以更新UI
-                boolean dataChanged = false;
-                if (msg.arg1 == 1) {
-                    dataChanged = true;
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+
+                        fansListParseCallback.onBack((FansResultHolder) msg.obj, msg.arg1);
+
+                        break;
+                    default:
+
+                        fansListParseCallback.onBack(null, msg.arg1);
+                        break;
                 }
-                fansListParseCallback.onBack(fansHolder, dataChanged);
+
 
             }
         };
@@ -785,6 +1040,8 @@ public class DataParser {
             public void run() {
 
 
+                Message nowMessage = new Message();
+                nowMessage.arg1 = PARSE_FAILED;
                 JSONObject fansContentObject = getFansContentObject(source);
                 if (fansContentObject != null) {
 
@@ -803,7 +1060,7 @@ public class DataParser {
                                             FansGroupBean.class);
                             fansGroupBeans.add(nowGroupBean);
                         }
-                        fansHolder.setFansGroup(fansGroupBeans);
+
 
                         JSONArray fansArray = new JSONArray(fansContentString);
 
@@ -816,26 +1073,27 @@ public class DataParser {
                             fansBeans.add(nowFansBean);
                         }
 
-                        boolean dataChanged = false;
                         if (refresh) {
+                            //add fans data
+                            FansBean dataBean = new FansBean();
+                            dataBean.setBeanType(FansBean.BEAN_TYPE_DATA);
+                            fansBeans.add(0, dataBean);
 
-                            dataChanged = true;
-                            fansHolder.setFans(fansBeans);
-
-                        } else {
-                            dataChanged = true;
-                            fansHolder.addFans(fansBeans);
                         }
 
-                        Message nowMessage = new Message();
-                        nowMessage.arg1 = dataChanged ? 1 : 0;
+                        FansResultHolder fansResultHolder = new FansResultHolder(fansBeans, fansGroupBeans, currentGroupIndex,
+                                refresh ? FansResultHolder.RESULT_MODE_REFRESH : FansResultHolder.RESULT_MODE_ADD);
 
-                        loadHandler.sendMessage(nowMessage);
+                        nowMessage.arg1 = PARSE_SUCCESS;
+                        nowMessage.obj = fansResultHolder;
+
 
                     } catch (Exception exception) {
                         Log.e("fans parse errror", "" + exception);
+
                     }
 
+                    loadHandler.sendMessage(nowMessage);
                 }
 
 
@@ -871,6 +1129,116 @@ public class DataParser {
         }.start();
 
     }
+
+
+    public interface ParseFansProfileCallBack {
+        public void onBack(int code, FansProfileHolder fansProfileHolder);
+    }
+
+    public static class FansProfileHolder {
+        public FansBean fansBean;
+        public ArrayList<FansGroupBean> fansGroupBeans;
+
+        public FansProfileHolder(FansBean fansBean, ArrayList<FansGroupBean> fansGroupBeans) {
+            this.fansBean = fansBean;
+            this.fansGroupBeans = fansGroupBeans;
+        }
+    }
+
+    public static void parseFansProfile(final String source,
+                                        final UserBean userBean,
+                                        final ParseFansProfileCallBack parseFansProfileCallBack) {
+
+        final Handler loadHandler = new Handler() {
+
+            // 子类必须重写此方法,接受数据
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+
+                super.handleMessage(msg);
+                // 此处可以更新UI
+                switch (msg.arg1) {
+                    case PARSE_SUCCESS:
+                        FansProfileHolder fansProfileHolder = (FansProfileHolder) msg.obj;
+                        parseFansProfileCallBack.onBack(msg.arg1, fansProfileHolder);
+
+                        break;
+                    default:
+
+                        parseFansProfileCallBack.onBack(msg.arg1, null);
+                        break;
+                }
+
+            }
+        };
+
+        new Thread() {
+            public void run() {
+
+                FansProfileHolder fansProfileHolder = getResult();
+
+
+                Message message = new Message();
+                if (fansProfileHolder != null) {
+                    message.arg1 = PARSE_SUCCESS;
+                    message.obj = fansProfileHolder;
+
+                } else {
+
+                    if (source.contains(login_timeout) || source.contains(invalid_bizpay)) {
+                        message.arg1 = PARSE_SPECIFIC_ERROR;
+                    } else {
+                        message.arg1 = PARSE_FAILED;
+                    }
+
+                }
+                loadHandler.sendMessage(message);
+            }
+
+            private FansProfileHolder getResult() {
+
+                try {
+                    JSONObject resultObject = new JSONObject(source);
+                    JSONObject stateObject = resultObject.getJSONObject("base_resp");
+                    if (getRet(stateObject) == 0) {
+                        JSONObject contactInfoObject = resultObject.getJSONObject("contact_info");
+                        JSONObject groupObject = resultObject.getJSONObject("groups");
+
+                        Gson gson = new Gson();
+
+                        FansBean fansBean = (FansBean) gson.fromJson(contactInfoObject.toString(), FansBean.class);
+
+                        JSONArray fansTypeArray = groupObject.getJSONArray("groups");
+                        ArrayList<FansGroupBean> fansGroupBeans = new ArrayList<FansGroupBean>();
+                        for (int i = 0; i < fansTypeArray.length(); i++) {
+                            JSONObject nowJsonObject = fansTypeArray
+                                    .getJSONObject(i);
+                            FansGroupBean nowGroupBean = (FansGroupBean) gson
+                                    .fromJson(nowJsonObject.toString(),
+                                            FansGroupBean.class);
+                            fansGroupBeans.add(nowGroupBean);
+                        }
+
+                        FansProfileHolder fansProfileHolder = new FansProfileHolder(fansBean, fansGroupBeans);
+                        return fansProfileHolder;
+
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("fans profile parse exception", "" + e);
+
+                }
+
+                return null;
+            }
+
+
+        }.start();
+
+    }
+
 
     public interface ChatListParseCallback {
         public void onBack(ChatHolder chatHolder, boolean dataChanged);
@@ -926,6 +1294,7 @@ public class DataParser {
                             //reverse
                             messageBeans.add(0, nowMessageBean);
                         }
+                        setTimeTagShow(messageBeans);
 
                         chatHolder.setMessage(messageBeans);
 
@@ -965,6 +1334,24 @@ public class DataParser {
 
 
                 return null;
+            }
+
+
+            long lastTime = 0;
+
+            private void setTimeTagShow(ArrayList<MessageBean> messageBeans) {
+
+                for (int i = 0; i < messageBeans.size(); i++) {
+                    MessageBean nowBean = messageBeans.get(i);
+                    long nowTime = Long.parseLong(nowBean.getDateTime());
+                    if (nowTime - lastTime > 100000) {
+                        nowBean.setTimeTagShow(true);
+
+                    }
+                    lastTime = nowTime;
+
+                }
+
             }
         }.start();
 

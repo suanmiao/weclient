@@ -19,6 +19,7 @@ import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -44,7 +45,10 @@ import com.suan.weclient.util.net.WechatManager;
 
 import org.apache.http.HeaderIterator;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FilePermission;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +74,11 @@ public class Util {
 
     private static Dialog popDialog;
     private static Dialog replyDialog;
+
+    /*
+    about file storage
+     */
+    public static final String FOLDER_NAME = "weclient";
 
     public static Bitmap roundCorner(Bitmap src, int width) {
 
@@ -234,6 +243,37 @@ public class Util {
     }
 
 
+    public static Dialog createMaterialListDialog(Context context, String title,
+                                                  OnClickListener sureClickListener,
+                                                  OnClickListener cancelClickListener) {
+
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_material_layout,
+                null);
+
+        popTitleTextView = (TextView) dialogView
+                .findViewById(R.id.dialog_material_text_title);
+
+        popSureButton = (Button) dialogView
+                .findViewById(R.id.dialog_material_button_sure);
+        popCancelButton = (Button) dialogView
+                .findViewById(R.id.dialog_material_button_cancel);
+
+        popTitleTextView.setText(title);
+        popSureButton.setOnClickListener(sureClickListener);
+        popCancelButton.setOnClickListener(cancelClickListener);
+
+        popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
     public static Dialog createSaveUsDialog(final Context context, String title) {
 
 
@@ -244,8 +284,8 @@ public class Util {
         popTitleTextView = (TextView) dialogView
                 .findViewById(R.id.dialog_save_us_text_title);
 
-        copyBitAddrButton = (Button)dialogView.findViewById(R.id.dialog_save_us_button_copy_bit_addr);
-        goToPayButton = (Button)dialogView.findViewById(R.id.dialog_save_us_button_go_to_pay);
+        copyBitAddrButton = (Button) dialogView.findViewById(R.id.dialog_save_us_button_copy_bit_addr);
+        goToPayButton = (Button) dialogView.findViewById(R.id.dialog_save_us_button_go_to_pay);
 
         popSureButton = (Button) dialogView
                 .findViewById(R.id.dialog_save_us_button_sure);
@@ -261,7 +301,7 @@ public class Util {
             public void onClick(View v) {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 clipboard.setText(context.getResources().getString(R.string.bit_adder));
-                Toast.makeText(context,context.getResources().getString(R.string.has_copyed),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getResources().getString(R.string.has_copyed), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -297,13 +337,6 @@ public class Util {
         return popDialog;
 
     }
-
-
-
-
-
-
-
 
 
     public static Dialog createContactUsDialog(final Context context, String title) {
@@ -355,9 +388,6 @@ public class Util {
     }
 
 
-
-
-
     public static Dialog createLoginDialog(Context context, String title,
                                            OnClickListener sureClickListener,
                                            OnClickListener cancelClickListener) {
@@ -384,6 +414,63 @@ public class Util {
         popCancelButton.setOnClickListener(cancelClickListener);
 
         popDialog = new Dialog(context, R.style.dialog);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+    public static Dialog createImgSelectDialog(Context context, OnClickListener albumCLickListener, OnClickListener takePhotoClickListener) {
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_select_img_layout,
+                null);
+
+        ((Button) dialogView
+                .findViewById(R.id.dialog_select_img_but_album)).setOnClickListener(albumCLickListener);
+        ((Button) dialogView
+                .findViewById(R.id.dialog_select_img_but_take_photo)).setOnClickListener(takePhotoClickListener);
+
+        popDialog = new Dialog(context, R.style.dialog);
+        popDialog.setCanceledOnTouchOutside(false);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
+    public static Dialog createSMSVerifyDialog(Context context, String title,
+                                               OnClickListener sureClickListener) {
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_sms_verify_layout,
+                null);
+        ((TextView) dialogView
+                .findViewById(R.id.dialog_sms_verify_text_title)).setText(title);
+
+        ((Button) dialogView
+                .findViewById(R.id.dialog_sms_verify_button_sure)).setOnClickListener(sureClickListener);
+        ((Button) dialogView
+                .findViewById(R.id.dialog_sms_verify_button_cancel)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    popDialog.dismiss();
+                } catch (Exception e) {
+
+                }
+
+            }
+        });
+
+        popDialog = new Dialog(context, R.style.dialog);
+        popDialog.setCanceledOnTouchOutside(false);
 
         popDialog.setContentView(dialogView);
 
@@ -522,11 +609,11 @@ public class Util {
     }
 
 
-    public static Dialog createReplyDialog(Context context,String nickname,boolean lastReplyCanceled,String canceledReplyContent
-            ,OnClickListener sureClickListener,OnClickListener cancelClickListener){
+    public static Dialog createReplyDialog(Context context, String nickname, boolean lastReplyCanceled, String canceledReplyContent
+            , OnClickListener sureClickListener, OnClickListener cancelClickListener) {
 
 
-        LayoutInflater inflater = (LayoutInflater)context
+        LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.dialog_edit_layout, null);
         popTitleTextView = (TextView) dialogView
@@ -601,6 +688,29 @@ public class Util {
 
     }
 
+    public static byte[] readAllBytes(InputStream inputStream) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int nRead;
+            byte[] data = new byte[16384];
+
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+
+            return buffer.toByteArray();
+
+        } catch (Exception e) {
+
+        }
+
+        return null;
+
+    }
+
 
     public static boolean isServiceRunning(Context ctx, String filePath) {
         ActivityManager manager = (ActivityManager) ctx.getSystemService(ctx.ACTIVITY_SERVICE);
@@ -659,5 +769,24 @@ public class Util {
         }
 
         return result;
+    }
+
+    public static String getFilePath(String fileName) {
+        String folderPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/" + FOLDER_NAME;
+        File folder = new File(folderPath);
+        try {
+
+            if (!folder.exists()) {
+                folder.mkdir();
+
+            }
+            return folderPath +"/"+fileName;
+        } catch (Exception e) {
+            Log.e("create folder failed", "" + e);
+            e.printStackTrace();
+
+        }
+
+        return "";
     }
 }

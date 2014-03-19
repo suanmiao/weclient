@@ -23,11 +23,6 @@ public class SViewPager extends ViewPager {
     }
 
     public void init(DataManager mDatamanager) {
-        mDatamanager.setPagerScrollListener(new ScrollEnableListener() {
-           public void setFaceHolderRect(Rect rect){
-                childRect = rect;
-            }
-        });
 
     }
 
@@ -36,6 +31,7 @@ public class SViewPager extends ViewPager {
 
         int x = (int) event.getX();
         int y = (int) event.getY();
+        //to avoid the scroll event of the pager in specific rect
         if (childRect != null) {
             if (childRect.contains(x, y)) {
                 return false;

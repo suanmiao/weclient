@@ -26,6 +26,16 @@ public class UserBean {
     private String totalPeopleString = "";
     private String fakeIdString = "";
 
+    /*
+    about verify
+     */
+    private String verifySession = "";
+    private String phone = "";
+
+    private String ticketId = "";
+    private String ticket = "";
+
+
 
     /*
     for message push
@@ -188,6 +198,37 @@ public class UserBean {
 
     }
 
+    public String getPhone(){
+        return phone;
+    }
+
+    public void setPhone(String phone){
+        this.phone = phone;
+    }
+
+    public String getTicketId(){
+        return ticketId;
+    }
+
+    public void setTicketId(String ticketId){
+        this.ticketId = ticketId;
+    }
+
+    public String getTicket(){
+        return ticket;
+    }
+
+    public void setTicket(String ticket){
+        this.ticket = ticket;
+    }
+
+    public String getVerifySession(){
+        return verifySession;
+    }
+
+    public void setVerifySession(String verifySession){
+        this.verifySession = verifySession;
+    }
 
     public String getLastMsgId() {
         return lastMsgId;

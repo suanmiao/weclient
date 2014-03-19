@@ -1,6 +1,8 @@
 package com.suan.weclient.util.net;
 
+import org.apache.http.Header;
 import org.json.JSONObject;
+
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
+import com.suan.weclient.util.data.bean.MaterialBean;
 import com.suan.weclient.util.data.holder.AppItemHolder;
 import com.suan.weclient.util.data.holder.ChatHolder;
 import com.suan.weclient.util.data.DataManager;
@@ -20,10 +23,12 @@ import com.suan.weclient.util.data.holder.FansHolder;
 import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.data.holder.MaterialHolder;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.DataParser.ChatListParseCallback;
 import com.suan.weclient.util.net.DataParser.FansListParseCallback;
 import com.suan.weclient.util.net.DataParser.MessageListParseCallBack;
-import com.suan.weclient.util.net.DataParser.MessageResultHolder;
 import com.suan.weclient.util.net.DataParser.ParseMassDataCallBack;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetFansList;
 import com.suan.weclient.util.net.WeChatLoader.WechatGetHeadImgCallBack;
@@ -44,8 +49,8 @@ public class WechatManager {
     public static final int ACTION_SUCCESS = 1;
     public static final int ACTION_TIME_OUT = 2;
     public static final int ACTION_OTHER = 3;
-    public static final int ACTION_SPECIFICED_ERROR = 4;
-
+    public static final int ACTION_SPECIFICED_SITUATION = 4;
+    public static final int ACTION_SPECIFICED_ERROR = 5;
 
     public static final int GET_NEW_MESSAGE_COUNT_SUCCESS = 0;
 
@@ -88,33 +93,42 @@ public class WechatManager {
 
                             @Override
                             public void onBack(int resultCode, String strResult,
-                                               String slaveSid, String slaveUser) {
+                                               Header[] headers) {
                                 // TODO Auto-generated method stub
+
                                 switch (resultCode) {
                                     case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
 
                                         try {
                                             UserBean nowBean = mDataManager
                                                     .getUserGroup().get(userIndex);
-                                            int loginResult = DataParser.parseLogin(
-                                                    nowBean, strResult, slaveSid,
-                                                    slaveUser, mContext);
-                                            nowBean.setSlaveSid(slaveSid);
-                                            nowBean.setSlaveUser(slaveUser);
-                                            switch (loginResult) {
-                                                case DataParser.PARSE_SUCCESS:
-                                                    mDataManager.doLoginSuccess(nowBean);
+                                            DataParser.parseLogin(new DataParser.LoginParseCallBack() {
+                                                @Override
+                                                public void onBack(int code, UserBean userBean) {
+                                                    switch (code) {
+                                                        case DataParser.PARSE_SUCCESS:
 
-                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
-                                                    return;
+                                                            mDataManager.doLoginSuccess(userBean);
 
-                                                case DataParser.PARSE_FAILED:
+                                                            onActionFinishListener.onFinish(ACTION_SUCCESS, null);
 
+                                                            return;
 
-                                                    onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
-                                                    return;
+                                                        case DataParser.PARSE_SPECIFIC_STUATION:
 
-                                            }
+                                                            onActionFinishListener.onFinish(ACTION_SPECIFICED_SITUATION, null);
+                                                            return;
+
+                                                        case DataParser.PARSE_FAILED:
+
+                                                            onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
+                                                            return;
+
+                                                    }
+
+                                                }
+                                            }, strResult, headers, mDataManager.getUserGroup().get(userIndex));
+
                                         } catch (Exception exception) {
                                             Log.e("login parese failed", "" + exception);
 
@@ -176,6 +190,90 @@ public class WechatManager {
                 );
 
     }
+
+
+    public void getVerifyPage(final int userIndex,
+                              final String phone,
+                              final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetVerifyPage(phone, new WeChatLoader.WechatGetVerifyPageCallBack() {
+            @Override
+            public void onBack(int resultCode, String strResult, Header[] headers, String referer) {
+
+                switch (resultCode) {
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+                        try {
+                            Log.e("get verify page", "success");
+                            DataParser.parseVerifyPage(new DataParser.VerifyPageParseCallBack() {
+                                @Override
+                                public void onBack(int code, UserBean userBean) {
+                                    switch (code) {
+                                        case DataParser.PARSE_SUCCESS:
+
+                                            mDataManager.doLoginSuccess(userBean);
+
+                                            onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+
+                                            return;
+
+                                        case DataParser.PARSE_SPECIFIC_STUATION:
+
+                                            onActionFinishListener.onFinish(ACTION_SPECIFICED_SITUATION, null);
+                                            return;
+
+                                        case DataParser.PARSE_FAILED:
+
+                                            onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
+                                            return;
+
+                                    }
+
+                                }
+                            }, strResult, headers, mDataManager.getUserGroup().get(userIndex));
+
+                        } catch (Exception exception) {
+                            Log.e("login parese failed", "" + exception);
+
+                        }
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                        return;
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+
+                        return;
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+
+                        return;
+                }
+
+                onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+
+            }
+        });
+
+        WeChatLoader
+                .wechatLogin(
+
+                        new WechatLoginCallBack() {
+
+                            @Override
+                            public void onBack(int resultCode, String strResult,
+                                               Header[] headers) {
+                                // TODO Auto-generated method stub
+
+                            }
+                        }, mDataManager.getUserGroup().get(userIndex)
+                        .getUserName(),
+                        mDataManager.getUserGroup().get(userIndex).getPwd(),
+                        "", "json"
+                );
+
+    }
+
 
     public void getUserProfile(final int popDialog, final int userIndex,
                                final OnActionFinishListener onActionFinishListener) {
@@ -428,6 +526,50 @@ public class WechatManager {
 
     }
 
+
+    public void getMaterialVoice(final int userIndex, final MaterialBean materialBean,
+                                 final UserBean userBean,
+                                 final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetVoiceMaterial(
+                new WeChatLoader.WechatGetVoiceMaterialCallBack() {
+
+                    @Override
+                    public void onBack(int resultCode, byte[] bytes) {
+                        // TODO Auto-generated method stub
+                        switch (resultCode) {
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+
+                                if (bytes != null) {
+
+                                    onActionFinishListener.onFinish(ACTION_SUCCESS, bytes);
+                                } else {
+                                    onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                                }
+                                break;
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                                onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                                break;
+
+                            case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                                onActionFinishListener.onFinish(ACTION_OTHER, null);
+                                break;
+
+                        }
+
+                    }
+                }, userBean, materialBean
+        );
+
+    }
+
+
     public void getMessageImg(final int userIndex, final MessageBean messageBean, final ImageView imageView,
                               final String imgType,
                               final OnActionFinishListener onActionFinishListener) {
@@ -491,7 +633,6 @@ public class WechatManager {
 
                             case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
 
-
                                 bitmap = Util.roundCorner(bitmap, bitmap.getWidth() / 2);
 
                                 if (popDialog > DIALOG_POP_NO) {
@@ -532,6 +673,94 @@ public class WechatManager {
         );
 
     }
+
+
+    public void getMaterialImg(final int userIndex, final MaterialBean materialBean, final ImageView imageView,
+                               final String imgType,
+                               final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetMaterialImg(new WeChatLoader.WechatGetMaterialImgCallBack() {
+
+            @Override
+            public void onBack(int resultCode, Bitmap bitmap, ImageView imageView) {
+                // TODO Auto-generated method stub
+                switch (resultCode) {
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+
+                        if (bitmap != null) {
+                            imageView.setImageBitmap(bitmap);
+                            onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
+
+                        } else {
+                            onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        }
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        break;
+
+                }
+
+            }
+        }, mDataManager.getUserGroup().get(userIndex), materialBean, imageView,
+                WeChatLoader.WECHAT_URL_MESSAGE_IMG_LARGE
+        );
+
+    }
+
+
+    public void getNormalImg(final int userIndex,final String imgUrl, final ImageView imageView,
+
+                               final OnActionFinishListener onActionFinishListener) {
+
+        Log.e("get nromal img",""+imgUrl);
+
+        WeChatLoader.wechatGetNormalImg(new WeChatLoader.WechatGetNormalImgCallBack() {
+
+            @Override
+            public void onBack(int resultCode, Bitmap bitmap, ImageView imageView) {
+                // TODO Auto-generated method stub
+                switch (resultCode) {
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+
+                        if (bitmap != null) {
+                            imageView.setImageBitmap(bitmap);
+                            onActionFinishListener.onFinish(ACTION_SUCCESS, bitmap);
+
+                        } else {
+                            onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        }
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        break;
+
+                }
+
+            }
+        },imgUrl, mDataManager.getUserGroup().get(userIndex), imageView
+        );
+
+    }
+
 
     public void getMassData(final int userIndex, final int popDialog,
                             final OnActionFinishListener onActionFinishListener) {
@@ -645,12 +874,12 @@ public class WechatManager {
                                             // stub
                                             switch (code) {
                                                 case DataParser.PARSE_SUCCESS:
-                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, messageResultHolder);
                                                     mDataManager.doLoadingEnd();
 
                                                     break;
                                                 case DataParser.PARSE_FAILED:
-                                                    Log.e("get new message","parse failed");
+                                                    Log.e("get new message", "parse failed");
                                                     onActionFinishListener.onFinish(ACTION_OTHER, null);
 
                                                     break;
@@ -662,7 +891,7 @@ public class WechatManager {
 
                                         }
                                     }, strResult, mDataManager.getUserGroup().get(userIndex),
-                                            mDataManager.getMessageHolders().get(userIndex),
+                                            mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(),
                                             referer);
                                     mDataManager.doDismissAllDialog();
 
@@ -726,18 +955,15 @@ public class WechatManager {
                                 try {
 
                                     DataParser.parseNewMessage(new MessageListParseCallBack() {
-
                                         @Override
-                                        public void onBack(
-                                                MessageResultHolder messageResultHolder,
-                                                int code) {
+                                        public void onBack(MessageResultHolder messageResultHolder, int code) {
                                             // TODO
                                             // Auto-generated
                                             // method
                                             // stub
                                             switch (code) {
                                                 case DataParser.PARSE_SUCCESS:
-                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, messageResultHolder);
                                                     mDataManager.doLoadingEnd();
                                                     break;
                                                 case DataParser.PARSE_FAILED:
@@ -752,9 +978,7 @@ public class WechatManager {
                                             }
 
                                         }
-                                    }, strResult, mDataManager.getUserGroup().get(userIndex),
-                                            mDataManager.getSearchMessageHolder(),
-                                            referer);
+                                    }, strResult, mDataManager.getUserGroup().get(userIndex), mDataManager.getSearchMessageHolder().getNowMessageMode(), referer);
 
                                 } catch (Exception exception) {
                                     onActionFinishListener.onFinish(ACTION_OTHER, null);
@@ -792,16 +1016,15 @@ public class WechatManager {
 
                     case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
 
-
                         try {
 
                             DataParser.parseMaterialList(new DataParser.MaterialListParseCallBack() {
                                 @Override
-                                public void onBack(int code, MaterialHolder materialHolder) {
+                                public void onBack(int code, MaterialResultHolder materialResultHolder) {
                                     switch (code) {
                                         case DataParser.PARSE_SUCCESS:
 
-                                            onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                            onActionFinishListener.onFinish(ACTION_SUCCESS, materialResultHolder);
                                             break;
                                         case DataParser.PARSE_FAILED:
 
@@ -817,7 +1040,7 @@ public class WechatManager {
 
 
                                 }
-                            }, strResult, mDataManager.getUserGroup().get(userIndex), mDataManager.getMaterialHolder(), referer);
+                            }, begin, strResult, mDataManager.getUserGroup().get(userIndex), referer);
 
                         } catch (Exception exception) {
                             onActionFinishListener.onFinish(ACTION_OTHER, null);
@@ -865,17 +1088,34 @@ public class WechatManager {
 
                                 }
 
-                                DataParser.parseFansList(strResult, referer, mDataManager
-                                        .getFansHolders().get(userIndex), mDataManager
+                                DataParser.parseFansList(strResult, referer,
+                                        mDataManager.getFansHolders().get(userIndex).getCurrentGroupIndex()
+                                        , mDataManager
                                         .getUserGroup().get(userIndex), refresh,
                                         new FansListParseCallback() {
 
                                             @Override
-                                            public void onBack(FansHolder fansHolder,
-                                                               boolean dataChanged) {
+                                            public void onBack(FansResultHolder fansResultHolder, int code) {
                                                 // TODO Auto-generated method stub
 
-                                                onActionFinishListener.onFinish(ACTION_SUCCESS, dataChanged);
+
+                                                switch (code) {
+                                                    case DataParser.PARSE_SUCCESS:
+
+                                                        onActionFinishListener.onFinish(ACTION_SUCCESS, fansResultHolder);
+                                                        break;
+                                                    case DataParser.PARSE_FAILED:
+
+                                                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                                                        break;
+                                                    case DataParser.PARSE_SPECIFIC_ERROR:
+
+                                                        onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
+                                                        break;
+
+                                                }
+
 
                                             }
                                         });
@@ -901,7 +1141,175 @@ public class WechatManager {
     }
 
 
-    public void modifyContacts(final int userIndex, final int position,
+    public void getFansProfile(final String fakeId, final int userIndex,
+                               final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatGetContactInfo(new WeChatLoader.WechatGetContactInfoCallBack() {
+            @Override
+            public void onBack(int resultCode, String strResult) {
+
+                switch (resultCode) {
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+                        DataParser.parseFansProfile(strResult, mDataManager.getUserGroup().get(userIndex), new DataParser.ParseFansProfileCallBack() {
+                            @Override
+                            public void onBack(int code, DataParser.FansProfileHolder fansProfileHolder) {
+                                switch (code) {
+                                    case DataParser.PARSE_SUCCESS:
+
+                                        onActionFinishListener.onFinish(ACTION_SUCCESS, fansProfileHolder);
+                                        break;
+                                    case DataParser.PARSE_FAILED:
+
+                                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                                        break;
+                                    case DataParser.PARSE_SPECIFIC_ERROR:
+
+                                        onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
+                                        break;
+
+                                }
+
+
+                            }
+                        });
+
+
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+                        onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        break;
+
+                }
+
+
+            }
+        }, mDataManager.getUserGroup().get(userIndex), fakeId);
+
+    }
+
+    public void sendVefityCode(
+            final int userIndex,
+            final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatVerify(new WeChatLoader.WechatVefityCallBack() {
+            @Override
+            public void onBack(int resultCode, String strResult) {
+
+                switch (resultCode) {
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+                        Log.e("send result", strResult);
+
+                        try {
+
+                            JSONObject resultJsonObject = new JSONObject(
+                                    strResult);
+                            JSONObject stateObject = resultJsonObject.getJSONObject("base_resp");
+                            if (stateObject != null) {
+                                if (DataParser.getRet(stateObject) == WeChatLoader.WECHAT_SEND_VERIFY_CODE_OK) {
+
+                                    Toast.makeText(mContext, "发送验证码成功，请稍后查看短信",
+                                            Toast.LENGTH_SHORT).show();
+
+                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                    return;
+
+                                }
+
+                            }
+
+                        } catch (Exception exception) {
+                            Log.e("send verify result parse error", "" + exception);
+                            onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                        }
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        break;
+
+                }
+            }
+        }, WeChatLoader.VERIFY_TYPE_GET_CODE, mDataManager.getUserGroup().get(userIndex).getVerifySession(), "");
+
+    }
+
+
+    public void vefityCode(
+            final int userIndex,
+            final String code,
+            final OnActionFinishListener onActionFinishListener) {
+
+        WeChatLoader.wechatVerify(new WeChatLoader.WechatVefityCallBack() {
+            @Override
+            public void onBack(int resultCode, String strResult) {
+
+                switch (resultCode) {
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
+
+                        try {
+                            Log.e("verify result", strResult);
+
+                            JSONObject resultJsonObject = new JSONObject(
+                                    strResult);
+                            JSONObject stateObject = resultJsonObject.getJSONObject("base_resp");
+                            if (stateObject != null) {
+                                if (DataParser.getRet(stateObject) == WeChatLoader.WECHAT_SEND_VERIFY_CODE_OK) {
+
+                                    Toast.makeText(mContext, "验证成功!",
+                                            Toast.LENGTH_SHORT).show();
+
+                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                    return;
+
+                                }
+
+                            }
+
+                        } catch (Exception exception) {
+                            Log.e("send verify result parse error", "" + exception);
+                            onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                        }
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_TIMEOUT:
+
+                        onActionFinishListener.onFinish(ACTION_TIME_OUT, null);
+                        break;
+
+                    case WeChatLoader.WECHAT_RESULT_MESSAGE_ERROR_OTHER:
+
+                        onActionFinishListener.onFinish(ACTION_OTHER, null);
+                        break;
+
+                }
+            }
+        }, WeChatLoader.VERIFY_TYPE_VERIFY_CODE, mDataManager.getUserGroup().get(userIndex).getVerifySession(), code);
+
+    }
+
+
+    public void modifyContacts(final int userIndex,
                                final int action,
                                final String toFakeId, final String groupId,
                                final String remark,
@@ -1001,7 +1409,7 @@ public class WechatManager {
                                             switch (code) {
                                                 case DataParser.PARSE_SUCCESS:
 
-                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                                    onActionFinishListener.onFinish(ACTION_SUCCESS, messageResultHolder);
                                                     break;
                                                 case DataParser.PARSE_FAILED:
                                                     onActionFinishListener.onFinish(ACTION_OTHER, null);
@@ -1016,7 +1424,7 @@ public class WechatManager {
 
                                         }
                                     }, strResult, mDataManager.getUserGroup().get(userIndex),
-                                            mDataManager.getMessageHolders().get(userIndex),
+                                            mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(),
                                             referer);
 
                                 } catch (Exception exception) {
@@ -1043,7 +1451,7 @@ public class WechatManager {
 
     }
 
-    public void getAppMsgList(final int userIndex, final OnActionFinishListener onActionFinishListener) {
+    public void getAppMsgList(final int userIndex, final int begin, final OnActionFinishListener onActionFinishListener) {
         WeChatLoader.wechatGetAppListMsg(new WeChatLoader.WechatGetAppMsgListCallBack() {
             @Override
             public void onBack(int resultCode, String result) {
@@ -1051,14 +1459,28 @@ public class WechatManager {
 
                     case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
 
-
                         try {
                             DataParser.parseAppMsgList(new DataParser.AppMsgListParseCallBack() {
                                 @Override
-                                public void onBack(int code, AppItemHolder appItemHolder) {
+                                public void onBack(int code, MaterialResultHolder materialResultHolder) {
+
+                                    switch (code) {
+                                        case DataParser.PARSE_SUCCESS:
+
+                                            onActionFinishListener.onFinish(ACTION_SUCCESS, materialResultHolder);
+                                            break;
+                                        case DataParser.PARSE_FAILED:
+                                            onActionFinishListener.onFinish(ACTION_OTHER, null);
+
+                                            break;
+                                        case DataParser.PARSE_SPECIFIC_ERROR:
+
+                                            onActionFinishListener.onFinish(ACTION_SPECIFICED_ERROR, null);
+                                            break;
+                                    }
 
                                 }
-                            }, result, mDataManager.getUserGroup().get(userIndex), "");
+                            }, begin, result, mDataManager.getUserGroup().get(userIndex), "");
 
 
                         } catch (Exception exception) {
@@ -1080,7 +1502,7 @@ public class WechatManager {
                 }
 
             }
-        }, mDataManager.getUserGroup().get(userIndex));
+        }, begin, mDataManager.getUserGroup().get(userIndex));
     }
 
     public void getChatList(final int userIndex,
@@ -1160,8 +1582,8 @@ public class WechatManager {
                                         messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_LIMIT_OF_TIME);
                                         onActionFinishListener.onFinish(ACTION_SUCCESS, false);
                                         return;
-                                    }else if(ret==WeChatLoader.WECHAT_SINGLE_CHAT_FANS_NOT_RECEIVE){
-                                         messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE);
+                                    } else if (ret == WeChatLoader.WECHAT_SINGLE_CHAT_FANS_NOT_RECEIVE) {
+                                        messageBean.setSendState(MessageBean.MESSAGE_SEND_FAILED_FANS_NOT_RECEIVE);
                                         onActionFinishListener.onFinish(ACTION_SUCCESS, false);
                                         return;
 
@@ -1307,7 +1729,7 @@ public class WechatManager {
         );
     }
 
-    public void mass(final int userIndex, final String massContent,
+    public void mass(final int userIndex, final MaterialBean materialBean,
                      final OnActionFinishListener onActionFinishListener) {
 
         WeChatLoader.wechatMass(
@@ -1372,7 +1794,7 @@ public class WechatManager {
                         }
 
                     }
-                }, mDataManager.getCurrentUser(), massContent
+                }, mDataManager.getCurrentUser(), materialBean
         );
     }
 
@@ -1487,11 +1909,10 @@ public class WechatManager {
                             JSONObject retObject = resultObject.getJSONObject("base_resp");
                             int ret = DataParser.getRet(retObject);
                             if (ret == 0) {
-
                                 Gson gson = new Gson();
                                 UploadHelper.NowUploadBean nowUploadBean = (UploadHelper.NowUploadBean) gson.fromJson(result, UploadHelper.NowUploadBean.class);
                                 mDataManager.getMessageHolders().get(userIndex).getUploadHelper().setNowUploadBean(nowUploadBean);
-                                onActionFinishListener.onFinish(ACTION_SUCCESS, null);
+                                onActionFinishListener.onFinish(ACTION_SUCCESS, nowUploadBean);
 
 
                             }

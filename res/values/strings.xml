@@ -21,7 +21,42 @@
     <string name="message_star">星标消息</string>
     <string name="new_message">条新消息</string>
     <string name="new_fans">个新用户</string>
+
+    <string name="total_user_count">总用户数</string>
+    <string name="new_people">(新增 ...)</string>
+
+    <string name="new_message_count">新消息数</string>
+    <string name="new_user_count">新增用户</string>
+
+    <string name="remark_name">备注</string>
+    <string name="area">地区</string>
+    <string name="signature">签名</string>
+    <string name="group">分组</string>
+    <string name="send_message">发消息</string>
+
+    <string name="detail_information">详细信息</string>
+
+    <string name="sms_verify">短信验证</string>
+    <string name="input_verify_code">输入验证码</string>
+    <string name="null_code">请输入验证码</string>
+    <string name="invalide_length">请输入六位验证码</string>
+
+
+    <string name="send_sms">发送验证码</string>
+
 	<string name="mass">群   发</string>
+    <string name="text">文字</string>
+    <string name="img">图片</string>
+    <string name="voice">语音</string>
+    <string name="img_text">图文</string>
+    <string name="video">视频</string>
+
+    <string name="select_img">选择图片</string>
+    <string name="album">相册</string>
+    <string name="take_photo">拍照</string>
+
+
+
     <string name="start_journey">开启旅程</string>
     <string name="user">用户</string>
     <string name="chat">聊天</string>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dip"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_border_pop_gray_title"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dialog_sms_verify_text_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center"
+            android:textColor="#4c5373"
+            android:textSize="15dip" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#4f8bb5"></LinearLayout>
+
+        <RelativeLayout
+            android:layout_height="70dip"
+            android:background="#e7e7e7"
+            android:layout_width="fill_parent">
+
+            <EditText
+                android:id="@+id/dialog_sms_verify_edit_content"
+                android:layout_width="200dip"
+                android:layout_height="50dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/chat_edit_content_bg"
+                android:cursorVisible="true"
+                android:gravity="left"
+                android:hint="@string/input_verify_code"
+                android:lines="1"
+                android:paddingLeft="10dip"
+                android:paddingTop="5dip"
+                android:paddingBottom="5dip"
+                android:paddingRight="10dip"
+                android:shadowColor="#FFFFFF"
+                android:inputType="number"
+                android:textSize="25dip" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#4f8bb5"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dip"
+        android:background="@drawable/radius_border_pop_gray_bottom"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="3">
+
+            <Button
+                android:id="@+id/dialog_sms_verify_button_sure"
+                android:layout_width="140dip"
+                android:layout_height="35dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ensure_button_sure_bg"
+                android:text="@string/send_sms"
+                android:textColor="#ffffff"
+                android:textSize="15dip" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="2">
+
+            <Button
+                android:id="@+id/dialog_sms_verify_button_cancel"
+                android:layout_width="80dip"
+                android:layout_height="35dip"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ensure_button_cancel_bg"
+                android:text="@string/cancel"
+                android:textColor="#ffffff"
+                android:textSize="15dip" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

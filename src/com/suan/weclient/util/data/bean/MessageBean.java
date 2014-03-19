@@ -17,6 +17,7 @@ public class MessageBean {
     public static final int MESSAGE_TYPE_VOICE = 3;
 
     public static final int MESSAGE_TYPE_EMPTY = 4;
+    public static final int MESSAGE_TYPE_DATA = 5;
 
     private String id = "";
     private int type = -1;
@@ -82,6 +83,19 @@ public class MessageBean {
 
     public static final int MESSAGE_OWNER_ME = 1;
     public static final int MESSAGE_OWNER_HER = 2;
+
+    /*
+    about chat
+     */
+    private boolean timeTagShow = false;
+
+    public boolean getTimeTagShow(){
+        return timeTagShow;
+    }
+
+    public void setTimeTagShow(boolean timeTagShow){
+        this.timeTagShow = timeTagShow;
+    }
 
 
     public String getToken() {

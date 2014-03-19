@@ -1,7 +1,10 @@
 package com.suan.weclient.util.data.holder;
 
+import android.util.Log;
+
 import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.UploadHelper;
 import com.suan.weclient.util.net.WeChatLoader;
 
@@ -15,8 +18,9 @@ public class MessageHolder {
     private int nowMessageMode = WeChatLoader.GET_MESSAGE_MODE_ALL;
     private int contentMessageMode = WeChatLoader.GET_MESSAGE_MODE_ALL;
 
+    private int messageCount =0;
+
     private boolean holderEmpty = true;
-    private int index = -1;
 
     /*
     about file upload
@@ -24,13 +28,45 @@ public class MessageHolder {
     private UploadHelper uploadHelper;
 
 
-    public MessageHolder(UserBean userBean, int index) {
-        this.index = index;
+    public MessageHolder(UserBean userBean) {
         nowBean = userBean;
         messageBeans = new ArrayList<MessageBean>();
         addEmptyMessage();
         uploadHelper = new UploadHelper();
 
+    }
+
+    public void mergeMessageResult(MessageResultHolder messageResultHolder){
+        switch(messageResultHolder.getResultMode()){
+            case MessageResultHolder.RESULT_MODE_REFRESH:
+                contentMessageMode = messageResultHolder.getMessageMode();
+                messageBeans = messageResultHolder.getMessageBeans();
+
+                break;
+            case MessageResultHolder.RESULT_MODE_ADD:
+                contentMessageMode = messageResultHolder.getMessageMode();
+                addMessage(messageResultHolder.getMessageBeans());
+
+                break;
+        }
+
+        initMessageCount();
+    }
+
+    private void initMessageCount(){
+
+        messageCount = 0;
+        for(int i = 0;i<messageBeans.size();i++){
+            MessageBean nowBean = messageBeans.get(i);
+            if(nowBean.getType()!= MessageBean.MESSAGE_TYPE_DATA&&nowBean.getType()!= MessageBean.MESSAGE_TYPE_EMPTY){
+                messageCount++;
+            }
+        }
+
+    }
+
+    public int getMessageCount(){
+        return messageCount;
     }
 
     public void clearMessage(boolean addEmptyMessage) {
@@ -71,17 +107,13 @@ public class MessageHolder {
         return messageBeans;
     }
 
-    public void addMessage(ArrayList<MessageBean> nowArrayList) {
+    private void addMessage(ArrayList<MessageBean> nowArrayList) {
         for (int i = 0; i < nowArrayList.size(); i++) {
             messageBeans.add(nowArrayList.get(i));
         }
 
     }
 
-    public void setMessage(ArrayList<MessageBean> nowArrayList) {
-        this.messageBeans = nowArrayList;
-
-    }
 
     public void setLatestMsgId(String id) {
         latestMsgId = id;

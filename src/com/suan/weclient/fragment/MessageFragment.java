@@ -16,11 +16,12 @@ import com.suan.weclient.adapter.MessageListAdapter;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.ptr.PTRListview;
 
-public class MessageFragment extends Fragment implements
+public class MessageFragment extends BaseFragment implements
         PTRListview.OnRefreshListener, PTRListview.OnLoadListener {
     View view;
     private DataManager mDataManager;
@@ -30,9 +31,13 @@ public class MessageFragment extends Fragment implements
 
     private static final int PAGE_MESSAGE_AMOUNT = 20;
 
-    public MessageFragment() {
 
-    }
+    /*
+    about adapter list change
+     */
+    public static final int MESSAGE_NOTIFY_TYPE_ONLY_REFRESH = 2;
+    public static final int MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA = 3;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,8 +47,8 @@ public class MessageFragment extends Fragment implements
         init data
          */
 
-        MainActivity mainActivity = (MainActivity)getActivity();
-        mDataManager =((GlobalContext)mainActivity.getApplicationContext()).getDataManager();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mDataManager = ((GlobalContext) mainActivity.getApplicationContext()).getDataManager();
 
         mHandler = new MessageHandler();
         initWidgets();
@@ -88,9 +93,8 @@ public class MessageFragment extends Fragment implements
                 // TODO Auto-generated method stub
                 if (mDataManager.getUserGroup().size() == 0) {
 
-
                     Message message = new Message();
-                    message.arg1 = PTRListview.PTR_MODE_LOAD;
+                    message.arg1 = MESSAGE_NOTIFY_TYPE_ONLY_REFRESH;
                     mHandler.sendMessage(message);
 
                 }
@@ -112,30 +116,13 @@ public class MessageFragment extends Fragment implements
         mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
 
             @Override
-            public void onMessageGet(int mode) {
+            public void onMessageGet(MessageResultHolder messageResultHolder) {
                 // TODO Auto-generated method stub
 
-                Message message = new Message();
-                message.arg1 = PTRListview.PTR_MODE_LOAD;
-                mHandler.sendMessage(message);
-
-                switch (mode) {
-                    case PTRListview.PTR_MODE_REFRESH:
-
-                        messageListAdapter.updateCache();
-                        ptrListview.onRefreshComplete();
-                        ptrListview.setSelection(1);
-
-                        break;
-
-                    case PTRListview.PTR_MODE_LOAD:
-                        ptrListview.onLoadComplete();
-
-                        break;
-                }
-
-                int size = mDataManager.getCurrentMessageHolder().getMessageList().size();
-                ptrListview.setLoadEnable(size%PAGE_MESSAGE_AMOUNT==0);
+                Message notifyMessage = new Message();
+                notifyMessage.arg1 = MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA;
+                notifyMessage.obj = messageResultHolder;
+                mHandler.sendMessage(notifyMessage);
 
 
             }
@@ -180,6 +167,38 @@ public class MessageFragment extends Fragment implements
 
             super.handleMessage(msg);
 
+
+            switch (msg.arg1) {
+                case MESSAGE_NOTIFY_TYPE_ONLY_REFRESH:
+
+                    break;
+                case MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA:
+                    MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+                    mDataManager.getCurrentMessageHolder().mergeMessageResult(messageResultHolder);
+                    if (messageResultHolder != null) {
+                        switch (messageResultHolder.getResultMode()) {
+                            case MessageResultHolder.RESULT_MODE_ADD:
+
+                                ptrListview.onLoadComplete();
+                                break;
+                            case MessageResultHolder.RESULT_MODE_REFRESH:
+
+                                messageListAdapter.updateCache();
+                                ptrListview.onRefreshComplete();
+                                ptrListview.setSelection(1);
+
+                                break;
+                        }
+
+                    }
+
+                    break;
+            }
+
+
+            int size = mDataManager.getCurrentMessageHolder().getMessageCount();
+            ptrListview.setLoadEnable(size % PAGE_MESSAGE_AMOUNT == 0);
+
             ptrListview.requestLayout();
             messageListAdapter.notifyDataSetChanged();
 
@@ -206,7 +225,7 @@ public class MessageFragment extends Fragment implements
                 if (mode == PTRListview.PTR_MODE_LOAD) {
 
                     int size = mDataManager.getCurrentMessageHolder()
-                            .getMessageList().size();
+                            .getMessageCount();
 
                     // must be fuul amount of page
 
@@ -228,6 +247,8 @@ public class MessageFragment extends Fragment implements
                                         switch (code) {
                                             case WechatManager.ACTION_SUCCESS:
 
+                                                mDataManager.doMessageGet((MessageResultHolder) object);
+
                                                 break;
                                             case WechatManager.ACTION_TIME_OUT:
 
@@ -248,7 +269,7 @@ public class MessageFragment extends Fragment implements
 
                                                 break;
                                         }
-                                        mDataManager.doMessageGet(PTRListview.PTR_MODE_LOAD);
+                                        ptrListview.onLoadComplete();
 
                                         end = true;
 
@@ -272,6 +293,11 @@ public class MessageFragment extends Fragment implements
                                 public void onFinish(int code, Object object) {
                                     // TODO Auto-generated method stub
                                     switch (code) {
+                                        case WechatManager.ACTION_SUCCESS:
+                                            mDataManager.doMessageGet((MessageResultHolder) object);
+
+
+                                            break;
                                         case WechatManager.ACTION_SPECIFICED_ERROR:
                                             mDataManager.doPopEnsureDialog(true, true, "登录超时", "登录超时", new DataManager.DialogSureClickListener() {
                                                 @Override
@@ -285,7 +311,7 @@ public class MessageFragment extends Fragment implements
                                             break;
                                     }
 
-                                    mDataManager.doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                                    ptrListview.onRefreshComplete();
 
                                     end = true;
                                     mDataManager

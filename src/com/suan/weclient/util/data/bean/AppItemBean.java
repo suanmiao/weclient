@@ -13,6 +13,10 @@ public class AppItemBean {
     private String title = "";
     private String digest = "";
     private String create_time = "";
+
+    private String content_url = "";
+    private String img_url = "";
+
     private ArrayList<MultiItemBean> multi_item = new ArrayList<MultiItemBean>();
 
     public int getSeq(){
@@ -32,7 +36,17 @@ public class AppItemBean {
     }
 
     public String getDigest(){
+
+
         return digest;
+    }
+
+    public String getContent_url(){
+        return content_url;
+    }
+
+    public String getImg_url(){
+        return img_url;
     }
 
     public String getCreate_time(){
@@ -40,6 +54,7 @@ public class AppItemBean {
     }
 
     public ArrayList<MultiItemBean> getMulti_item(){
+
         return multi_item;
     }
 

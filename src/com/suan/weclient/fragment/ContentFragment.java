@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity;
@@ -31,8 +29,7 @@ import com.suan.weclient.util.data.DataManager.UserGroupListener;
 import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.view.SViewPager;
 
-public class ContentFragment extends Fragment implements
-        OnRefreshListener<ListView>, ViewPager.OnPageChangeListener {
+public class ContentFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     private View mView;
 
@@ -45,10 +42,6 @@ public class ContentFragment extends Fragment implements
     private MessageFragment messageFragment;
 
     private DataManager mDataChangeListener;
-
-    public ContentFragment(){
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -206,35 +199,6 @@ public class ContentFragment extends Fragment implements
         public void onPageSelected(int position);
     }
 
-    @Override
-    public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-        new GetDataTask(refreshView).execute();
-    }
-
-    private static class GetDataTask extends AsyncTask<Void, Void, Void> {
-
-        PullToRefreshBase<?> mRefreshedView;
-
-        public GetDataTask(PullToRefreshBase<?> refreshedView) {
-            mRefreshedView = refreshedView;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // Simulates a background job.
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            mRefreshedView.onRefreshComplete();
-            super.onPostExecute(result);
-        }
-    }
 
     @Override
     public void onPageScrollStateChanged(int position) {

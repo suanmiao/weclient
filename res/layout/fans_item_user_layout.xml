@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e9e9e9"
+    android:background="@drawable/fans_list_item_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="8"
                 android:maxLines="1"
-                android:textColor="#a6a6a6"
+                android:textColor="@color/fans_nickname_text_color"
                 android:textSize="10dip" />
 
 

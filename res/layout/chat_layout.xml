@@ -16,48 +16,61 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#f9f9f9">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="55dip"
-            android:background="#f9f9f9">
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent">
 
             <ImageButton
+                android:layout_width="fill_parent"
                 android:id="@+id/chat_button_expression"
-                android:layout_width="50dip"
-                android:layout_height="fill_parent"
+                android:layout_height="40dip"
                 android:visibility="gone"
                 android:background="@drawable/ic_launcher" />
 
-            <EditText
-                android:id="@+id/chat_edit_edit"
-                android:layout_width="0dip"
-                android:layout_height="fill_parent"
-                android:background="@drawable/chat_edit_content_bg"
-                android:layout_marginTop="5dip"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="5dip"
-                android:layout_marginBottom="5dip"
-                android:paddingTop="8dip"
-                android:paddingBottom="8dip"
-                android:paddingLeft="15dip"
-                android:paddingRight="15dip"
-                android:layout_weight="1" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/chat_edit_edit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:textSize="15dip"
+            android:maxHeight="100dip"
+            android:minHeight="42dip"
+            android:background="@drawable/chat_edit_content_bg"
+            android:layout_marginTop="5dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="5dip"
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:layout_weight="1" />
+
+
+        <RelativeLayout
+            android:layout_width="70dip"
+            android:layout_height="fill_parent">
 
             <Button
-                android:id="@+id/chat_button_send" android:layout_width="70dip"
+                android:id="@+id/chat_button_send"
+                android:layout_width="70dip"
                 android:background="@drawable/chat_send_button_bg"
-                android:layout_marginTop="5dip"
+                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="5dip"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
-                android:layout_height="fill_parent"
+                android:layout_height="40dip"
                 android:textSize="15dip"
                 android:textColor="#a1a1a1"
                 android:text="@string/send"
 
                 />
-        </LinearLayout>
+
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

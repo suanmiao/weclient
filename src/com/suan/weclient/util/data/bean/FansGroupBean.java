@@ -2,11 +2,11 @@ package com.suan.weclient.util.data.bean;
 
 public class FansGroupBean {
 	
-	private String id = "";
+	private int id = 0;
 	private String name = "";
 	private String cnt = "";
 	
-	public String getGroupId(){
+	public int getGroupId(){
 		return id;
 	}
 	

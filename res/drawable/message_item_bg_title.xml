@@ -1,53 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <!-- Drop Shadow Stack -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    >
 
-    <item>
-        <shape>
-            <padding
-                android:top="1px"
-                android:left="1px"
-                android:right="1px"
-                />
-            <solid android:color="#4ff3f3f3" />
-            <corners android:topLeftRadius="12px"
-                android:topRightRadius="12px"/>
-        </shape>
+    <item android:state_pressed="false" android:drawable="@drawable/message_item_bg_title_state"></item>
+
+    <item android:state_pressed="true" android:drawable="@drawable/message_item_bg_title_state_pressed">
+
     </item>
 
-    <item>
-        <shape>
-            <padding
-                android:left="1px"
-                android:right="1px"
-                />
-            <solid android:color="#8fe7e7e7" />
-            <corners android:topLeftRadius="11px"
-                android:topRightRadius="11px"/>
-        </shape>
-    </item>
+    <item android:drawable="@drawable/message_item_bg_middle_state_pressed">
 
-    <item>
-        <shape>
-            <padding
-                android:top="1px"
-                />
-            <solid android:color="#4ff3f3f3" />
-            <corners android:topLeftRadius="11px"
-                android:topRightRadius="11px"
-                />
-        </shape>
     </item>
-    <item>
-        <shape>
-            <padding
-                android:top="0px"
-                />
-            <solid android:color="#ffffffff" />
-            <corners android:topLeftRadius="10px"
+</selector>
 
-                android:topRightRadius="10px"
-                />
-        </shape>
-    </item>
-</layer-list>

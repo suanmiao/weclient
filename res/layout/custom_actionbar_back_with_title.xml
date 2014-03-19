@@ -14,8 +14,8 @@
             android:layout_height="fill_parent"
             android:layout_width="40dip"
             android:layout_marginLeft="5dip"
-            android:paddingTop="8dip"
-            android:paddingBottom="8dip"
+            android:paddingTop="12dip"
+            android:paddingBottom="12dip"
             android:background="#1a6294"
             android:src="@drawable/back" />
 

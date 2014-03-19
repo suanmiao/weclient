@@ -16,6 +16,9 @@ import com.suan.weclient.util.data.holder.FansHolder;
 import com.suan.weclient.util.data.holder.ImgHolder;
 import com.suan.weclient.util.data.holder.MaterialHolder;
 import com.suan.weclient.util.data.holder.MessageHolder;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.util.voice.VoiceManager;
@@ -32,6 +35,9 @@ public class DataManager {
     private MessageHolder searchMessageHolder;
     private MaterialHolder materialHolder;
 
+    private String FansProfileFakeId = "";
+
+
     private ListLoadingListener listLoadingListener;
 
     ArrayList<AutoLoginListener> autoLoginListeners;
@@ -39,6 +45,7 @@ public class DataManager {
     ArrayList<ChatItemChangeListener> chatItemChangeListeners;
     ArrayList<FansListChangeListener> fansListChangeListeners;
     ArrayList<ProfileGetListener> profileGetListeners;
+    ArrayList<MaterialGetListener> materialGetListeners;
     ArrayList<MassDataGetListener> massDataGetListeners;
     ArrayList<LoginListener> loginListeners;
     DialogListener dialogListener;
@@ -69,7 +76,6 @@ public class DataManager {
     private PagerListener pagerListener;
     private TabListener tabListener;
 
-    private SViewPager.ScrollEnableListener scrollEnableListener;
 
     private ProfileFragment.UserListControlListener userListControlListener;
 
@@ -103,6 +109,7 @@ public class DataManager {
         chatItemChangeListeners = new ArrayList<DataManager.ChatItemChangeListener>();
         fansListChangeListeners = new ArrayList<DataManager.FansListChangeListener>();
         profileGetListeners = new ArrayList<DataManager.ProfileGetListener>();
+        materialGetListeners = new ArrayList<MaterialGetListener>();
         massDataGetListeners = new ArrayList<MassDataGetListener>();
         loginListeners = new ArrayList<DataManager.LoginListener>();
         userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
@@ -115,7 +122,7 @@ public class DataManager {
         messageHolders = new ArrayList<MessageHolder>();
         fansHolders = new ArrayList<FansHolder>();
         for (int i = 0; i < userBeans.size(); i++) {
-            messageHolders.add(new MessageHolder(userBeans.get(i),i));
+            messageHolders.add(new MessageHolder(userBeans.get(i)));
             fansHolders.add(new FansHolder(userBeans.get(i)));
         }
 
@@ -139,7 +146,7 @@ public class DataManager {
                 if (!exist) {
                     UserBean newBean = newGroupArrayList.get(i);
                     //add the user to the head
-                    messageHolders.add(0, new MessageHolder(newBean,0));
+                    messageHolders.add(0, new MessageHolder(newBean));
                     fansHolders.add(0, new FansHolder(newBean));
                     userBeans.add(0, newBean);
                     //must reset the index to zero ,to login the new user
@@ -286,7 +293,7 @@ public class DataManager {
     }
 
     public void createSearch(UserBean userBean){
-        searchMessageHolder = new MessageHolder(userBean,getCurrentPosition());
+        searchMessageHolder = new MessageHolder(userBean);
 
     }
 
@@ -305,6 +312,14 @@ public class DataManager {
     public void createImgHolder(MessageBean messageBean,UserBean userBean){
         this.imgHolder = new ImgHolder(messageBean,userBean);
 
+    }
+
+    public void setFansProfileFakeId(String fansProfileFakeId){
+        this.FansProfileFakeId = fansProfileFakeId;
+    }
+
+    public String getFansProfileFakeId(){
+        return FansProfileFakeId;
     }
 
     public ImgHolder getImgHolder(){
@@ -350,6 +365,11 @@ public class DataManager {
     }
 
 
+    public void addMaterialChangeListener(
+            MaterialGetListener materialGetListener) {
+        this.materialGetListeners.add(materialGetListener);
+    }
+
     public void addProfileGetListener(ProfileGetListener profileGetListener) {
         this.profileGetListeners.add(profileGetListener);
 
@@ -383,6 +403,7 @@ public class DataManager {
     public void setLoadingListener(DialogListener dialogListener) {
 
         this.dialogListener = dialogListener;
+
     }
 
 
@@ -411,9 +432,16 @@ public class DataManager {
         }
     }
 
-    public void doMessageGet(int mode) {
+    public void doMessageGet(MessageResultHolder messageResultHolder) {
         for (int i = 0; i < messageGetListeners.size(); i++) {
-            messageGetListeners.get(i).onMessageGet( mode);
+            messageGetListeners.get(i).onMessageGet(messageResultHolder);
+        }
+    }
+
+
+    public void doMaterialGet(int type,MaterialResultHolder materialResultHolder) {
+        for (int i = 0; i < materialGetListeners.size(); i++) {
+            materialGetListeners.get(i).onMaterialGet(type,materialResultHolder);
         }
     }
 
@@ -430,9 +458,9 @@ public class DataManager {
     }
 
 
-    public void doFansGet(int mode) {
+    public void doFansGet(FansResultHolder fansResultHolder) {
         for (int i = 0; i < fansListChangeListeners.size(); i++) {
-            fansListChangeListeners.get(i).onFansGet(mode);
+            fansListChangeListeners.get(i).onFansGet(fansResultHolder);
         }
     }
 
@@ -506,7 +534,7 @@ public class DataManager {
 
     public interface MessageGetListener {
 
-        public void onMessageGet(int loadMode);
+        public void onMessageGet(MessageResultHolder messageResultHolder);
     }
 
     public interface ChatItemChangeListener {
@@ -518,7 +546,7 @@ public class DataManager {
     }
 
     public interface FansListChangeListener {
-        public void onFansGet(int mode);
+        public void onFansGet(FansResultHolder fansResultHolder);
     }
 
 
@@ -526,6 +554,11 @@ public class DataManager {
         public void onGet(UserBean userBean);
     }
 
+    public interface MaterialGetListener {
+
+        public void onMaterialGet(int type,MaterialResultHolder materialResultHolder);
+
+    }
 
     public interface MassDataGetListener {
         public void onGet(UserBean userBean);
@@ -606,16 +639,6 @@ public class DataManager {
         return tabListener;
     }
 
-    public void setPagerScrollListener(SViewPager.ScrollEnableListener scrollEnableListener) {
-        this.scrollEnableListener = scrollEnableListener;
-    }
-
-    public void setPagerScrollDisableRect(Rect rect) {
-        if (scrollEnableListener != null) {
-            scrollEnableListener.setFaceHolderRect(rect);
-        }
-
-    }
 
     public interface  ListLoadingListener{
         public void onLoadStart();

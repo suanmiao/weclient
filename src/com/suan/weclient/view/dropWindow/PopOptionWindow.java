@@ -11,6 +11,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.FansGroupBean;
 import com.suan.weclient.util.data.holder.FansHolder;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.view.ptr.PTRListview;
 
@@ -45,7 +46,7 @@ public class PopOptionWindow extends PopupWindow {
     private void initListener() {
         mDataManager.addFansListChangeListener(new DataManager.FansListChangeListener() {
             @Override
-            public void onFansGet(int mode) {
+            public void onFansGet(FansResultHolder fansResultHolder) {
                 getData();
 
             }
@@ -58,21 +59,53 @@ public class PopOptionWindow extends PopupWindow {
             if (position == 0) {
                 //all
                 mDataManager.getCurrentFansHolder().setCurrentGroupIndex(-1);
-                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(), new WechatManager.OnActionFinishListener() {
+                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "", new WechatManager.OnActionFinishListener() {
                     @Override
                     public void onFinish(int code, Object object) {
-                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
+
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
+
+                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                break;
+                            case WechatManager.ACTION_TIME_OUT:
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                break;
+                        }
+
 
                     }
                 });
 
             } else {
                 mDataManager.getCurrentFansHolder().setCurrentGroupIndex(position - 1);
-                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(), new WechatManager.OnActionFinishListener() {
+                mDataManager.getWechatManager().getFansList(0, mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "", new WechatManager.OnActionFinishListener() {
                     @Override
                     public void onFinish(int code, Object object) {
 
-                        mDataManager.doFansGet(PTRListview.PTR_MODE_REFRESH);
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
+
+                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                break;
+                            case WechatManager.ACTION_TIME_OUT:
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                break;
+                        }
                     }
                 });
 

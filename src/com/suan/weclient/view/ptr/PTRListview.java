@@ -1,6 +1,7 @@
 package com.suan.weclient.view.ptr;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,18 +115,6 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
         ptrHeaderCircleImageView = (ImageView) headerView.findViewById(R.id.ptr_header_circle);
 
 
-        //get height of head,cause it has not been measured yet
-
-        headerContentHeight = (int)Util.dipToPx(60,getResources());
-
-        //hide the head
-        headerView.setPadding(0, -1 * headerContentHeight, 0, 0);
-
-
-        //set header to listview
-        addHeaderView(headerView, null, false);
-
-
         super.setOnScrollListener(this);
 
 
@@ -156,16 +145,30 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
         //if catch the event
         catchMotionEvent = false;
 
+
+        //get height of head,cause it has not been measured yet
+
+        headerContentHeight = (int) Util.dipToPx(60, getResources());
+
+        //hide the head
+        headerView.setPadding(0, -1 * headerContentHeight, 0, 0);
+
+
+        //set header to listview
+        addHeaderView(headerView, null, false);
+
         /*
         about footer layout
          */
         footerLayout = (LinearLayout) inflater.inflate(R.layout.ptr_loading_layout, null);
-        addFooterView(footerLayout);
+
 
         footerCircleImageView = (ImageView) footerLayout.findViewById(R.id.ptr_footer_circle);
-        footerHeight = (int)Util.dipToPx(60,getResources());
-        footerLayout.setPadding(0, 0, 0, -footerHeight);
+        footerHeight = (int) Util.dipToPx(60, getResources());
 
+        footerLayout.setPadding(0, 0, 0, -footerHeight);
+//        footerLayout.setVisibility(View.INVISIBLE);
+        addFooterView(footerLayout);
 
     }
 
@@ -221,7 +224,6 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
 
                             } else {
                                 state = DONE;
-                                Log.e("refresh","done");
                                 changeHeaderViewByState();
 
                             }
@@ -266,11 +268,8 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
     }
 
     private void changeHeaderViewByState() {
-/*        if(headerContentHeight==0){
-            measureView(headerView);
-            headerContentHeight = headerView.getMeasuredHeight();
-        }
- */       switch (state) {
+
+        switch (state) {
             case RELEASE_TO_REFRESH:
 
                 ptrHeaderArrowImageView.setVisibility(View.VISIBLE);
@@ -324,6 +323,16 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
                 break;
         }
     }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        try {
+            super.dispatchDraw(canvas);
+        } catch (IndexOutOfBoundsException e) {
+            // samsung error
+        }
+    }
+
 /*
 
     //measure the width and height for head layout
@@ -377,8 +386,8 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
     public void onRefreshStart() {
 
         state = REFRESHING;
-
         changeHeaderViewByState();
+
     }
 
     public void onRefreshComplete() {
@@ -387,6 +396,7 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
     }
 
     public void onLoadStart() {
+
         loading = true;
         footerLayout.setPadding(0, 0, 0, 0);
         footerCircleImageView.clearAnimation();
@@ -430,9 +440,9 @@ public class PTRListview extends ListView implements AbsListView.OnScrollListene
         int nowLastVisibileItem = firstVisibleItem + visibleItemCount;
         if (nowLastVisibileItem == totalItemCount
                 && lastLastVisibleItem != totalItemCount
-                && totalItemCount >= visibleItemCount
-                &&totalItemCount>2) {
+                && totalItemCount > 3) {
             if (loadEnable && !loading) {
+
                 prepareLoad();
             }
         }

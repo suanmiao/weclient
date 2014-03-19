@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.view.ptr.PTRListview;
@@ -51,10 +52,21 @@ public class SMainDropListWindow extends PopupWindow {
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
-                            mDataManager
-                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
-                            mDataManager
-                                    .doAutoLoginEnd();
+                            switch (code) {
+                                case WechatManager.ACTION_SUCCESS:
+                                    mDataManager
+                                            .doMessageGet((MessageResultHolder) object);
+                                    mDataManager
+                                            .doAutoLoginEnd();
+
+                                    break;
+                                case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
 
                         }
                     });
@@ -67,8 +79,21 @@ public class SMainDropListWindow extends PopupWindow {
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
-                            mDataManager
-                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                            switch (code) {
+                                case WechatManager.ACTION_SUCCESS:
+                                    mDataManager
+                                            .doMessageGet((MessageResultHolder) object);
+                                    mDataManager
+                                            .doAutoLoginEnd();
+
+                                    break;
+                                case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
 
                         }
                     });
@@ -81,8 +106,21 @@ public class SMainDropListWindow extends PopupWindow {
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
-                            mDataManager
-                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                            switch (code) {
+                                case WechatManager.ACTION_SUCCESS:
+                                    mDataManager
+                                            .doMessageGet((MessageResultHolder) object);
+                                    mDataManager
+                                            .doAutoLoginEnd();
+
+                                    break;
+                                case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
                         }
                     });
 
@@ -93,8 +131,21 @@ public class SMainDropListWindow extends PopupWindow {
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
-                            mDataManager
-                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                            switch (code) {
+                                case WechatManager.ACTION_SUCCESS:
+                                    mDataManager
+                                            .doMessageGet((MessageResultHolder) object);
+                                    mDataManager
+                                            .doAutoLoginEnd();
+
+                                    break;
+                                case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
                         }
                     });
 
@@ -105,8 +156,21 @@ public class SMainDropListWindow extends PopupWindow {
                     mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_CANCELABLE, mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
-                            mDataManager
-                                    .doMessageGet(PTRListview.PTR_MODE_REFRESH);
+                            switch (code) {
+                                case WechatManager.ACTION_SUCCESS:
+                                    mDataManager
+                                            .doMessageGet((MessageResultHolder) object);
+                                    mDataManager
+                                            .doAutoLoginEnd();
+
+                                    break;
+                                case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
                         }
                     });
 

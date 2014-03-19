@@ -86,6 +86,7 @@ public class ChatActivity extends SherlockActivity {
             @Override
             public void onClick(View v) {
                 ChatActivity.this.finish();
+                ChatActivity.this.overridePendingTransition(R.anim.activity_movein_from_left_anim,R.anim.activity_moveout_to_right_anim);
             }
         });
 
@@ -345,17 +346,10 @@ public class ChatActivity extends SherlockActivity {
         }
     }
 
-
-    @SuppressLint("ShowToast")
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 按下键盘上返回按钮
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            overridePendingTransition(R.anim.activity_movein_from_left_anim,R.anim.activity_moveout_to_right_anim);
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
+    @Override
+    public void finish(){
+        super.finish();
+        overridePendingTransition(R.anim.activity_movein_from_left_anim,R.anim.activity_moveout_to_right_anim);
     }
 
 

@@ -6,101 +6,194 @@
 
     <LinearLayout
         android:id="@+id/mass_layout_mass"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
         android:layout_width="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
+            android:background="@drawable/shape_radius_mass_header_bg"
             android:layout_width="fill_parent"
-            android:layout_height="180dip">
+            android:orientation="horizontal"
+            android:layout_height="40dip">
 
-            <EditText
-                android:id="@+id/mass_edit_mass"
-                android:layout_width="fill_parent"
-                android:layout_height="180dip"
-                android:layout_marginBottom="10dip"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-                android:layout_marginTop="20dip"
-                android:paddingLeft="8dip"
-                android:paddingRight="8dip"
-                android:paddingTop="8dip"
-                android:paddingBottom="8dip"
-                android:background="@drawable/shape_radius_mass_bg"
-                android:capitalize="sentences"
-                android:gravity="top|left"
-                android:imeOptions="actionDone"
-                android:isScrollContainer="true"
-                android:minLines="8"
-                android:singleLine="false"
-                android:textSize="13dip"
-                android:textColor="#000000" />
+            <RelativeLayout
+                android:id="@+id/mass_layout_index_first"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:background="@drawable/mass_index_bg_left"
+                android:clickable="true"
+                android:layout_height="fill_parent">
 
-            <ImageView
-                android:id="@+id/mass_button_face_show"
-                android:visibility="gone"
-                android:layout_height="20dip"
-                android:layout_width="40dip"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginBottom="15dip"
-                android:layout_marginLeft="25dip"
-                android:background="@drawable/send_button_sure_bg"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/mass_text_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="15dip"
-                android:layout_marginRight="25dip"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:background="@drawable/shape_radius_gray_bg"
-                android:text="0 x" />
-        </RelativeLayout>
+                    <ImageView
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:background="@drawable/mass_index_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/text"
+                        android:textSize="12dip"
+                        android:textColor="@color/mass_index_text_color" />
+
+                </LinearLayout>
 
 
-        <com.suan.weclient.view.Face.FaceHolderView
-            android:id="@+id/face_holder_view"
-            android:visibility="gone"
-            android:layout_height="100dip"
-            android:layout_marginTop="5dip"
-            android:layout_width="match_parent">
+            </RelativeLayout>
 
-        </com.suan.weclient.view.Face.FaceHolderView>
+
+            <RelativeLayout
+                android:id="@+id/mass_layout_index_second"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:clickable="true" android:background="@drawable/mass_index_bg_middle"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:background="@drawable/mass_index_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/img"
+                        android:textSize="12dip"
+                        android:textColor="@color/mass_index_text_color" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/mass_layout_index_third"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:background="@drawable/mass_index_bg_middle"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:background="@drawable/mass_index_voice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/voice"
+                        android:textSize="12dip"
+                        android:textColor="@color/mass_index_text_color" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/mass_layout_index_forth"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:background="@drawable/mass_index_bg_middle"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:background="@drawable/mass_index_app" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/img_text"
+                        android:textSize="12dip"
+                        android:textColor="@color/mass_index_text_color" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/mass_layout_index_fifth"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:background="@drawable/mass_index_bg_right"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="25dip"
+                        android:layout_height="25dip"
+                        android:background="@drawable/mass_index_video" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/video"
+                        android:textSize="12dip"
+                        android:textColor="@color/mass_index_text_color" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mass_layout_content"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/mass_text_left_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mass_layout_mass"
-        android:layout_marginLeft="30dip"
-        android:textColor="#9c584f"
-        android:textSize="13dip" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:layout_below="@+id/mass_text_left_num"
-        android:layout_marginLeft="30dip"
-        android:text="@string/mass_declare"
-        android:textColor="#9c584f"
-        android:textSize="13dip" />
-
-
-    <Button
-        android:id="@+id/mass_button_send"
-        android:layout_width="100dip"
-        android:layout_height="40dip"
-        android:layout_alignParentRight="true"
-        android:text="@string/send"
-        android:textColor="#ffffff"
-        android:layout_below="@+id/mass_layout_mass"
-        android:layout_marginRight="15dip"
-        android:background="@drawable/send_button_sure_bg" />
 </RelativeLayout>

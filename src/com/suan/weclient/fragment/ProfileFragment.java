@@ -42,7 +42,7 @@ import com.umeng.update.UpdateResponse;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BaseFragment {
 
     private DataManager mDataManager;
     private View view;
@@ -64,14 +64,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-    public ProfileFragment() {
-
-    }
-/*
-    public ProfileFragment(DataManager dataManager) {
-
-        mDataManager = dataManager;
-    }*/
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

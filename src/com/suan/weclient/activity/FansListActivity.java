@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,7 +16,6 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.suan.weclient.R;
 import com.suan.weclient.adapter.FansListAdapter;
 import com.suan.weclient.util.GlobalContext;
@@ -23,6 +23,8 @@ import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.FansListChangeListener;
+import com.suan.weclient.util.data.holder.resultHolder.FansResultHolder;
+import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.view.actionbar.CustomFansActionView;
 import com.suan.weclient.view.ptr.PTRListview;
@@ -36,6 +38,13 @@ public class FansListActivity extends SherlockActivity implements
     private DataManager mDataManager;
     private FansHandler fansHandler;
     private static final int PAGE_FANS = 10;
+
+    /*
+    about adapter list change
+     */
+    public static final int MESSAGE_NOTIFY_TYPE_ONLY_REFRESH = 2;
+    public static final int MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA = 3;
+
 
     public void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -90,18 +99,32 @@ public class FansListActivity extends SherlockActivity implements
 
         mDataManager.doListLoadStart();
         mDataManager.getWechatManager().getFansList(0,
-                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "",
                 new OnActionFinishListener() {
 
                     @Override
                     public void onFinish(int code, Object object) {
                         // TODO Auto-generated method stub
 
-                        Message message = new Message();
-                        message.obj = object;
-                        message.arg1 = PTRListview.PTR_MODE_REFRESH;
+                        switch (code) {
+                            case WechatManager.ACTION_SUCCESS:
 
-                        fansHandler.sendMessage(message);
+                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                break;
+                            case WechatManager.ACTION_TIME_OUT:
+
+                                break;
+                            case WechatManager.ACTION_OTHER:
+
+                                break;
+                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+
+                                break;
+                        }
+                        ptrListview.onRefreshComplete();
+
 
                     }
                 });
@@ -117,19 +140,14 @@ public class FansListActivity extends SherlockActivity implements
         mDataManager.addFansListChangeListener(new FansListChangeListener() {
 
             @Override
-            public void onFansGet(int mode) {
+            public void onFansGet(FansResultHolder fansResultHolder) {
                 // TODO Auto-generated method stub
 
-                switch (mode) {
-                    case PTRListview.PTR_MODE_LOAD:
-                        ptrListview.onLoadComplete();
-                        break;
-                    case PTRListview.PTR_MODE_REFRESH:
+                Message notifyMessage = new Message();
+                notifyMessage.arg1 = MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA;
+                notifyMessage.obj = fansResultHolder;
+                fansHandler.sendMessage(notifyMessage);
 
-                        ptrListview.onRefreshComplete();
-                        break;
-                }
-                fansListAdapter.notifyDataSetChanged();
 
             }
         });
@@ -169,8 +187,39 @@ public class FansListActivity extends SherlockActivity implements
             // TODO Auto-generated method stub
 
             super.handleMessage(msg);
-            mDataManager.doListLoadEnd();
-            mDataManager.doFansGet(msg.arg1);
+            switch (msg.arg1) {
+                case MESSAGE_NOTIFY_TYPE_ONLY_REFRESH:
+
+                    break;
+                case MESSAGE_NOTIFY_TYPE_REFRESH_WITH_NEW_DATA:
+                    FansResultHolder messageResultHolder = (FansResultHolder) msg.obj;
+                    mDataManager.getCurrentFansHolder().mergeFansResult(messageResultHolder);
+                    if (messageResultHolder != null) {
+                        switch (messageResultHolder.getResultMode()) {
+                            case FansResultHolder.RESULT_MODE_ADD:
+
+                                ptrListview.onLoadComplete();
+                                break;
+                            case FansResultHolder.RESULT_MODE_REFRESH:
+
+                                fansListAdapter.updateCache();
+                                ptrListview.onRefreshComplete();
+                                ptrListview.setSelection(1);
+
+                                break;
+                        }
+
+                    }
+
+                    break;
+            }
+
+
+            int size = mDataManager.getCurrentFansHolder().getFansCount();
+
+            ptrListview.setLoadEnable(size % PAGE_FANS == 0);
+            ptrListview.requestLayout();
+            fansListAdapter.notifyDataSetChanged();
 
         }
     }
@@ -198,8 +247,7 @@ public class FansListActivity extends SherlockActivity implements
             try {
                 if (mode == PTR_MODE_LOAD) {
 
-                    if (mDataManager.getCurrentFansHolder().getFansBeans()
-                            .size()
+                    if (mDataManager.getCurrentFansHolder().getFansCount()
                             % PAGE_FANS != 0) {
                         end = true;
                         mRefreshedView.onLoadComplete();
@@ -208,17 +256,31 @@ public class FansListActivity extends SherlockActivity implements
                                 .getFansBeans().size() / 10;
 
                         mDataManager.getWechatManager().getFansList(page,
-                                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                                mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "",
                                 new OnActionFinishListener() {
 
                                     @Override
                                     public void onFinish(int code, Object object) {
                                         // TODO Auto-generated method stub
-                                        Message message = new Message();
-                                        message.obj = object;
-                                        message.arg1 = PTRListview.PTR_MODE_LOAD;
+                                        switch (code) {
+                                            case WechatManager.ACTION_SUCCESS:
 
-                                        fansHandler.sendMessage(message);
+                                                mDataManager.doFansGet((FansResultHolder) object);
+
+                                                break;
+                                            case WechatManager.ACTION_TIME_OUT:
+
+                                                break;
+                                            case WechatManager.ACTION_OTHER:
+
+                                                break;
+                                            case WechatManager.ACTION_SPECIFICED_ERROR:
+
+
+                                                break;
+                                        }
+                                        ptrListview.onLoadComplete();
+
                                         end = true;
 
                                     }
@@ -227,7 +289,7 @@ public class FansListActivity extends SherlockActivity implements
                     }
                 } else if (mode == PTR_MODE_REFRESH) {
                     mDataManager.getWechatManager().getFansList(0,
-                            mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId(),
+                            mDataManager.getCurrentPosition(), mDataManager.getCurrentFansHolder().getCurrentGroupId() + "",
 
                             new OnActionFinishListener() {
 
@@ -235,11 +297,24 @@ public class FansListActivity extends SherlockActivity implements
                                 @Override
                                 public void onFinish(int code, Object object) {
                                     // TODO Auto-generated method stub
-                                    Message message = new Message();
-                                    message.obj = object;
-                                    message.arg1 = PTRListview.PTR_MODE_REFRESH;
+                                    switch (code) {
+                                        case WechatManager.ACTION_SUCCESS:
 
-                                    fansHandler.sendMessage(message);
+                                            mDataManager.doFansGet((FansResultHolder) object);
+
+                                            break;
+                                        case WechatManager.ACTION_TIME_OUT:
+
+                                            break;
+                                        case WechatManager.ACTION_OTHER:
+
+                                            break;
+                                        case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                                            break;
+                                    }
+                                    ptrListview.onRefreshComplete();
+
                                     end = true;
 
                                 }
@@ -286,18 +361,13 @@ public class FansListActivity extends SherlockActivity implements
         }
     }
 
-    @SuppressLint("ShowToast")
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 按下键盘上返回按钮
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
-    }
 
+    @Override
+    public void finish() {
+        super.finish();
+
+        overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+    }
 
 
 }

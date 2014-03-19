@@ -614,17 +614,12 @@ public class SettingActivity extends SherlockActivity {
         return result;
     }
 
-    @SuppressLint("ShowToast")
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 按下键盘上返回按钮
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
-            return true;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
-    }
 
+    @Override
+    public void finish() {
+        super.finish();
+
+        overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+    }
 
 }

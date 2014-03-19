@@ -26,11 +26,14 @@ import android.widget.Toast;
 
 import com.suan.weclient.R;
 import com.suan.weclient.activity.ChatActivity;
+import com.suan.weclient.activity.FansListActivity;
+import com.suan.weclient.activity.FansProfileActivity;
 import com.suan.weclient.activity.ShowImgActivity;
 import com.suan.weclient.util.ListCacheManager;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.MessageBean;
+import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -59,6 +62,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
      */
     private boolean lastReplyCanceled = false;
 
+    private ItemViewHolder dataItemHolder;
+
     public MessageListAdapter(Activity activity, DataManager dataManager) {
         this.mInflater = LayoutInflater.from(activity);
         this.mDataManager = dataManager;
@@ -70,6 +75,36 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             @Override
             public void onChange(int oldIndex, int nowIndex) {
                 notifyDataSetChanged();
+            }
+
+        });
+
+        mDataManager.addProfileGetListener(new DataManager.ProfileGetListener() {
+            @Override
+            public void onGet(UserBean userBean) {
+                try {
+                    UserBean currentUser = userBean;
+
+                    dataItemHolder.newPeopleTextView.setText(currentUser.getNewPeople());
+                    dataItemHolder.totalPeopleTextView.setText(currentUser.getTotalPeople());
+                    dataItemHolder.newMsgTextView.setText(currentUser.getNewMessage());
+                    dataItemHolder.userLayout.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent jumbIntent = new Intent();
+                            jumbIntent.setClass(mActivity, FansListActivity.class);
+                            mActivity.startActivity(jumbIntent);
+                            mActivity.overridePendingTransition(R.anim.activity_movein_from_left_anim, R.anim.activity_moveout_to_right_anim);
+
+                        }
+                    });
+
+
+                } catch (Exception e) {
+
+                }
+
+
             }
         });
     }
@@ -132,6 +167,13 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         null);
 
                 break;
+            case MessageBean.MESSAGE_TYPE_DATA:
+
+                convertView = mInflater.inflate(R.layout.message_item_data_layout,
+
+                        null);
+
+                break;
 
 
             default:
@@ -161,11 +203,13 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         private View parentView;
 
+        private LinearLayout headerLayout;
         private ImageView profileImageView;
         private TextView profileTextView;
         private TextView timeTextView;
         private TextView hasReplyTextView;
 
+        private LinearLayout contentLayout;
         private ImageView contentImageView;
         private TextView contentTextView;
         private RelativeLayout voicePlayLayout;
@@ -180,6 +224,12 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         private RelativeLayout replyLayout, starLayout;
         private ImageView replyButton, starImageButton;
+
+        /*
+        about data layout
+         */
+        private TextView totalPeopleTextView, newMsgTextView, newPeopleTextView;
+        private LinearLayout userLayout;
 
 
         /*
@@ -241,6 +291,9 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                     dataLoaded = true;
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
+
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_text_img_profile);
                     profileTextView = (TextView) parentView
@@ -275,6 +328,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                 case MessageBean.MESSAGE_TYPE_IMG:
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_img_img_profile);
                     profileTextView = (TextView) parentView
@@ -305,6 +360,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                 case MessageBean.MESSAGE_TYPE_VOICE:
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_voi_img_profile);
                     profileTextView = (TextView) parentView
@@ -340,9 +397,19 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
                     break;
 
+                case MessageBean.MESSAGE_TYPE_DATA:
+                    newPeopleTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_new_user);
+                    newMsgTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_new_message);
+                    totalPeopleTextView = (TextView) parentView.findViewById(R.id.message_item_data_text_total_user);
+                    userLayout = (LinearLayout) parentView.findViewById(R.id.message_item_data_layout_user);
+
+                    break;
+
                 default:
 
 
+                    headerLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_header);
+                    contentLayout = (LinearLayout) parentView.findViewById(R.id.message_item_layout_content);
                     profileImageView = (ImageView) parentView
                             .findViewById(R.id.message_item_text_img_profile);
                     profileTextView = (TextView) parentView
@@ -414,7 +481,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                         Intent jumbIntent = new Intent();
                         jumbIntent.setClass(mActivity, ChatActivity.class);
                         mActivity.startActivity(jumbIntent);
-                        mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
+                        mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
 
                     }
                 });
@@ -437,6 +504,31 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             case MessageBean.MESSAGE_TYPE_EMPTY:
 
                 break;
+            case MessageBean.MESSAGE_TYPE_DATA:
+
+                dataItemHolder = holder;
+
+                if (mDataManager.getCurrentUser() != null) {
+                    UserBean currentUser = mDataManager.getCurrentUser();
+
+                    holder.newPeopleTextView.setText(currentUser.getNewPeople());
+                    holder.totalPeopleTextView.setText(currentUser.getTotalPeople());
+                    holder.newMsgTextView.setText(currentUser.getNewMessage());
+                    holder.userLayout.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent jumbIntent = new Intent();
+                            jumbIntent.setClass(mActivity, FansListActivity.class);
+                            mActivity.startActivity(jumbIntent);
+                            mActivity.overridePendingTransition(R.anim.activity_movein_from_left_anim, R.anim.activity_moveout_to_right_anim);
+
+                        }
+                    });
+
+
+                }
+
+                break;
 
             default:
 
@@ -446,8 +538,8 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
         MessageBean currentBean = getMessageItems().get(position);
 
-        if (currentBean.getType() != MessageBean.MESSAGE_TYPE_EMPTY) {
-            holder.parentView.setOnClickListener(new OnClickListener() {
+        if (currentBean.getType() != MessageBean.MESSAGE_TYPE_EMPTY && currentBean.getType() != MessageBean.MESSAGE_TYPE_DATA) {
+/*            holder.parentView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDataManager.createChat(mDataManager.getCurrentUser(),
@@ -455,10 +547,45 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
                     Intent jumbIntent = new Intent();
                     jumbIntent.setClass(mActivity, ChatActivity.class);
                     mActivity.startActivity(jumbIntent);
-                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
+                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+                }
+
+
+            });
+ */
+
+            holder.headerLayout.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
+                    String fakeId = getMessageItems().get(position).getFakeId();
+                    mDataManager.setFansProfileFakeId(fakeId);
+                    Intent jumbIntent = new Intent();
+                    jumbIntent.setClass(mActivity, FansProfileActivity.class);
+                    mActivity.startActivity(jumbIntent);
+                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+
 
                 }
             });
+
+            holder.contentLayout.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDataManager.createChat(mDataManager.getCurrentUser(),
+                            getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
+                    Intent jumbIntent = new Intent();
+                    jumbIntent.setClass(mActivity, ChatActivity.class);
+                    mActivity.startActivity(jumbIntent);
+                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim, R.anim.activity_moveout_to_left_anim);
+
+                }
+            });
+
 
             holder.replyLayout.setOnClickListener(new OnClickListener() {
 
@@ -510,21 +637,6 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
 
             holder.hasReplyTextView.setVisibility((Integer.parseInt(currentBean.getHasReply()) == 1) ? View.VISIBLE : View.GONE);
 
-
-            holder.profileImageView.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-                    mDataManager.createChat(mDataManager.getCurrentUser(),
-                            getMessageItems().get(position).getFakeId(), getMessageItems().get(position).getNickName());
-                    Intent jumbIntent = new Intent();
-                    jumbIntent.setClass(mActivity, ChatActivity.class);
-                    mActivity.startActivity(jumbIntent);
-                    mActivity.overridePendingTransition(R.anim.activity_movein_from_right_anim,R.anim.activity_moveout_to_left_anim);
-
-                }
-            });
 
             holder.profileTextView.setText(""
                     + currentBean.getNickName());
@@ -750,6 +862,9 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View v;
+//        v = newView(position);
+
+
         if (!mListCacheManager.containView(getMessageId(position))) {
             v = newView(position);
             mListCacheManager.putView(v, getMessageId(position));
@@ -758,9 +873,12 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
             v = mListCacheManager.getView(getMessageId(position));
 
         }
+
+
         bindView(v, position);
 
         return v;
+
     }
 
     public void popReply(final MessageBean messageBean) {

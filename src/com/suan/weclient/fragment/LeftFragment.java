@@ -44,7 +44,7 @@ import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
 import com.suan.weclient.util.net.images.ImageCacheManager;
 
-public class LeftFragment extends Fragment {
+public class LeftFragment extends BaseFragment {
 
     private FragmentManager mFragmentManager;
     private ProfileFragment profileFragment;
@@ -58,9 +58,6 @@ public class LeftFragment extends Fragment {
     private ImageView showListView;
     private DataManager mDataManager;
 
-    public LeftFragment() {
-
-    }
 /*
 
     public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {

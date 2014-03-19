@@ -6,11 +6,13 @@
 
 
     <LinearLayout
+        android:id="@+id/message_item_layout_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
+        android:clickable="true"
         android:background="@drawable/message_item_bg_title"
         android:orientation="horizontal">
 
@@ -75,9 +77,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/message_item_layout_content"
         android:layout_width="fill_parent"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
+        android:clickable="true"
         android:background="@drawable/message_item_bg_middle"
         android:layout_height="wrap_content">
 

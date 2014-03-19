@@ -23,6 +23,7 @@ import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.PagerListener;
 import com.suan.weclient.util.data.bean.UserBean;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.view.dropWindow.SMainDropListWindow;
 
@@ -92,7 +93,7 @@ public class CustomMainActionView extends LinearLayout {
         });
         mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
             @Override
-            public void onMessageGet(int mode) {
+            public void onMessageGet(MessageResultHolder messageResultHolder) {
                 dismissDropDownWindow();
                 switch (mDataManager.getCurrentMessageHolder().getNowMessageMode()) {
                     case WeChatLoader.GET_MESSAGE_MODE_ALL:

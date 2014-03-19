@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	
+	<item>
+		<shape>
+			<padding
+				android:bottom="5dip"
+				android:left="5dip"
+				android:right="5dip"
+				android:top="5dip" />
+			<solid android:color="@color/chat_item_time_bg_color" />
+			<corners android:radius="5dip"/>
+		</shape>
+	</item>
+		
+</layer-list>

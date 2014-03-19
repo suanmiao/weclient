@@ -16,11 +16,23 @@
     <color name="drop_window_background_color">#1a6294</color>
     <color name="drop_item_divider_color">#19557a</color>
 
+    <color name="fans_nickname_text_color">#a6a6a6</color>
+    <color name="fans_new_people_text_color">#f1afb0</color>
+
+    <color name="fans_profile_index_text_color">#676767</color>
+    <color name="fans_profile_content_text_color">#a6a6a6</color>
 
     <color name="actionbar_bg_color">#1a6294</color>
     <color name="actionbar_bg_pressed_color">#3787b8</color>
 
+    <color name="mass_index_text_color">#676767</color>
+    <color name="mass_content_border_color">#9e9e9e</color>
+    <color name="mass_text_edit_color">#ffffff</color>
 
+    <color name="mass_face_bg_color">#b7b7b7</color>
+
+    <color name="chat_item_time_bg_color">#ffcccccc</color>
+    <color name="chat_item_time_text_color">#ffffff</color>
 
     <color name="setting_checkbox_normal">#b4b4b4</color>
     <color name="setting_checkbox_pressed">#4f9acf</color>
