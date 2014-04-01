@@ -37,6 +37,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,6 +65,7 @@ import com.suan.weclient.util.voice.VoiceManager;
 import com.suan.weclient.view.ptr.PTRListview;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRefreshListener, PTRListview.OnLoadListener {
 
@@ -77,35 +80,16 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
     private TextView voiceInfoTextView;
 
 
-    private LinearLayout recordLayout;
     private LinearLayout selectLayout;
 
+    private TextView clickToUploadTextView;
+    private RelativeLayout uploadLayout;
+    private ImageView uploadLoadingView;
+    private Animation uploadCircleAnimation;
+    private boolean uploading = false;
 
-    private Button uploadButton;
 
-
-    /*
-
-     */
-    // 音频获取源
-    private int audioSource = MediaRecorder.AudioSource.MIC;
-    // 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
-    private static int sampleRateInHz = 16000;
-    // 设置音频的录制的声道CHANNEL_IN_STEREO为双声道，CHANNEL_CONFIGURATION_MONO为单声道
-    private static int channelConfig = AudioFormat.CHANNEL_IN_STEREO;
-    // 音频数据格式:PCM 16位每个样本。保证设备支持。PCM 8位每个样本。不一定能得到设备支持。
-    private static int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
-    // 缓冲区字节大小
-    private int bufferSizeInBytes = 0;
-    private AudioRecord audioRecord;
-    private boolean isRecord = false;// 设置正在录制的状态
-    //AudioName裸音频数据文件
-    private String rawAudioPath = "";
-    //NewAudioName可播放的音频文件
     private String wavAudioPath = "";
-
-    private RecorderThread recorderThread;
-
 
     /*
     common
@@ -121,14 +105,7 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
 
 
     private VoiceHolder selectedVoiceHolder;
-
     private MaterialHandler mHandler;
-
-
-    public static final int REQUEST_CODE_SELECT_PHOTO = 5;
-    public static final int REQUEST_CODE_TAKE_PHOTO = 6;
-    public static final int REQUEST_CODE_SELECT_VOICE = 7;
-
 
 
     private static final int PAGE_MESSAGE_AMOUNT = 10;
@@ -147,11 +124,11 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
          */
         MainActivity mainActivity = (MainActivity) getActivity();
 
+
         mDataManager = ((GlobalContext) mainActivity.getApplicationContext()).getDataManager();
 
         initWidgets();
         initListener();
-        initRecorder();
         return view;
     }
 
@@ -191,95 +168,99 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
             }
         });
 
-    }
-
-    private void initRecorder() {
-
-
-        // 获得缓冲区字节大小
-        bufferSizeInBytes = AudioRecord.getMinBufferSize(sampleRateInHz,
-                channelConfig, audioFormat);
-        // 创建AudioRecord对象
-        audioRecord = new AudioRecord(audioSource, sampleRateInHz,
-                channelConfig, audioFormat, bufferSizeInBytes);
-
-    }
-
-
-    private void startRecord() {
-        if(audioRecord==null){
-            initRecorder();
-        }
-        audioRecord.startRecording();
-        Log.e("record", "start");
-        // 让录制状态为true
-        isRecord = true;
-        // 开启音频文件写入线程
-        rawAudioPath = Util.getFilePath("record.raw");
-
-        wavAudioPath = Util.getFilePath("record.wav");
-
-        recorderThread = new RecorderThread(audioRecord, bufferSizeInBytes, sampleRateInHz, rawAudioPath, wavAudioPath);
-        recorderThread.setRecording(true);
-        new Thread(recorderThread).start();
-
-    }
-
-    private void stopRecord() {
-        if (audioRecord != null) {
-            Log.e("record", "stop");
-            isRecord = false;
-            try {
-                recorderThread.setRecording(false);
-
-            } catch (Exception e) {
-                e.printStackTrace();
+        mDataManager.addRecordListener(new RecorderThread.RecordListener() {
+            @Override
+            public void onRecordStart(int type) {
 
             }
-            audioRecord.stop();
-            audioRecord.release();//释放资源
-            audioRecord = null;
-        }
+
+            @Override
+            public void onRecordFinish(int type, String filePath, long playLength) {
+                if (type == RecorderThread.RECORD_TYPE_MASS) {
+                    wavAudioPath = filePath;
+                    setContentVoice(playLength);
+                    uploadLayout.setVisibility(View.VISIBLE);
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onRecordError(int type) {
+
+            }
+        });
+
     }
 
+    private void setUploadingView(boolean uploading) {
+        this.uploading = uploading;
+        if (uploading) {
+            clickToUploadTextView.setVisibility(View.INVISIBLE);
+            uploadLoadingView.setVisibility(View.VISIBLE);
+            uploadLoadingView.startAnimation(uploadCircleAnimation);
+
+        } else {
+            clickToUploadTextView.setVisibility(View.VISIBLE);
+            uploadLoadingView.clearAnimation();
+            uploadLoadingView.setVisibility(View.GONE);
+
+        }
+    }
 
     private void initWidgets() {
 
-        uploadButton = (Button) view.findViewById(R.id.mass_voice_but_upload);
+        clickToUploadTextView = (TextView) view.findViewById(R.id.mass_voice_text_click_to_upload);
+        uploadLayout = (RelativeLayout) view.findViewById(R.id.mass_voice_layout_upload);
+        uploadLoadingView = (ImageView) view.findViewById(R.id.mass_voice_img_upload_circle);
+        uploadCircleAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.loading_animation);
+        uploadLayout.setVisibility(View.GONE);
 
-        uploadButton.setOnClickListener(new OnClickListener() {
+        uploadLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (uploading) {
+                    Toast.makeText(getActivity(), "正在上传，请稍后再点击", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (wavAudioPath.length() > 1) {
+
+                    setUploadingView(true);
                     mDataManager.getWechatManager().getUploadInfo(mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
 
                             switch (code) {
                                 case WechatManager.ACTION_SUCCESS:
-                                    Log.e("upload info ", "ok");
                                     Toast.makeText(getActivity(), "准备成功", Toast.LENGTH_SHORT).show();
 
                                     mDataManager.getWechatManager().uploadImg(mDataManager.getCurrentPosition(), wavAudioPath, new WechatManager.OnActionFinishListener() {
                                         @Override
                                         public void onFinish(int code, Object object) {
 
+                                            setUploadingView(false);
 
                                             switch (code) {
                                                 case WechatManager.ACTION_SUCCESS:
-                                                    Log.e("upload  ", "ok");
                                                     Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
-                                                    UploadHelper.NowUploadBean nowUploadBean = (UploadHelper.NowUploadBean)object;
-                                                    selectedBean = new MaterialBean(nowUploadBean.getContent(),MaterialBean.MATERIAL_TYPE_VOICE);
+                                                    UploadHelper.NowUploadBean nowUploadBean = (UploadHelper.NowUploadBean) object;
+                                                    selectedBean = new MaterialBean(nowUploadBean.getContent(), MaterialBean.MATERIAL_TYPE_VOICE);
+                                                    uploadLayout.setVisibility(View.GONE);
                                                     break;
                                                 case WechatManager.ACTION_TIME_OUT:
 
+                                                    Toast.makeText(getActivity(), "上传失败，请求超时", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case WechatManager.ACTION_OTHER:
 
+                                                    Toast.makeText(getActivity(), "上传失败，网路错误", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case WechatManager.ACTION_SPECIFICED_ERROR:
 
+                                                    Toast.makeText(getActivity(), "上传失败", Toast.LENGTH_SHORT).show();
 
                                                     break;
                                             }
@@ -290,12 +271,18 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
                                     break;
                                 case WechatManager.ACTION_TIME_OUT:
 
+                                    Toast.makeText(getActivity(), "上传准备失败，请求超时", Toast.LENGTH_SHORT).show();
+                                    setUploadingView(false);
                                     break;
                                 case WechatManager.ACTION_OTHER:
 
+                                    Toast.makeText(getActivity(), "上传准备失败，网路错误", Toast.LENGTH_SHORT).show();
+                                    setUploadingView(false);
                                     break;
                                 case WechatManager.ACTION_SPECIFICED_ERROR:
 
+                                    Toast.makeText(getActivity(), "上传准备失败", Toast.LENGTH_SHORT).show();
+                                    setUploadingView(false);
 
                                     break;
                             }
@@ -311,41 +298,54 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
         voicePlayLayout = (RelativeLayout) view.findViewById(R.id.mass_voice_layout_play);
         playImageView = (ImageView) view.findViewById(R.id.mass_voice_button_play);
         voiceInfoTextView = (TextView) view.findViewById(R.id.mass_voice_text_info);
-
-        recordLayout = (LinearLayout) view.findViewById(R.id.mass_voice_layout_record);
-
-        recordLayout.setOnTouchListener(new View.OnTouchListener() {
+        voicePlayLayout.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
+            public void onClick(View v) {
+                if (selectedVoiceHolder != null) {
 
-                        recordLayout.setBackgroundResource(R.drawable.icon);
-                        if (!isRecord) {
-                            startRecord();
+                    if (selectedVoiceHolder.getPlaying()) {
+                        mDataManager.getVoiceManager().stopMusic();
 
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
+                    } else {
 
-                        recordLayout.setBackgroundResource(R.drawable.icon);
-                        if (!isRecord) {
-                            startRecord();
+                        mDataManager.getVoiceManager().playVoice(
+                                selectedVoiceHolder.getBytes(),
+                                selectedVoiceHolder.getPlayLength(),
+                                selectedVoiceHolder.getLength(),
+                                new VoiceManager.AudioPlayListener() {
 
-                        }
+                                    @Override
+                                    public void onAudioStop() {
+                                        // TODO Auto-generated method stub
 
-                        break;
-                    default:
+                                        selectedVoiceHolder.setPlaying(false);
 
-                        recordLayout.setBackgroundResource(R.drawable.remark_edit);
-                        if(isRecord){
-                            stopRecord();
-                        }
+                                        playImageView.setSelected(false);
 
-                        break;
+                                    }
+
+                                    @Override
+                                    public void onAudioStart() {
+                                        // TODO Auto-generated method stub
+                                        selectedVoiceHolder.setPlaying(true);
+                                        playImageView.setSelected(true);
+
+                                    }
+
+                                    @Override
+                                    public void onAudioError() {
+                                        // TODO Auto-generated method stub
+
+                                    }
+                                });
+
+                    }
+                } else {
+
+                    popOptionDialog();
+
                 }
 
-                return true;
             }
         });
 
@@ -354,7 +354,8 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
             @Override
             public void onClick(View v) {
 
-                popMaterialList();
+                popOptionDialog();
+
             }
         });
 
@@ -392,8 +393,45 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setContentVoice();
+
+    }
+
+    private void popOptionDialog() {
+
+        popDialog = Util.createVoiceSelectDialog(getActivity(), new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        try {
+                            mDataManager.getRecordLayoutControlListener().onLayoutShow();
+
+                        } catch (Exception e) {
+
+                        }
+                        popDialog.dismiss();
+
+
+                    }
+                }, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popDialog.dismiss();
+                        popMaterialList();
+
+                    }
+                }
+        );
+        popDialog.show();
+
+    }
+
     private void setContentVoice() {
-        if (selectedHolder.getDataLoaded()) {
+        if (selectedHolder != null && selectedHolder.getDataLoaded()) {
             selectedVoiceHolder = (VoiceHolder) selectedHolder.getData();
 
             int playLength = Integer.parseInt(selectedHolder.getMaterialBean().getPlay_length());
@@ -409,46 +447,51 @@ public class MassVoiceFragment extends BaseFragment implements PTRListview.OnRef
             voiceInfoTextView.setText(info);
 
 
-            if (selectedVoiceHolder.getPlaying()) {
-                mDataManager.getVoiceManager().stopMusic();
+        } else if (selectedVoiceHolder != null) {
 
-            } else {
-
-                mDataManager.getVoiceManager().playVoice(
-                        selectedVoiceHolder.getBytes(),
-                        selectedVoiceHolder.getPlayLength(),
-                        selectedVoiceHolder.getLength(),
-                        new VoiceManager.AudioPlayListener() {
-
-                            @Override
-                            public void onAudioStop() {
-                                // TODO Auto-generated method stub
-
-                                selectedVoiceHolder.setPlaying(false);
-
-                                playImageView.setSelected(false);
-
-                            }
-
-                            @Override
-                            public void onAudioStart() {
-                                // TODO Auto-generated method stub
-                                selectedVoiceHolder.setPlaying(true);
-                                playImageView.setSelected(true);
-
-                            }
-
-                            @Override
-                            public void onAudioError() {
-                                // TODO Auto-generated method stub
-
-                            }
-                        });
+            int playLength = selectedVoiceHolder.getPlayLength();
+            int seconds = playLength / 1000;
+            int minutes = seconds / 60;
+            int leaveSecond = seconds % 60;
+            String info = "";
+            if (minutes != 0) {
+                info += minutes + "'";
             }
 
-        } else {
+            info += " " + leaveSecond + "'";
+            voiceInfoTextView.setText(info);
+        }
+
+    }
+
+    private void setContentVoice(long playLengthHa) {
+
+        try {
+
+            int playLength = (int) playLengthHa;
+
+            File file = new File(wavAudioPath);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            byte[] data = new byte[(int) file.length()];
+            fileInputStream.read(data);
+            selectedVoiceHolder = new VoiceHolder(data, playLength + "", data.length + "");
+
+            int seconds = playLength / 1000;
+            int minutes = seconds / 60;
+            int leaveSecond = seconds % 60;
+            String info = "";
+            if (minutes != 0) {
+                info += minutes + "'";
+            }
+
+            info += " " + leaveSecond + "'";
+            voiceInfoTextView.setText(info);
+
+
+        } catch (Exception e) {
 
         }
+
 
     }
 

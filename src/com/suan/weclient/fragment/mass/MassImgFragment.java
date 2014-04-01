@@ -24,7 +24,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -33,10 +32,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +45,7 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.adapter.MaterialListAdapter;
 import com.suan.weclient.fragment.BaseFragment;
+import com.suan.weclient.fragment.MassFragment;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
@@ -53,6 +54,7 @@ import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
 import com.suan.weclient.util.net.UploadHelper;
 import com.suan.weclient.util.net.WechatManager;
+import com.suan.weclient.util.voice.ImgUtil;
 import com.suan.weclient.view.ptr.PTRListview;
 
 import java.io.File;
@@ -69,9 +71,14 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
     private ImageView contentImageView;
     private LinearLayout editContentLayout;
 
+    private TextView clickToUploadTextView;
 
-    private Button uploadButton;
-    private ProgressBar uploadBar;
+    private RelativeLayout uploadLayout;
+    private ImageView uploadLoadingView;
+    private Animation uploadCircleAnimation;
+    private boolean uploading = false;
+
+    private MassFragment.SelectPhotoListener selectPhotoListener;
 
 
     /*
@@ -89,10 +96,6 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
     private MaterialHandler mHandler;
 
 
-    public static final int REQUEST_CODE_SELECT_PHOTO = 5;
-    public static final int REQUEST_CODE_TAKE_PHOTO = 6;
-
-    public static final String UPLOAD_IMG_NAME = "ImgToUpload.jpg";
     private String capturedImageName = "";
 
     private static final int PAGE_MESSAGE_AMOUNT = 10;
@@ -118,6 +121,7 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
         initListener();
         return view;
     }
+
 
     private void initListener() {
 
@@ -157,46 +161,70 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
 
     }
 
+    private void setUploadingView(boolean uploading) {
+        this.uploading = uploading;
+        if (uploading) {
+            clickToUploadTextView.setVisibility(View.INVISIBLE);
+            uploadLoadingView.setVisibility(View.VISIBLE);
+            uploadLoadingView.startAnimation(uploadCircleAnimation);
+
+        } else {
+            clickToUploadTextView.setVisibility(View.VISIBLE);
+            uploadLoadingView.clearAnimation();
+            uploadLoadingView.setVisibility(View.GONE);
+
+        }
+    }
+
     private void initWidgets() {
 
-        uploadButton = (Button) view.findViewById(R.id.mass_img_but_upload);
-        uploadBar = (ProgressBar) view.findViewById(R.id.mass_img_progress_upload);
-
-        uploadButton.setOnClickListener(new OnClickListener() {
+        clickToUploadTextView = (TextView)view.findViewById(R.id.mass_img_text_click_to_upload);
+        uploadLayout = (RelativeLayout) view.findViewById(R.id.mass_img_layout_upload);
+        uploadLoadingView = (ImageView) view.findViewById(R.id.mass_img_img_upload_circle);
+        uploadCircleAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.loading_animation);
+        uploadLayout.setVisibility(View.GONE);
+        uploadLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (uploading) {
+                    Toast.makeText(getActivity(), "正在上传，请稍后再点击", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (capturedImageName.length() > 1) {
-                    uploadBar.setVisibility(View.VISIBLE);
+                    setUploadingView(true);
                     mDataManager.getWechatManager().getUploadInfo(mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
 
                             switch (code) {
                                 case WechatManager.ACTION_SUCCESS:
-                                    Log.e("upload info ", "ok");
 
                                     Toast.makeText(getActivity(), "准备完成", Toast.LENGTH_SHORT).show();
 
                                     mDataManager.getWechatManager().uploadImg(mDataManager.getCurrentPosition(), capturedImageName, new WechatManager.OnActionFinishListener() {
                                         @Override
                                         public void onFinish(int code, Object object) {
+                                            setUploadingView(false);
 
                                             switch (code) {
                                                 case WechatManager.ACTION_SUCCESS:
-                                                    Log.e("upload  ", "ok");
                                                     Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
                                                     UploadHelper.NowUploadBean uploadBean = (UploadHelper.NowUploadBean) object;
-                                                    selectedBean = new MaterialBean(uploadBean.getContent(),MaterialBean.MATERIAL_TYPE_IMG);
+                                                    selectedBean = new MaterialBean(uploadBean.getContent(), MaterialBean.MATERIAL_TYPE_IMG);
+                                                    uploadLayout.setVisibility(View.GONE);
 
                                                     break;
                                                 case WechatManager.ACTION_TIME_OUT:
 
+                                                    Toast.makeText(getActivity(), "上传失败，请求超时", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case WechatManager.ACTION_OTHER:
 
+                                                    Toast.makeText(getActivity(), "上传失败，网路错误", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case WechatManager.ACTION_SPECIFICED_ERROR:
 
+                                                    Toast.makeText(getActivity(), "上传失败", Toast.LENGTH_SHORT).show();
 
                                                     break;
                                             }
@@ -205,13 +233,18 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
 
                                     break;
                                 case WechatManager.ACTION_TIME_OUT:
+                                    setUploadingView(false);
 
+                                    Toast.makeText(getActivity(), "上传准备失败，请求超时", Toast.LENGTH_SHORT).show();
                                     break;
                                 case WechatManager.ACTION_OTHER:
+                                    setUploadingView(false);
 
+                                    Toast.makeText(getActivity(), "上传准备失败，网路错误", Toast.LENGTH_SHORT).show();
                                     break;
                                 case WechatManager.ACTION_SPECIFICED_ERROR:
-
+                                    setUploadingView(false);
+                                    Toast.makeText(getActivity(), "上传准备失败", Toast.LENGTH_SHORT).show();
 
                                     break;
                             }
@@ -219,6 +252,9 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
                         }
                     });
 
+                } else {
+
+                    Toast.makeText(getActivity(), "请选择图片", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -226,46 +262,20 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
 
         contentLayout = (RelativeLayout) view.findViewById(R.id.mass_img_layout_content);
         contentImageView = (ImageView) view.findViewById(R.id.mass_img_img_content);
-        contentLayout.setOnClickListener(new OnClickListener() {
+
+        editContentLayout = (LinearLayout) view.findViewById(R.id.mass_img_layout_edit);
+        contentImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                popDialog = Util.createImgSelectDialog(getActivity(), new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                                photoPickerIntent.setType("image/*");
-                                startActivityForResult(photoPickerIntent, REQUEST_CODE_SELECT_PHOTO);
-                                popDialog.dismiss();
-
-                            }
-                        }, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                String uploadImgPath = Util.getFilePath(UPLOAD_IMG_NAME);
-                                File out = new File(uploadImgPath);
-                                capturedImageName = out.getAbsolutePath();
-                                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
-                                startActivityForResult(i, REQUEST_CODE_TAKE_PHOTO);
-
-
-                                popDialog.dismiss();
-
-                            }
-                        }
-                );
-                popDialog.show();
+                dialogChoose();
 
             }
         });
 
-        editContentLayout = (LinearLayout) view.findViewById(R.id.mass_img_layout_edit);
-
         editContentLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                popMaterialList();
+                dialogChoose();
 
             }
         });
@@ -303,6 +313,79 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
 
     }
 
+    public void setSelectPhotoListener(MassFragment.SelectPhotoListener selectPhotoListener) {
+        this.selectPhotoListener = selectPhotoListener;
+    }
+
+    public void setCapturedImageName(String imagePath) {
+        this.capturedImageName = imagePath;
+
+        try {
+
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4;
+            Bitmap selectedImageBitmap = BitmapFactory.decodeFile(capturedImageName, options);
+            ImgUtil.prepareBitmap(capturedImageName, new ImgUtil.OnImgPrepareListener() {
+                @Override
+                public void onPrepareFinished(ImgUtil.ImgPrepareResuleHolder imgPrepareResuleHolder) {
+                    Log.e("fuck", "" + imgPrepareResuleHolder);
+                    if (imgPrepareResuleHolder != null) {
+                        contentImageView.setImageBitmap(imgPrepareResuleHolder.getBitmap());
+                        capturedImageName = imgPrepareResuleHolder.getFilePath();
+
+                    }
+
+                }
+            });
+
+            contentImageView.setImageBitmap(selectedImageBitmap);
+            uploadLayout.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+
+            Log.e("parse selected photo error", "" + e);
+
+        }
+    }
+
+    private void dialogChoose() {
+        popDialog = Util.createImgSelectDialog(getActivity(), new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (selectPhotoListener != null) {
+                            selectPhotoListener.onSelectFromAlbum();
+                        }
+
+                        popDialog.dismiss();
+
+                    }
+                }, new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        if (selectPhotoListener != null) {
+                            selectPhotoListener.onTakePhoto();
+                        }
+                        popDialog.dismiss();
+
+                    }
+                },
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popDialog.dismiss();
+                        popMaterialList();
+
+                    }
+                }
+        );
+
+        popDialog.show();
+
+    }
+
     private void dialogEnsureMass() {
 
         if (selectedBean == null) {
@@ -322,60 +405,6 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
-        switch (requestCode) {
-            case REQUEST_CODE_SELECT_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                        Cursor cursor = getActivity().getContentResolver().query(
-                                selectedImage, filePathColumn, null, null, null);
-                        cursor.moveToFirst();
-
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        capturedImageName = cursor.getString(columnIndex);
-                        cursor.close();
-
-                        Bitmap selectedImageBitmap = BitmapFactory.decodeFile(capturedImageName);
-                        contentImageView.setImageBitmap(selectedImageBitmap);
-                        Log.e("get bitmap ", "" + selectedImageBitmap);
-                    } catch (Exception e) {
-                        Log.e("parse selected photo error", "" + e);
-
-                    }
-
-
-                }
-                break;
-            case REQUEST_CODE_TAKE_PHOTO:
-
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-
-                        Log.e("get take photo uri", "" + capturedImageName);
-                        Bitmap capturedBitmap = BitmapFactory.decodeFile(capturedImageName);
-                        contentImageView.setImageBitmap(capturedBitmap);
-
-
-                    } catch (Exception e) {
-
-                        Log.e("parse selected photo error", "" + e);
-
-                    }
-
-                }
-
-                break;
-        }
-    }
-
-
     private void mass() {
         mDataManager.doLoadingStart("发送中", WechatManager.DIALOG_POP_CANCELABLE);
         mDataManager.getWechatManager().mass(mDataManager.getCurrentPosition(),
@@ -384,7 +413,6 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
             @Override
             public void onFinish(int code, Object object) {
                 // TODO Auto-generated method stub
-
 
                 mDataManager.doPopEnsureDialog(false, true, "恭喜", "群发成功",
                         new DataManager.DialogSureClickListener() {
@@ -452,7 +480,7 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
 
     private void popMaterialList() {
         mDataManager.createMaterialHolder(mDataManager.getCurrentUser());
-        popDialog = Util.createMaterialListDialog(getActivity(), "Img", new OnClickListener() {
+        popDialog = Util.createMaterialListDialog(getActivity(), "图片素材", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         MaterialListAdapter.ItemViewHolder holder = materialListAdapter.getSelectedHolder();
@@ -461,6 +489,7 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
                             selectedHolder = holder;
                             selectedBean = holder.getMaterialBean();
                             setContentImg();
+                            uploadLayout.setVisibility(View.GONE);
                             popDialog.dismiss();
                         } else {
                             Toast.makeText(getActivity(), "请选择内容", Toast.LENGTH_LONG).show();
@@ -488,7 +517,6 @@ public class MassImgFragment extends BaseFragment implements PTRListview.OnRefre
         new GetDataTask(ptrListview, PTRListview.PTR_MODE_REFRESH).execute();
 
         popDialog.show();
-
 
     }
 

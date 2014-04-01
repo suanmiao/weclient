@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#5e5e5e"
                 android:text="Name"
-                android:textSize="18dip" />
+                android:textSize="14dip" />
 
 
             <LinearLayout

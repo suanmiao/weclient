@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,6 +21,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.renderscript.FieldPacker;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -47,6 +49,7 @@ import org.apache.http.HeaderIterator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilePermission;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -421,7 +424,7 @@ public class Util {
 
     }
 
-    public static Dialog createImgSelectDialog(Context context, OnClickListener albumCLickListener, OnClickListener takePhotoClickListener) {
+    public static Dialog createImgSelectDialog(Context context, OnClickListener albumCLickListener, OnClickListener takePhotoClickListener, OnClickListener chooseMaterialClickListener) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -433,14 +436,41 @@ public class Util {
         ((Button) dialogView
                 .findViewById(R.id.dialog_select_img_but_take_photo)).setOnClickListener(takePhotoClickListener);
 
+        ((Button) dialogView
+                .findViewById(R.id.dialog_select_img_but_choose_material)).setOnClickListener(chooseMaterialClickListener);
         popDialog = new Dialog(context, R.style.dialog);
-        popDialog.setCanceledOnTouchOutside(false);
+        popDialog.setCanceledOnTouchOutside(true);
 
         popDialog.setContentView(dialogView);
 
         return popDialog;
 
     }
+
+
+    public static Dialog createVoiceSelectDialog(Context context, OnClickListener recordCLickListener,  OnClickListener chooseMaterialClickListener) {
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_select_voice_layout,
+                null);
+
+        ((Button) dialogView
+                .findViewById(R.id.dialog_select_voice_but_record)).setOnClickListener(recordCLickListener);
+        ((Button) dialogView
+                .findViewById(R.id.dialog_select_voice_but_select_material)).setOnClickListener(chooseMaterialClickListener);
+
+        popDialog = new Dialog(context, R.style.dialog);
+        popDialog.setCanceledOnTouchOutside(true);
+
+        popDialog.setContentView(dialogView);
+
+        return popDialog;
+
+    }
+
+
+
 
 
     public static Dialog createSMSVerifyDialog(Context context, String title,
@@ -549,6 +579,12 @@ public class Util {
     public static float dipToPx(int dip, Resources resources) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
                 resources.getDisplayMetrics());
+    }
+
+
+    public static int convertDipToPixels(float dips,Resources resources)
+    {
+        return (int) (dips * resources.getDisplayMetrics().density + 0.5f);
     }
 
     public static int getScreenHeight(Resources resources) {
@@ -771,6 +807,9 @@ public class Util {
         return result;
     }
 
+
+
+
     public static String getFilePath(String fileName) {
         String folderPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/" + FOLDER_NAME;
         File folder = new File(folderPath);
@@ -780,7 +819,7 @@ public class Util {
                 folder.mkdir();
 
             }
-            return folderPath +"/"+fileName;
+            return folderPath + "/" + fileName;
         } catch (Exception e) {
             Log.e("create folder failed", "" + e);
             e.printStackTrace();
@@ -788,5 +827,14 @@ public class Util {
         }
 
         return "";
+    }
+
+    public static String checkImgUrl(String imgUrl){
+        if(imgUrl.length()>6&&!imgUrl.substring(0,6).contains("http")){
+            imgUrl = "https://mp.weixin.qq.com"+imgUrl;
+
+        }
+
+        return imgUrl;
     }
 }

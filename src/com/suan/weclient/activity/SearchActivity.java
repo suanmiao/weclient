@@ -29,6 +29,7 @@ import com.suan.weclient.adapter.SearchListAdapter;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WeChatLoader;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
@@ -45,6 +46,9 @@ public class SearchActivity extends Activity {
     private PTRListview ptrListview;
     private SearchListAdapter searchListAdapter;
     private SearchHandler searchHandler;
+
+    private static final int MSG_ONLY_REFRESH = 3;
+    private static final int MSG_REFRESH_WITH_DATA = 4;
 
 
     @Override
@@ -78,8 +82,35 @@ public class SearchActivity extends Activity {
             // TODO Auto-generated method stub
 
             super.handleMessage(msg);
-            ptrListview.requestLayout();
+
+            switch (msg.arg1) {
+                case MSG_REFRESH_WITH_DATA:
+                    MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
+                    mDataManager.getSearchMessageHolder().mergeMessageResult(messageResultHolder);
+                    if (messageResultHolder != null) {
+                        switch (messageResultHolder.getResultMode()) {
+                            case MessageResultHolder.RESULT_MODE_ADD:
+
+                                ptrListview.onLoadComplete();
+                                break;
+                            case MessageResultHolder.RESULT_MODE_REFRESH:
+
+                                ptrListview.onRefreshComplete();
+                                ptrListview.setSelection(1);
+
+                                break;
+                        }
+
+                    }
+                    break;
+                case MSG_ONLY_REFRESH:
+                    mDataManager.getSearchMessageHolder().clearMessage(false);
+
+                    break;
+            }
+
             searchListAdapter.notifyDataSetChanged();
+            ptrListview.requestLayout();
 
         }
     }
@@ -174,6 +205,7 @@ public class SearchActivity extends Activity {
         ptrListview.setVisibility(View.VISIBLE);
         mDataManager.getSearchMessageHolder().clearMessage(false);
         Message msg = new Message();
+        msg.arg1 = MSG_ONLY_REFRESH;
         searchHandler.sendMessage(msg);
 
         ptrListview.onRefreshStart();
@@ -185,6 +217,8 @@ public class SearchActivity extends Activity {
                 switch (code) {
                     case WechatManager.ACTION_SUCCESS:
                         Message msg = new Message();
+                        msg.arg1 = MSG_REFRESH_WITH_DATA;
+                        msg.obj = object;
                         searchHandler.sendMessage(msg);
 
                         break;

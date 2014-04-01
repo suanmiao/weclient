@@ -10,96 +10,115 @@
         android:layout_height="wrap_content">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:background="@drawable/shape_radius_mass_bottom_bg"
             android:layout_width="fill_parent"
             android:paddingLeft="1px"
             android:paddingRight="1px"
-            android:layout_height="220dip">
+            android:paddingBottom="10dip"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-                android:id="@+id/mass_img_layout_content"
-                android:layout_marginTop="10dip"
-                android:layout_centerHorizontal="true"
-                android:layout_width="300dip"
-                android:layout_height="wrap_content"
-                android:background="#909090"
-                android:padding="3px">
-
-                <ImageView
-                    android:layout_width="50dip"
-                    android:layout_height="50dip"
-                    android:background="@drawable/pic_default"
-                    android:layout_centerInParent="true" />
-
-                <ImageView
-                    android:id="@+id/mass_img_img_content"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/mass_img_layout_content"
+                    android:layout_marginTop="10dip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="300dip"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:minHeight="100dip"
-                    android:maxHeight="150dip"
-                    android:scaleType="centerCrop" />
+                    android:background="#909090"
+                    android:padding="3px">
+
+                    <ImageView
+                        android:layout_width="50dip"
+                        android:layout_height="50dip"
+                        android:background="@drawable/pic_default"
+                        android:layout_centerInParent="true" />
+
+
+                    <ImageView
+                        android:id="@+id/mass_img_img_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dip"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                    <RelativeLayout
+                        android:id="@+id/mass_img_layout_upload"
+                        android:visibility="gone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dip">
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:background="@color/mass_upload_folder_color"
+                            android:layout_height="fill_parent">
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/mass_img_text_click_to_upload"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_centerInParent="true"
+                            android:textColor="#ffffff"
+                            android:gravity="center"
+                            android:textSize="20dip"
+                            android:text="@string/click_to_upload" />
+
+                        <ImageView
+                            android:id="@+id/mass_img_img_upload_circle"
+                            android:visibility="gone"
+                            android:layout_width="40dip"
+                            android:layout_height="40dip"
+                            android:background="@drawable/refresh"
+                            android:layout_centerInParent="true" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
             </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/mass_img_layout_edit"
-                android:background="@drawable/fans_item_group_button_bg"
-                android:layout_width="150dip"
-                android:layout_height="40dip"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dip">
-
-                <ImageView
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginTop="5dip"
-                    android:background="@drawable/remark_edit" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:textColor="#ffffff"
-                    android:textSize="20dip"
-                    android:text="修改图片"
-                    android:gravity="center" />
-
-            </LinearLayout>
 
             <RelativeLayout
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="10dip"
-                android:layout_width="70dip"
-                android:layout_height="30dip">
+                android:layout_width="fill_parent"
+                android:layout_height="100dip">
 
-                <Button
-                    android:id="@+id/mass_img_but_upload"
-                    android:layout_width="60dip"
-                    android:layout_height="30dip"
-                    android:background="@drawable/ensure_button_sure_bg"
-                    android:textColor="#ffffff"
-                    android:textSize="12dip"
-                    android:text="upload"/>
 
-                <ProgressBar
-                    android:id="@+id/mass_img_progress_upload"
-                    android:visibility="gone"
-                    android:layout_marginTop="90dip"
-                    android:layout_gravity="center"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:indeterminateDrawable="@drawable/icon" />
+                <LinearLayout
+                    android:id="@+id/mass_img_layout_edit"
+                    android:background="@drawable/fans_item_group_button_bg"
+                    android:layout_width="200dip"
+                    android:layout_height="40dip"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dip">
 
+                    <ImageView
+                        android:layout_width="26dip"
+                        android:layout_height="26dip"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginTop="6dip"
+                        android:background="@drawable/mass_material_edit" />
+
+                    <TextView
+                        android:layout_marginLeft="26dip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:textColor="#ffffff"
+                        android:textSize="20dip"
+                        android:text="选择图片"
+                        android:gravity="center" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
+        </LinearLayout>
 
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_marginTop="10dip"

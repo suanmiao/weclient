@@ -14,8 +14,10 @@ import com.suan.weclient.R;
 import com.suan.weclient.activity.MainActivity;
 import com.suan.weclient.adapter.MessageListAdapter;
 import com.suan.weclient.util.GlobalContext;
+import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.DataManager.UserGroupListener;
+import com.suan.weclient.util.data.holder.UserGoupPushHelper;
 import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.WechatManager.OnActionFinishListener;
@@ -145,6 +147,26 @@ public class MessageFragment extends BaseFragment implements
 
     }
 
+    private void refreshPushData() {
+
+
+        if (getActivity() != null) {
+
+            UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(getActivity()));
+            userGoupPushHelper.updateUserGroup(mDataManager);
+
+            mDataManager.saveUserGroup(getActivity());
+
+            userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastNewMessageCount(0);
+
+            userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastMsgId(mDataManager.getCurrentUser().getLastMsgId());
+
+            SharedPreferenceManager.putPushUserGroup(getActivity(), userGoupPushHelper.getString());
+
+        }
+
+    }
+
     @Override
     public void onRefresh() {
 
@@ -176,6 +198,7 @@ public class MessageFragment extends BaseFragment implements
                     MessageResultHolder messageResultHolder = (MessageResultHolder) msg.obj;
                     mDataManager.getCurrentMessageHolder().mergeMessageResult(messageResultHolder);
                     if (messageResultHolder != null) {
+                        mDataManager.getCurrentUser().setLastMsgId(messageResultHolder.getLastMsgId());
                         switch (messageResultHolder.getResultMode()) {
                             case MessageResultHolder.RESULT_MODE_ADD:
 
@@ -201,6 +224,8 @@ public class MessageFragment extends BaseFragment implements
 
             ptrListview.requestLayout();
             messageListAdapter.notifyDataSetChanged();
+
+            refreshPushData();
 
         }
     }

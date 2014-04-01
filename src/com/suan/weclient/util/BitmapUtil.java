@@ -1,4 +1,4 @@
-package com.suan.weclient.util.voice;
+package com.suan.weclient.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

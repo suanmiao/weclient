@@ -155,6 +155,29 @@ public class MainActivity extends SlidingFragmentActivity {
             }
 
             mDataManager.doListLoadStart();
+
+
+            mDataManager.getWechatManager().getUserProfile(WechatManager.DIALOG_POP_NO, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
+                @Override
+                public void onFinish(int code, Object object) {
+
+                    switch (code) {
+                        case WechatManager.ACTION_SUCCESS:
+
+                            mDataManager.doProfileGet(mDataManager.getCurrentUser());
+
+                            break;
+                        case WechatManager.ACTION_SPECIFICED_ERROR:
+
+                            break;
+                        default:
+
+                            break;
+                    }
+                }
+            });
+/*
+
             mDataManager.getWechatManager().getNewMessageList(WechatManager.DIALOG_POP_NO, mDataManager.getCurrentPosition(), new OnActionFinishListener() {
                 @Override
                 public void onFinish(int code, Object object) {
@@ -173,6 +196,8 @@ public class MainActivity extends SlidingFragmentActivity {
 
                 }
             });
+*/
+
 
         }
         super.onNewIntent(intent);
@@ -454,6 +479,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
         }
 
+
         super.onStart();
 
     }
@@ -545,23 +571,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
             }
         });
-        mDataManager.addMessageChangeListener(new DataManager.MessageGetListener() {
-            @Override
-            public void onMessageGet(MessageResultHolder messageResultHolder) {
 
-                UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(MainActivity.this));
-                userGoupPushHelper.updateUserGroup(mDataManager);
-
-                mDataManager.saveUserGroup(MainActivity.this);
-
-                userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastNewMessageCount(0);
-
-                userGoupPushHelper.getUserHolders().get(mDataManager.getCurrentPosition()).setLastMsgId(mDataManager.getCurrentUser().getLastMsgId());
-
-                SharedPreferenceManager.putPushUserGroup(MainActivity.this, userGoupPushHelper.getString());
-
-            }
-        });
         mDataManager.setLoadingListener(new DialogListener() {
 
             @Override
@@ -704,7 +714,7 @@ public class MainActivity extends SlidingFragmentActivity {
                                 break;
 
                             case WechatManager.ACTION_SPECIFICED_SITUATION:
-                                mDataManager.getWechatManager().getVerifyPage(mDataManager.getCurrentPosition(),mDataManager.getCurrentUser().getPhone(),new OnActionFinishListener() {
+                                mDataManager.getWechatManager().getVerifyPage(mDataManager.getCurrentPosition(), mDataManager.getCurrentUser().getPhone(), new OnActionFinishListener() {
                                     @Override
                                     public void onFinish(int code, Object object) {
 
@@ -773,12 +783,11 @@ public class MainActivity extends SlidingFragmentActivity {
             public void onClick(View v) {
                 switch (vefityState) {
                     case VERIFY_NONE:
-                        mDataManager.getWechatManager().sendVefityCode(mDataManager.getCurrentPosition(),new OnActionFinishListener() {
+                        mDataManager.getWechatManager().sendVefityCode(mDataManager.getCurrentPosition(), new OnActionFinishListener() {
                             @Override
                             public void onFinish(int code, Object object) {
-                                switch(code){
+                                switch (code) {
                                     case WechatManager.ACTION_SUCCESS:
-                                        Log.e("send ","success");
 
                                         break;
                                     default:
@@ -800,7 +809,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
                         } else {
 
-                            Log.e("input length", "" + verifyCode);
 
                         }
 

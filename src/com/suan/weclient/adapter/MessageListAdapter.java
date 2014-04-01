@@ -110,6 +110,7 @@ public class MessageListAdapter extends BaseAdapter implements OnScrollListener 
     }
 
     private ArrayList<MessageBean> getMessageItems() {
+
         if (mDataManager.getUserGroup().size() == 0) {
             ArrayList<MessageBean> blankArrayList = new ArrayList<MessageBean>();
             return blankArrayList;

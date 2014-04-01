@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#5e5e5e"
                     android:text="Name"
-                    android:textSize="18dip" />
+                    android:textSize="14dip" />
 
 
                 <LinearLayout
@@ -60,7 +60,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dip"
                         android:visibility="gone"
-                        android:text="@string/has_reply"
                         android:textColor="#5e5e5e"
                         android:textSize="12dip" />
 

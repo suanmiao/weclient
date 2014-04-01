@@ -722,13 +722,21 @@ public class WechatManager {
 
                                final OnActionFinishListener onActionFinishListener) {
 
-        Log.e("get nromal img",""+imgUrl);
+        Log.e("start nromal img",""+imgUrl);
+
 
         WeChatLoader.wechatGetNormalImg(new WeChatLoader.WechatGetNormalImgCallBack() {
 
             @Override
             public void onBack(int resultCode, Bitmap bitmap, ImageView imageView) {
                 // TODO Auto-generated method stub
+                if(resultCode==WeChatLoader.WECHAT_RESULT_MESSAGE_OK){
+
+                    Log.e("get nromal img","ok");
+                }else{
+
+                    Log.e("get nromal img","wrong");
+                }
                 switch (resultCode) {
 
                     case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:
@@ -891,7 +899,7 @@ public class WechatManager {
 
                                         }
                                     }, strResult, mDataManager.getUserGroup().get(userIndex),
-                                            mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(),
+                                            mDataManager.getMessageHolders().get(userIndex).getNowMessageMode(),true,
                                             referer);
                                     mDataManager.doDismissAllDialog();
 
@@ -978,7 +986,7 @@ public class WechatManager {
                                             }
 
                                         }
-                                    }, strResult, mDataManager.getUserGroup().get(userIndex), mDataManager.getSearchMessageHolder().getNowMessageMode(), referer);
+                                    }, strResult, mDataManager.getUserGroup().get(userIndex), mDataManager.getSearchMessageHolder().getNowMessageMode(),false, referer);
 
                                 } catch (Exception exception) {
                                     onActionFinishListener.onFinish(ACTION_OTHER, null);
@@ -1738,6 +1746,7 @@ public class WechatManager {
                     @Override
                     public void onBack(int resultCode, String strResult) {
                         // TODO Auto-generated method stub
+                        Log.e(" mass result",resultCode+"|"+strResult);
                         switch (resultCode) {
 
                             case WeChatLoader.WECHAT_RESULT_MESSAGE_OK:

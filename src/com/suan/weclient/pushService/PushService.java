@@ -98,6 +98,7 @@ public class PushService extends Service {
             boolean networkConnected = Util.isNetConnected(PushService.this);
             if (networkConnected) {
                 UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
+
                 boolean notifyWholeGroup = SharedPreferenceManager.getPushNotifyWholeGroup(PushService.this);
 
                 if (notifyWholeGroup) {
@@ -127,6 +128,7 @@ public class PushService extends Service {
 
     private void pushUser(final UserGoupPushHelper.PushUserHolder userHolder, final DataManager mDatamanager, final int index) {
         UserBean nowBean = userHolder.getUserBean();
+
         lastMsgId = userHolder.getLastMsgId();
         if (nowBean.getSlaveSid() != null && nowBean.getSlaveSid().length() > 1 && lastMsgId.length() > 1) {
             //slave sid is not null
@@ -147,6 +149,7 @@ public class PushService extends Service {
                             @Override
                             public void onFinish(int code, Object object) {
                                 if (code == WechatManager.ACTION_SUCCESS) {
+
                                     //refresh the token
                                     UserGoupPushHelper userGoupPushHelper = new UserGoupPushHelper(SharedPreferenceManager.getPushUserGroup(PushService.this));
                                     userGoupPushHelper.updateUserGroup(mDatamanager);
@@ -172,11 +175,11 @@ public class PushService extends Service {
                                     switch (code) {
                                         case WechatManager.ACTION_TIME_OUT:
 
-                                            Toast.makeText(PushService.this, "连接异常:连接超时", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(PushService.this, "连接超时", Toast.LENGTH_LONG).show();
                                             break;
                                         case WechatManager.ACTION_OTHER:
 
-                                            Toast.makeText(PushService.this, "连接异常:连接失败", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(PushService.this, "连接失败", Toast.LENGTH_LONG).show();
                                             break;
                                     }
 

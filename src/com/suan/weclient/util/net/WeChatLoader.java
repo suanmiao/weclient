@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,7 +33,6 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -46,7 +44,7 @@ import com.suan.weclient.util.data.bean.MaterialBean;
 import com.suan.weclient.util.data.holder.MessageHolder;
 import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.data.bean.UserBean;
-import com.suan.weclient.util.voice.BitmapUtil;
+import com.suan.weclient.util.BitmapUtil;
 
 public class WeChatLoader {
 
@@ -507,21 +505,21 @@ public class WeChatLoader {
                 headerList.add(new BasicNameValuePair("Content-Type",
                         "text/html; charset=utf-8"));
 
-    /*
-        all,today,yesterday,day before:
-        url1+url2+day+url4+tokdn+url5
+                /*
+                    all,today,yesterday,day before:
+                    url1+url2+day+url4+tokdn+url5
 
-        star:
-        url1+url3+token+url5
-     */
+                    star:
+                    url1+url3+token+url5
+                 */
 
-/*
-    1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&count=20";
-    2 = "&day=";
-    3 = "&action=star&token=";
-    4 = "&token=";
-    5 = "&lang=zh_CN";
-    6 = "&filterivrmsg=";*/
+                /*
+                    1 = "https://mp.weixin.qq.com/cgi-bin/message?t=message/list&count=20";
+                    2 = "&day=";
+                    3 = "&action=star&token=";
+                    4 = "&token=";
+                    5 = "&lang=zh_CN";
+                    6 = "&filterivrmsg=";*/
 
                 int hideKeyWord = hideKeyWordMessage ? 1 : 0;
 
@@ -537,7 +535,6 @@ public class WeChatLoader {
 
                         paramList.add(new BasicNameValuePair("filterivrmsg", hideKeyWord + ""));
                         paramList.add(new BasicNameValuePair("day", "7"));
-                        ;
 
                         break;
                     case GET_MESSAGE_MODE_TODAY:
@@ -598,6 +595,7 @@ public class WeChatLoader {
                         try {
                             String strResult = EntityUtils.toString(responseHolder.response
                                     .getEntity());
+
                             resultHolder.put("result", strResult);
                             resultHolder.put("referer", targetUrl);
                             message.obj = resultHolder;
@@ -1042,6 +1040,8 @@ public class WeChatLoader {
                 int type = materialBean.getType();
                 paramArrayList.add(new BasicNameValuePair("type", type+""));
 
+                Log.e("type",""+type);
+
                 switch(type){
                     case MaterialBean.MATERIAL_TYPE_TEXT:
 
@@ -1056,6 +1056,15 @@ public class WeChatLoader {
                     case MaterialBean.MATERIAL_TYPE_VOICE:
 
                         paramArrayList.add(new BasicNameValuePair("fileid", materialBean.getFile_id()));
+                        break;
+                    case MaterialBean.MATERIAL_TYPE_APP:
+
+                        if(materialBean.getAppItemBean()!=null){
+                            String msgId =  materialBean.getAppItemBean().getApp_id();
+                            Log.e("msg id",""+msgId);
+
+                            paramArrayList.add(new BasicNameValuePair("appmsgid",msgId));
+                        }
                         break;
                 }
 
@@ -3489,6 +3498,7 @@ public class WeChatLoader {
                 targetUrl += ("&" + nowPair.getName() + "=" + value);
             }
         }
+
 
         /* 声明网址字符串 */
         /* 建立HTTP Post联机 */

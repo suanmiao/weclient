@@ -10,87 +10,285 @@
         android:layout_height="wrap_content">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:background="@drawable/shape_radius_mass_bottom_bg"
             android:layout_width="fill_parent"
+            android:orientation="vertical"
             android:paddingLeft="1px"
             android:paddingRight="1px"
-            android:layout_height="220dip">
-
-            <RelativeLayout
-
-                android:id="@+id/mass_app_layout_content"
-                android:layout_marginTop="10dip"
-                android:layout_centerHorizontal="true"
-                android:layout_width="300dip"
-                android:layout_height="wrap_content"
-                android:background="#909090"
-                android:padding="3px">
-
-                <ImageView
-                    android:layout_width="50dip"
-                    android:layout_height="50dip"
-                    android:background="@drawable/pic_default"
-                    android:layout_centerInParent="true" />
-
-                <ImageView
-                    android:id="@+id/mass_app_img_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:minHeight="100dip"
-                    android:maxHeight="150dip"
-                    android:scaleType="centerCrop" />
-            </RelativeLayout>
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/mass_app_layout_edit"
-                android:background="@drawable/fans_item_group_button_bg"
-                android:layout_width="150dip"
-                android:layout_height="40dip"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dip">
+                android:background="@drawable/app_item_bg"
+                android:clickable="true"
+                android:layout_width="fill_parent"
+                android:layout_marginTop="5dip"
+                android:layout_marginLeft="40dip"
+                android:layout_marginRight="40dip"
+                android:layout_marginBottom="10dip"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginTop="5dip"
-                    android:background="@drawable/remark_edit" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:textColor="#ffffff"
-                    android:textSize="20dip"
-                    android:text="修改图片"
-                    android:gravity="center" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dip"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/mass_app_text_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#5e5e5e"
+                            android:text="..."
+                            android:textSize="18dip" />
+
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_marginTop="5dip"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/material_item_text_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="..."
+                                android:textColor="#5e5e5e"
+                                android:textSize="12dip" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/material_item_layout_content"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="5dip"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/mass_app_layout_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dip"
+                        android:layout_marginLeft="3dip"
+                        android:layout_marginRight="3dip"
+                        android:layout_marginTop="3dip"
+                        android:background="#f0f0f0"
+                        android:padding="1px">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#909090"
+                            android:padding="0px">
+
+                            <ImageView
+                                android:layout_width="40dip"
+                                android:layout_height="40dip"
+                                android:background="@drawable/pic_default"
+                                android:layout_centerInParent="true" />
+
+                            <ImageView
+                                android:id="@+id/mass_app_img_cover"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dip"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerCrop" />
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_height="20dip">
+
+                            <RelativeLayout
+                                android:layout_width="fill_parent"
+                                android:background="#80676767"
+                                android:layout_height="20dip">
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/mass_app_text_cover_title"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginLeft="5dip"
+                                android:textColor="#ffffff"
+                                android:textSize="15dip"
+                                android:gravity="center_vertical|left" />
+
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mass_app_layout_first_item"
+                        android:background="@drawable/app_item_item_bg"
+                        android:layout_width="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="3dip"
+                        android:visibility="gone"
+                        android:layout_height="50dip">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:background="#676767"
+                            android:layout_height="1px">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/mass_app_text_first_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="5dip"
+                            android:textSize="15dip"
+                            android:textColor="#000000" />
+
+                        <ImageView
+                            android:id="@+id/mass_app_img_first"
+                            android:layout_width="40dip"
+                            android:layout_height="40dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/pic_default" />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mass_app_layout_second_item"
+                        android:background="@drawable/app_item_item_bg"
+                        android:layout_width="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="3dip"
+                        android:visibility="gone"
+                        android:layout_height="50dip">
+
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:background="#676767"
+                            android:layout_height="1px">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/mass_app_text_second_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="5dip"
+                            android:textSize="15dip"
+                            android:textColor="#000000"
+                            android:gravity="center_vertical" />
+
+                        <ImageView
+                            android:id="@+id/mass_app_img_second"
+                            android:layout_width="40dip"
+                            android:layout_height="40dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/pic_default" />
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/mass_app_layout_third_item"
+                        android:background="@drawable/app_item_item_bg"
+                        android:layout_width="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:layout_marginRight="3dip"
+                        android:visibility="gone"
+                        android:layout_height="50dip">
+
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:background="#676767"
+                            android:layout_height="1px">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/mass_app_text_third_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="5dip"
+                            android:textSize="15dip"
+                            android:textColor="#000000"
+                            android:gravity="center_vertical" />
+
+                        <ImageView
+                            android:id="@+id/mass_app_img_third"
+                            android:layout_width="40dip"
+                            android:layout_height="40dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/pic_default" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
+
             <RelativeLayout
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
+                android:layout_width="fill_parent"
                 android:layout_marginBottom="10dip"
-                android:layout_width="70dip"
-                android:layout_height="30dip">
+                android:layout_height="50dip">
 
-                <Button
-                    android:id="@+id/mass_app_but_upload"
-                    android:layout_width="60dip"
-                    android:layout_height="30dip"
-                    android:background="@drawable/ensure_button_sure_bg"
-                    android:textColor="#ffffff"
-                    android:textSize="12dip"
-                    android:text="upload"/>
 
+                <LinearLayout
+                    android:id="@+id/mass_app_layout_edit"
+                    android:background="@drawable/fans_item_group_button_bg"
+                    android:layout_width="200dip"
+                    android:layout_height="40dip"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dip">
+
+                    <ImageView
+                        android:layout_width="26dip"
+                        android:layout_height="26dip"
+                        android:layout_marginLeft="16dip"
+                        android:layout_marginTop="6dip"
+                        android:background="@drawable/mass_material_edit" />
+
+                    <TextView
+                        android:layout_marginLeft="26dip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:textColor="#ffffff"
+                        android:textSize="20dip"
+                        android:text="选择图文"
+                        android:gravity="center" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_marginTop="10dip"

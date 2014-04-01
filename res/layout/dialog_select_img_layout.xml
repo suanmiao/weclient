@@ -28,6 +28,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_border_pop_gray_bottom"
+        android:paddingBottom="20dip"
         android:orientation="vertical">
 
         <LinearLayout
@@ -39,22 +40,49 @@
             android:id="@+id/dialog_select_img_but_album"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
-            android:background="#ffffff"
+            android:background="@drawable/select_item_bg"
             android:textColor="#000000"
             android:textSize="15dip"
             android:gravity="center"
             android:text="@string/album" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:background="#676767"
+            android:layout_height="1px">
+
+
+        </LinearLayout>
 
 
         <Button
             android:id="@+id/dialog_select_img_but_take_photo"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
-            android:background="#ffffff"
+            android:background="@drawable/select_item_bg"
             android:textColor="#000000"
             android:textSize="15dip"
             android:gravity="center"
             android:text="@string/take_photo" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:background="#676767"
+            android:layout_height="1px">
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/dialog_select_img_but_choose_material"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:background="@drawable/select_item_bg"
+            android:textColor="#000000"
+            android:textSize="15dip"
+            android:gravity="center"
+            android:text="@string/choose_from_material" />
 
     </LinearLayout>
 

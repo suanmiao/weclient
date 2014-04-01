@@ -227,7 +227,7 @@ public class DataParser {
     public static void parseNewMessage(
             final MessageListParseCallBack messageListParseCallBack,
             final String source, final UserBean userBean,
-            final int messageMode,
+            final int messageMode,final boolean addDataItem,
             final String referer) {
 
 
@@ -272,19 +272,17 @@ public class DataParser {
                         JSONObject contentObject = getMessageArray(nowElement.html());
                         if (contentObject != null) {
                             try {
-
                                 JSONArray getArray = contentObject.getJSONArray("messageArray");
                                 ArrayList<MessageBean> resultMessageList = getMessageItems(
                                         getArray, userBean, referer);
                                 String latestMsgId = contentObject.get("lastMsgId").toString();
-
 
                                 if (resultMessageList.size() == 0) {
                                     MessageBean emptyMessage = new MessageBean();
                                     emptyMessage.setType(MessageBean.MESSAGE_TYPE_EMPTY);
                                     resultMessageList.add(emptyMessage);
 
-                                } else {
+                                } else if(addDataItem){
                                     MessageBean dataMessage = new MessageBean();
                                     dataMessage.setType(MessageBean.MESSAGE_TYPE_DATA);
                                     resultMessageList.add(0, dataMessage);

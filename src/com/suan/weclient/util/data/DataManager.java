@@ -7,7 +7,9 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Rect;
 import android.view.View.OnClickListener;
 
+import com.suan.weclient.fragment.MassFragment;
 import com.suan.weclient.fragment.ProfileFragment;
+import com.suan.weclient.fragment.mass.VoiceFragment;
 import com.suan.weclient.util.SharedPreferenceManager;
 import com.suan.weclient.util.data.bean.MessageBean;
 import com.suan.weclient.util.data.bean.UserBean;
@@ -21,6 +23,7 @@ import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
 import com.suan.weclient.util.data.holder.resultHolder.MessageResultHolder;
 import com.suan.weclient.util.net.WechatManager;
 import com.suan.weclient.util.net.images.ImageCacheManager;
+import com.suan.weclient.util.voice.RecorderThread;
 import com.suan.weclient.util.voice.VoiceManager;
 import com.suan.weclient.view.SViewPager;
 import com.suan.weclient.view.actionbar.CustomMainActionView;
@@ -54,6 +57,8 @@ public class DataManager {
     ArrayList<ChatNewItemGetListener> chatNewItemGetListeners;
     ArrayList<UserIndexChangeListener > userIndexChangeListeners;
 
+    ArrayList<RecorderThread.RecordListener> recordListeners;
+
     private ContentFragmentChangeListener contentFragmentChangeListener;
 
 
@@ -79,6 +84,7 @@ public class DataManager {
 
     private ProfileFragment.UserListControlListener userListControlListener;
 
+    private MassFragment.RecordLayoutControlListener recordControlListener;
 
     private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 10;
     private static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
@@ -97,6 +103,7 @@ public class DataManager {
         mImageCacheManager.init(context, context.getPackageCodePath(),
                 DISK_IMAGECACHE_SIZE, DISK_IMAGECACHE_COMPRESS_FORMAT,
                 DISK_IMAGECACHE_QUALITY);
+
     }
 
     public ImageCacheManager getCacheManager() {
@@ -114,6 +121,9 @@ public class DataManager {
         loginListeners = new ArrayList<DataManager.LoginListener>();
         userGroupListeners = new ArrayList<DataManager.UserGroupListener>();
         userIndexChangeListeners = new ArrayList<UserIndexChangeListener>();
+
+
+        recordListeners = new ArrayList<RecorderThread.RecordListener>();
         mContext = context;
         mWechatManager = new WechatManager(this, context);
         mVoiceManager = new VoiceManager(context);
@@ -189,9 +199,7 @@ public class DataManager {
 
 
     }
-
-    public WechatManager getWechatManager() {
-        return mWechatManager;
+ public WechatManager getWechatManager() { return mWechatManager;
     }
 
 
@@ -607,7 +615,34 @@ public class DataManager {
         return this.userListControlListener;
     }
 
-	
+    public void setRecordControlListener(MassFragment.RecordLayoutControlListener recordControlListener){
+        this.recordControlListener = recordControlListener;
+    }
+
+    public MassFragment.RecordLayoutControlListener getRecordLayoutControlListener(){
+
+        return this.recordControlListener;
+    }
+
+    public void addRecordListener(RecorderThread.RecordListener recordListener){
+        this.recordListeners.add(recordListener);
+
+    }
+
+    public void doRecordStart(int type) {
+        for (int i = 0; i < recordListeners.size(); i++) {
+            recordListeners.get(i).onRecordStart(type);
+        }
+    }
+
+    public void doRecordFinish(int type,String filePath,long playLength) {
+        for (int i = 0; i < recordListeners.size(); i++) {
+            recordListeners.get(i).onRecordFinish(type,filePath,playLength);
+        }
+    }
+
+
+
 	/*
      * interface about ui
 	 */

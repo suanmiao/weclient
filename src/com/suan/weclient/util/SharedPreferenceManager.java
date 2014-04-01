@@ -12,6 +12,7 @@ import com.suan.weclient.util.data.bean.UserBean;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class SharedPreferenceManager {
 
@@ -285,7 +286,8 @@ public class SharedPreferenceManager {
         JSONArray contentArray = new JSONArray();
 
         for (int i = 0; i < dataManager.getUserGroup().size(); i++) {
-            contentArray.put(dataManager.getUserGroup().get(i).getContentObject());
+            JSONObject nowObject = dataManager.getUserGroup().get(i).getContentObject();
+            contentArray.put(nowObject);
             if(i==dataManager.getCurrentPosition()){
 
             }

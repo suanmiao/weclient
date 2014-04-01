@@ -7,7 +7,12 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@drawable/app_item_bg"
         android:layout_width="fill_parent"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="40dip"
+        android:layout_marginRight="40dip"
+        android:layout_marginBottom="10dip"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
@@ -15,32 +20,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="3dip"
                 android:orientation="vertical">
 
 
                 <TextView
                     android:id="@+id/material_item_app_text_title"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginLeft="40dip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5e5e5e"
-                    android:text=""
+                    android:text="..."
                     android:textSize="18dip" />
 
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_marginTop="5dip"
-                    android:layout_marginLeft="40dip"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -62,18 +62,15 @@
             android:id="@+id/material_item_layout_content"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
             android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/material_item_app_layout_cover"
                 android:layout_width="match_parent"
                 android:layout_height="80dip"
-                android:layout_marginLeft="35dip"
-                android:layout_marginRight="35dip"
-                android:layout_marginTop="10dip"
-                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="3dip"
+                android:layout_marginRight="3dip"
+                android:layout_marginTop="3dip"
                 android:background="#f0f0f0"
                 android:padding="1px">
 
@@ -81,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#909090"
-                    android:padding="3px">
+                    android:padding="0px">
 
                     <ImageView
                         android:layout_width="40dip"
@@ -105,7 +102,7 @@
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
-                        android:background="#40676767"
+                        android:background="#80676767"
                         android:layout_height="20dip">
 
                     </RelativeLayout>
@@ -115,6 +112,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginLeft="5dip"
+                        android:maxLines="2"
                         android:textColor="#ffffff"
                         android:textSize="15dip"
                         android:gravity="center_vertical|left" />
@@ -125,55 +123,92 @@
 
             <RelativeLayout
                 android:id="@+id/material_item_app_layout_first_item"
-                android:background="@drawable/mass_index_bg_middle"
+                android:background="@drawable/app_item_item_bg"
                 android:layout_width="fill_parent"
-                android:layout_marginLeft="35dip"
-                android:layout_marginRight="35dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="3dip"
                 android:layout_height="50dip">
 
-                <TextView
-                    android:id="@+id/material_item_app_text_first_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_marginLeft="5dip"
-                    android:textSize="15dip"
-                    android:textColor="#000000" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:background="#676767"
+                    android:layout_height="1px">
 
-                <ImageView
-                    android:id="@+id/material_item_app_img_first"
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/icon" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="fill_parent">
+
+
+                    <TextView
+                        android:id="@+id/material_item_app_text_first_title"
+                        android:paddingTop="2dip"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:textSize="15dip"
+                        android:textColor="#000000" />
+
+                    <ImageView
+                        android:id="@+id/material_item_app_img_first"
+                        android:layout_width="40dip"
+                        android:layout_height="40dip"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/pic_default" />
+                </LinearLayout>
 
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/material_item_app_layout_second_item"
-                android:background="@drawable/mass_index_bg_middle"
+                android:background="@drawable/app_item_item_bg"
                 android:layout_width="fill_parent"
-                android:layout_marginLeft="35dip"
-                android:layout_marginRight="35dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="3dip"
                 android:layout_height="50dip">
 
-                <TextView
-                    android:id="@+id/material_item_app_text_second_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_marginLeft="5dip"
-                    android:textSize="15dip"
-                    android:textColor="#000000"
-                    android:gravity="center_vertical" />
 
-                <ImageView
-                    android:id="@+id/material_item_app_img_second"
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/icon" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:background="#676767"
+                    android:layout_height="1px">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="fill_parent">
+
+
+                    <TextView
+                        android:id="@+id/material_item_app_text_second_title"
+                        android:paddingTop="2dip"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:textSize="15dip"
+                        android:textColor="#000000" />
+
+                    <ImageView
+                        android:id="@+id/material_item_app_img_second"
+                        android:layout_width="40dip"
+                        android:layout_height="40dip"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/pic_default" />
+                </LinearLayout>
+
 
 
             </RelativeLayout>
@@ -181,32 +216,50 @@
 
             <RelativeLayout
                 android:id="@+id/material_item_app_layout_third_item"
-                android:background="@drawable/mass_index_bg_middle"
+                android:background="@drawable/app_item_item_bg"
                 android:layout_width="fill_parent"
-                android:layout_marginLeft="35dip"
-                android:layout_marginRight="35dip"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="3dip"
                 android:layout_height="50dip">
 
-                <TextView
-                    android:id="@+id/material_item_app_text_third_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_marginLeft="5dip"
-                    android:textSize="15dip"
-                    android:textColor="#000000"
-                    android:gravity="center_vertical" />
 
-                <ImageView
-                    android:id="@+id/material_item_app_img_third"
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/icon" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:background="#676767"
+                    android:layout_height="1px">
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="fill_parent">
+
+
+                    <TextView
+                        android:id="@+id/material_item_app_text_third_title"
+                        android:paddingTop="2dip"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:maxLines="2"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dip"
+                        android:textSize="15dip"
+                        android:textColor="#000000" />
+
+                    <ImageView
+                        android:id="@+id/material_item_app_img_third"
+                        android:layout_width="40dip"
+                        android:layout_height="40dip"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/pic_default" />
+                </LinearLayout>
 
 
             </RelativeLayout>
-
 
         </LinearLayout>
 

@@ -2,9 +2,6 @@ apply plugin: 'android'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(':opensource:Android-PullToRefresh-master:library')
-//    compile project(':opensource:Android-PullToRefresh-master:extras:PullToRefreshListFragment')
-//    compile project(':opensource:Android-PullToRefresh-master:extras:PullToRefreshViewPager')
     compile project(':SlidingMenu-project:abs-library')
     compile project(':SlidingMenu-project:library')
 }

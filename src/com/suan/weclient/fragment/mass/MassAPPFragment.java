@@ -47,10 +47,13 @@ import com.suan.weclient.fragment.BaseFragment;
 import com.suan.weclient.util.GlobalContext;
 import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
+import com.suan.weclient.util.data.bean.AppItemBean;
 import com.suan.weclient.util.data.bean.MaterialBean;
+import com.suan.weclient.util.data.bean.MultiItemBean;
 import com.suan.weclient.util.data.bean.UserBean;
 import com.suan.weclient.util.data.holder.resultHolder.MaterialResultHolder;
 import com.suan.weclient.util.net.WechatManager;
+import com.suan.weclient.util.net.images.ImageCacheManager;
 import com.suan.weclient.view.ptr.PTRListview;
 
 import java.io.File;
@@ -63,17 +66,29 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
     private View view;
 
-    private RelativeLayout contentLayout;
-    private ImageView contentImageView;
-    private LinearLayout editContentLayout;
+    private LinearLayout editLayout;
+    /*
+   about app msg
+    */
+    private RelativeLayout coverLayout;
+    private RelativeLayout[] itemLayout;
 
 
-    private Button uploadButton;
+    private ImageView coverImageView;
+    private ImageView[] itemImageView;
+
+    private TextView timeTextView;
+    private TextView titleTextView;
+    private TextView coverTextView;
+    private TextView[] itemTextView;
+
+
 
 
     /*
     total
      */
+
     private TextView massLeftNumTextView;
     private Button sendButton;
 
@@ -81,6 +96,7 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
     private MaterialListAdapter materialListAdapter;
 
     private MaterialListAdapter.ItemViewHolder selectedHolder;
+    private MaterialBean selectedBean;
 
     private MaterialHandler mHandler;
 
@@ -88,8 +104,6 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
     public static final int REQUEST_CODE_SELECT_PHOTO = 5;
     public static final int REQUEST_CODE_TAKE_PHOTO = 6;
 
-    public static final String UPLOAD_IMG_NAME = "ImgToUpload.jpg";
-    private String capturedImageName = "";
 
     private static final int PAGE_MESSAGE_AMOUNT = 10;
 
@@ -155,114 +169,37 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
     private void initWidgets() {
 
-        uploadButton = (Button) view.findViewById(R.id.mass_app_but_upload);
 
-        uploadButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (capturedImageName.length() > 1) {
-                    mDataManager.getWechatManager().getUploadInfo(mDataManager.getCurrentPosition(), new WechatManager.OnActionFinishListener() {
-                        @Override
-                        public void onFinish(int code, Object object) {
+        titleTextView = (TextView) view.findViewById(R.id.mass_app_text_title);
+        timeTextView = (TextView) view.findViewById(R.id.material_item_text_time);
+        coverLayout = (RelativeLayout) view.findViewById(R.id.mass_app_layout_cover);
+        itemLayout = new RelativeLayout[3];
+        itemImageView = new ImageView[3];
+        itemTextView = new TextView[3];
+        itemLayout[0] = (RelativeLayout) view.findViewById(R.id.mass_app_layout_first_item);
+        itemLayout[1] = (RelativeLayout) view.findViewById(R.id.mass_app_layout_second_item);
+        itemLayout[2] = (RelativeLayout) view.findViewById(R.id.mass_app_layout_third_item);
 
-                            switch (code) {
-                                case WechatManager.ACTION_SUCCESS:
-                                    Log.e("upload info ", "ok");
+        coverImageView = (ImageView) view.findViewById(R.id.mass_app_img_cover);
+        itemImageView[0] = (ImageView) view.findViewById(R.id.mass_app_img_first);
+        itemImageView[1] = (ImageView) view.findViewById(R.id.mass_app_img_second);
+        itemImageView[2] = (ImageView) view.findViewById(R.id.mass_app_img_third);
 
-                                    mDataManager.getWechatManager().uploadImg(mDataManager.getCurrentPosition(), capturedImageName, new WechatManager.OnActionFinishListener() {
-                                        @Override
-                                        public void onFinish(int code, Object object) {
-
-
-                                            switch (code) {
-                                                case WechatManager.ACTION_SUCCESS:
-                                                    Log.e("upload  ", "ok");
-                                                    break;
-                                                case WechatManager.ACTION_TIME_OUT:
-
-                                                    break;
-                                                case WechatManager.ACTION_OTHER:
-
-                                                    break;
-                                                case WechatManager.ACTION_SPECIFICED_ERROR:
+        coverTextView = (TextView) view.findViewById(R.id.mass_app_text_cover_title);
+        itemTextView[0] = (TextView) view.findViewById(R.id.mass_app_text_first_title);
+        itemTextView[1] = (TextView) view.findViewById(R.id.mass_app_text_second_title);
+        itemTextView[2] = (TextView) view.findViewById(R.id.mass_app_text_third_title);
 
 
-                                                    break;
-                                            }
-                                        }
-                                    });
-
-                                    break;
-                                case WechatManager.ACTION_TIME_OUT:
-
-                                    break;
-                                case WechatManager.ACTION_OTHER:
-
-                                    break;
-                                case WechatManager.ACTION_SPECIFICED_ERROR:
-
-
-                                    break;
-                            }
-
-                        }
-                    });
-
-                }
-
-            }
-        });
-
-        contentLayout = (RelativeLayout) view.findViewById(R.id.mass_app_layout_content);
-        contentImageView = (ImageView) view.findViewById(R.id.mass_app_img_content);
-
-/*
-
-        contentLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popDialog = Util.createImgSelectDialog(getActivity(), new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                                photoPickerIntent.setType("image*/
-/*");
-                                startActivityForResult(photoPickerIntent, REQUEST_CODE_SELECT_PHOTO);
-                                popDialog.dismiss();
-
-                            }
-                        }, new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                String uploadImgPath = Util.getFilePath(UPLOAD_IMG_NAME);
-                                File out = new File(uploadImgPath);
-                                capturedImageName = out.getAbsolutePath();
-                                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(out));
-                                startActivityForResult(i, REQUEST_CODE_TAKE_PHOTO);
-
-
-                                popDialog.dismiss();
-
-                            }
-                        }
-                );
-                popDialog.show();
-
-            }
-        });
-*/
-
-        editContentLayout = (LinearLayout) view.findViewById(R.id.mass_app_layout_edit);
-
-        editContentLayout.setOnClickListener(new OnClickListener() {
+        editLayout = (LinearLayout) view.findViewById(R.id.mass_app_layout_edit);
+        editLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 popMaterialList();
 
             }
         });
+
 
         massLeftNumTextView = (TextView) view
                 .findViewById(R.id.mass_text_left_num);
@@ -299,9 +236,7 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
     private void dialogEnsureMass() {
 
-        String content = "";
-//        String content = contentEditText.getText().toString();
-        if (content.length() == 0) {
+        if (selectedBean == null) {
             Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -324,48 +259,9 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
         switch (requestCode) {
             case REQUEST_CODE_SELECT_PHOTO:
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                        Cursor cursor = getActivity().getContentResolver().query(
-                                selectedImage, filePathColumn, null, null, null);
-                        cursor.moveToFirst();
-
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        capturedImageName = cursor.getString(columnIndex);
-                        cursor.close();
-
-                        Bitmap selectedImageBitmap = BitmapFactory.decodeFile(capturedImageName);
-                        contentImageView.setImageBitmap(selectedImageBitmap);
-                        Log.e("get bitmap ", "" + selectedImageBitmap);
-                    } catch (Exception e) {
-                        Log.e("parse selected photo error", "" + e);
-
-                    }
-
-
-                }
                 break;
             case REQUEST_CODE_TAKE_PHOTO:
 
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-
-                        Log.e("get take photo uri", "" + capturedImageName);
-                        Bitmap capturedBitmap = BitmapFactory.decodeFile(capturedImageName);
-                        contentImageView.setImageBitmap(capturedBitmap);
-
-
-                    } catch (Exception e) {
-
-                        Log.e("parse selected photo error", "" + e);
-
-                    }
-
-                }
 
                 break;
         }
@@ -375,12 +271,11 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
     private void mass() {
         mDataManager.doLoadingStart("发送中", WechatManager.DIALOG_POP_CANCELABLE);
         mDataManager.getWechatManager().mass(mDataManager.getCurrentPosition(),
-                selectedHolder.getMaterialBean(), new WechatManager.OnActionFinishListener() {
+                selectedBean, new WechatManager.OnActionFinishListener() {
 
             @Override
             public void onFinish(int code, Object object) {
                 // TODO Auto-generated method stub
-
 
                 mDataManager.doPopEnsureDialog(false, true, "恭喜", "群发成功",
                         new DataManager.DialogSureClickListener() {
@@ -448,14 +343,16 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
     private void popMaterialList() {
         mDataManager.createMaterialHolder(mDataManager.getCurrentUser());
-        popDialog = Util.createMaterialListDialog(getActivity(), "Img", new OnClickListener() {
+        popDialog = Util.createMaterialListDialog(getActivity(), "图文素材", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         MaterialListAdapter.ItemViewHolder holder = materialListAdapter.getSelectedHolder();
                         if (holder != null) {
 
                             selectedHolder = holder;
-                            setContentImg();
+
+                            selectedBean = holder.getMaterialBean();
+                            setAPPMessageContent(selectedHolder);
                             popDialog.dismiss();
                         } else {
                             Toast.makeText(getActivity(), "请选择内容", Toast.LENGTH_LONG).show();
@@ -487,14 +384,83 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
     }
 
-    private void setContentImg() {
-        if (selectedHolder.getDataLoaded()) {
-            Bitmap contentBitmap = (Bitmap) selectedHolder.getData();
-            contentImageView.setImageBitmap(contentBitmap);
+
+    public void setAPPMessageContent(MaterialListAdapter.ItemViewHolder holder) {
+        AppItemBean appItemBean = holder.getMaterialBean().getAppItemBean();
+        int itemCount = appItemBean.getMulti_item().size();
+        coverTextView.setText(appItemBean.getDigest());
+        titleTextView.setText(appItemBean.getTitle());
+
+        Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
+                ImageCacheManager.CACHE_MESSAGE_CONTENT
+                        + holder.getMaterialBean().getAppItemBean().getFile_id());
+        if (contentBitmap == null) {
+            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(),
+                    Util.checkImgUrl(holder.getMaterialBean().getAppItemBean().getImg_url()), coverImageView, new WechatManager.OnActionFinishListener() {
+                @Override
+                public void onFinish(int code, Object object) {
+                    if (code == WechatManager.ACTION_SUCCESS) {
+                        if (object != null) {
+                            Bitmap bitmap = (Bitmap) object;
+
+                            coverImageView.setImageBitmap(bitmap);
+
+                        }
+
+                    }
+
+                }
+            });
+
 
         } else {
+            coverImageView.setImageBitmap(contentBitmap);
+        }
+
+
+        for (int i = 0; i < 3; i++) {
+            if (i < itemCount - 1) {
+                itemLayout[i].setVisibility(View.VISIBLE);
+                itemTextView[i].setText(appItemBean.getMulti_item().get(i + 1).getDigest());
+                setAppItemImg(i, holder);
+
+            } else {
+                itemLayout[i].setVisibility(View.GONE);
+            }
 
         }
+
+
+    }
+
+    private void setAppItemImg(final int index, MaterialListAdapter.ItemViewHolder holder) {
+        MultiItemBean multiItemBean = holder.getMaterialBean().getAppItemBean().getMulti_item().get(index);
+
+        Bitmap contentBitmap = mDataManager.getCacheManager().getBitmap(
+                ImageCacheManager.CACHE_MESSAGE_CONTENT
+                        + multiItemBean.getFile_id());
+        if (contentBitmap == null) {
+            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(),
+                    Util.checkImgUrl(multiItemBean.getCover()), itemImageView[index], new WechatManager.OnActionFinishListener() {
+                @Override
+                public void onFinish(int code, Object object) {
+                    if (code == WechatManager.ACTION_SUCCESS) {
+                        if (object != null) {
+                            Bitmap bitmap = (Bitmap) object;
+                            itemImageView[index].setImageBitmap(bitmap);
+
+                        }
+
+                    }
+
+                }
+            });
+
+
+        } else {
+            itemImageView[index].setImageBitmap(contentBitmap);
+        }
+
 
     }
 
@@ -608,7 +574,7 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
 
                     if (size % PAGE_MESSAGE_AMOUNT == 0) {
 
-                        mDataManager.getWechatManager().getAppMsgList(  mDataManager.getCurrentPosition(),size, new WechatManager.OnActionFinishListener() {
+                        mDataManager.getWechatManager().getAppMsgList(mDataManager.getCurrentPosition(), size, new WechatManager.OnActionFinishListener() {
                             @Override
                             public void onFinish(int code, Object object) {
                                 switch (code) {
@@ -663,7 +629,7 @@ public class MassAPPFragment extends BaseFragment implements PTRListview.OnRefre
                 } else if (mode == PTRListview.PTR_MODE_REFRESH) {
 
 
-                    mDataManager.getWechatManager().getAppMsgList( mDataManager.getCurrentPosition(),0, new WechatManager.OnActionFinishListener() {
+                    mDataManager.getWechatManager().getAppMsgList(mDataManager.getCurrentPosition(), 0, new WechatManager.OnActionFinishListener() {
                         @Override
                         public void onFinish(int code, Object object) {
                             switch (code) {

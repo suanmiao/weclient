@@ -1,44 +1,92 @@
 package com.suan.weclient.util.voice;
 
 import android.media.AudioRecord;
+import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.suan.weclient.fragment.mass.VoiceFragment;
+
+import org.apache.http.util.ByteArrayBuffer;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by lhk on 3/18/14.
  */
-public class RecorderThread implements  Runnable{
+public class RecorderThread implements Runnable {
     private AudioRecord audioRecord;
     private int bufferSizeInBytes;
     private int sampleRateInHz;
-    private String pcmAudioPath;
     private String wavAudioPath;
+
+    private RecordListener recordListener;
+
+    /*
+    about record message
+     */
+    public static final int RECORD_ERROR_TOO_LONG = 3;
+    public static final int RECORD_ERROR_TOO_SHORT = 4;
+
+    /*
+    about record type
+     */
+
+    public static final int RECORD_TYPE_MASS = 4;
+    public static final int RECORD_TYPE_CHAT = 5;
+
+    private static final int MAX_RECORD_TIME_LENGTH = 60000;
+    private static final int MIN_RECORD_TIME_LENGTH = 1000;
+
+    private long playLength = 0;
 
     private boolean isRecord;
 
-    public RecorderThread(AudioRecord audioRecord,int bufferSizeInBytes,int sampleRateInHz,String pcmAudioPath,String wavAudioPath){
+    private long recordStartTime = 0;
+
+    public RecorderThread(AudioRecord audioRecord,
+                          int bufferSizeInBytes,
+                          int sampleRateInHz, String wavAudioPath, RecordListener recordListener) {
         this.audioRecord = audioRecord;
         this.bufferSizeInBytes = bufferSizeInBytes;
         this.sampleRateInHz = sampleRateInHz;
-        this.pcmAudioPath = pcmAudioPath;
         this.wavAudioPath = wavAudioPath;
+        this.recordListener = recordListener;
 
     }
 
-    public void setRecording(boolean isRecording){
+    public void setRecording(boolean isRecording) {
+        if (isRecording) {
+            this.recordStartTime = System.currentTimeMillis();
+        }
+
         this.isRecord = isRecording;
 
     }
 
     @Override
     public void run() {
-        writeDateTOFile();//往文件中写入裸数据
-        copyWaveFile(pcmAudioPath, wavAudioPath);//给裸数据加上头文件
+        Looper.prepare();
+        ByteArrayBuffer byteArrayBuffer = writeDateTOFile();//往文件中写入裸数据
+        if (System.currentTimeMillis() - recordStartTime > MIN_RECORD_TIME_LENGTH) {
+
+            if (byteArrayBuffer != null) {
+                playLength = System.currentTimeMillis() - recordStartTime;
+                copyWaveFile(byteArrayBuffer, wavAudioPath);//给裸数据加上头文件
+            }
+
+        } else {
+            if (recordListener != null) {
+                recordListener.onRecordError(RECORD_ERROR_TOO_SHORT);
+            }
+        }
 
     }
 
@@ -49,40 +97,44 @@ public class RecorderThread implements  Runnable{
      */
 
 
-    private void writeDateTOFile() {
+    private ByteArrayBuffer writeDateTOFile() {
         // new一个byte数组用来存一些字节数据，大小为缓冲区大小
         byte[] audiodata = new byte[bufferSizeInBytes];
-        FileOutputStream fos = null;
+
+        ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(6000000);
+
         int readsize = 0;
-        try {
-            File file = new File(pcmAudioPath);
-            if (file.exists()) {
-                file.delete();
-            }
-            fos = new FileOutputStream(file);// 建立一个可存取字节的文件
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if (recordListener != null) {
+            recordListener.onRecordStart(RECORD_TYPE_MASS);
         }
+
         while (isRecord == true) {
+            if (System.currentTimeMillis() - recordStartTime > MAX_RECORD_TIME_LENGTH) {
+                if (recordListener != null) {
+                    recordListener.onRecordError(RECORD_ERROR_TOO_LONG);
+                    return null;
+                }
+
+            }
+
             readsize = audioRecord.read(audiodata, 0, bufferSizeInBytes);
+
             if (AudioRecord.ERROR_INVALID_OPERATION != readsize) {
                 try {
-                    fos.write(audiodata);
-                } catch (IOException e) {
+                    byteArrayBuffer.append(audiodata, 0, audiodata.length);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        try {
-            fos.close();// 关闭写入流
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        return byteArrayBuffer;
+
     }
 
     // 这里得到可播放的音频文件
-    private void copyWaveFile(String inFilename, String outFilename) {
-        FileInputStream in = null;
+    private void copyWaveFile(ByteArrayBuffer byteArrayBuffer, String outFilename) {
         FileOutputStream out = null;
         long totalAudioLen = 0;
         long totalDataLen = totalAudioLen + 36;
@@ -90,10 +142,12 @@ public class RecorderThread implements  Runnable{
         int channels = 2;
         long byteRate = 16 * sampleRateInHz * channels / 8;
         byte[] data = new byte[bufferSizeInBytes];
+
+        ByteArrayInputStream in = new ByteArrayInputStream(byteArrayBuffer.toByteArray());
+
         try {
-            in = new FileInputStream(inFilename);
             out = new FileOutputStream(outFilename);
-            totalAudioLen = in.getChannel().size();
+            totalAudioLen = byteArrayBuffer.toByteArray().length;
             totalDataLen = totalAudioLen + 36;
             WriteWaveFileHeader(out, totalAudioLen, totalDataLen,
                     longSampleRate, channels, byteRate);
@@ -102,6 +156,9 @@ public class RecorderThread implements  Runnable{
             }
             in.close();
             out.close();
+            if (recordListener != null) {
+                recordListener.onRecordFinish(RECORD_TYPE_MASS, wavAudioPath,playLength);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -167,6 +224,14 @@ public class RecorderThread implements  Runnable{
     }
 
 
+    public interface RecordListener {
+        public void onRecordStart(int type);
+
+        public void onRecordFinish(int type, String filePath,long playLength);
+
+        public void onRecordError(int type);
+
+    }
 
 
 }

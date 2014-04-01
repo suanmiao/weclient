@@ -95,11 +95,13 @@ public class MassTextFragment extends BaseFragment {
         return view;
     }
 
-    private void onKeyboardOpen(){
+    private void onKeyboardOpen() {
+        faceShowButton.setSelected(false);
+        faceLayout.setVisibility(View.GONE);
 
     }
 
-    private void onKeyboardClose(){
+    private void onKeyboardClose() {
 
     }
 
@@ -250,6 +252,16 @@ public class MassTextFragment extends BaseFragment {
         });
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        faceShowButton.setSelected(false);
+        faceLayout.setVisibility(View.GONE);
+
+
+    }
+
 
     private void dialogEnsureMass() {
 

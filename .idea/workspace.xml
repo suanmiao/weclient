@@ -46,56 +46,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67ebde4e-aaf1-417c-b44b-63fb9875324b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/BitmapUtil.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FaceGridAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/FaceItem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/FansResultHolder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MessageResultHolder.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/chat_time_layout_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_material_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_select_img_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_sms_verify_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_gender_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/fans_item_user_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_list_item_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_profile_group_edit_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/fans_profile_remark_edit_button_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/mass_app_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/mass_img_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_left.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_right.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/mass_text_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/mass_voice_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/material_bg_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/material_bg_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/material_item_app_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/material_item_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/material_item_img_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/material_item_voice_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_data_bg_pressed_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_data_bg_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_middle_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_middle_state_pressed.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_title_state.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_title_state_pressed.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/message_item_data_layout.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/shape_radius_mass_bottom_bg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/ImgUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVideoFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/VoiceFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/app_item_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/app_item_bg_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/app_item_item_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/app_item_item_pressed_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/app_item_item_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dialog_select_voice_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/mass_video_layout.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/material_item_bg_pressed_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/material_item_bg_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/record_record_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/record_record_bg_pressed_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/record_record_bg_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/select_item_bg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/drawable/select_item_bg_pressed_state.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/voice_record_layout.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/head_default.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/img_loading.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_bg_first.jpg" afterPath="" />
@@ -121,7 +89,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-hdpi/spash_bg.jpg" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_pause.png" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_play.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/res/drawable/show_right_bg.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/res/layout/head_layout.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ScrollingTabsAdapter.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Constant.java" afterPath="" />
@@ -133,83 +100,508 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WeChatLoader.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/WechatManager.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SlidingMenu.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/show_left_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/message_data_bg.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/res/layout/fans_item_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_item_data_layout.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceHolderView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceGridView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/material_bg_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/app_item_bg_pressed_state.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/res/drawable/material_bg_state.xml" afterPath="$PROJECT_DIR$/res/drawable/select_item_bg_state.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/BitmapUtil.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/BitmapUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_left.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_left.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_mass.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_mass.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_mass_hover.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_mass_hover.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_message.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_message.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_message_hover.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/actionbar_message_hover.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/back.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/back.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her_hover.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_her_hover.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_failed.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_failed.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_failed_pressed.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_failed_pressed.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_hover.9.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/chat_me_hover.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/commons-lang-2.6.jar" afterPath="$PROJECT_DIR$/libs/commons-lang-2.6.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/drop_down.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/drop_down.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/drop_down_hover.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/drop_down_hover.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f000.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f000.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f001.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f001.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f002.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f002.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f003.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f003.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f004.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f004.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f005.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f005.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f006.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f006.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f007.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f007.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f008.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f008.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f009.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f009.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f010.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f010.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f011.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f011.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f012.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f012.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f013.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f013.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f014.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f014.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f015.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f015.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f016.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f016.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f017.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f017.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f018.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f018.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f019.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f019.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f020.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f020.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f021.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f021.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f022.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f022.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f023.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f023.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f024.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f024.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f025.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f025.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f026.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f026.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f027.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f027.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f028.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f028.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f029.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f029.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f030.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f030.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f031.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f031.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f032.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f032.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f033.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f033.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f034.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f034.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f035.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f035.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f036.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f036.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f037.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f037.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f038.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f038.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f039.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f039.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f040.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f040.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f041.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f041.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f042.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f042.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f043.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f043.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f044.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f044.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f045.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f045.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f046.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f046.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f047.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f047.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f048.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f048.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f049.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f049.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f050.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f050.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f051.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f051.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f078.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f078.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f081.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f081.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f082.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f082.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f083.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f083.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f084.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f084.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f085.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f085.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f086.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f086.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f087.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f087.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f088.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f088.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f089.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f089.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f090.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f090.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f091.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f091.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f092.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f092.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f093.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f093.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f094.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f094.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f095.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f095.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f096.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f096.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f097.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f097.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f098.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f098.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f099.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f099.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f100.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f100.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f101.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f101.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f102.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f102.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f103.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f103.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f104.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f104.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f105.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f105.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f106.gif" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f106.gif" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f107.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f107.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_000.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_000.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_001.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_001.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_002.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_002.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_003.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_003.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_004.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_004.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_005.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_005.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_006.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_006.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_009.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_009.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_010.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_010.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_011.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_011.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_012.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_012.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_013.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_013.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_014.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_014.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_015.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_015.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_017.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_017.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_018.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_018.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_019.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_019.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_020.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_020.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_021.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_021.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_022.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_022.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_023.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_023.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_024.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_024.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_025.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_025.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_026.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_026.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_027.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_027.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_029.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_029.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_030.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_030.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_031.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_031.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_033.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_033.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_034.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_034.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_035.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_035.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_036.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_036.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_037.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_037.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_038.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_038.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_040.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_040.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_041.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_041.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_042.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_042.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_043.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_043.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_044.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_044.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_045.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_045.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_046.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_046.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_048.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_048.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_049.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_049.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_050.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_050.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_051.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_051.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_052.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_052.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_053.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_053.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_054.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_054.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_055.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_055.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_056.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_056.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_059.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_059.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_061.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_061.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_062.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_062.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_063.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_063.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_065.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_065.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_066.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_066.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_070.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_070.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_072.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_072.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_073.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_073.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_074.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_074.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_077.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_077.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_079.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_079.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_081.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_081.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_082.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_082.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_083.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_083.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_084.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_084.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_085.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_085.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_086.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_086.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_087.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_087.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_088.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_088.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_089.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_089.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_090.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_090.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_091.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_091.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_092.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_092.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_093.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_093.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_094.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_094.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_095.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_095.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_096.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_096.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_097.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_097.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_098.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_098.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_099.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_099.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_100.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_100.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_101.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_101.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_102.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_102.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_103.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_103.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_104.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_104.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_105.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_105.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/f_static_106.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/f_static_106.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/fuck.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/fuck.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/group.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/group.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/gson.jar" afterPath="$PROJECT_DIR$/libs/gson.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/icon.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-ldpi/icon_notification.png" afterPath="$PROJECT_DIR$/res/drawable-ldpi/icon_notification.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/jl1.0.1.jar" afterPath="$PROJECT_DIR$/libs/jl1.0.1.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/left_user_list_down.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/left_user_list_down.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/left_user_list_up.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/left_user_list_up.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/libammsdk.jar" afterPath="$PROJECT_DIR$/libs/libammsdk.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/armeabi/libbspatch.so" afterPath="$PROJECT_DIR$/libs/armeabi/libbspatch.so" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/loading_inner.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/loading_inner.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/loading_outer.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/loading_outer.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_bg.jpg" afterPath="$PROJECT_DIR$/res/drawable-hdpi/login_bg.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_holder_bg.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/login_holder_bg.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_pressed_state.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/login_pressed_state.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/login_state.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/login_state.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_copy.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_copy.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_copy_pressed.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_copy_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_download.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_download.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_download_pressed.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_download_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_reply.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_reply.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_reply_pressed.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_reply_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_share.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_share.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_share_pressed.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_share_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_star.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_star.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_pause_white.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_pause_white.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_play_white.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/msg_voice_play_white.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/no_msg.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/no_msg.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/pic_default.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/pic_default.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_check_for_update.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_check_for_update.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_exit_account.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_exit_account.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_feedback.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_feedback.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_head_default.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_head_default.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_second.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/profile_second.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_setting.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_setting.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/profile_third.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/profile_third.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/profile_user.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/profile_user.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/remark_edit.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/remark_edit.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/remark_edit_pressed.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/remark_edit_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_pressed_focused_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_pressed_focused_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_pressed_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_selected_pressed_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_focused_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_focused_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_pressed_holo.9.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/tab_unselected_pressed_holo.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-mdpi/thumb.png" afterPath="$PROJECT_DIR$/res/drawable-mdpi/thumb.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_arrow_right.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_arrow_right.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_back_normal.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_back_normal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_back_selected.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_back_selected.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_bar_bg.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_bar_bg.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_conversation_bg.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_conversation_bg.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item_pressed.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item_pressed.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_logo.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_logo.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_reply_left_bg.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_reply_left_bg.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_reply_right_bg.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_reply_right_bg.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_normal.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_normal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_pressed.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_statusbar_icon.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_statusbar_icon.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_normal.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_normal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_selected.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_selected.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_user_bubble.9.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_user_bubble.9.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_write_normal.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_write_normal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_write_pressed.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_write_pressed.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/umeng_sdk.jar" afterPath="$PROJECT_DIR$/libs/umeng_sdk.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/umeng_update_close_bg_normal.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/umeng_update_close_bg_normal.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/umeng_update_close_bg_tap.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/umeng_update_close_bg_tap.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_wifi_disable.png" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_wifi_disable.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/user_group_add.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/user_group_add.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-xhdpi/user_item_selected_index.png" afterPath="$PROJECT_DIR$/res/drawable-xhdpi/user_item_selected_index.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/wechat_friend.png" afterPath="$PROJECT_DIR$/res/drawable-hdpi/wechat_friend.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmReceiver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/AlarmSysService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/BaseFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/BaseFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/AppItemHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/AppItemHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/BitmapLruCache.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/BitmapLruCache.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/BuildConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ChatActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ChatHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ChatHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/ChatListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ContentFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/Constants.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/Constants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomFansActionView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomMainActionView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/actionbar/CustomProfileActionView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/DiskLruImageCache.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/images/DiskLruImageCache.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/EmotionHandler.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/EmotionHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FaceGridAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FaceGridAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceGridView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceGridView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/FaceItem.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/FaceItem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansGroupBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/FansGroupBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/FansHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/FansHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansListActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/FansListAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansProfileActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/FansProfileActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/FansResultHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/FansResultHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/HrefClickableSpan.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/HrefClickableSpan.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ImgHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/ImgHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/IndecatorView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/LeftFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/ListCacheManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/ListCacheManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/Manifest.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/Manifest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MessageBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MessageBean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/MessageNotification.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MessageResultHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MessageResultHolder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MultiItemBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MultiItemBean.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/ptr/PTRListview.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/PopOptionWindow.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/ProfileFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" afterPath="$PROJECT_DIR$/gen/com/suan/weclient/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/RightFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/RightFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SClickableSpan.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SClickableSpan.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SFansDropListWindow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SFragmentPagerAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SImageSpan.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SImageSpan.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/dropWindow/SMainDropListWindow.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/SearchListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/SettingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/activity/ShowImgActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SpanUtil.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/text/SpanUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/UploadHelper.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/UploadHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/UserBean.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/UserBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/adapter/UserListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/fragment/UserListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/UserGoupPushHelper.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/UserGoupPushHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/data/UserListItem.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceHolder.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceHolder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WeClient.iml" afterPath="$PROJECT_DIR$/WeClient.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" afterPath="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/action_search_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/action_search_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_left_anim.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/activity_movein_from_right_anim.xml" afterPath="$PROJECT_DIR$/res/anim/activity_movein_from_right_anim.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_left_anim.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/activity_moveout_to_right_anim.xml" afterPath="$PROJECT_DIR$/res/anim/activity_moveout_to_right_anim.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/android_support_v7_appcompat.xml" afterPath="$PROJECT_DIR$/.idea/libraries/android_support_v7_appcompat.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/attrs.xml" afterPath="$PROJECT_DIR$/res/values/attrs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/bin.xml" afterPath="$PROJECT_DIR$/.idea/libraries/bin.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_edit_content_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_edit_content_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_her_voice_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_item_me_voice_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_her_content_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_her_content_bg.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/chat_layout.xml" afterPath="$PROJECT_DIR$/res/layout/chat_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_me_content_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_me_content_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_send_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_send_button_bg.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_send_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_send_pressed_state.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_send_state.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_send_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/chat_time_layout_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/chat_time_layout_bg.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/colors.xml" afterPath="$PROJECT_DIR$/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_back_with_title.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_back_with_title.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_list_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_fans.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_fans.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_actionbar_profile.xml" afterPath="$PROJECT_DIR$/res/layout/custom_actionbar_profile.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/custom_notification_layout.xml" afterPath="$PROJECT_DIR$/res/layout/custom_notification_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dexedLibs.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dexedLibs1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dexedLibs2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs2.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dexedLibs3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs3.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_material_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_material_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dialog_select_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/dialog_select_img_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/divider_bwb.xml" afterPath="$PROJECT_DIR$/res/layout/divider_bwb.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/divider_wbw.xml" afterPath="$PROJECT_DIR$/res/layout/divider_wbw.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_item.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" afterPath="$PROJECT_DIR$/res/layout/drop_down_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/drop_down_window_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/drop_down_window_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_cancel_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_sure_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_sure_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_sure_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_sure_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" afterPath="$PROJECT_DIR$/res/drawable/ensure_button_sure_state.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/face_item_layout.xml" afterPath="$PROJECT_DIR$/res/layout/face_item_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/face_page_layout.xml" afterPath="$PROJECT_DIR$/res/layout/face_page_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/fans_item_group_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_button_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/fans_item_group_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/fans_item_group_state.xml" afterPath="$PROJECT_DIR$/res/drawable/fans_item_group_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fans_list_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_list_layout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fans_profile_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fans_profile_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/fans_spinner_selector_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/fans_spinner_selector_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/intro_layout.xml" afterPath="$PROJECT_DIR$/res/layout/intro_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/left_user_list_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/left_user_list_button_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/libs.xml" afterPath="$PROJECT_DIR$/.idea/libraries/libs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lint.xml" afterPath="$PROJECT_DIR$/lint.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/loading_animation.xml" afterPath="$PROJECT_DIR$/res/anim/loading_animation.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/loading_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/loading_dialog.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/mass_app_layout.xml" afterPath="$PROJECT_DIR$/res/layout/mass_app_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/mass_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/mass_img_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_left_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_state.xml" afterPath="$PROJECT_DIR$/res/drawable/mass_index_bg_right_state.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/mass_layout.xml" afterPath="$PROJECT_DIR$/res/layout/mass_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_bg_middle.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_middle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_bg_title.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_bg_title.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_img_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_text_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/message_item_voice_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/mass_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/mass_voice_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/material_item_app_layout.xml" afterPath="$PROJECT_DIR$/res/layout/material_item_app_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/material_item_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/material_item_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/material_item_img_layout.xml" afterPath="$PROJECT_DIR$/res/layout/material_item_img_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/material_item_voice_layout.xml" afterPath="$PROJECT_DIR$/res/layout/material_item_voice_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_data_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/message_data_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_blue_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_blue_button_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_state.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/message_item_voice_white_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/message_item_voice_white_button_bg.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/shape_radius_mass_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/shape_radius_mass_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_left_bottom.xml" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_left_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_middle.xml" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_middle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_right_bottom.xml" afterPath="$PROJECT_DIR$/res/drawable/msg_click_layout_bg_right_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/profile_item_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/profile_item_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/profile_item_divider.xml" afterPath="$PROJECT_DIR$/res/layout/profile_item_divider.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/profile_user_indecator_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/profile_user_indecator_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/ptr_header_layout.xml" afterPath="$PROJECT_DIR$/res/layout/ptr_header_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" afterPath="$PROJECT_DIR$/res/layout/ptr_loading_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/pulltorefreshlistfragment.xml" afterPath="$PROJECT_DIR$/.idea/libraries/pulltorefreshlistfragment.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/pulltorefreshviewpager.xml" afterPath="$PROJECT_DIR$/.idea/libraries/pulltorefreshviewpager.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/search_activity_fly_in.xml" afterPath="$PROJECT_DIR$/res/anim/search_activity_fly_in.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/search_activity_fly_out.xml" afterPath="$PROJECT_DIR$/res/anim/search_activity_fly_out.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/search_button_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/search_button_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_button_state.xml" afterPath="$PROJECT_DIR$/res/drawable/search_button_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/search_edit_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/search_edit_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/send_button_sure_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/send_button_sure_pressed_state.xml" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_pressed_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/send_button_sure_selected_state.xml" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_selected_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/send_button_sure_state.xml" afterPath="$PROJECT_DIR$/res/drawable/send_button_sure_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_checkbox_button_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_button_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_checkbox_checked_state.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_checked_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_checkbox_unchecked_state.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_checkbox_unchecked_state.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/setting_item_divider.xml" afterPath="$PROJECT_DIR$/res/layout/setting_item_divider.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_item_down_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_item_down_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_item_middle_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_item_middle_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_item_radius_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_item_radius_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_item_upper_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_item_upper_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/setting_push_text_color.xml" afterPath="$PROJECT_DIR$/res/drawable/setting_push_text_color.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/shadow.xml" afterPath="$PROJECT_DIR$/res/drawable/shadow.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/shadow_layer.xml" afterPath="$PROJECT_DIR$/res/drawable/shadow_layer.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/tab.xml" afterPath="$PROJECT_DIR$/res/drawable/tab.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_common_download_notification.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_common_download_notification.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout-v9/umeng_common_download_notification.xml" afterPath="$PROJECT_DIR$/res/layout-v9/umeng_common_download_notification.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_green.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_green.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_orange.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_orange.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_red.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_common_gradient_red.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/umeng_common_strings.xml" afterPath="$PROJECT_DIR$/res/values/umeng_common_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-zh/umeng_common_strings.xml" afterPath="$PROJECT_DIR$/res/values-zh/umeng_common_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_fb_activity_contact.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_fb_activity_contact.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_fb_activity_conversation.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_fb_activity_conversation.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_back_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_back_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_btn_bg_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_btn_bg_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_gradient_green.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_gradient_green.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_gradient_orange.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_gradient_orange.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_gray_frame.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_gray_frame.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_fb_list_header.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_fb_list_header.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_fb_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_fb_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_list_item_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_fb_new_reply_alert_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_fb_new_reply_alert_dialog.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_point_new.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_point_new.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_point_normal.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_point_normal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_see_list_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/umeng_fb_slide_in_from_left.xml" afterPath="$PROJECT_DIR$/res/anim/umeng_fb_slide_in_from_left.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/umeng_fb_slide_in_from_right.xml" afterPath="$PROJECT_DIR$/res/anim/umeng_fb_slide_in_from_right.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/umeng_fb_slide_out_from_left.xml" afterPath="$PROJECT_DIR$/res/anim/umeng_fb_slide_out_from_left.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/anim/umeng_fb_slide_out_from_right.xml" afterPath="$PROJECT_DIR$/res/anim/umeng_fb_slide_out_from_right.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/umeng_fb_strings.xml" afterPath="$PROJECT_DIR$/res/values/umeng_fb_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-ja/umeng_fb_strings.xml" afterPath="$PROJECT_DIR$/res/values-ja/umeng_fb_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-zh/umeng_fb_strings.xml" afterPath="$PROJECT_DIR$/res/values-zh/umeng_fb_strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_submit_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_submit_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_tick_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_top_banner.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_top_banner.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_fb_write_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_fb_write_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_focused.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_focused.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_normal.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_normal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_tap.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_cancel_bg_tap.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_close_bg_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_close_bg_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_focused.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_focused.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_normal.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_normal.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_selector.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_selector.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_tap.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_button_ok_bg_tap.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" afterPath="$PROJECT_DIR$/res/layout/umeng_update_dialog.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_dialog_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_dialog_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/umeng_update_string.xml" afterPath="$PROJECT_DIR$/res/values/umeng_update_string.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values-zh/umeng_update_string.xml" afterPath="$PROJECT_DIR$/res/values-zh/umeng_update_string.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/umeng_update_title_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/umeng_update_title_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable/user_list_item_bg.xml" afterPath="$PROJECT_DIR$/res/drawable/user_list_item_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="WeClient.iws" />
@@ -278,275 +670,7 @@
     <favorites_list name="WeClient" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="MassFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="149" column="76" selection-start="4813" selection-end="4813" vertical-scroll-proportion="-6.04" vertical-offset="1793" max-vertical-offset="2700">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MassTextFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="134" column="0" selection-start="3691" selection-end="4465" vertical-scroll-proportion="0.19251336" vertical-offset="1188" max-vertical-offset="6390">
-              <folding>
-                <element signature="e#8689#9513#0" expanded="true" />
-                <element signature="e#9013#9344#0" expanded="true" />
-                <element signature="e#9317#9318#0" expanded="true" />
-                <element signature="e#9500#9501#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MassImgFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="188" column="139" selection-start="6835" selection-end="6835" vertical-scroll-proportion="-10.8" vertical-offset="2052" max-vertical-offset="12060">
-              <folding>
-                <element signature="e#3921#4143#0" expanded="true" />
-                <element signature="e#4132#4133#0" expanded="true" />
-                <element signature="e#4190#4359#0" expanded="true" />
-                <element signature="e#4348#4349#0" expanded="true" />
-                <element signature="e#5179#7973#0" expanded="true" />
-                <element signature="e#6045#7460#0" expanded="true" />
-                <element signature="e#7421#7422#0" expanded="true" />
-                <element signature="e#7962#7963#0" expanded="true" />
-                <element signature="e#8193#9665#0" expanded="true" />
-                <element signature="e#8845#9587#0" expanded="true" />
-                <element signature="e#9560#9561#0" expanded="true" />
-                <element signature="e#9654#9655#0" expanded="true" />
-                <element signature="e#10192#10811#0" expanded="true" />
-                <element signature="e#10785#10786#0" expanded="true" />
-                <element signature="e#11051#11223#0" expanded="true" />
-                <element signature="e#11212#11213#0" expanded="true" />
-                <element signature="e#13715#14046#0" expanded="true" />
-                <element signature="e#14019#14020#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MassVoiceFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="829" column="8" selection-start="26396" selection-end="26396" vertical-scroll-proportion="-12.64" vertical-offset="12608" max-vertical-offset="13356">
-              <folding>
-                <element signature="e#10649#11673#0" expanded="true" />
-                <element signature="e#11662#11663#0" expanded="true" />
-                <element signature="e#11803#11950#0" expanded="true" />
-                <element signature="e#11939#11940#0" expanded="true" />
-                <element signature="e#12192#12811#0" expanded="true" />
-                <element signature="e#12785#12786#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UploadHelper.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/UploadHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="13" selection-start="853" selection-end="853" vertical-scroll-proportion="-21.6" vertical-offset="0" max-vertical-offset="738">
-              <folding>
-                <element signature="e#248#249#0" expanded="false" />
-                <element signature="e#284#285#0" expanded="false" />
-                <element signature="e#317#318#0" expanded="false" />
-                <element signature="e#346#347#0" expanded="false" />
-                <element signature="e#410#411#0" expanded="false" />
-                <element signature="e#460#461#0" expanded="false" />
-                <element signature="e#506#507#0" expanded="false" />
-                <element signature="e#547#548#0" expanded="false" />
-                <element signature="e#729#730#0" expanded="false" />
-                <element signature="e#768#769#0" expanded="false" />
-                <element signature="e#802#803#0" expanded="false" />
-                <element signature="e#837#838#0" expanded="false" />
-                <element signature="e#875#876#0" expanded="false" />
-                <element signature="e#913#914#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WeChatLoader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1352" column="0" selection-start="50670" selection-end="50670" vertical-scroll-proportion="-0.0" vertical-offset="22140" max-vertical-offset="60822">
-              <folding>
-                <element signature="e#51054#52029#0" expanded="true" />
-                <element signature="e#52018#52019#0" expanded="true" />
-                <element signature="e#52040#54079#0" expanded="true" />
-                <element signature="e#52188#52203#0" expanded="true" />
-                <element signature="e#52497#52512#0" expanded="true" />
-                <element signature="e#54067#54068#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WechatManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1914" column="92" selection-start="78337" selection-end="78337" vertical-scroll-proportion="-14.4" vertical-offset="30348" max-vertical-offset="31428">
-              <folding>
-                <element signature="e#24915#26842#0" expanded="true" />
-                <element signature="e#26823#26824#0" expanded="true" />
-                <element signature="e#28805#29896#0" expanded="true" />
-                <element signature="e#29885#29886#0" expanded="true" />
-                <element signature="e#58874#60916#0" expanded="true" />
-                <element signature="e#59198#60239#0" expanded="true" />
-                <element signature="e#60208#60209#0" expanded="true" />
-                <element signature="e#60905#60906#0" expanded="true" />
-                <element signature="e#61228#62798#0" expanded="true" />
-                <element signature="e#62779#62780#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="material_item_app_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/material_item_app_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="76" column="34" selection-start="2889" selection-end="2889" vertical-scroll-proportion="-10.333333" vertical-offset="810" max-vertical-offset="3960">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataParser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="516" column="27" selection-start="17494" selection-end="17494" vertical-scroll-proportion="-11.52" vertical-offset="7776" max-vertical-offset="23418">
-              <folding>
-                <element signature="e#17973#17987#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MaterialBean.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="0" selection-start="983" selection-end="983" vertical-scroll-proportion="-27.36" vertical-offset="54" max-vertical-offset="1332">
-              <folding>
-                <element signature="e#1030#1031#0" expanded="true" />
-                <element signature="e#1064#1065#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MaterialResultHolder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="36" selection-start="647" selection-end="647" vertical-scroll-proportion="-12.96" vertical-offset="0" max-vertical-offset="594">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MaterialListAdapter.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="340" column="55" selection-start="11416" selection-end="11416" vertical-scroll-proportion="-7.2" vertical-offset="5166" max-vertical-offset="11052">
-              <folding>
-                <element signature="e#11708#12456#0" expanded="true" />
-                <element signature="e#12441#12442#0" expanded="true" />
-                <element signature="e#13513#14294#0" expanded="true" />
-                <element signature="e#14279#14280#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MassAPPFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="555" column="0" selection-start="18067" selection-end="18067" vertical-scroll-proportion="-17.28" vertical-offset="7902" max-vertical-offset="11880">
-              <folding>
-                <element signature="e#3768#3990#0" expanded="true" />
-                <element signature="e#3979#3980#0" expanded="true" />
-                <element signature="e#4942#7186#0" expanded="true" />
-                <element signature="e#7175#7176#0" expanded="true" />
-                <element signature="e#9399#10018#0" expanded="true" />
-                <element signature="e#9992#9993#0" expanded="true" />
-                <element signature="e#20442#20779#0" expanded="true" />
-                <element signature="e#20736#20737#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mass_app_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/mass_app_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="0" selection-start="669" selection-end="669" vertical-scroll-proportion="-5.6666665" vertical-offset="54" max-vertical-offset="2412">
-              <folding>
-                <element signature="e#4645#4659#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mass_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/mass_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="169" column="29" selection-start="6501" selection-end="6501" vertical-scroll-proportion="-9.666667" vertical-offset="2520" max-vertical-offset="3672">
-              <folding>
-                <element signature="e#1812#1826#0" expanded="true" />
-                <element signature="e#3042#3055#0" expanded="true" />
-                <element signature="e#4288#4303#0" expanded="true" />
-                <element signature="e#5534#5552#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mass_text_layout.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/mass_text_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="0" selection-start="3163" selection-end="3163" vertical-scroll-proportion="-2.6666667" vertical-offset="1188" max-vertical-offset="2736">
-              <folding>
-                <element signature="e#5255#5277#0" expanded="true" />
-                <element signature="e#5663#5677#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mass_button_show_face_bg.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="73" selection-start="182" selection-end="182" vertical-scroll-proportion="-2.16" vertical-offset="0" max-vertical-offset="342">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="colors.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="43" selection-start="1259" selection-end="1259" vertical-scroll-proportion="-22.32" vertical-offset="0" max-vertical-offset="1206">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -568,62 +692,62 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_left.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_middle.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_right.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceHolderView.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/text/FaceItem.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/FaceGridAdapter.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceGridView.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/view/SViewPager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/intro/IntroFirstFragment.java" />
-        <option value="$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml" />
-        <option value="$PROJECT_DIR$/res/layout/face_item_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/dialog_preview_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/dialog_show_material_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/material_item_imglayout.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/VoiceFragment.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/dialog_material_layout.xml" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java" />
-        <option value="$PROJECT_DIR$/res/drawable/material_item_bg_middle.xml" />
-        <option value="$PROJECT_DIR$/res/drawable/material_bg_state.xml" />
-        <option value="$PROJECT_DIR$/res/layout/material_item_voice_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/material_item_img_layout.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/profile_item_bg.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/UserGoupPushHelper.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java" />
+        <option value="$PROJECT_DIR$/res/drawable/record_record_bg_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/record_record_bg_pressed_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/record_record_bg.xml" />
+        <option value="$PROJECT_DIR$/res/layout/voice_record_layout.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/select_item_bg.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java" />
+        <option value="$PROJECT_DIR$/res/drawable/select_item_bg_state.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java" />
+        <option value="$PROJECT_DIR$/res/drawable/material_item_bg_state.xml" />
         <option value="$PROJECT_DIR$/res/drawable/material_item_bg.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_select_voice_layout.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/res/layout/dialog_select_img_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/mass_app_layout.xml" />
         <option value="$PROJECT_DIR$/res/layout/mass_img_layout.xml" />
         <option value="$PROJECT_DIR$/res/layout/mass_voice_layout.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/Util.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
-        <option value="$PROJECT_DIR$/res/layout/mass_app_layout.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/dialog_material_layout.xml" />
         <option value="$PROJECT_DIR$/res/layout/material_item_app_layout.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java" />
+        <option value="$PROJECT_DIR$/res/layout/material_item_img_layout.xml" />
+        <option value="$PROJECT_DIR$/res/layout/material_item_voice_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java" />
         <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/UploadHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java" />
-        <option value="$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java" />
         <option value="$PROJECT_DIR$/res/values/colors.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_left_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_pressed_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_middle_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_right_pressed_state.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml" />
+        <option value="$PROJECT_DIR$/res/drawable/mass_index_bg_right_state.xml" />
         <option value="$PROJECT_DIR$/res/layout/mass_layout.xml" />
-        <option value="$PROJECT_DIR$/res/layout/mass_text_layout.xml" />
-        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java" />
+        <option value="$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVideoFragment.java" />
+        <option value="$PROJECT_DIR$/res/layout/mass_video_layout.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1985" />
+    <option name="x" value="65" />
     <option name="y" value="-1056" />
     <option name="width" value="1855" />
     <option name="height" value="1056" />
@@ -698,6 +822,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -767,36 +901,6 @@
               <option name="myItemId" value="weclient" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Face" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -864,123 +968,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="holder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="holder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resultHolder" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bean" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
+              <option name="myItemId" value="pushService" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1029,32 +1017,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mass" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeClient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="weclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fragment" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="intro" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1172,16 +1134,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1191,16 +1143,16 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="options.lastSelected" value="appearance" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="project.structure.last.edited" value="Android SDK" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/httpmime-4.1.3.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.WIDTH" value="295" />
@@ -1222,23 +1174,23 @@
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.suan.weclient.fragment.mass" />
+      <recent name="com.suan.weclient.view" />
       <recent name="com.suan.weclient.util.data.holder.resultHolder" />
       <recent name="com.suan.weclient.adapter" />
       <recent name="com.suan.weclient.view.Face" />
-      <recent name="com.suan.weclient.fragment.intro" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/drawable" />
       <recent name="$PROJECT_DIR$/res/layout" />
+      <recent name="$PROJECT_DIR$/res/drawable" />
       <recent name="$PROJECT_DIR$/res/anim" />
       <recent name="$PROJECT_DIR$/res/drawable-hdpi" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.suan.weclient.util" />
       <recent name="com.suan.weclient.util.data.holder" />
       <recent name="com.suan.weclient.util.data.bean" />
       <recent name="com.suan.weclient.view.DropWindow" />
       <recent name="com.suan.weclient.view.actionbar" />
-      <recent name="com.suan.weclient.util.span" />
     </key>
   </component>
   <component name="RunManager" selected="Android Application.WeClient">
@@ -1473,8 +1425,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="-1056" width="1855" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="65" y="-1056" width="1855" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1482,7 +1434,6 @@
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32974634" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32475883" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39764202" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2962963" sideWeight="0.5003997" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="3" side_tool="true" content_ui="tabs" />
@@ -1490,7 +1441,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22701839" sideWeight="0.50119907" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18435155" sideWeight="0.49961567" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17041801" sideWeight="0.49960032" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17041801" sideWeight="0.49960032" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3268921" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1502,6 +1453,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32475883" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1551,527 +1503,414 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/DataManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="558" column="83" selection-start="16728" selection-end="16728" vertical-scroll-proportion="0.0" vertical-offset="10044" max-vertical-offset="12294">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="318" column="0" selection-start="12902" selection-end="12902" vertical-scroll-proportion="0.1684492" vertical-offset="5598" max-vertical-offset="7218">
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#4278#4875#0" expanded="false" />
-            <element signature="e#4840#4841#0" expanded="false" />
-            <element signature="e#5309#9631#0" expanded="false" />
-            <element signature="e#5817#6289#0" expanded="false" />
-            <element signature="e#6246#6247#0" expanded="false" />
-            <element signature="e#6685#7157#0" expanded="false" />
-            <element signature="e#7114#7115#0" expanded="false" />
-            <element signature="e#7725#9391#0" expanded="false" />
-            <element signature="e#8478#9013#0" expanded="false" />
-            <element signature="e#8950#8951#0" expanded="false" />
-            <element signature="e#9352#9353#0" expanded="false" />
-            <element signature="e#9612#9613#0" expanded="false" />
-            <element signature="e#9874#15755#0" expanded="false" />
-            <element signature="e#10425#10898#0" expanded="false" />
-            <element signature="e#10855#10856#0" expanded="false" />
-            <element signature="e#11296#11768#0" expanded="false" />
-            <element signature="e#11725#11726#0" expanded="false" />
-            <element signature="e#14158#14965#0" expanded="false" />
-            <element signature="e#14902#14903#0" expanded="false" />
-            <element signature="e#15736#15737#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/dialog_material_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1424" selection-end="1424" vertical-scroll-proportion="0.45062587" vertical-offset="360" max-vertical-offset="1638">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="0" selection-start="3652" selection-end="3652" vertical-scroll-proportion="0.5534759" vertical-offset="1350" max-vertical-offset="6102">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MaterialHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="587" selection-end="587" vertical-scroll-proportion="-3.64" vertical-offset="269" max-vertical-offset="1224">
-          <folding>
-            <element signature="e#1614#1615#0" expanded="false" />
-            <element signature="e#1650#1651#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/message_item_bg_middle_state_pressed.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="773">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="9" selection-start="405" selection-end="405" vertical-scroll-proportion="-10.8" vertical-offset="0" max-vertical-offset="432">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/material_item_voice_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="50" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="2052">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/material_bg_state.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="29" selection-start="148" selection-end="148" vertical-scroll-proportion="0.09625668" vertical-offset="0" max-vertical-offset="748">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/dialog_edit_layout.xml">
-      <provider editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2052">
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/dialog_select_img_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="38" selection-start="1953" selection-end="1953" vertical-scroll-proportion="0.674548" vertical-offset="469" max-vertical-offset="1188">
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="26" selection-start="757" selection-end="757" vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="16650">
+        <state line="42" column="50" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.5257302" vertical-offset="378" max-vertical-offset="1692">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/material_bg_pressed_state.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="317" column="51" selection-start="10192" selection-end="10192" vertical-scroll-proportion="0.6737968" vertical-offset="4104" max-vertical-offset="5832">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="773">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_middle.xml">
+    <entry file="file://$PROJECT_DIR$/lint.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="116" selection-end="116" vertical-scroll-proportion="0.09625668" vertical-offset="0" max-vertical-offset="748">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2772" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.project">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="22" selection-start="402" selection-end="402" vertical-scroll-proportion="0.39834026" vertical-offset="0" max-vertical-offset="723" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.classpath">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="773" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WeClient.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1134" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/select_item_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="81" selection-start="192" selection-end="192" vertical-scroll-proportion="0.07938258" vertical-offset="0" max-vertical-offset="907">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/send_button_sure_bg.xml">
+    <entry file="file://$PROJECT_DIR$/res/drawable/select_item_bg_state.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="522" selection-end="522" vertical-scroll-proportion="0.2647059" vertical-offset="0" max-vertical-offset="748">
+        <state line="7" column="0" selection-start="156" selection-end="156" vertical-scroll-proportion="0.13891952" vertical-offset="0" max-vertical-offset="907">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/custom_actionbar_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="73" selection-start="3116" selection-end="3116" vertical-scroll-proportion="0.41002277" vertical-offset="918" max-vertical-offset="4068">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/drop_down_indecator_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="85" selection-start="274" selection-end="274" vertical-scroll-proportion="0.059536934" vertical-offset="0" max-vertical-offset="907">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="259" column="43" selection-start="8010" selection-end="8010" vertical-scroll-proportion="0.0" vertical-offset="4662" max-vertical-offset="7740">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/material_item_bg_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="9" selection-start="116" selection-end="116" vertical-scroll-proportion="0.059536934" vertical-offset="0" max-vertical-offset="907">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/drawable/material_item_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="0" selection-start="115" selection-end="115" vertical-scroll-proportion="0.07219251" vertical-offset="0" max-vertical-offset="748">
+        <state line="6" column="0" selection-start="218" selection-end="218" vertical-scroll-proportion="0.11907387" vertical-offset="0" max-vertical-offset="907">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/material_item_img_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="47" selection-start="198" selection-end="198" vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="2214">
-          <folding />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/res/layout/mass_text_layout.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/view/Face/FaceGridView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1161" selection-end="1161" vertical-scroll-proportion="0.10962567" vertical-offset="314" max-vertical-offset="1062">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2736">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_img_layout.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/AboutActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="0" selection-start="3139" selection-end="3139" vertical-scroll-proportion="-0.0" vertical-offset="1584" max-vertical-offset="4338">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable-xhdpi/remark_edit.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/mass_img_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="45" selection-start="3085" selection-end="3085" vertical-scroll-proportion="0.0" vertical-offset="1386" max-vertical-offset="2574">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/message_item_voice_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="3137" selection-end="3137" vertical-scroll-proportion="0.0" vertical-offset="1548" max-vertical-offset="4194">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/mass_voice_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="26" selection-start="3227" selection-end="3227" vertical-scroll-proportion="1.2002782" vertical-offset="559" max-vertical-offset="3060">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="65" selection-start="4938" selection-end="4938" vertical-scroll-proportion="0.7593583" vertical-offset="1574" max-vertical-offset="2322">
+        <state line="107" column="41" selection-start="3529" selection-end="3529" vertical-scroll-proportion="0.5033557" vertical-offset="954" max-vertical-offset="3366">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/voice/RecorderThread.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="8" selection-start="2235" selection-end="2235" vertical-scroll-proportion="0.7459893" vertical-offset="648" max-vertical-offset="3024">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="784" column="30" selection-start="26558" selection-end="26558" vertical-scroll-proportion="0.8734694" vertical-offset="12084" max-vertical-offset="12978">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/voice/VoiceManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="28" selection-start="2286" selection-end="2286" vertical-scroll-proportion="0.36096257" vertical-offset="918" max-vertical-offset="1818">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MessageListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="867" column="0" selection-start="33943" selection-end="33943" vertical-scroll-proportion="0.0" vertical-offset="15606" max-vertical-offset="18648">
+        <state line="345" column="70" selection-start="10701" selection-end="10701" vertical-scroll-proportion="0.23814774" vertical-offset="4374" max-vertical-offset="10980">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="31" selection-start="1990" selection-end="1990" vertical-scroll-proportion="0.0" vertical-offset="990" max-vertical-offset="2034">
+        <state line="54" column="35" selection-start="1957" selection-end="1957" vertical-scroll-proportion="0.9597315" vertical-offset="114" max-vertical-offset="2088">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/FaceGridAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="0" selection-start="2463" selection-end="2463" vertical-scroll-proportion="0.10962567" vertical-offset="1484" max-vertical-offset="2232">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/resultHolder/MaterialResultHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="36" selection-start="647" selection-end="647" vertical-scroll-proportion="-12.96" vertical-offset="0" max-vertical-offset="594">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="516" column="27" selection-start="17494" selection-end="17494" vertical-scroll-proportion="-11.52" vertical-offset="7776" max-vertical-offset="23418">
-          <folding>
-            <element signature="e#17973#17987#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MassFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="76" selection-start="4813" selection-end="4813" vertical-scroll-proportion="-6.04" vertical-offset="1793" max-vertical-offset="2700">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/mass_app_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="669" selection-end="669" vertical-scroll-proportion="-5.6666665" vertical-offset="54" max-vertical-offset="2412">
-          <folding>
-            <element signature="e#4645#4659#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/res/layout/dialog_select_voice_layout.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/material_item_app_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="34" selection-start="2889" selection-end="2889" vertical-scroll-proportion="-10.333333" vertical-offset="810" max-vertical-offset="3960">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassAPPFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="555" column="0" selection-start="18067" selection-end="18067" vertical-scroll-proportion="-17.28" vertical-offset="7902" max-vertical-offset="11880">
-          <folding>
-            <element signature="e#3768#3990#0" expanded="true" />
-            <element signature="e#3979#3980#0" expanded="true" />
-            <element signature="e#4942#7186#0" expanded="true" />
-            <element signature="e#7175#7176#0" expanded="true" />
-            <element signature="e#9399#10018#0" expanded="true" />
-            <element signature="e#9992#9993#0" expanded="true" />
-            <element signature="e#20442#20779#0" expanded="true" />
-            <element signature="e#20736#20737#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/AppItemBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="22" selection-start="388" selection-end="388" vertical-scroll-proportion="0.24064171" vertical-offset="126" max-vertical-offset="1026">
-          <folding>
-            <element signature="e#747#748#0" expanded="false" />
-            <element signature="e#778#779#0" expanded="false" />
-            <element signature="e#815#816#0" expanded="false" />
-            <element signature="e#849#850#0" expanded="false" />
-            <element signature="e#882#883#0" expanded="false" />
-            <element signature="e#912#913#0" expanded="false" />
-            <element signature="e#1037#1038#0" expanded="false" />
-            <element signature="e#1071#1072#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MultiItemBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="34" selection-start="402" selection-end="402" vertical-scroll-proportion="0.36096257" vertical-offset="0" max-vertical-offset="756">
+        <state line="20" column="45" selection-start="820" selection-end="820" vertical-scroll-proportion="0.41002277" vertical-offset="0" max-vertical-offset="1368">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/Util.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1352" column="0" selection-start="50670" selection-end="50670" vertical-scroll-proportion="-0.0" vertical-offset="22140" max-vertical-offset="60822">
-          <folding>
-            <element signature="e#51054#52029#0" expanded="true" />
-            <element signature="e#52018#52019#0" expanded="true" />
-            <element signature="e#52040#54079#0" expanded="true" />
-            <element signature="e#52188#52203#0" expanded="true" />
-            <element signature="e#52497#52512#0" expanded="true" />
-            <element signature="e#54067#54068#0" expanded="true" />
-          </folding>
+        <state line="454" column="67" selection-start="15951" selection-end="15951" vertical-scroll-proportion="0.42281878" vertical-offset="6624" max-vertical-offset="13788">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="340" column="55" selection-start="11416" selection-end="11416" vertical-scroll-proportion="-7.2" vertical-offset="5166" max-vertical-offset="11052">
+        <state line="405" column="43" selection-start="14278" selection-end="14278" vertical-scroll-proportion="0.46308726" vertical-offset="5166" max-vertical-offset="13806">
           <folding>
-            <element signature="e#11708#12456#0" expanded="true" />
-            <element signature="e#12441#12442#0" expanded="true" />
-            <element signature="e#13513#14294#0" expanded="true" />
-            <element signature="e#14279#14280#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1914" column="92" selection-start="78337" selection-end="78337" vertical-scroll-proportion="-14.4" vertical-offset="30348" max-vertical-offset="31428">
-          <folding>
-            <element signature="e#24915#26842#0" expanded="true" />
-            <element signature="e#26823#26824#0" expanded="true" />
-            <element signature="e#28805#29896#0" expanded="true" />
-            <element signature="e#29885#29886#0" expanded="true" />
-            <element signature="e#58874#60916#0" expanded="true" />
-            <element signature="e#59198#60239#0" expanded="true" />
-            <element signature="e#60208#60209#0" expanded="true" />
-            <element signature="e#60905#60906#0" expanded="true" />
-            <element signature="e#61228#62798#0" expanded="true" />
-            <element signature="e#62779#62780#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/UploadHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="13" selection-start="853" selection-end="853" vertical-scroll-proportion="-21.6" vertical-offset="0" max-vertical-offset="738">
-          <folding>
-            <element signature="e#248#249#0" expanded="false" />
-            <element signature="e#284#285#0" expanded="false" />
-            <element signature="e#317#318#0" expanded="false" />
-            <element signature="e#346#347#0" expanded="false" />
-            <element signature="e#410#411#0" expanded="false" />
-            <element signature="e#460#461#0" expanded="false" />
-            <element signature="e#506#507#0" expanded="false" />
-            <element signature="e#547#548#0" expanded="false" />
-            <element signature="e#729#730#0" expanded="false" />
-            <element signature="e#768#769#0" expanded="false" />
-            <element signature="e#802#803#0" expanded="false" />
-            <element signature="e#837#838#0" expanded="false" />
-            <element signature="e#875#876#0" expanded="false" />
-            <element signature="e#913#914#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/bean/MaterialBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="0" selection-start="983" selection-end="983" vertical-scroll-proportion="-27.36" vertical-offset="54" max-vertical-offset="1332">
-          <folding>
-            <element signature="e#1030#1031#0" expanded="true" />
-            <element signature="e#1064#1065#0" expanded="true" />
+            <element signature="e#14299#14686#0" expanded="false" />
+            <element signature="e#14667#14668#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassImgFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="188" column="139" selection-start="6835" selection-end="6835" vertical-scroll-proportion="-10.8" vertical-offset="2052" max-vertical-offset="12060">
-          <folding>
-            <element signature="e#3921#4143#0" expanded="true" />
-            <element signature="e#4132#4133#0" expanded="true" />
-            <element signature="e#4190#4359#0" expanded="true" />
-            <element signature="e#4348#4349#0" expanded="true" />
-            <element signature="e#5179#7973#0" expanded="true" />
-            <element signature="e#6045#7460#0" expanded="true" />
-            <element signature="e#7421#7422#0" expanded="true" />
-            <element signature="e#7962#7963#0" expanded="true" />
-            <element signature="e#8193#9665#0" expanded="true" />
-            <element signature="e#8845#9587#0" expanded="true" />
-            <element signature="e#9560#9561#0" expanded="true" />
-            <element signature="e#9654#9655#0" expanded="true" />
-            <element signature="e#10192#10811#0" expanded="true" />
-            <element signature="e#10785#10786#0" expanded="true" />
-            <element signature="e#11051#11223#0" expanded="true" />
-            <element signature="e#11212#11213#0" expanded="true" />
-            <element signature="e#13715#14046#0" expanded="true" />
-            <element signature="e#14019#14020#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVoiceFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="829" column="8" selection-start="26396" selection-end="26396" vertical-scroll-proportion="-12.64" vertical-offset="12608" max-vertical-offset="13356">
-          <folding>
-            <element signature="e#10649#11673#0" expanded="true" />
-            <element signature="e#11662#11663#0" expanded="true" />
-            <element signature="e#11803#11950#0" expanded="true" />
-            <element signature="e#11939#11940#0" expanded="true" />
-            <element signature="e#12192#12811#0" expanded="true" />
-            <element signature="e#12785#12786#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/face_item_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="38" selection-start="285" selection-end="285" vertical-scroll-proportion="0.1752434" vertical-offset="0" max-vertical-offset="719">
+        <state line="482" column="70" selection-start="16644" selection-end="16644" vertical-scroll-proportion="0.22147651" vertical-offset="6318" max-vertical-offset="11754">
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/mass_app_layout.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/drawable/mass_button_show_face_bg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="73" selection-start="182" selection-end="182" vertical-scroll-proportion="-2.16" vertical-offset="0" max-vertical-offset="342">
+        <state line="259" column="0" selection-start="11055" selection-end="11055" vertical-scroll-proportion="0.16400911" vertical-offset="4518" max-vertical-offset="5976">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/mass_img_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="0" selection-start="3604" selection-end="3604" vertical-scroll-proportion="0.123006836" vertical-offset="1458" max-vertical-offset="2916">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/mass_voice_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="55" selection-start="2813" selection-end="2813" vertical-scroll-proportion="0.45102507" vertical-offset="864" max-vertical-offset="2934">
+          <folding>
+            <element signature="e#3109#3134#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/dialog_material_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="935" selection-end="935" vertical-scroll-proportion="0.49202734" vertical-offset="0" max-vertical-offset="1638">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/material_item_app_layout.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state line="251" column="67" selection-start="9679" selection-end="9679" vertical-scroll-proportion="-28.08" vertical-offset="3816" max-vertical-offset="4914">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/material_item_voice_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="553" selection-end="553" vertical-scroll-proportion="0.28701594" vertical-offset="0" max-vertical-offset="2052">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_right.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="773">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/pushService/PushService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="172" column="0" selection-start="6174" selection-end="6174" vertical-scroll-proportion="0.78367347" vertical-offset="2106" max-vertical-offset="5292">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/DataParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="279" column="0" selection-start="9173" selection-end="9173" vertical-scroll-proportion="0.24489796" vertical-offset="4050" max-vertical-offset="23382">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/data/holder/MessageHolder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="0" selection-start="1284" selection-end="1284" vertical-scroll-proportion="0.4090909" vertical-offset="306" max-vertical-offset="2088">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/SearchActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="82" column="0" selection-start="2683" selection-end="2683" vertical-scroll-proportion="0.09625668" vertical-offset="792" max-vertical-offset="4014">
+          <folding>
+            <element signature="e#5174#5809#0" expanded="true" />
+            <element signature="e#5798#5799#0" expanded="true" />
+            <element signature="e#5941#6343#0" expanded="true" />
+            <element signature="e#6332#6333#0" expanded="true" />
+            <element signature="e#6386#6631#0" expanded="true" />
+            <element signature="e#6620#6621#0" expanded="true" />
+            <element signature="e#7058#7778#0" expanded="true" />
+            <element signature="e#7767#7768#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="15" selection-start="3615" selection-end="3615" vertical-scroll-proportion="0.17142858" vertical-offset="720" max-vertical-offset="14112">
+          <folding>
+            <element signature="e#5256#5822#0" expanded="true" />
+            <element signature="e#5807#5808#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WechatManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="853" column="36" selection-start="33411" selection-end="33411" vertical-scroll-proportion="0.39183673" vertical-offset="12852" max-vertical-offset="31302">
+          <folding>
+            <element signature="e#33435#37676#0" expanded="true" />
+            <element signature="e#37657#37658#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/net/WeChatLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="507" column="17" selection-start="19213" selection-end="19213" vertical-scroll-proportion="0.39319727" vertical-offset="7523" max-vertical-offset="60894">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/adapter/MaterialListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="531" column="8" selection-start="18496" selection-end="18496" vertical-scroll-proportion="0.7251701" vertical-offset="7927" max-vertical-offset="10764">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_right_pressed_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="23" selection-start="308" selection-end="308" vertical-scroll-proportion="0.21657754" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/shape_radius_mass_header_bg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="77" selection-start="263" selection-end="263" vertical-scroll-proportion="0.14438502" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_right_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="37" selection-start="311" selection-end="311" vertical-scroll-proportion="0.21657754" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_middle_pressed_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="7" selection-start="220" selection-end="220" vertical-scroll-proportion="0.1684492" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_left_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="271" selection-end="271" vertical-scroll-proportion="0.21657754" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_left_pressed_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="0" selection-start="214" selection-end="214" vertical-scroll-proportion="0.19251336" vertical-offset="0" max-vertical-offset="748">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="43" selection-start="1259" selection-end="1259" vertical-scroll-proportion="-22.32" vertical-offset="0" max-vertical-offset="1206">
+        <state line="30" column="52" selection-start="1212" selection-end="1212" vertical-scroll-proportion="0.2647059" vertical-offset="342" max-vertical-offset="1404">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/MessageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="164" column="0" selection-start="5093" selection-end="5093" vertical-scroll-proportion="0.75918365" vertical-offset="1926" max-vertical-offset="6516">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/util/SharedPreferenceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="172" column="0" selection-start="6099" selection-end="6099" vertical-scroll-proportion="0.3435829" vertical-offset="2623" max-vertical-offset="5634">
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#8875#8885#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/material_item_img_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="48" selection-start="4107" selection-end="4107" vertical-scroll-proportion="0.5994437" vertical-offset="1477" max-vertical-offset="2196">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/mass_index_bg_middle_state.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="7" selection-start="277" selection-end="277" vertical-scroll-proportion="0.19251336" vertical-offset="0" max-vertical-offset="748">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/mass_video_layout.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="40" selection-start="858" selection-end="858" vertical-scroll-proportion="0.30041724" vertical-offset="216" max-vertical-offset="1566">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassVideoFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="31" selection-start="2815" selection-end="2815" vertical-scroll-proportion="0.8" vertical-offset="96" max-vertical-offset="990">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/mass_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="29" selection-start="6501" selection-end="6501" vertical-scroll-proportion="-9.666667" vertical-offset="2520" max-vertical-offset="3672">
-          <folding>
-            <element signature="e#1812#1826#0" expanded="true" />
-            <element signature="e#3042#3055#0" expanded="true" />
-            <element signature="e#4288#4303#0" expanded="true" />
-            <element signature="e#5534#5552#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/mass_text_layout.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="0" selection-start="3163" selection-end="3163" vertical-scroll-proportion="-2.6666667" vertical-offset="1188" max-vertical-offset="2736">
-          <folding>
-            <element signature="e#5255#5277#0" expanded="true" />
-            <element signature="e#5663#5677#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/suan/weclient/fragment/mass/MassTextFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="134" column="0" selection-start="3691" selection-end="4465" vertical-scroll-proportion="0.19251336" vertical-offset="1188" max-vertical-offset="6390">
-          <folding>
-            <element signature="e#8689#9513#0" expanded="true" />
-            <element signature="e#9013#9344#0" expanded="true" />
-            <element signature="e#9317#9318#0" expanded="true" />
-            <element signature="e#9500#9501#0" expanded="true" />
-          </folding>
+        <state line="218" column="0" selection-start="8077" selection-end="8077" vertical-scroll-proportion="5.45758" vertical-offset="0" max-vertical-offset="4554">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2115,7 +1954,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>Android API 19 Platform</last-edited>
+          <last-edited>Android API 15 Platform</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -2127,7 +1966,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>library</last-edited>
+          <last-edited>abs-library</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

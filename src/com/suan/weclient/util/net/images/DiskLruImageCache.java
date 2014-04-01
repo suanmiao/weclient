@@ -11,12 +11,11 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.jakewharton.disklrucache.DiskLruCache;
 import com.suan.weclient.BuildConfig;
-import com.suan.weclient.util.voice.BitmapUtil;
+import com.suan.weclient.util.BitmapUtil;
 
 /**
  * Implementation of DiskLruCache by Jake Wharton modified from

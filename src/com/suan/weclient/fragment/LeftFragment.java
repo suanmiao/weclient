@@ -58,40 +58,6 @@ public class LeftFragment extends BaseFragment {
     private ImageView showListView;
     private DataManager mDataManager;
 
-/*
-
-    public LeftFragment(FragmentManager fragmentManager, DataManager dataManager) {
-        mFragmentManager = fragmentManager;
-        mDataManager = dataManager;
-
-    }
-
-    public void onResume() {
-        super.onResume();
-        Log.e("left ", "onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("left", "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("left", "onStop");
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle toSave) {
-
-        super.onSaveInstanceState(toSave);
-
-        Log.e("left fragment", "onSaveinstanceState");
-    }
-*/
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,7 +80,6 @@ public class LeftFragment extends BaseFragment {
     private void initFragments() {
         profileFragment = new ProfileFragment();
         userListFragment = new UserListFragment();
-
 
         FragmentTransaction t = getActivity().getSupportFragmentManager()
                 .beginTransaction();

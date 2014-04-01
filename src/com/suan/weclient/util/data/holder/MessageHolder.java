@@ -49,6 +49,8 @@ public class MessageHolder {
 
                 break;
         }
+        latestMsgId = messageResultHolder.getLastMsgId();
+        nowBean.setLastMsgId(latestMsgId);
 
         initMessageCount();
     }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.suan.weclient.R;
 import com.suan.weclient.util.ListCacheManager;
+import com.suan.weclient.util.Util;
 import com.suan.weclient.util.data.DataManager;
 import com.suan.weclient.util.data.bean.AppItemBean;
 import com.suan.weclient.util.data.bean.MaterialBean;
@@ -331,6 +332,8 @@ public class MaterialListAdapter extends BaseAdapter implements OnScrollListener
 
     }
 
+
+
     public void setAPPMessageContent(final ItemViewHolder holder) {
         AppItemBean appItemBean = holder.getMaterialBean().getAppItemBean();
         int itemCount = appItemBean.getMulti_item().size();
@@ -341,7 +344,8 @@ public class MaterialListAdapter extends BaseAdapter implements OnScrollListener
                 ImageCacheManager.CACHE_MESSAGE_CONTENT
                         + holder.getMaterialBean().getAppItemBean().getFile_id());
         if (contentBitmap == null) {
-            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(), holder.getMaterialBean().getAppItemBean().getImg_url(), holder.coverImageView, new OnActionFinishListener() {
+            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(),
+                    Util.checkImgUrl(holder.getMaterialBean().getAppItemBean().getImg_url()), holder.coverImageView, new OnActionFinishListener() {
                 @Override
                 public void onFinish(int code, Object object) {
                     if (code == WechatManager.ACTION_SUCCESS) {
@@ -370,7 +374,7 @@ public class MaterialListAdapter extends BaseAdapter implements OnScrollListener
         for (int i = 0; i < 3; i++) {
             if (i < itemCount - 1) {
                 holder.itemLayout[i].setVisibility(View.VISIBLE);
-                holder.itemTextView[i].setText(appItemBean.getMulti_item().get(i + 1).getDigest());
+                holder.itemTextView[i].setText(appItemBean.getMulti_item().get(i + 1).getTitle() );
                 setAppItemImg(i, holder);
 
             } else {
@@ -389,7 +393,8 @@ public class MaterialListAdapter extends BaseAdapter implements OnScrollListener
                 ImageCacheManager.CACHE_MESSAGE_CONTENT
                         + multiItemBean.getFile_id());
         if (contentBitmap == null) {
-            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(), multiItemBean.getCover(), holder.itemImageView[index], new OnActionFinishListener() {
+            mDataManager.getWechatManager().getNormalImg(mDataManager.getCurrentPosition(),
+                    Util.checkImgUrl(multiItemBean.getCover()), holder.itemImageView[index], new OnActionFinishListener() {
                 @Override
                 public void onFinish(int code, Object object) {
                     if (code == WechatManager.ACTION_SUCCESS) {
@@ -523,25 +528,6 @@ public class MaterialListAdapter extends BaseAdapter implements OnScrollListener
 
     private void setImgMessageContent(final ItemViewHolder holder) {
 
-
-        holder.contentImageView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-
-               /* Intent jumbIntent = new Intent();
-                jumbIntent.setClass(mActivity, ShowImgActivity.class);
-                mDataManager.createImgHolder(holder.getMessageBean(), mDataManager.getCurrentUser());
-                mActivity.startActivity(jumbIntent);
-                mActivity.overridePendingTransition(R.anim.search_activity_fly_in, R.anim.search_activity_fly_out);
-*/
-
-
-            }
-
-        });
 
         if (!mBusy && !holder.getDataLoaded()) {
 

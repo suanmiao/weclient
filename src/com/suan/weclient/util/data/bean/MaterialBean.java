@@ -19,7 +19,7 @@ public class MaterialBean {
     public static final int MATERIAL_TYPE_VOICE = 3;
 
 
-    public static final int MATERIAL_TYPE_APP = 4;
+    public static final int MATERIAL_TYPE_APP = 10;
 
     /*
     about app item
